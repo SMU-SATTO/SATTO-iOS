@@ -10,6 +10,10 @@
 		AA9E80222B4912CB00D51447 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E80212B4912CB00D51447 /* MainView.swift */; };
 		AA9E80242B4912F600D51447 /* CreateTimeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E80232B4912F600D51447 /* CreateTimeTableView.swift */; };
 		AA9E80282B49134200D51447 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E80272B49134200D51447 /* SettingView.swift */; };
+		AA9E802D2B498DB400D51447 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = AA9E802C2B498DB400D51447 /* CombineMoya */; };
+		AA9E802F2B498DB400D51447 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = AA9E802E2B498DB400D51447 /* Moya */; };
+		AA9E80312B498DB400D51447 /* ReactiveMoya in Frameworks */ = {isa = PBXBuildFile; productRef = AA9E80302B498DB400D51447 /* ReactiveMoya */; };
+		AA9E80332B498DB400D51447 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = AA9E80322B498DB400D51447 /* RxMoya */; };
 		AACB4BD02B40712D00169C52 /* SATTOApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACB4BCF2B40712D00169C52 /* SATTOApp.swift */; };
 		AACB4BD22B40712D00169C52 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACB4BD12B40712D00169C52 /* LoginView.swift */; };
 		AACB4BD42B40712F00169C52 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AACB4BD32B40712F00169C52 /* Assets.xcassets */; };
@@ -32,6 +36,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA9E802F2B498DB400D51447 /* Moya in Frameworks */,
+				AA9E802D2B498DB400D51447 /* CombineMoya in Frameworks */,
+				AA9E80332B498DB400D51447 /* RxMoya in Frameworks */,
+				AA9E80312B498DB400D51447 /* ReactiveMoya in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,6 +116,12 @@
 			dependencies = (
 			);
 			name = SATTO;
+			packageProductDependencies = (
+				AA9E802C2B498DB400D51447 /* CombineMoya */,
+				AA9E802E2B498DB400D51447 /* Moya */,
+				AA9E80302B498DB400D51447 /* ReactiveMoya */,
+				AA9E80322B498DB400D51447 /* RxMoya */,
+			);
 			productName = SATTO;
 			productReference = AACB4BCC2B40712D00169C52 /* SATTO.app */;
 			productType = "com.apple.product-type.application";
@@ -136,6 +150,9 @@
 				Base,
 			);
 			mainGroup = AACB4BC32B40712D00169C52;
+			packageReferences = (
+				AA9E802B2B498DB300D51447 /* XCRemoteSwiftPackageReference "Moya" */,
+			);
 			productRefGroup = AACB4BCD2B40712D00169C52 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -370,6 +387,40 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		AA9E802B2B498DB300D51447 /* XCRemoteSwiftPackageReference "Moya" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Moya/Moya";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 15.0.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AA9E802C2B498DB400D51447 /* CombineMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AA9E802B2B498DB300D51447 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = CombineMoya;
+		};
+		AA9E802E2B498DB400D51447 /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AA9E802B2B498DB300D51447 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
+		};
+		AA9E80302B498DB400D51447 /* ReactiveMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AA9E802B2B498DB300D51447 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = ReactiveMoya;
+		};
+		AA9E80322B498DB400D51447 /* RxMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AA9E802B2B498DB300D51447 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = RxMoya;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = AACB4BC42B40712D00169C52 /* Project object */;
 }
