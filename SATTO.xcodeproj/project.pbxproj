@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B5E0EEB2B49911900B72DAF /* PopupView in Frameworks */ = {isa = PBXBuildFile; productRef = 3B5E0EEA2B49911900B72DAF /* PopupView */; };
 		AA9E80222B4912CB00D51447 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E80212B4912CB00D51447 /* MainView.swift */; };
 		AA9E80242B4912F600D51447 /* CreateTimeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E80232B4912F600D51447 /* CreateTimeTableView.swift */; };
 		AA9E80282B49134200D51447 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E80272B49134200D51447 /* SettingView.swift */; };
@@ -38,6 +39,7 @@
 			files = (
 				AA9E802F2B498DB400D51447 /* Moya in Frameworks */,
 				AA9E802D2B498DB400D51447 /* CombineMoya in Frameworks */,
+				3B5E0EEB2B49911900B72DAF /* PopupView in Frameworks */,
 				AA9E80332B498DB400D51447 /* RxMoya in Frameworks */,
 				AA9E80312B498DB400D51447 /* ReactiveMoya in Frameworks */,
 			);
@@ -121,6 +123,7 @@
 				AA9E802E2B498DB400D51447 /* Moya */,
 				AA9E80302B498DB400D51447 /* ReactiveMoya */,
 				AA9E80322B498DB400D51447 /* RxMoya */,
+				3B5E0EEA2B49911900B72DAF /* PopupView */,
 			);
 			productName = SATTO;
 			productReference = AACB4BCC2B40712D00169C52 /* SATTO.app */;
@@ -152,6 +155,7 @@
 			mainGroup = AACB4BC32B40712D00169C52;
 			packageReferences = (
 				AA9E802B2B498DB300D51447 /* XCRemoteSwiftPackageReference "Moya" */,
+				3B5E0EE92B49911900B72DAF /* XCRemoteSwiftPackageReference "PopupView" */,
 			);
 			productRefGroup = AACB4BCD2B40712D00169C52 /* Products */;
 			projectDirPath = "";
@@ -389,6 +393,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3B5E0EE92B49911900B72DAF /* XCRemoteSwiftPackageReference "PopupView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/exyte/PopupView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.8.3;
+			};
+		};
 		AA9E802B2B498DB300D51447 /* XCRemoteSwiftPackageReference "Moya" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Moya/Moya";
@@ -400,6 +412,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3B5E0EEA2B49911900B72DAF /* PopupView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B5E0EE92B49911900B72DAF /* XCRemoteSwiftPackageReference "PopupView" */;
+			productName = PopupView;
+		};
 		AA9E802C2B498DB400D51447 /* CombineMoya */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = AA9E802B2B498DB300D51447 /* XCRemoteSwiftPackageReference "Moya" */;
