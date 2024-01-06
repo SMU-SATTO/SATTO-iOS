@@ -7,16 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA9E80222B4912CB00D51447 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E80212B4912CB00D51447 /* MainView.swift */; };
+		AA9E80242B4912F600D51447 /* CreateTimeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E80232B4912F600D51447 /* CreateTimeTableView.swift */; };
+		AA9E80282B49134200D51447 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E80272B49134200D51447 /* SettingView.swift */; };
 		AACB4BD02B40712D00169C52 /* SATTOApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACB4BCF2B40712D00169C52 /* SATTOApp.swift */; };
-		AACB4BD22B40712D00169C52 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACB4BD12B40712D00169C52 /* ContentView.swift */; };
+		AACB4BD22B40712D00169C52 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACB4BD12B40712D00169C52 /* LoginView.swift */; };
 		AACB4BD42B40712F00169C52 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AACB4BD32B40712F00169C52 /* Assets.xcassets */; };
 		AACB4BD72B40712F00169C52 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AACB4BD62B40712F00169C52 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AA9E80212B4912CB00D51447 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		AA9E80232B4912F600D51447 /* CreateTimeTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTimeTableView.swift; sourceTree = "<group>"; };
+		AA9E80272B49134200D51447 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		AACB4BCC2B40712D00169C52 /* SATTO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SATTO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AACB4BCF2B40712D00169C52 /* SATTOApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SATTOApp.swift; sourceTree = "<group>"; };
-		AACB4BD12B40712D00169C52 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		AACB4BD12B40712D00169C52 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		AACB4BD32B40712F00169C52 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AACB4BD62B40712F00169C52 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -32,6 +38,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AA9E80252B49130600D51447 /* CreateTiemTable */ = {
+			isa = PBXGroup;
+			children = (
+				AA9E80232B4912F600D51447 /* CreateTimeTableView.swift */,
+			);
+			path = CreateTiemTable;
+			sourceTree = "<group>";
+		};
+		AA9E80262B49132000D51447 /* Friend */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Friend;
+			sourceTree = "<group>";
+		};
 		AACB4BC32B40712D00169C52 = {
 			isa = PBXGroup;
 			children = (
@@ -52,7 +73,11 @@
 			isa = PBXGroup;
 			children = (
 				AACB4BCF2B40712D00169C52 /* SATTOApp.swift */,
-				AACB4BD12B40712D00169C52 /* ContentView.swift */,
+				AACB4BD12B40712D00169C52 /* LoginView.swift */,
+				AA9E80212B4912CB00D51447 /* MainView.swift */,
+				AA9E80272B49134200D51447 /* SettingView.swift */,
+				AA9E80252B49130600D51447 /* CreateTiemTable */,
+				AA9E80262B49132000D51447 /* Friend */,
 				AACB4BD32B40712F00169C52 /* Assets.xcassets */,
 				AACB4BD52B40712F00169C52 /* Preview Content */,
 			);
@@ -137,7 +162,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AACB4BD22B40712D00169C52 /* ContentView.swift in Sources */,
+				AACB4BD22B40712D00169C52 /* LoginView.swift in Sources */,
+				AA9E80282B49134200D51447 /* SettingView.swift in Sources */,
+				AA9E80222B4912CB00D51447 /* MainView.swift in Sources */,
+				AA9E80242B4912F600D51447 /* CreateTimeTableView.swift in Sources */,
 				AACB4BD02B40712D00169C52 /* SATTOApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
