@@ -119,7 +119,7 @@ struct TimeTableMainView: View {
             }
             .disabled(isMenuOpen)
             if isMenuOpen {
-                MenuView(isMenuOpen: $isMenuOpen)
+                TimeTableMenuView(isMenuOpen: $isMenuOpen)
             }
         }
     }
