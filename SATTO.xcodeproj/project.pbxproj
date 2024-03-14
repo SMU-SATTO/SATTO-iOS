@@ -7,10 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B3AE3622BA2BC2F00CF0BA8 /* ThirdTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3AE3552BA2BC2F00CF0BA8 /* ThirdTabView.swift */; };
+		3B3AE3632BA2BC2F00CF0BA8 /* SeventhTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3AE3562BA2BC2F00CF0BA8 /* SeventhTabView.swift */; };
+		3B3AE3642BA2BC2F00CF0BA8 /* FirstTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3AE3572BA2BC2F00CF0BA8 /* FirstTabView.swift */; };
+		3B3AE3652BA2BC2F00CF0BA8 /* FifthTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3AE3582BA2BC2F00CF0BA8 /* FifthTabView.swift */; };
+		3B3AE3662BA2BC2F00CF0BA8 /* SecondTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3AE3592BA2BC2F00CF0BA8 /* SecondTabView.swift */; };
+		3B3AE3672BA2BC2F00CF0BA8 /* SixthTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3AE35A2BA2BC2F00CF0BA8 /* SixthTabView.swift */; };
+		3B3AE3682BA2BC2F00CF0BA8 /* FourthTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3AE35B2BA2BC2F00CF0BA8 /* FourthTabView.swift */; };
+		3B3AE3692BA2BC2F00CF0BA8 /* TimeTableMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3AE35C2BA2BC2F00CF0BA8 /* TimeTableMainViewModel.swift */; };
+		3B3AE36A2BA2BC2F00CF0BA8 /* TimeTableMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3AE35D2BA2BC2F00CF0BA8 /* TimeTableMenuView.swift */; };
+		3B3AE36B2BA2BC2F00CF0BA8 /* TimeTableMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3AE35E2BA2BC2F00CF0BA8 /* TimeTableMainView.swift */; };
+		3B3AE36C2BA2BC2F00CF0BA8 /* SearchSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3AE3602BA2BC2F00CF0BA8 /* SearchSheetView.swift */; };
+		3B3AE36D2BA2BC2F00CF0BA8 /* TimeTableMakeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3AE3612BA2BC2F00CF0BA8 /* TimeTableMakeView.swift */; };
+		3B3AE37C2BA2BC3900CF0BA8 /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B3AE3702BA2BC3900CF0BA8 /* Color.xcassets */; };
+		3B3AE37D2BA2BC3900CF0BA8 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3B3AE3722BA2BC3900CF0BA8 /* Pretendard-Regular.otf */; };
+		3B3AE37E2BA2BC3900CF0BA8 /* Pretendard-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3B3AE3732BA2BC3900CF0BA8 /* Pretendard-Black.otf */; };
+		3B3AE37F2BA2BC3900CF0BA8 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3B3AE3742BA2BC3900CF0BA8 /* Pretendard-Medium.otf */; };
+		3B3AE3802BA2BC3900CF0BA8 /* Pretendard-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3B3AE3752BA2BC3900CF0BA8 /* Pretendard-Light.otf */; };
+		3B3AE3812BA2BC3900CF0BA8 /* Pretendard-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3B3AE3762BA2BC3900CF0BA8 /* Pretendard-ExtraBold.otf */; };
+		3B3AE3822BA2BC3900CF0BA8 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3B3AE3772BA2BC3900CF0BA8 /* Pretendard-Bold.otf */; };
+		3B3AE3832BA2BC3900CF0BA8 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3AE3782BA2BC3900CF0BA8 /* Font.swift */; };
+		3B3AE3842BA2BC3900CF0BA8 /* Pretendard-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3B3AE3792BA2BC3900CF0BA8 /* Pretendard-Thin.otf */; };
+		3B3AE3852BA2BC3900CF0BA8 /* Pretendard-ExtraLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3B3AE37A2BA2BC3900CF0BA8 /* Pretendard-ExtraLight.otf */; };
+		3B3AE3862BA2BC3900CF0BA8 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3B3AE37B2BA2BC3900CF0BA8 /* Pretendard-SemiBold.otf */; };
 		3B5E0EEB2B49911900B72DAF /* PopupView in Frameworks */ = {isa = PBXBuildFile; productRef = 3B5E0EEA2B49911900B72DAF /* PopupView */; };
 		AA9E80222B4912CB00D51447 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E80212B4912CB00D51447 /* MainView.swift */; };
-		AA9E80242B4912F600D51447 /* CreateTimeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E80232B4912F600D51447 /* CreateTimeTableView.swift */; };
-		AA9E80282B49134200D51447 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E80272B49134200D51447 /* SettingView.swift */; };
 		AA9E802D2B498DB400D51447 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = AA9E802C2B498DB400D51447 /* CombineMoya */; };
 		AA9E802F2B498DB400D51447 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = AA9E802E2B498DB400D51447 /* Moya */; };
 		AA9E80312B498DB400D51447 /* ReactiveMoya in Frameworks */ = {isa = PBXBuildFile; productRef = AA9E80302B498DB400D51447 /* ReactiveMoya */; };
@@ -22,9 +43,30 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3B3AE3552BA2BC2F00CF0BA8 /* ThirdTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThirdTabView.swift; sourceTree = "<group>"; };
+		3B3AE3562BA2BC2F00CF0BA8 /* SeventhTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeventhTabView.swift; sourceTree = "<group>"; };
+		3B3AE3572BA2BC2F00CF0BA8 /* FirstTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstTabView.swift; sourceTree = "<group>"; };
+		3B3AE3582BA2BC2F00CF0BA8 /* FifthTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FifthTabView.swift; sourceTree = "<group>"; };
+		3B3AE3592BA2BC2F00CF0BA8 /* SecondTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondTabView.swift; sourceTree = "<group>"; };
+		3B3AE35A2BA2BC2F00CF0BA8 /* SixthTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SixthTabView.swift; sourceTree = "<group>"; };
+		3B3AE35B2BA2BC2F00CF0BA8 /* FourthTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FourthTabView.swift; sourceTree = "<group>"; };
+		3B3AE35C2BA2BC2F00CF0BA8 /* TimeTableMainViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTableMainViewModel.swift; sourceTree = "<group>"; };
+		3B3AE35D2BA2BC2F00CF0BA8 /* TimeTableMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTableMenuView.swift; sourceTree = "<group>"; };
+		3B3AE35E2BA2BC2F00CF0BA8 /* TimeTableMainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTableMainView.swift; sourceTree = "<group>"; };
+		3B3AE3602BA2BC2F00CF0BA8 /* SearchSheetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchSheetView.swift; sourceTree = "<group>"; };
+		3B3AE3612BA2BC2F00CF0BA8 /* TimeTableMakeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTableMakeView.swift; sourceTree = "<group>"; };
+		3B3AE3702BA2BC3900CF0BA8 /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
+		3B3AE3722BA2BC3900CF0BA8 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
+		3B3AE3732BA2BC3900CF0BA8 /* Pretendard-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Black.otf"; sourceTree = "<group>"; };
+		3B3AE3742BA2BC3900CF0BA8 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
+		3B3AE3752BA2BC3900CF0BA8 /* Pretendard-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Light.otf"; sourceTree = "<group>"; };
+		3B3AE3762BA2BC3900CF0BA8 /* Pretendard-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-ExtraBold.otf"; sourceTree = "<group>"; };
+		3B3AE3772BA2BC3900CF0BA8 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
+		3B3AE3782BA2BC3900CF0BA8 /* Font.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
+		3B3AE3792BA2BC3900CF0BA8 /* Pretendard-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Thin.otf"; sourceTree = "<group>"; };
+		3B3AE37A2BA2BC3900CF0BA8 /* Pretendard-ExtraLight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-ExtraLight.otf"; sourceTree = "<group>"; };
+		3B3AE37B2BA2BC3900CF0BA8 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		AA9E80212B4912CB00D51447 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
-		AA9E80232B4912F600D51447 /* CreateTimeTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTimeTableView.swift; sourceTree = "<group>"; };
-		AA9E80272B49134200D51447 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		AACB4BCC2B40712D00169C52 /* SATTO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SATTO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AACB4BCF2B40712D00169C52 /* SATTOApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SATTOApp.swift; sourceTree = "<group>"; };
 		AACB4BD12B40712D00169C52 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -48,19 +90,74 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		AA9E80252B49130600D51447 /* CreateTiemTable */ = {
+		3B3AE3532BA2BC2F00CF0BA8 /* TimeTable */ = {
 			isa = PBXGroup;
 			children = (
-				AA9E80232B4912F600D51447 /* CreateTimeTableView.swift */,
+				3B3AE3542BA2BC2F00CF0BA8 /* TimeTableTabViews */,
+				3B3AE35C2BA2BC2F00CF0BA8 /* TimeTableMainViewModel.swift */,
+				3B3AE35D2BA2BC2F00CF0BA8 /* TimeTableMenuView.swift */,
+				3B3AE35E2BA2BC2F00CF0BA8 /* TimeTableMainView.swift */,
+				3B3AE35F2BA2BC2F00CF0BA8 /* BottomSheetViews */,
+				3B3AE3612BA2BC2F00CF0BA8 /* TimeTableMakeView.swift */,
 			);
-			path = CreateTiemTable;
+			path = TimeTable;
 			sourceTree = "<group>";
 		};
-		AA9E80262B49132000D51447 /* Friend */ = {
+		3B3AE3542BA2BC2F00CF0BA8 /* TimeTableTabViews */ = {
 			isa = PBXGroup;
 			children = (
+				3B3AE3552BA2BC2F00CF0BA8 /* ThirdTabView.swift */,
+				3B3AE3562BA2BC2F00CF0BA8 /* SeventhTabView.swift */,
+				3B3AE3572BA2BC2F00CF0BA8 /* FirstTabView.swift */,
+				3B3AE3582BA2BC2F00CF0BA8 /* FifthTabView.swift */,
+				3B3AE3592BA2BC2F00CF0BA8 /* SecondTabView.swift */,
+				3B3AE35A2BA2BC2F00CF0BA8 /* SixthTabView.swift */,
+				3B3AE35B2BA2BC2F00CF0BA8 /* FourthTabView.swift */,
 			);
-			path = Friend;
+			path = TimeTableTabViews;
+			sourceTree = "<group>";
+		};
+		3B3AE35F2BA2BC2F00CF0BA8 /* BottomSheetViews */ = {
+			isa = PBXGroup;
+			children = (
+				3B3AE3602BA2BC2F00CF0BA8 /* SearchSheetView.swift */,
+			);
+			path = BottomSheetViews;
+			sourceTree = "<group>";
+		};
+		3B3AE36E2BA2BC3900CF0BA8 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				3B3AE36F2BA2BC3900CF0BA8 /* Color */,
+				3B3AE3712BA2BC3900CF0BA8 /* Font */,
+			);
+			name = Resource;
+			path = SATTO/Resource;
+			sourceTree = SOURCE_ROOT;
+		};
+		3B3AE36F2BA2BC3900CF0BA8 /* Color */ = {
+			isa = PBXGroup;
+			children = (
+				3B3AE3702BA2BC3900CF0BA8 /* Color.xcassets */,
+			);
+			path = Color;
+			sourceTree = "<group>";
+		};
+		3B3AE3712BA2BC3900CF0BA8 /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				3B3AE3722BA2BC3900CF0BA8 /* Pretendard-Regular.otf */,
+				3B3AE3732BA2BC3900CF0BA8 /* Pretendard-Black.otf */,
+				3B3AE3742BA2BC3900CF0BA8 /* Pretendard-Medium.otf */,
+				3B3AE3752BA2BC3900CF0BA8 /* Pretendard-Light.otf */,
+				3B3AE3762BA2BC3900CF0BA8 /* Pretendard-ExtraBold.otf */,
+				3B3AE3772BA2BC3900CF0BA8 /* Pretendard-Bold.otf */,
+				3B3AE3782BA2BC3900CF0BA8 /* Font.swift */,
+				3B3AE3792BA2BC3900CF0BA8 /* Pretendard-Thin.otf */,
+				3B3AE37A2BA2BC3900CF0BA8 /* Pretendard-ExtraLight.otf */,
+				3B3AE37B2BA2BC3900CF0BA8 /* Pretendard-SemiBold.otf */,
+			);
+			path = Font;
 			sourceTree = "<group>";
 		};
 		AACB4BC32B40712D00169C52 = {
@@ -85,9 +182,8 @@
 				AACB4BCF2B40712D00169C52 /* SATTOApp.swift */,
 				AACB4BD12B40712D00169C52 /* LoginView.swift */,
 				AA9E80212B4912CB00D51447 /* MainView.swift */,
-				AA9E80272B49134200D51447 /* SettingView.swift */,
-				AA9E80252B49130600D51447 /* CreateTiemTable */,
-				AA9E80262B49132000D51447 /* Friend */,
+				3B3AE36E2BA2BC3900CF0BA8 /* Resource */,
+				3B3AE3532BA2BC2F00CF0BA8 /* TimeTable */,
 				AACB4BD32B40712F00169C52 /* Assets.xcassets */,
 				AACB4BD52B40712F00169C52 /* Preview Content */,
 			);
@@ -172,7 +268,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				AACB4BD72B40712F00169C52 /* Preview Assets.xcassets in Resources */,
+				3B3AE3842BA2BC3900CF0BA8 /* Pretendard-Thin.otf in Resources */,
+				3B3AE37D2BA2BC3900CF0BA8 /* Pretendard-Regular.otf in Resources */,
+				3B3AE3862BA2BC3900CF0BA8 /* Pretendard-SemiBold.otf in Resources */,
+				3B3AE3812BA2BC3900CF0BA8 /* Pretendard-ExtraBold.otf in Resources */,
 				AACB4BD42B40712F00169C52 /* Assets.xcassets in Resources */,
+				3B3AE37C2BA2BC3900CF0BA8 /* Color.xcassets in Resources */,
+				3B3AE3802BA2BC3900CF0BA8 /* Pretendard-Light.otf in Resources */,
+				3B3AE37E2BA2BC3900CF0BA8 /* Pretendard-Black.otf in Resources */,
+				3B3AE3822BA2BC3900CF0BA8 /* Pretendard-Bold.otf in Resources */,
+				3B3AE37F2BA2BC3900CF0BA8 /* Pretendard-Medium.otf in Resources */,
+				3B3AE3852BA2BC3900CF0BA8 /* Pretendard-ExtraLight.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -184,9 +290,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				AACB4BD22B40712D00169C52 /* LoginView.swift in Sources */,
-				AA9E80282B49134200D51447 /* SettingView.swift in Sources */,
+				3B3AE3692BA2BC2F00CF0BA8 /* TimeTableMainViewModel.swift in Sources */,
+				3B3AE36D2BA2BC2F00CF0BA8 /* TimeTableMakeView.swift in Sources */,
+				3B3AE3652BA2BC2F00CF0BA8 /* FifthTabView.swift in Sources */,
+				3B3AE3642BA2BC2F00CF0BA8 /* FirstTabView.swift in Sources */,
 				AA9E80222B4912CB00D51447 /* MainView.swift in Sources */,
-				AA9E80242B4912F600D51447 /* CreateTimeTableView.swift in Sources */,
+				3B3AE36A2BA2BC2F00CF0BA8 /* TimeTableMenuView.swift in Sources */,
+				3B3AE3682BA2BC2F00CF0BA8 /* FourthTabView.swift in Sources */,
+				3B3AE3662BA2BC2F00CF0BA8 /* SecondTabView.swift in Sources */,
+				3B3AE3622BA2BC2F00CF0BA8 /* ThirdTabView.swift in Sources */,
+				3B3AE36B2BA2BC2F00CF0BA8 /* TimeTableMainView.swift in Sources */,
+				3B3AE36C2BA2BC2F00CF0BA8 /* SearchSheetView.swift in Sources */,
+				3B3AE3832BA2BC3900CF0BA8 /* Font.swift in Sources */,
+				3B3AE3632BA2BC2F00CF0BA8 /* SeventhTabView.swift in Sources */,
+				3B3AE3672BA2BC2F00CF0BA8 /* SixthTabView.swift in Sources */,
 				AACB4BD02B40712D00169C52 /* SATTOApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
