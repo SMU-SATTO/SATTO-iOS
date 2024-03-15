@@ -2,70 +2,54 @@
 //  TimeTableMenuView.swift
 //  SATTO
 //
-//  Created by 김영준 on 3/14/24.
+//  Created by 김영준 on 3/15/24.
 //
 
 import SwiftUI
 
 struct TimeTableMenuView: View {
     @Binding var isMenuOpen: Bool
-    
     var body: some View {
-        ZStack {
-            VStack {
-                HStack {
-                    Spacer()
+        VStack {
+            UnevenRoundedRectangle(cornerRadii: .init(topLeading: 20, bottomLeading: 20))
+                .fill(.white)
+                .frame(width: 220)
+                .overlay(
                     VStack {
-                        Button(action: {
-                            isMenuOpen.toggle()
-                        }) {
-                            Text("Menu Item 1")
-                                .foregroundColor(.white)
-                                .padding()
+                        HStack {
+                            Spacer()
+                            Button(action: {
+                                isMenuOpen = false
+                            }) {
+                                Image(systemName: "xmark")
+                                    .resizable()
+                                    .frame(width: 12, height: 12)
+                                    .foregroundStyle(.black)
+                            }
+                            .padding(.trailing, 20)
                         }
-                        .background(Color.blue)
-                        .cornerRadius(10)
-                        .padding(.bottom, 10)
+                        .padding(.top, 20)
                         
-                        Button(action: {
-                            // Handle button action
-                        }) {
-                            Text("Menu Item 2")
-                                .foregroundColor(.white)
-                                .padding()
+                        HStack {
+                            Circle()
+                                .foregroundStyle(.black)
+                                .frame(width: 60, height: 60)
+                            VStack {
+                                HStack {
+                                    Text("김영준")
+                                    Text("201911111")
+                                }
+                                Text("컴퓨터과학과")
+                            }
                         }
-                        .background(Color.blue)
-                        .cornerRadius(10)
+                        
+                        VStack(alignment: .leading) {
+                            Text("전체 시간표 보기")
+                        }
+                        
+                        Spacer()
                     }
-                    .padding()
-                    .background(Color.white)
-                    .cornerRadius(15)
-                    .frame(width: UIScreen.main.bounds.width / 3)
-                    .padding(.trailing, isMenuOpen ? 0 : -250) // Slide out animation
-                }
-                Spacer()
-            }
-            .offset(x: isMenuOpen ? 0 : UIScreen.main.bounds.width)
-            .animation(.easeInOut)
-            // Button to open the menu
-            VStack {
-                Spacer()
-                
-                HStack {
-                    Spacer()
-                    
-                    Button(action: {
-                        isMenuOpen.toggle()
-                    }) {
-                        Image(systemName: "line.horizontal.3")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 30, height: 30)
-                            .foregroundColor(.black)
-                            .padding()
-                    }
-                }
-            }
+                )
         }
     }
 }

@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+import PopupView
+import AnimatedTabBar
+import DGCharts
 
 struct TimeTableMainView: View {
     @State private var selectedTab = "시간표"
@@ -14,7 +17,8 @@ struct TimeTableMainView: View {
     @State var username = "민재"
     
     @State private var isMenuOpen = false
-    
+    @State var selectedIndex = 0
+   
     var body: some View {
         ZStack {
             VStack {
@@ -96,11 +100,18 @@ struct TimeTableMainView: View {
                     )
                 
                 if selectedTab == "시간표" {
-                    Text("\(username)님의 이번 학기 시간표")
-                        .padding(.top, 10)
+                    VStack {
+                        Text("\(username)님의 이번 학기 시간표")
+                            .padding(.top, 10)
+                        TestView()
+                    }
                 }
                 else if selectedTab == "이수 학점" {
-                    Text("\(username)님의 이수 학점")
+                    HStack {
+                        Text("\(username)님의 이수 학점")
+                            .padding(.leading, 30)
+                        Spacer()
+                    }
                     RoundedRectangle(cornerRadius: 30)
                         .fill(Color(red: 0.96, green: 0.96, blue: 0.98))
                         .frame(height: 50)
@@ -114,14 +125,25 @@ struct TimeTableMainView: View {
                                 .padding(.horizontal, 5)
                         )
                         .padding(.horizontal, 20)
+                    HStack {
+                        Text("졸업까지 필요한 학점")
+                            .padding(.leading, 30)
+                        Spacer()
+                    }
+                    GraduationRequirementsRadarView(entries: ChartTransaction.allTransactions.map { RadarChartDataEntry(value: $0.quantity) })
+                        .frame(width: 300, height: 300)
                 }
                 Spacer()
             }
-            .disabled(isMenuOpen)
-            if isMenuOpen {
-                TimeTableMenuView(isMenuOpen: $isMenuOpen)
-            }
         }
+        .popup(isPresented: $isMenuOpen, view: {
+            TimeTableMenuView(isMenuOpen: $isMenuOpen)
+        }, customize: {
+            $0
+                .position(.trailing)
+                .appearFrom(.right)
+                .backgroundColor(.black.opacity(0.5))
+        })
     }
 }
 

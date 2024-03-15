@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import JHTimeTable
 
 //MARK: - 필수로 들어야 할 과목 선택
 struct SecondTabView: View {
+    @State private var isShowBottomSheet = true
     var body: some View {
         VStack {
             Text("이번 학기에 필수로 들어야 할\n과목을 선택해 주세요.")
@@ -23,6 +25,47 @@ struct SecondTabView: View {
                 .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
                 .frame(width: 320, alignment: .topLeading)
                 .padding(.top, 5)
+            JHLectureTable {
+                ForEach(LectureModel.examples) { lecture in
+                    ZStack(alignment: .topLeading) {
+                        Rectangle()
+    //                        .foregroundStyle(Color(hexString: lecture.color))
+                        Text(lecture.title)
+                            .font(.caption)
+                            .fontWeight(.bold)
+                            .foregroundStyle(Color.white)
+                            .padding(EdgeInsets(top: 2, leading: 3, bottom: 0, trailing: 0))
+                    }
+                    .lectureTableTime(week: lecture.week,
+                                      startAt: lecture.startAt,
+                                      endAt: lecture.endAt)
+                }
+            } timebar: { time in
+                // Add customized timebar
+                Text("\(time.hour)")
+                    .padding(.trailing, 10)
+            } weekbar: { week in
+                // week: LectureWeeks enum
+                // You can use week.symbol, week.shortSymbol, week.veryShortSymbol
+                // Add cusomized weekbar
+                Text("\(week)")
+                    .padding(.horizontal, 0)
+            } background: {
+                // Add background
+            }
+            .lectureTableWeekdays([.sun, .mon, .tue, .wed, .thu, .fri, .sat])
+            
+            .lectureTableTimes(startAt: .init(hour: 8, minute: 0), endAt: .init(hour: 22, minute: 0)) // 시작, 끝 시간 설정
+            
+            .lectureTableBorder(width: 2, radius: 5, color: "#ff8000") // table 그리드 선 색 변경
+            .lectureTableBar(time: .init(height: 10, width: 40), week: .init(height: 20, width: 10)) //날짜, 시간 위치 변경 가능
+            .onTapGesture {
+                isShowBottomSheet.toggle()
+            }
+            .sheet(isPresented: $isShowBottomSheet, content: {
+                SearchSheetView()
+                    .presentationDetents([.medium, .large])
+            })
         }
     }
 }
