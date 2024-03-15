@@ -32,6 +32,10 @@
 		3B3AE3862BA2BC3900CF0BA8 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3B3AE37B2BA2BC3900CF0BA8 /* Pretendard-SemiBold.otf */; };
 		3B3AE3912BA2C09000CF0BA8 /* MainMyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3AE3902BA2C09000CF0BA8 /* MainMyPageView.swift */; };
 		3B3AE3942BA2C6E500CF0BA8 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3AE3932BA2C6E500CF0BA8 /* HomeView.swift */; };
+		3BBB8D092BA42ECF00AC5EF1 /* BottomTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBB8D082BA42ECF00AC5EF1 /* BottomTab.swift */; };
+		3BBB8D0B2BA4302A00AC5EF1 /* FriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBB8D0A2BA4302A00AC5EF1 /* FriendView.swift */; };
+		3BBB8D0D2BA4303100AC5EF1 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBB8D0C2BA4303100AC5EF1 /* SettingView.swift */; };
+		3BBB8D0F2BA4303E00AC5EF1 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBB8D0E2BA4303E00AC5EF1 /* EventView.swift */; };
 		AA9E80222B4912CB00D51447 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E80212B4912CB00D51447 /* MainView.swift */; };
 		AACB4BD02B40712D00169C52 /* SATTOApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACB4BCF2B40712D00169C52 /* SATTOApp.swift */; };
 		AACB4BD22B40712D00169C52 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACB4BD12B40712D00169C52 /* LoginView.swift */; };
@@ -65,6 +69,10 @@
 		3B3AE37B2BA2BC3900CF0BA8 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		3B3AE3902BA2C09000CF0BA8 /* MainMyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainMyPageView.swift; path = "../../../../../.Trash/SATTO-iOS 오후 2.00.08/SATTO/MainMyPageView.swift"; sourceTree = "<group>"; };
 		3B3AE3932BA2C6E500CF0BA8 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		3BBB8D082BA42ECF00AC5EF1 /* BottomTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomTab.swift; sourceTree = "<group>"; };
+		3BBB8D0A2BA4302A00AC5EF1 /* FriendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendView.swift; sourceTree = "<group>"; };
+		3BBB8D0C2BA4303100AC5EF1 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		3BBB8D0E2BA4303E00AC5EF1 /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		AA9E80212B4912CB00D51447 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		AACB4BCC2B40712D00169C52 /* SATTO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SATTO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AACB4BCF2B40712D00169C52 /* SATTOApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SATTOApp.swift; sourceTree = "<group>"; };
@@ -166,6 +174,7 @@
 			isa = PBXGroup;
 			children = (
 				3B3AE3932BA2C6E500CF0BA8 /* HomeView.swift */,
+				3BBB8D082BA42ECF00AC5EF1 /* BottomTab.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -192,6 +201,9 @@
 				AACB4BCF2B40712D00169C52 /* SATTOApp.swift */,
 				AACB4BD12B40712D00169C52 /* LoginView.swift */,
 				AA9E80212B4912CB00D51447 /* MainView.swift */,
+				3BBB8D0A2BA4302A00AC5EF1 /* FriendView.swift */,
+				3BBB8D0C2BA4303100AC5EF1 /* SettingView.swift */,
+				3BBB8D0E2BA4303E00AC5EF1 /* EventView.swift */,
 				3B3AE3922BA2C6DA00CF0BA8 /* Home */,
 				3B3AE38F2BA2C05C00CF0BA8 /* MyPage */,
 				3B3AE36E2BA2BC3900CF0BA8 /* Resource */,
@@ -299,6 +311,7 @@
 				AACB4BD22B40712D00169C52 /* LoginView.swift in Sources */,
 				3B3AE3692BA2BC2F00CF0BA8 /* TimeTableMainViewModel.swift in Sources */,
 				3B3AE36D2BA2BC2F00CF0BA8 /* TimeTableMakeView.swift in Sources */,
+				3BBB8D0D2BA4303100AC5EF1 /* SettingView.swift in Sources */,
 				3B3AE3652BA2BC2F00CF0BA8 /* FifthTabView.swift in Sources */,
 				3B3AE3642BA2BC2F00CF0BA8 /* FirstTabView.swift in Sources */,
 				AA9E80222B4912CB00D51447 /* MainView.swift in Sources */,
@@ -308,11 +321,14 @@
 				3B3AE3942BA2C6E500CF0BA8 /* HomeView.swift in Sources */,
 				3B3AE3622BA2BC2F00CF0BA8 /* ThirdTabView.swift in Sources */,
 				3B3AE36B2BA2BC2F00CF0BA8 /* TimeTableMainView.swift in Sources */,
+				3BBB8D0F2BA4303E00AC5EF1 /* EventView.swift in Sources */,
+				3BBB8D092BA42ECF00AC5EF1 /* BottomTab.swift in Sources */,
 				3B3AE36C2BA2BC2F00CF0BA8 /* SearchSheetView.swift in Sources */,
 				3B3AE3832BA2BC3900CF0BA8 /* Font.swift in Sources */,
 				3B3AE3632BA2BC2F00CF0BA8 /* SeventhTabView.swift in Sources */,
 				3B3AE3672BA2BC2F00CF0BA8 /* SixthTabView.swift in Sources */,
 				AACB4BD02B40712D00169C52 /* SATTOApp.swift in Sources */,
+				3BBB8D0B2BA4302A00AC5EF1 /* FriendView.swift in Sources */,
 				3B3AE3912BA2C09000CF0BA8 /* MainMyPageView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
