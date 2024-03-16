@@ -8,12 +8,40 @@
 
 /* Begin PBXBuildFile section */
 		AA9E80222B4912CB00D51447 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E80212B4912CB00D51447 /* MainView.swift */; };
-		AA9E80242B4912F600D51447 /* CreateTimeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E80232B4912F600D51447 /* CreateTimeTableView.swift */; };
-		AA9E80282B49134200D51447 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E80272B49134200D51447 /* SettingView.swift */; };
 		AA9E802D2B498DB400D51447 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = AA9E802C2B498DB400D51447 /* CombineMoya */; };
 		AA9E802F2B498DB400D51447 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = AA9E802E2B498DB400D51447 /* Moya */; };
 		AA9E80312B498DB400D51447 /* ReactiveMoya in Frameworks */ = {isa = PBXBuildFile; productRef = AA9E80302B498DB400D51447 /* ReactiveMoya */; };
 		AA9E80332B498DB400D51447 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = AA9E80322B498DB400D51447 /* RxMoya */; };
+		AAA9503B2BA5C380004E16C8 /* ChartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950372BA5C380004E16C8 /* ChartModel.swift */; };
+		AAA9503C2BA5C380004E16C8 /* GraduationRequirementsRadarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950382BA5C380004E16C8 /* GraduationRequirementsRadarView.swift */; };
+		AAA9503D2BA5C380004E16C8 /* TotalCreditsPieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950392BA5C380004E16C8 /* TotalCreditsPieChartView.swift */; };
+		AAA9504C2BA5C396004E16C8 /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAA9503E2BA5C396004E16C8 /* Color.xcassets */; };
+		AAA9504D2BA5C396004E16C8 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950402BA5C396004E16C8 /* Font.swift */; };
+		AAA9504E2BA5C396004E16C8 /* Pretendard-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = AAA950412BA5C396004E16C8 /* Pretendard-Black.otf */; };
+		AAA9504F2BA5C396004E16C8 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = AAA950422BA5C396004E16C8 /* Pretendard-Bold.otf */; };
+		AAA950502BA5C396004E16C8 /* Pretendard-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = AAA950432BA5C396004E16C8 /* Pretendard-ExtraBold.otf */; };
+		AAA950512BA5C396004E16C8 /* Pretendard-ExtraLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = AAA950442BA5C396004E16C8 /* Pretendard-ExtraLight.otf */; };
+		AAA950522BA5C396004E16C8 /* Pretendard-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = AAA950452BA5C396004E16C8 /* Pretendard-Light.otf */; };
+		AAA950532BA5C396004E16C8 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = AAA950462BA5C396004E16C8 /* Pretendard-Medium.otf */; };
+		AAA950542BA5C396004E16C8 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = AAA950472BA5C396004E16C8 /* Pretendard-Regular.otf */; };
+		AAA950552BA5C396004E16C8 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = AAA950482BA5C396004E16C8 /* Pretendard-SemiBold.otf */; };
+		AAA950562BA5C396004E16C8 /* Pretendard-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = AAA950492BA5C396004E16C8 /* Pretendard-Thin.otf */; };
+		AAA950662BA5C39B004E16C8 /* SearchSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950572BA5C39B004E16C8 /* SearchSheetView.swift */; };
+		AAA950672BA5C39B004E16C8 /* FifthTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950592BA5C39B004E16C8 /* FifthTabView.swift */; };
+		AAA950682BA5C39B004E16C8 /* FirstTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9505A2BA5C39B004E16C8 /* FirstTabView.swift */; };
+		AAA950692BA5C39B004E16C8 /* FourthTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9505B2BA5C39B004E16C8 /* FourthTabView.swift */; };
+		AAA9506A2BA5C39B004E16C8 /* SecondTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9505C2BA5C39B004E16C8 /* SecondTabView.swift */; };
+		AAA9506B2BA5C39B004E16C8 /* SeventhTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9505D2BA5C39B004E16C8 /* SeventhTabView.swift */; };
+		AAA9506C2BA5C39B004E16C8 /* SixthTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9505E2BA5C39B004E16C8 /* SixthTabView.swift */; };
+		AAA9506D2BA5C39B004E16C8 /* ThirdTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9505F2BA5C39B004E16C8 /* ThirdTabView.swift */; };
+		AAA9506E2BA5C39B004E16C8 /* TimeTableMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950612BA5C39B004E16C8 /* TimeTableMainView.swift */; };
+		AAA9506F2BA5C39B004E16C8 /* TimeTableMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950622BA5C39B004E16C8 /* TimeTableMainViewModel.swift */; };
+		AAA950702BA5C39B004E16C8 /* TimeTableMakeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950632BA5C39B004E16C8 /* TimeTableMakeView.swift */; };
+		AAA950712BA5C39B004E16C8 /* TimeTableMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950642BA5C39B004E16C8 /* TimeTableMenuView.swift */; };
+		AAA950742BA5C484004E16C8 /* JHTimeTable in Frameworks */ = {isa = PBXBuildFile; productRef = AAA950732BA5C484004E16C8 /* JHTimeTable */; };
+		AAA950772BA5C48B004E16C8 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = AAA950762BA5C48B004E16C8 /* DGCharts */; };
+		AAA950792BA5C48B004E16C8 /* DGChartsDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = AAA950782BA5C48B004E16C8 /* DGChartsDynamic */; };
+		AAA9507C2BA5C498004E16C8 /* PopupView in Frameworks */ = {isa = PBXBuildFile; productRef = AAA9507B2BA5C498004E16C8 /* PopupView */; };
 		AACB4BD02B40712D00169C52 /* SATTOApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACB4BCF2B40712D00169C52 /* SATTOApp.swift */; };
 		AACB4BD22B40712D00169C52 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACB4BD12B40712D00169C52 /* LoginView.swift */; };
 		AACB4BD42B40712F00169C52 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AACB4BD32B40712F00169C52 /* Assets.xcassets */; };
@@ -22,8 +50,32 @@
 
 /* Begin PBXFileReference section */
 		AA9E80212B4912CB00D51447 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
-		AA9E80232B4912F600D51447 /* CreateTimeTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTimeTableView.swift; sourceTree = "<group>"; };
-		AA9E80272B49134200D51447 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		AAA950372BA5C380004E16C8 /* ChartModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartModel.swift; sourceTree = "<group>"; };
+		AAA950382BA5C380004E16C8 /* GraduationRequirementsRadarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraduationRequirementsRadarView.swift; sourceTree = "<group>"; };
+		AAA950392BA5C380004E16C8 /* TotalCreditsPieChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TotalCreditsPieChartView.swift; sourceTree = "<group>"; };
+		AAA9503E2BA5C396004E16C8 /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
+		AAA950402BA5C396004E16C8 /* Font.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
+		AAA950412BA5C396004E16C8 /* Pretendard-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Black.otf"; sourceTree = "<group>"; };
+		AAA950422BA5C396004E16C8 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
+		AAA950432BA5C396004E16C8 /* Pretendard-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-ExtraBold.otf"; sourceTree = "<group>"; };
+		AAA950442BA5C396004E16C8 /* Pretendard-ExtraLight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-ExtraLight.otf"; sourceTree = "<group>"; };
+		AAA950452BA5C396004E16C8 /* Pretendard-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Light.otf"; sourceTree = "<group>"; };
+		AAA950462BA5C396004E16C8 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
+		AAA950472BA5C396004E16C8 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
+		AAA950482BA5C396004E16C8 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
+		AAA950492BA5C396004E16C8 /* Pretendard-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Thin.otf"; sourceTree = "<group>"; };
+		AAA950572BA5C39B004E16C8 /* SearchSheetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchSheetView.swift; sourceTree = "<group>"; };
+		AAA950592BA5C39B004E16C8 /* FifthTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FifthTabView.swift; sourceTree = "<group>"; };
+		AAA9505A2BA5C39B004E16C8 /* FirstTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstTabView.swift; sourceTree = "<group>"; };
+		AAA9505B2BA5C39B004E16C8 /* FourthTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FourthTabView.swift; sourceTree = "<group>"; };
+		AAA9505C2BA5C39B004E16C8 /* SecondTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondTabView.swift; sourceTree = "<group>"; };
+		AAA9505D2BA5C39B004E16C8 /* SeventhTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeventhTabView.swift; sourceTree = "<group>"; };
+		AAA9505E2BA5C39B004E16C8 /* SixthTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SixthTabView.swift; sourceTree = "<group>"; };
+		AAA9505F2BA5C39B004E16C8 /* ThirdTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThirdTabView.swift; sourceTree = "<group>"; };
+		AAA950612BA5C39B004E16C8 /* TimeTableMainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTableMainView.swift; sourceTree = "<group>"; };
+		AAA950622BA5C39B004E16C8 /* TimeTableMainViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTableMainViewModel.swift; sourceTree = "<group>"; };
+		AAA950632BA5C39B004E16C8 /* TimeTableMakeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTableMakeView.swift; sourceTree = "<group>"; };
+		AAA950642BA5C39B004E16C8 /* TimeTableMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTableMenuView.swift; sourceTree = "<group>"; };
 		AACB4BCC2B40712D00169C52 /* SATTO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SATTO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AACB4BCF2B40712D00169C52 /* SATTOApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SATTOApp.swift; sourceTree = "<group>"; };
 		AACB4BD12B40712D00169C52 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -36,9 +88,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAA9507C2BA5C498004E16C8 /* PopupView in Frameworks */,
 				AA9E802F2B498DB400D51447 /* Moya in Frameworks */,
+				AAA950742BA5C484004E16C8 /* JHTimeTable in Frameworks */,
 				AA9E802D2B498DB400D51447 /* CombineMoya in Frameworks */,
 				AA9E80332B498DB400D51447 /* RxMoya in Frameworks */,
+				AAA950772BA5C48B004E16C8 /* DGCharts in Frameworks */,
+				AAA950792BA5C48B004E16C8 /* DGChartsDynamic in Frameworks */,
 				AA9E80312B498DB400D51447 /* ReactiveMoya in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -46,19 +102,84 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		AA9E80252B49130600D51447 /* CreateTiemTable */ = {
+		AAA9503A2BA5C380004E16C8 /* Charts */ = {
 			isa = PBXGroup;
 			children = (
-				AA9E80232B4912F600D51447 /* CreateTimeTableView.swift */,
+				AAA950372BA5C380004E16C8 /* ChartModel.swift */,
+				AAA950382BA5C380004E16C8 /* GraduationRequirementsRadarView.swift */,
+				AAA950392BA5C380004E16C8 /* TotalCreditsPieChartView.swift */,
 			);
-			path = CreateTiemTable;
+			name = Charts;
+			path = SATTO/Charts;
+			sourceTree = SOURCE_ROOT;
+		};
+		AAA9503F2BA5C396004E16C8 /* Color */ = {
+			isa = PBXGroup;
+			children = (
+				AAA9503E2BA5C396004E16C8 /* Color.xcassets */,
+			);
+			path = Color;
 			sourceTree = "<group>";
 		};
-		AA9E80262B49132000D51447 /* Friend */ = {
+		AAA9504A2BA5C396004E16C8 /* Font */ = {
 			isa = PBXGroup;
 			children = (
+				AAA950402BA5C396004E16C8 /* Font.swift */,
+				AAA950412BA5C396004E16C8 /* Pretendard-Black.otf */,
+				AAA950422BA5C396004E16C8 /* Pretendard-Bold.otf */,
+				AAA950432BA5C396004E16C8 /* Pretendard-ExtraBold.otf */,
+				AAA950442BA5C396004E16C8 /* Pretendard-ExtraLight.otf */,
+				AAA950452BA5C396004E16C8 /* Pretendard-Light.otf */,
+				AAA950462BA5C396004E16C8 /* Pretendard-Medium.otf */,
+				AAA950472BA5C396004E16C8 /* Pretendard-Regular.otf */,
+				AAA950482BA5C396004E16C8 /* Pretendard-SemiBold.otf */,
+				AAA950492BA5C396004E16C8 /* Pretendard-Thin.otf */,
 			);
-			path = Friend;
+			path = Font;
+			sourceTree = "<group>";
+		};
+		AAA9504B2BA5C396004E16C8 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				AAA9503F2BA5C396004E16C8 /* Color */,
+				AAA9504A2BA5C396004E16C8 /* Font */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		AAA950582BA5C39B004E16C8 /* BottomSheetViews */ = {
+			isa = PBXGroup;
+			children = (
+				AAA950572BA5C39B004E16C8 /* SearchSheetView.swift */,
+			);
+			path = BottomSheetViews;
+			sourceTree = "<group>";
+		};
+		AAA950602BA5C39B004E16C8 /* TimeTableTabViews */ = {
+			isa = PBXGroup;
+			children = (
+				AAA950592BA5C39B004E16C8 /* FifthTabView.swift */,
+				AAA9505A2BA5C39B004E16C8 /* FirstTabView.swift */,
+				AAA9505B2BA5C39B004E16C8 /* FourthTabView.swift */,
+				AAA9505C2BA5C39B004E16C8 /* SecondTabView.swift */,
+				AAA9505D2BA5C39B004E16C8 /* SeventhTabView.swift */,
+				AAA9505E2BA5C39B004E16C8 /* SixthTabView.swift */,
+				AAA9505F2BA5C39B004E16C8 /* ThirdTabView.swift */,
+			);
+			path = TimeTableTabViews;
+			sourceTree = "<group>";
+		};
+		AAA950652BA5C39B004E16C8 /* TimeTable */ = {
+			isa = PBXGroup;
+			children = (
+				AAA950582BA5C39B004E16C8 /* BottomSheetViews */,
+				AAA950602BA5C39B004E16C8 /* TimeTableTabViews */,
+				AAA950612BA5C39B004E16C8 /* TimeTableMainView.swift */,
+				AAA950622BA5C39B004E16C8 /* TimeTableMainViewModel.swift */,
+				AAA950632BA5C39B004E16C8 /* TimeTableMakeView.swift */,
+				AAA950642BA5C39B004E16C8 /* TimeTableMenuView.swift */,
+			);
+			path = TimeTable;
 			sourceTree = "<group>";
 		};
 		AACB4BC32B40712D00169C52 = {
@@ -83,9 +204,9 @@
 				AACB4BCF2B40712D00169C52 /* SATTOApp.swift */,
 				AACB4BD12B40712D00169C52 /* LoginView.swift */,
 				AA9E80212B4912CB00D51447 /* MainView.swift */,
-				AA9E80272B49134200D51447 /* SettingView.swift */,
-				AA9E80252B49130600D51447 /* CreateTiemTable */,
-				AA9E80262B49132000D51447 /* Friend */,
+				AAA950652BA5C39B004E16C8 /* TimeTable */,
+				AAA9504B2BA5C396004E16C8 /* Resource */,
+				AAA9503A2BA5C380004E16C8 /* Charts */,
 				AACB4BD32B40712F00169C52 /* Assets.xcassets */,
 				AACB4BD52B40712F00169C52 /* Preview Content */,
 			);
@@ -121,6 +242,10 @@
 				AA9E802E2B498DB400D51447 /* Moya */,
 				AA9E80302B498DB400D51447 /* ReactiveMoya */,
 				AA9E80322B498DB400D51447 /* RxMoya */,
+				AAA950732BA5C484004E16C8 /* JHTimeTable */,
+				AAA950762BA5C48B004E16C8 /* DGCharts */,
+				AAA950782BA5C48B004E16C8 /* DGChartsDynamic */,
+				AAA9507B2BA5C498004E16C8 /* PopupView */,
 			);
 			productName = SATTO;
 			productReference = AACB4BCC2B40712D00169C52 /* SATTO.app */;
@@ -152,6 +277,9 @@
 			mainGroup = AACB4BC32B40712D00169C52;
 			packageReferences = (
 				AA9E802B2B498DB300D51447 /* XCRemoteSwiftPackageReference "Moya" */,
+				AAA950722BA5C484004E16C8 /* XCRemoteSwiftPackageReference "JHTimeTable" */,
+				AAA950752BA5C48B004E16C8 /* XCRemoteSwiftPackageReference "Charts" */,
+				AAA9507A2BA5C498004E16C8 /* XCRemoteSwiftPackageReference "PopupView" */,
 			);
 			productRefGroup = AACB4BCD2B40712D00169C52 /* Products */;
 			projectDirPath = "";
@@ -168,7 +296,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				AACB4BD72B40712F00169C52 /* Preview Assets.xcassets in Resources */,
+				AAA950502BA5C396004E16C8 /* Pretendard-ExtraBold.otf in Resources */,
+				AAA950562BA5C396004E16C8 /* Pretendard-Thin.otf in Resources */,
+				AAA9504C2BA5C396004E16C8 /* Color.xcassets in Resources */,
+				AAA950512BA5C396004E16C8 /* Pretendard-ExtraLight.otf in Resources */,
+				AAA950552BA5C396004E16C8 /* Pretendard-SemiBold.otf in Resources */,
+				AAA9504F2BA5C396004E16C8 /* Pretendard-Bold.otf in Resources */,
+				AAA950522BA5C396004E16C8 /* Pretendard-Light.otf in Resources */,
+				AAA950532BA5C396004E16C8 /* Pretendard-Medium.otf in Resources */,
 				AACB4BD42B40712F00169C52 /* Assets.xcassets in Resources */,
+				AAA950542BA5C396004E16C8 /* Pretendard-Regular.otf in Resources */,
+				AAA9504E2BA5C396004E16C8 /* Pretendard-Black.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,10 +318,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				AACB4BD22B40712D00169C52 /* LoginView.swift in Sources */,
-				AA9E80282B49134200D51447 /* SettingView.swift in Sources */,
+				AAA9506A2BA5C39B004E16C8 /* SecondTabView.swift in Sources */,
+				AAA9506F2BA5C39B004E16C8 /* TimeTableMainViewModel.swift in Sources */,
 				AA9E80222B4912CB00D51447 /* MainView.swift in Sources */,
-				AA9E80242B4912F600D51447 /* CreateTimeTableView.swift in Sources */,
+				AAA950692BA5C39B004E16C8 /* FourthTabView.swift in Sources */,
+				AAA9506E2BA5C39B004E16C8 /* TimeTableMainView.swift in Sources */,
+				AAA950662BA5C39B004E16C8 /* SearchSheetView.swift in Sources */,
+				AAA9503B2BA5C380004E16C8 /* ChartModel.swift in Sources */,
+				AAA950672BA5C39B004E16C8 /* FifthTabView.swift in Sources */,
+				AAA950682BA5C39B004E16C8 /* FirstTabView.swift in Sources */,
+				AAA9506C2BA5C39B004E16C8 /* SixthTabView.swift in Sources */,
+				AAA9503D2BA5C380004E16C8 /* TotalCreditsPieChartView.swift in Sources */,
+				AAA9503C2BA5C380004E16C8 /* GraduationRequirementsRadarView.swift in Sources */,
+				AAA950712BA5C39B004E16C8 /* TimeTableMenuView.swift in Sources */,
+				AAA9506D2BA5C39B004E16C8 /* ThirdTabView.swift in Sources */,
+				AAA950702BA5C39B004E16C8 /* TimeTableMakeView.swift in Sources */,
+				AAA9504D2BA5C396004E16C8 /* Font.swift in Sources */,
 				AACB4BD02B40712D00169C52 /* SATTOApp.swift in Sources */,
+				AAA9506B2BA5C39B004E16C8 /* SeventhTabView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -397,6 +549,30 @@
 				minimumVersion = 15.0.3;
 			};
 		};
+		AAA950722BA5C484004E16C8 /* XCRemoteSwiftPackageReference "JHTimeTable" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jaeho0718/JHTimeTable";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+		AAA950752BA5C48B004E16C8 /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielgindi/Charts.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.0;
+			};
+		};
+		AAA9507A2BA5C498004E16C8 /* XCRemoteSwiftPackageReference "PopupView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/exyte/PopupView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.9.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -419,6 +595,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = AA9E802B2B498DB300D51447 /* XCRemoteSwiftPackageReference "Moya" */;
 			productName = RxMoya;
+		};
+		AAA950732BA5C484004E16C8 /* JHTimeTable */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AAA950722BA5C484004E16C8 /* XCRemoteSwiftPackageReference "JHTimeTable" */;
+			productName = JHTimeTable;
+		};
+		AAA950762BA5C48B004E16C8 /* DGCharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AAA950752BA5C48B004E16C8 /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGCharts;
+		};
+		AAA950782BA5C48B004E16C8 /* DGChartsDynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AAA950752BA5C48B004E16C8 /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGChartsDynamic;
+		};
+		AAA9507B2BA5C498004E16C8 /* PopupView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AAA9507A2BA5C498004E16C8 /* XCRemoteSwiftPackageReference "PopupView" */;
+			productName = PopupView;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

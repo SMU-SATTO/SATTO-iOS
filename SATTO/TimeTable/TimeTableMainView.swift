@@ -7,7 +7,6 @@
 
 import SwiftUI
 import PopupView
-import AnimatedTabBar
 import DGCharts
 
 struct TimeTableMainView: View {
@@ -103,7 +102,6 @@ struct TimeTableMainView: View {
                     VStack {
                         Text("\(username)님의 이번 학기 시간표")
                             .padding(.top, 10)
-                        TestView()
                     }
                 }
                 else if selectedTab == "이수 학점" {

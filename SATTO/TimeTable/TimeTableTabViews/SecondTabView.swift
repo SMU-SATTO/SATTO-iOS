@@ -8,6 +8,37 @@
 import SwiftUI
 import JHTimeTable
 
+#if DEBUG
+import Foundation
+
+struct LectureModel: Identifiable {
+    var id: String { title }
+    var title: String
+    var color: String
+    var week: LectureWeeks
+    var startAt: LectureTableTime
+    var endAt: LectureTableTime
+}
+
+extension LectureModel {
+    static let examples: [LectureModel] = [
+        LectureModel(title: "Lecture1", color: "FF204E",
+                     week: .mon,
+                     startAt: .init(hour: 9, minute: 0),
+                     endAt: .init(hour: 11, minute: 0)),
+        LectureModel(title: "Lecture2", color: "007F73",
+                     week: .tue,
+                     startAt: .init(hour: 15, minute: 0),
+                     endAt: .init(hour: 17, minute: 0)),
+        LectureModel(title: "Lecture3", color: "E8751A",
+                     week: .thu,
+                     startAt: .init(hour: 11, minute: 0),
+                     endAt: .init(hour: 13, minute: 0))
+    ]
+}
+#endif
+
+
 //MARK: - 필수로 들어야 할 과목 선택
 struct SecondTabView: View {
     @State private var isShowBottomSheet = true
