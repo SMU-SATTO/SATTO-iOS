@@ -1,5 +1,5 @@
 //
-//  ThirdTabView.swift
+//  MajorCountSelectorView.swift
 //  SATTO
 //
 //  Created by 김영준 on 3/5/24.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 //MARK: - 전공 개수 선택
-struct ThirdTabView: View {
+struct MajorCountSelectorView: View {
     @ObservedObject var timeTableMainViewModel: TimeTableMainViewModel
     var body: some View {
         VStack {
@@ -60,5 +60,5 @@ struct ThirdTabView: View {
 }
 
 #Preview {
-    ThirdTabView(timeTableMainViewModel: TimeTableMainViewModel())
+    MajorCountSelectorView(timeTableMainViewModel: TimeTableMainViewModel())
 }

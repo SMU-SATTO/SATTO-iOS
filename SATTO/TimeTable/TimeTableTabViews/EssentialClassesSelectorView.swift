@@ -1,5 +1,5 @@
 //
-//  SecondTabView.swift
+//  EssentialClassesSelectorView.swift
 //  SATTO
 //
 //  Created by 김영준 on 3/5/24.
@@ -40,7 +40,7 @@ extension LectureModel {
 
 
 //MARK: - 필수로 들어야 할 과목 선택
-struct SecondTabView: View {
+struct EssentialClassesSelectorView: View {
     @State private var isShowBottomSheet = true
     var body: some View {
         VStack {
@@ -102,5 +102,5 @@ struct SecondTabView: View {
 }
 
 #Preview {
-    SecondTabView()
+    EssentialClassesSelectorView()
 }

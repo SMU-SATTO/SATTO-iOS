@@ -13,13 +13,12 @@ struct TimeTableMakeView: View {
     
     var tabs: [AnyView] {
         [
-            AnyView(FirstTabView()),
-            AnyView(SecondTabView()),
-            AnyView(ThirdTabView(timeTableMainViewModel: timeTableMainViewModel)),
-            AnyView(FourthTabView()),
-            AnyView(FifthTabView()),
-            AnyView(SixthTabView()),
-            AnyView(SeventhTabView())
+            AnyView(CreditRangePickerView()),
+            AnyView(EssentialClassesSelectorView()),
+            AnyView(MajorCountSelectorView(timeTableMainViewModel: timeTableMainViewModel)),
+            AnyView(InvalidTimeSelectorView()),
+            AnyView(MajorCombinationSelectorView()),
+            AnyView(FinalTimetableSelectorView())
         ]
     }
     

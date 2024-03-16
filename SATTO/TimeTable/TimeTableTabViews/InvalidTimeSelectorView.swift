@@ -1,5 +1,5 @@
 //
-//  FourthTabView.swift
+//  InvalidTimeSelectorView.swift
 //  SATTO
 //
 //  Created by 김영준 on 3/5/24.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 //MARK: - 불가능한 시간대 선택
-struct FourthTabView: View {
+struct InvalidTimeSelectorView: View {
     var cellWidth: CGFloat = 40
     var cellHeight: CGFloat = 25
     var cellWidthSpacing: CGFloat = 0.5
@@ -174,5 +174,5 @@ class Rectangles {
 }
 
 #Preview {
-    FourthTabView()
+    InvalidTimeSelectorView()
 }

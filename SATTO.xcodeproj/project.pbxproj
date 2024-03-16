@@ -27,13 +27,12 @@
 		AAA950552BA5C396004E16C8 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = AAA950482BA5C396004E16C8 /* Pretendard-SemiBold.otf */; };
 		AAA950562BA5C396004E16C8 /* Pretendard-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = AAA950492BA5C396004E16C8 /* Pretendard-Thin.otf */; };
 		AAA950662BA5C39B004E16C8 /* SearchSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950572BA5C39B004E16C8 /* SearchSheetView.swift */; };
-		AAA950672BA5C39B004E16C8 /* FifthTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950592BA5C39B004E16C8 /* FifthTabView.swift */; };
-		AAA950682BA5C39B004E16C8 /* FirstTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9505A2BA5C39B004E16C8 /* FirstTabView.swift */; };
-		AAA950692BA5C39B004E16C8 /* FourthTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9505B2BA5C39B004E16C8 /* FourthTabView.swift */; };
-		AAA9506A2BA5C39B004E16C8 /* SecondTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9505C2BA5C39B004E16C8 /* SecondTabView.swift */; };
-		AAA9506B2BA5C39B004E16C8 /* SeventhTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9505D2BA5C39B004E16C8 /* SeventhTabView.swift */; };
-		AAA9506C2BA5C39B004E16C8 /* SixthTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9505E2BA5C39B004E16C8 /* SixthTabView.swift */; };
-		AAA9506D2BA5C39B004E16C8 /* ThirdTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9505F2BA5C39B004E16C8 /* ThirdTabView.swift */; };
+		AAA950672BA5C39B004E16C8 /* MajorCombinationSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950592BA5C39B004E16C8 /* MajorCombinationSelectorView.swift */; };
+		AAA950682BA5C39B004E16C8 /* CreditRangePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9505A2BA5C39B004E16C8 /* CreditRangePickerView.swift */; };
+		AAA950692BA5C39B004E16C8 /* InvalidTimeSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9505B2BA5C39B004E16C8 /* InvalidTimeSelectorView.swift */; };
+		AAA9506A2BA5C39B004E16C8 /* EssentialClassesSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9505C2BA5C39B004E16C8 /* EssentialClassesSelectorView.swift */; };
+		AAA9506B2BA5C39B004E16C8 /* FinalTimetableSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9505D2BA5C39B004E16C8 /* FinalTimetableSelectorView.swift */; };
+		AAA9506D2BA5C39B004E16C8 /* MajorCountSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9505F2BA5C39B004E16C8 /* MajorCountSelectorView.swift */; };
 		AAA9506E2BA5C39B004E16C8 /* TimeTableMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950612BA5C39B004E16C8 /* TimeTableMainView.swift */; };
 		AAA9506F2BA5C39B004E16C8 /* TimeTableMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950622BA5C39B004E16C8 /* TimeTableMainViewModel.swift */; };
 		AAA950702BA5C39B004E16C8 /* TimeTableMakeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950632BA5C39B004E16C8 /* TimeTableMakeView.swift */; };
@@ -42,9 +41,10 @@
 		AAA950772BA5C48B004E16C8 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = AAA950762BA5C48B004E16C8 /* DGCharts */; };
 		AAA950792BA5C48B004E16C8 /* DGChartsDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = AAA950782BA5C48B004E16C8 /* DGChartsDynamic */; };
 		AAA9507C2BA5C498004E16C8 /* PopupView in Frameworks */ = {isa = PBXBuildFile; productRef = AAA9507B2BA5C498004E16C8 /* PopupView */; };
+		AAA9507F2BA5C8F1004E16C8 /* Image.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAA9507E2BA5C8F1004E16C8 /* Image.xcassets */; };
+		AAA950812BA5E7A5004E16C8 /* TimeTableOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950802BA5E7A5004E16C8 /* TimeTableOptionView.swift */; };
 		AACB4BD02B40712D00169C52 /* SATTOApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACB4BCF2B40712D00169C52 /* SATTOApp.swift */; };
 		AACB4BD22B40712D00169C52 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACB4BD12B40712D00169C52 /* LoginView.swift */; };
-		AACB4BD42B40712F00169C52 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AACB4BD32B40712F00169C52 /* Assets.xcassets */; };
 		AACB4BD72B40712F00169C52 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AACB4BD62B40712F00169C52 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -65,21 +65,21 @@
 		AAA950482BA5C396004E16C8 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		AAA950492BA5C396004E16C8 /* Pretendard-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Thin.otf"; sourceTree = "<group>"; };
 		AAA950572BA5C39B004E16C8 /* SearchSheetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchSheetView.swift; sourceTree = "<group>"; };
-		AAA950592BA5C39B004E16C8 /* FifthTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FifthTabView.swift; sourceTree = "<group>"; };
-		AAA9505A2BA5C39B004E16C8 /* FirstTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstTabView.swift; sourceTree = "<group>"; };
-		AAA9505B2BA5C39B004E16C8 /* FourthTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FourthTabView.swift; sourceTree = "<group>"; };
-		AAA9505C2BA5C39B004E16C8 /* SecondTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondTabView.swift; sourceTree = "<group>"; };
-		AAA9505D2BA5C39B004E16C8 /* SeventhTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeventhTabView.swift; sourceTree = "<group>"; };
-		AAA9505E2BA5C39B004E16C8 /* SixthTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SixthTabView.swift; sourceTree = "<group>"; };
-		AAA9505F2BA5C39B004E16C8 /* ThirdTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThirdTabView.swift; sourceTree = "<group>"; };
+		AAA950592BA5C39B004E16C8 /* MajorCombinationSelectorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MajorCombinationSelectorView.swift; sourceTree = "<group>"; };
+		AAA9505A2BA5C39B004E16C8 /* CreditRangePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreditRangePickerView.swift; sourceTree = "<group>"; };
+		AAA9505B2BA5C39B004E16C8 /* InvalidTimeSelectorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvalidTimeSelectorView.swift; sourceTree = "<group>"; };
+		AAA9505C2BA5C39B004E16C8 /* EssentialClassesSelectorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EssentialClassesSelectorView.swift; sourceTree = "<group>"; };
+		AAA9505D2BA5C39B004E16C8 /* FinalTimetableSelectorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FinalTimetableSelectorView.swift; sourceTree = "<group>"; };
+		AAA9505F2BA5C39B004E16C8 /* MajorCountSelectorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MajorCountSelectorView.swift; sourceTree = "<group>"; };
 		AAA950612BA5C39B004E16C8 /* TimeTableMainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTableMainView.swift; sourceTree = "<group>"; };
 		AAA950622BA5C39B004E16C8 /* TimeTableMainViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTableMainViewModel.swift; sourceTree = "<group>"; };
 		AAA950632BA5C39B004E16C8 /* TimeTableMakeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTableMakeView.swift; sourceTree = "<group>"; };
 		AAA950642BA5C39B004E16C8 /* TimeTableMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTableMenuView.swift; sourceTree = "<group>"; };
+		AAA9507E2BA5C8F1004E16C8 /* Image.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Image.xcassets; sourceTree = "<group>"; };
+		AAA950802BA5E7A5004E16C8 /* TimeTableOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTableOptionView.swift; sourceTree = "<group>"; };
 		AACB4BCC2B40712D00169C52 /* SATTO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SATTO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AACB4BCF2B40712D00169C52 /* SATTOApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SATTOApp.swift; sourceTree = "<group>"; };
 		AACB4BD12B40712D00169C52 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		AACB4BD32B40712F00169C52 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AACB4BD62B40712F00169C52 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -141,6 +141,7 @@
 		AAA9504B2BA5C396004E16C8 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				AAA9507D2BA5C8E5004E16C8 /* Images */,
 				AAA9503F2BA5C396004E16C8 /* Color */,
 				AAA9504A2BA5C396004E16C8 /* Font */,
 			);
@@ -158,13 +159,13 @@
 		AAA950602BA5C39B004E16C8 /* TimeTableTabViews */ = {
 			isa = PBXGroup;
 			children = (
-				AAA950592BA5C39B004E16C8 /* FifthTabView.swift */,
-				AAA9505A2BA5C39B004E16C8 /* FirstTabView.swift */,
-				AAA9505B2BA5C39B004E16C8 /* FourthTabView.swift */,
-				AAA9505C2BA5C39B004E16C8 /* SecondTabView.swift */,
-				AAA9505D2BA5C39B004E16C8 /* SeventhTabView.swift */,
-				AAA9505E2BA5C39B004E16C8 /* SixthTabView.swift */,
-				AAA9505F2BA5C39B004E16C8 /* ThirdTabView.swift */,
+				AAA950802BA5E7A5004E16C8 /* TimeTableOptionView.swift */,
+				AAA9505A2BA5C39B004E16C8 /* CreditRangePickerView.swift */,
+				AAA9505C2BA5C39B004E16C8 /* EssentialClassesSelectorView.swift */,
+				AAA9505F2BA5C39B004E16C8 /* MajorCountSelectorView.swift */,
+				AAA9505B2BA5C39B004E16C8 /* InvalidTimeSelectorView.swift */,
+				AAA950592BA5C39B004E16C8 /* MajorCombinationSelectorView.swift */,
+				AAA9505D2BA5C39B004E16C8 /* FinalTimetableSelectorView.swift */,
 			);
 			path = TimeTableTabViews;
 			sourceTree = "<group>";
@@ -180,6 +181,14 @@
 				AAA950642BA5C39B004E16C8 /* TimeTableMenuView.swift */,
 			);
 			path = TimeTable;
+			sourceTree = "<group>";
+		};
+		AAA9507D2BA5C8E5004E16C8 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				AAA9507E2BA5C8F1004E16C8 /* Image.xcassets */,
+			);
+			path = Images;
 			sourceTree = "<group>";
 		};
 		AACB4BC32B40712D00169C52 = {
@@ -205,9 +214,8 @@
 				AACB4BD12B40712D00169C52 /* LoginView.swift */,
 				AA9E80212B4912CB00D51447 /* MainView.swift */,
 				AAA950652BA5C39B004E16C8 /* TimeTable */,
-				AAA9504B2BA5C396004E16C8 /* Resource */,
 				AAA9503A2BA5C380004E16C8 /* Charts */,
-				AACB4BD32B40712F00169C52 /* Assets.xcassets */,
+				AAA9504B2BA5C396004E16C8 /* Resource */,
 				AACB4BD52B40712F00169C52 /* Preview Content */,
 			);
 			path = SATTO;
@@ -296,6 +304,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AACB4BD72B40712F00169C52 /* Preview Assets.xcassets in Resources */,
+				AAA9507F2BA5C8F1004E16C8 /* Image.xcassets in Resources */,
 				AAA950502BA5C396004E16C8 /* Pretendard-ExtraBold.otf in Resources */,
 				AAA950562BA5C396004E16C8 /* Pretendard-Thin.otf in Resources */,
 				AAA9504C2BA5C396004E16C8 /* Color.xcassets in Resources */,
@@ -304,7 +313,6 @@
 				AAA9504F2BA5C396004E16C8 /* Pretendard-Bold.otf in Resources */,
 				AAA950522BA5C396004E16C8 /* Pretendard-Light.otf in Resources */,
 				AAA950532BA5C396004E16C8 /* Pretendard-Medium.otf in Resources */,
-				AACB4BD42B40712F00169C52 /* Assets.xcassets in Resources */,
 				AAA950542BA5C396004E16C8 /* Pretendard-Regular.otf in Resources */,
 				AAA9504E2BA5C396004E16C8 /* Pretendard-Black.otf in Resources */,
 			);
@@ -318,24 +326,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				AACB4BD22B40712D00169C52 /* LoginView.swift in Sources */,
-				AAA9506A2BA5C39B004E16C8 /* SecondTabView.swift in Sources */,
+				AAA9506A2BA5C39B004E16C8 /* EssentialClassesSelectorView.swift in Sources */,
 				AAA9506F2BA5C39B004E16C8 /* TimeTableMainViewModel.swift in Sources */,
 				AA9E80222B4912CB00D51447 /* MainView.swift in Sources */,
-				AAA950692BA5C39B004E16C8 /* FourthTabView.swift in Sources */,
+				AAA950692BA5C39B004E16C8 /* InvalidTimeSelectorView.swift in Sources */,
 				AAA9506E2BA5C39B004E16C8 /* TimeTableMainView.swift in Sources */,
 				AAA950662BA5C39B004E16C8 /* SearchSheetView.swift in Sources */,
 				AAA9503B2BA5C380004E16C8 /* ChartModel.swift in Sources */,
-				AAA950672BA5C39B004E16C8 /* FifthTabView.swift in Sources */,
-				AAA950682BA5C39B004E16C8 /* FirstTabView.swift in Sources */,
-				AAA9506C2BA5C39B004E16C8 /* SixthTabView.swift in Sources */,
+				AAA950672BA5C39B004E16C8 /* MajorCombinationSelectorView.swift in Sources */,
+				AAA950682BA5C39B004E16C8 /* CreditRangePickerView.swift in Sources */,
 				AAA9503D2BA5C380004E16C8 /* TotalCreditsPieChartView.swift in Sources */,
 				AAA9503C2BA5C380004E16C8 /* GraduationRequirementsRadarView.swift in Sources */,
 				AAA950712BA5C39B004E16C8 /* TimeTableMenuView.swift in Sources */,
-				AAA9506D2BA5C39B004E16C8 /* ThirdTabView.swift in Sources */,
+				AAA950812BA5E7A5004E16C8 /* TimeTableOptionView.swift in Sources */,
+				AAA9506D2BA5C39B004E16C8 /* MajorCountSelectorView.swift in Sources */,
 				AAA950702BA5C39B004E16C8 /* TimeTableMakeView.swift in Sources */,
 				AAA9504D2BA5C396004E16C8 /* Font.swift in Sources */,
 				AACB4BD02B40712D00169C52 /* SATTOApp.swift in Sources */,
-				AAA9506B2BA5C39B004E16C8 /* SeventhTabView.swift in Sources */,
+				AAA9506B2BA5C39B004E16C8 /* FinalTimetableSelectorView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
