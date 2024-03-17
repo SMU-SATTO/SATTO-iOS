@@ -8,14 +8,20 @@
 import SwiftUI
 
 struct TimeTableOptionView: View {
+    @State private var isAutoSelected = false
+    @State private var isCustomSelected = false
+    
     var body: some View {
         Text("시간표 생성 방식을 선택해주세요")
         Button(action: {
-            
+            isAutoSelected.toggle()
+            if isAutoSelected {
+                isCustomSelected = false // 다른 버튼은 선택 해제
+            }
         }) {
             RoundedRectangle(cornerRadius: 20)
                 .frame(width: 238, height: 163)
-                .foregroundStyle(.white)
+                .foregroundStyle(isAutoSelected ? .blue1 : .white)
                 .overlay(
                     RoundedRectangle(cornerRadius: 20)
                         .inset(by: 2)
@@ -34,11 +40,14 @@ struct TimeTableOptionView: View {
                 )
         }
         Button(action: {
-            
+            isCustomSelected.toggle()
+            if isCustomSelected {
+                isAutoSelected = false // 다른 버튼은 선택 해제
+            }
         }) {
             RoundedRectangle(cornerRadius: 20)
                 .frame(width: 238, height: 163)
-                .foregroundStyle(.white)
+                .foregroundStyle(isCustomSelected ? .blue1 : .white)
                 .overlay(
                     RoundedRectangle(cornerRadius: 20)
                         .inset(by: 2)

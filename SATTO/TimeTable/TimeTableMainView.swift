@@ -54,13 +54,7 @@ struct TimeTableMainView: View {
                                     }
                                     Spacer()
                                     
-                                    //MARK: - 오른쪽 메뉴 오픈
-                                    Button(action: {
-                                        isMenuOpen.toggle()
-                                    }) {
-                                        Image(systemName: "list.bullet")
-                                    }
-                                    .padding(.trailing, 10)
+                                   
                                 }
                                 
                                 VStack(alignment: .leading) {
@@ -111,8 +105,19 @@ struct TimeTableMainView: View {
                     )
                 if selectedTab == "시간표" {
                     VStack {
-                        Text("\(username)님의 이번 학기 시간표")
-                            .padding(.top, 10)
+                        HStack {
+                            Text("\(username)님의 이번 학기 시간표")
+                                .padding(.leading, 10)
+                            Spacer()
+                            //MARK: - 오른쪽 메뉴 오픈
+                            Button(action: {
+                                isMenuOpen.toggle()
+                            }) {
+                                Image(systemName: "list.bullet")
+                            }
+                            .padding(.trailing, 10)
+                        }
+                        .padding(.top, 10)
                         JHLectureTable {
                             ForEach(LectureModel.examples) { lecture in
                                 ZStack(alignment: .topLeading) {

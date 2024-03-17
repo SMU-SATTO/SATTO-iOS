@@ -41,7 +41,7 @@ extension LectureModel {
 
 //MARK: - 필수로 들어야 할 과목 선택
 struct EssentialClassesSelectorView: View {
-    @State private var isShowBottomSheet = true
+    @State private var isShowBottomSheet = false
     var body: some View {
         VStack {
             Text("이번 학기에 필수로 들어야 할\n과목을 선택해 주세요.")
@@ -94,7 +94,7 @@ struct EssentialClassesSelectorView: View {
                 isShowBottomSheet.toggle()
             }
             .sheet(isPresented: $isShowBottomSheet, content: {
-                SearchSheetView()
+                SearchSheetTabView()
                     .presentationDetents([.medium, .large])
             })
         }
