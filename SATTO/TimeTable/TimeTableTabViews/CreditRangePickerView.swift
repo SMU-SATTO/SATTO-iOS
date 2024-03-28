@@ -45,8 +45,8 @@ struct CreditRangePickerView: View {
                 }
             }
             .padding(.horizontal)
-            .onChange(of: minimumCredit) {
-                maximumCreditsRange = minimumCredit...22
+            .onChange(of: minimumCredit) { newValue in
+                maximumCreditsRange = newValue...22
             }
         }
     }
