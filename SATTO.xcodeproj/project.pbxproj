@@ -7,12 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3B1270D62BB147A200E38F86 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1270D52BB147A200E38F86 /* ContentView.swift */; };
-		3B1270D82BB147CD00E38F86 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1270D72BB147CD00E38F86 /* HomeView.swift */; };
-		3B1270DA2BB147D500E38F86 /* FriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1270D92BB147D500E38F86 /* FriendView.swift */; };
 		3B1270DC2BB147DC00E38F86 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1270DB2BB147DC00E38F86 /* EventView.swift */; };
-		3B1270DE2BB147E300E38F86 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1270DD2BB147E300E38F86 /* SettingView.swift */; };
-		AA9E80222B4912CB00D51447 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E80212B4912CB00D51447 /* MainView.swift */; };
 		AA9E802D2B498DB400D51447 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = AA9E802C2B498DB400D51447 /* CombineMoya */; };
 		AA9E802F2B498DB400D51447 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = AA9E802E2B498DB400D51447 /* Moya */; };
 		AA9E80312B498DB400D51447 /* ReactiveMoya in Frameworks */ = {isa = PBXBuildFile; productRef = AA9E80302B498DB400D51447 /* ReactiveMoya */; };
@@ -53,6 +48,9 @@
 		AAA950872BA72395004E16C8 /* GESheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950862BA72395004E16C8 /* GESheetView.swift */; };
 		AAA950892BA723B6004E16C8 /* ELearnSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950882BA723B6004E16C8 /* ELearnSheetView.swift */; };
 		AAA9508B2BA723C2004E16C8 /* TimeSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9508A2BA723C2004E16C8 /* TimeSheetView.swift */; };
+		AAA9508C2BB5A260004E16C8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1270D52BB147A200E38F86 /* ContentView.swift */; };
+		AAA9508D2BB5A263004E16C8 /* FriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1270D92BB147D500E38F86 /* FriendView.swift */; };
+		AAA9508E2BB5A266004E16C8 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1270DD2BB147E300E38F86 /* SettingView.swift */; };
 		AACB4BD02B40712D00169C52 /* SATTOApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACB4BCF2B40712D00169C52 /* SATTOApp.swift */; };
 		AACB4BD22B40712D00169C52 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACB4BD12B40712D00169C52 /* LoginView.swift */; };
 		AACB4BD72B40712F00169C52 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AACB4BD62B40712F00169C52 /* Preview Assets.xcassets */; };
@@ -60,11 +58,9 @@
 
 /* Begin PBXFileReference section */
 		3B1270D52BB147A200E38F86 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		3B1270D72BB147CD00E38F86 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		3B1270D92BB147D500E38F86 /* FriendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendView.swift; sourceTree = "<group>"; };
 		3B1270DB2BB147DC00E38F86 /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		3B1270DD2BB147E300E38F86 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
-		AA9E80212B4912CB00D51447 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		AAA950372BA5C380004E16C8 /* ChartModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartModel.swift; sourceTree = "<group>"; };
 		AAA950382BA5C380004E16C8 /* GraduationRequirementsRadarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraduationRequirementsRadarView.swift; sourceTree = "<group>"; };
 		AAA950392BA5C380004E16C8 /* TotalCreditsPieChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TotalCreditsPieChartView.swift; sourceTree = "<group>"; };
@@ -261,9 +257,7 @@
 			children = (
 				AACB4BCF2B40712D00169C52 /* SATTOApp.swift */,
 				AACB4BD12B40712D00169C52 /* LoginView.swift */,
-				AA9E80212B4912CB00D51447 /* MainView.swift */,
 				3B1270D52BB147A200E38F86 /* ContentView.swift */,
-				3B1270D72BB147CD00E38F86 /* HomeView.swift */,
 				3B0CF0292BB165D800E876B7 /* Setting */,
 				3B0CF0282BB165CF00E876B7 /* Event */,
 				3B0CF0272BB165C400E876B7 /* Friend */,
@@ -379,10 +373,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAA9508E2BB5A266004E16C8 /* SettingView.swift in Sources */,
+				AAA9508D2BB5A263004E16C8 /* FriendView.swift in Sources */,
+				AAA9508C2BB5A260004E16C8 /* ContentView.swift in Sources */,
 				AACB4BD22B40712D00169C52 /* LoginView.swift in Sources */,
 				AAA9506A2BA5C39B004E16C8 /* EssentialClassesSelectorView.swift in Sources */,
 				AAA9506F2BA5C39B004E16C8 /* TimeTableMainViewModel.swift in Sources */,
-				AA9E80222B4912CB00D51447 /* MainView.swift in Sources */,
 				AAA950692BA5C39B004E16C8 /* InvalidTimeSelectorView.swift in Sources */,
 				AAA9506E2BA5C39B004E16C8 /* TimeTableMainView.swift in Sources */,
 				AAA950662BA5C39B004E16C8 /* SearchSheetTabView.swift in Sources */,
@@ -462,7 +458,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -519,7 +515,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
