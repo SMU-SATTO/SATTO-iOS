@@ -188,11 +188,11 @@
 		AAA950652BA5C39B004E16C8 /* TimeTable */ = {
 			isa = PBXGroup;
 			children = (
-				AAA950602BA5C39B004E16C8 /* TimeTableTabViews */,
 				AAA950612BA5C39B004E16C8 /* TimeTableMainView.swift */,
 				AAA950622BA5C39B004E16C8 /* TimeTableMainViewModel.swift */,
 				AAA950632BA5C39B004E16C8 /* TimeTableMakeView.swift */,
 				AAA950642BA5C39B004E16C8 /* TimeTableMenuView.swift */,
+				AAA950602BA5C39B004E16C8 /* TimeTableTabViews */,
 				AAA950582BA5C39B004E16C8 /* BottomSheetViews */,
 			);
 			path = TimeTable;

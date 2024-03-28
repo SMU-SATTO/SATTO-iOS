@@ -10,13 +10,13 @@ import SwiftUI
 struct SearchSheetTabView: View {
     @State private var selectedTab = 0
     
+    let optionCategories = ["학과", "교양", "e-러닝", "시간"]
+    @State var selectedCategories: [Bool] = [false, false, false, false]
+    
     @State var searchText = ""
     
     let gradeOptions = ["전체", "1학년", "2학년", "3학년", "4학년"]
     @State var selectedGrades: [Bool] = [true, false, false, false, false]
-    
-    let optionCategories = ["학과", "학년", "교양", "e-러닝", "시간"]
-    @State var selectedCategories: [Bool] = [false, false, false, false, false]
     
     var tabs: [AnyView] {
         [
@@ -43,7 +43,7 @@ struct SearchSheetTabView: View {
                                 .frame(width: 70, height: 30)
                                 .background(
                                     RoundedRectangle(cornerRadius: 20)
-                                        .foregroundStyle(selectedCategories[category] ? Color(red: 0.91, green: 0.94, blue: 1) : .gray50)
+                                        .foregroundStyle(selectedCategories[category] ? Color(red: 0.91, green: 0.94, blue: 1) : .clear)
                                         .frame(width: 70, height: 30)
                                         .padding(EdgeInsets(top: -5, leading: -5, bottom: -5, trailing: -5))
                                 )
