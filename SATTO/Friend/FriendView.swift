@@ -13,7 +13,6 @@ struct FriendView: View {
     @Namespace var namespace
     
     var body: some View {
-        
         VStack(spacing: 0) {
             HStack(spacing: 0) {
                 Text("친구관리")
