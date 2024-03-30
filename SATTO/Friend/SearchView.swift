@@ -10,12 +10,23 @@ import SwiftUI
 struct SearchView: View {
     
     @State var text = ""
+    @Binding var stackPath: [Route]
     
     var body: some View {
         
         VStack(spacing: 0){
-            ClearButtonTextField(placehold: "팔로잉 목록", text: $text)
-                .padding(.horizontal, 20)
+            HStack(spacing: 0) {
+                
+                Button(action: {
+                    stackPath.popLast()
+                }, label: {
+                    Image("Classic")
+                })
+                .padding(.leading, 20)
+                
+                ClearButtonTextField(placehold: "팔로잉 목록", text: $text)
+                    .padding(.horizontal, 20)
+            }
 
             Spacer()
             ScrollView {
@@ -24,9 +35,8 @@ struct SearchView: View {
                         .padding(.bottom, 25)
                 }
             }
-//            .padding(.horizontal, 20)
         }
-//        .padding(.horizontal, 20)
+        .navigationBarBackButtonHidden()
     }
 }
 
@@ -68,9 +78,9 @@ struct ClearButtonTextField: View {
 
 
 
-#Preview {
-    SearchView()
-}
+//#Preview {
+//    SearchView()
+//}
 
 struct FriendCell: View {
     
