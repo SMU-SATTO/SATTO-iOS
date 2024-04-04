@@ -12,6 +12,8 @@ struct SearchView: View {
     @State var text = ""
     @Binding var stackPath: [Route]
     
+    var TextFieldPlacehold: String
+    
     var body: some View {
         
         VStack(spacing: 0){
@@ -24,19 +26,34 @@ struct SearchView: View {
                 })
                 .padding(.leading, 20)
                 
-                ClearButtonTextField(placehold: "팔로잉 목록", text: $text)
+                ClearButtonTextField(placehold: TextFieldPlacehold, text: $text)
                     .padding(.horizontal, 20)
             }
-
-            Spacer()
+            .padding(.bottom, 10)
+            
+            Divider()
+            
+            //            Button(action: {
+            //                stackPath.append(.friend)
+            //            }, label: {
+            //                Text("친구뷰 가기")
+            //            })
+            //            .navigationDestination(for: Route.self, destination: { item in
+            //                FriendView()
+            //            })
+            
+            //            Spacer()
             ScrollView {
                 ForEach(0 ..< 10) { item in
-                    FriendCell(name: "한민재", studentID: 20201499, isFollowing: false)
-                        .padding(.bottom, 25)
+                    FriendCell(name: "한민재", studentID: 20201499, isFollowing: false, stackPath: $stackPath)
+                        .padding(.bottom, 15)
+                        .padding(.top, 10)
                 }
             }
+            
         }
         .navigationBarBackButtonHidden()
+        
     }
 }
 
@@ -88,6 +105,8 @@ struct FriendCell: View {
     var studentID: Int
     var isFollowing: Bool
     
+    @Binding var stackPath: [Route]
+    
     var body: some View {
         HStack(spacing: 0) {
             Circle()
@@ -101,17 +120,22 @@ struct FriendCell: View {
                 .padding(.trailing, 14)
                 .padding(.leading, 20)
             
-            VStack(alignment: .leading, spacing: 0) {
-                // m16
-                Text("20201499")
-                    .font(.m2)
-                    .foregroundColor(Color.gray800)
-                
-                // m12
-                Text("한민재")
-                    .font(.m4)
-                    .foregroundColor(Color.gray600)
-            }
+            Button(action: {
+                stackPath.append(.friend)
+            }, label: {
+                VStack(alignment: .leading, spacing: 0) {
+                    // m16
+                    Text("20201499")
+                        .font(.m2)
+                        .foregroundColor(Color.gray800)
+                    
+                    // m12
+                    Text("한민재")
+                        .font(.m4)
+                        .foregroundColor(Color.gray600)
+                }
+            })
+            
             
             Spacer()
             
@@ -124,7 +148,7 @@ struct FriendCell: View {
                     .background(
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(Color.blue7, lineWidth: 1)
-                            
+                        
                     )
                     .padding(.trailing, 20)
             }
@@ -147,5 +171,14 @@ struct FriendCell: View {
             
             
         }
+        
     }
+}
+
+#Preview {
+    SearchView(stackPath: .constant([.search]), TextFieldPlacehold: "검색")
+}
+
+#Preview {
+    ContentView()
 }
