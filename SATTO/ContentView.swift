@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var selectedTab = Tab.friend
+    @State private var selectedTab = Tab.setting
     @State private var stackPath: [Route] = []
     
     var body: some View {
+
         NavigationStack(path: $stackPath){
             TabView(selection: $selectedTab) {
                 HomeView().tabItem {
