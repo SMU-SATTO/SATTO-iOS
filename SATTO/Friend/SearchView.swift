@@ -126,12 +126,12 @@ struct FriendCell: View {
                 VStack(alignment: .leading, spacing: 0) {
                     // m16
                     Text("20201499")
-                        .font(.m2)
+                        .font(.m16)
                         .foregroundColor(Color.gray800)
                     
                     // m12
                     Text("한민재")
-                        .font(.m4)
+                        .font(.m12)
                         .foregroundColor(Color.gray600)
                 }
             })
@@ -141,7 +141,7 @@ struct FriendCell: View {
             
             if isFollowing {
                 Text("팔로잉")
-                    .font(.m4)
+                    .font(.m12)
                     .foregroundColor(Color.blue7)
                     .padding(.vertical, 7)
                     .padding(.horizontal, 26)
@@ -155,7 +155,7 @@ struct FriendCell: View {
             
             else {
                 Text("팔로우")
-                    .font(.m4)
+                    .font(.m12)
                     .foregroundColor(Color.white)
                     .padding(.vertical, 7)
                     .padding(.horizontal, 26)

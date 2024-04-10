@@ -43,7 +43,7 @@ struct FriendView: View {
                     }
                     
                     Text("친구관리")
-                        .font(.b4)
+                        .font(.b20)
                         .foregroundColor(Color.gray900)
                     
                     Spacer()
@@ -92,12 +92,12 @@ struct FriendView: View {
                                 }, label: {
                                     VStack(spacing: 0) {
                                         Text("12")
-                                            .font(.sb5)
+                                            .font(.sb16)
                                             .foregroundColor(Color.gray800)
                                         
                                         // sb16
                                         Text("팔로워")
-                                            .font(.sb5)
+                                            .font(.sb16)
                                             .foregroundColor(Color.gray500)
                                     }
                                 })
@@ -111,12 +111,12 @@ struct FriendView: View {
                                 }, label: {
                                     VStack(spacing: 0) {
                                         Text("12")
-                                            .font(.sb5)
+                                            .font(.sb16)
                                             .foregroundColor(Color.gray800)
                                         
                                         // sb16
                                         Text("팔로잉")
-                                            .font(.sb5)
+                                            .font(.sb16)
                                             .foregroundColor(Color.gray500)
                                     }
                                 })
@@ -126,12 +126,12 @@ struct FriendView: View {
                             
                             
                             Text("한민재 20201499")
-                                .font(.sb5)
+                                .font(.sb16)
                                 .foregroundColor(Color.gray800)
                                 .matchedGeometryEffect(id: "a", in: namespace)
                             
                             Text("컴퓨터과학과")
-                                .font(.m3)
+                                .font(.m14)
                                 .foregroundColor(Color.gray600)
                                 .padding(.bottom, 23)
                                 .matchedGeometryEffect(id: "b", in: namespace)
@@ -141,7 +141,7 @@ struct FriendView: View {
                                 
                                 
                                 Text("졸업요건 확인")
-                                    .font(.m4)
+                                    .font(.m12)
                                     .foregroundColor(Color.white)
                                     .padding(.horizontal, 9)
                                     .padding(.vertical, 7)
@@ -158,7 +158,7 @@ struct FriendView: View {
                                     }
                                 
                                 Text("시간표 과목수정")
-                                    .font(.m4)
+                                    .font(.m12)
                                     .foregroundColor(Color.blue7)
                                     .padding(.horizontal, 14)
                                     .padding(.vertical, 7)
@@ -254,12 +254,12 @@ struct GraduationRequirementsView: View {
                     .matchedGeometryEffect(id: "cover", in: namespace)
                 VStack(alignment: .leading, spacing: 0) {
                     Text("한민재 20201499")
-                        .font(.sb5)
+                        .font(.sb16)
                         .foregroundColor(Color.gray800)
                         .matchedGeometryEffect(id: "a", in: namespace)
                     
                     Text("컴퓨터과학과")
-                        .font(.m3)
+                        .font(.m14)
                         .foregroundColor(Color.gray600)
                         .matchedGeometryEffect(id: "b", in: namespace)
                 }
@@ -271,7 +271,7 @@ struct GraduationRequirementsView: View {
             HStack(spacing: 0) {
                 
                 Text("공학인증 확인")
-                    .font(.sb6)
+                    .font(.sb14)
                     .foregroundColor(.white)
                     .padding(.leading, 38)
                 

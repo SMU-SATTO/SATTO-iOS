@@ -15,7 +15,7 @@ struct CompareTimeTableView: View {
                 
                 // sb16
                 Text("이번 학기 겹치는 시간표를\n확인해 같이 수업을 들어 보세요!")
-                    .font(.sb5)
+                    .font(.sb16)
                     .foregroundColor(Color.gray800)
                     .padding(.bottom, 5)
                 
@@ -24,7 +24,7 @@ struct CompareTimeTableView: View {
                         .padding(.trailing, 5)
                     
                     Text("내가 팔로잉하는 친구만 확인 가능합니다.")
-                        .font(.m4)
+                        .font(.m12)
                         .foregroundColor(Color.gray500)
                 }
                 
@@ -63,7 +63,7 @@ struct CompareTimeTableView: View {
             HStack(spacing: 0) {
                 
                 Text("확인하러 가기   ")
-                    .font(.sb6)
+                    .font(.sb14)
                     .foregroundColor(.white)
                     .padding(.leading, 38)
                 

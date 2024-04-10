@@ -27,11 +27,11 @@ struct SettingView: View {
                         .padding(.bottom, 14)
                     
                     Text("한민재")
-                        .font(.sb7)
+                        .font(.sb18)
                         .foregroundColor(Color.gray800)
                     
                     Text("\(" 20201499@sungshin.ac.kr ")")
-                        .font(.m3)
+                        .font(.m14)
                         .foregroundColor(Color.gray600)
                         .padding(.bottom, 14)
                     
