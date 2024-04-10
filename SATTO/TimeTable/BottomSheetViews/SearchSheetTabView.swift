@@ -38,7 +38,7 @@ struct SearchSheetTabView: View {
                             selectedCategories[category].toggle()
                         }) {
                             Text(optionCategories[category])
-                                .font(.b2)
+                                .font(.b16)
                                 .foregroundStyle(.blue)
                                 .frame(width: 70, height: 30)
                                 .background(
