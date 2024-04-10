@@ -8,50 +8,118 @@
 import SwiftUI
 
 struct SettingView: View {
+    
+    @State private var isOn = true
+    
     var body: some View {
-        //        VStack(spacing: 0) {
-        //            MySquare()
-        //                .fill(Color.red)
-        //                .frame(maxWidth: .infinity, maxHeight: 230)
-        //
-        //            Spacer()
-        //
-        //            Text("한민재")
-        //                .font(.sb7)
-        //              .foregroundColor(Color.gray800)
-        //
-        //            // m14
-        //            Text("\(" 20201499@sungshin.ac.kr ")")
-        //                .font(.m3)
-        //              .foregroundColor(Color.gray600)
-        //
-        //
-        //
-        //        }
+
         
         ZStack {
-            VStack(spacing: 0) {
-                MySquare()
-                    .fill(Color.red)
-                    .frame(maxWidth: .infinity, maxHeight: 230)
-                Spacer()
-            }
-            
-            VStack(spacing: 0) {
-                Text("한민재")
-                    .font(.sb7)
-                    .foregroundColor(Color.gray800)
+//            ScrollView {
+                VStack(spacing: 0) {
+                    MySquare()
+                        .fill(Color.red)
+                        .frame(maxWidth: .infinity, minHeight: 230)
+                        
+                    
+                    ProfileImageCell(inCircleSize: 125, outCircleSize: 130)
+                        .padding(.top, -100)
+                        .padding(.bottom, 14)
+                    
+                    Text("한민재")
+                        .font(.sb7)
+                        .foregroundColor(Color.gray800)
+                    
+                    Text("\(" 20201499@sungshin.ac.kr ")")
+                        .font(.m3)
+                        .foregroundColor(Color.gray600)
+                        .padding(.bottom, 14)
+                    
+                    LazyVStack(spacing: 15) {
+                        
+                        Toggle1()
+                        Toggle1()
+                        Toggle1()
+                        Toggle1()
+                        
+                    }
+                    .padding(.vertical, 12)
+                    .background(
+                        Rectangle()
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                            .shadow(radius: 5, x: 0, y: 0)
+                    )
+                    .padding(.horizontal, 25)
+                    .padding(.bottom, 18)
+                    
+                    
+                    LazyVStack(spacing: 15) {
+                        
+                        SettingOptionCell()
+                        SettingOptionCell()
+                        
+                    }
+                    .padding(.vertical, 12)
+                    .background(
+                        Rectangle()
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                            .shadow(radius: 5, x: 0, y: 0)
+                    )
+                    .padding(.horizontal, 25)
+                    .padding(.bottom, 18)
+                    
+                    LazyVStack(spacing: 15) {
+                        
+                        SettingOptionCell()
+                        SettingOptionCell()
+                        SettingOptionCell()
+                        SettingOptionCell()
+                        
+                    }
+                    .padding(.vertical, 12)
+                    .background(
+                        Rectangle()
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                            .shadow(radius: 5, x: 0, y: 0)
+                    )
+                    .padding(.horizontal, 25)
+                    .padding(.bottom, 100)
+                    
+                }
                 
-                // m14
-                Text("\(" 20201499@sungshin.ac.kr ")")
-                    .font(.m3)
-                    .foregroundColor(Color.gray600)
-            }
+                
+//            }
+            .ignoresSafeArea()
         }
-        
     }
 }
 
+
+struct Toggle1: View {
+    @State private var isOn = true
+    
+    var body: some View {
+        
+            Toggle(isOn: $isOn) {
+                HStack(spacing: 0) {
+                    Image("account")
+                        .padding(.leading, 5)
+                        .padding(.trailing, 14)
+                    
+                    Text("계정 공개")
+                        .font(Font.custom("Pretendard", size: 14))
+                        .foregroundColor(Color.gray600)
+                }
+                
+            }
+            .padding(.horizontal, 23)
+        
+    }
+        
+}
 
 
 struct MySquare: Shape {
@@ -71,4 +139,25 @@ struct MySquare: Shape {
 
 #Preview {
     SettingView()
+}
+
+#Preview {
+    ContentView()
+}
+
+struct SettingOptionCell: View {
+    var body: some View {
+        HStack(spacing: 0) {
+            Image("account")
+                .padding(.leading, 5)
+                .padding(.trailing, 14)
+            
+            Text("계정 공개")
+                .font(Font.custom("Pretendard", size: 14))
+                .foregroundColor(Color.gray600)
+            
+            Spacer()
+        }
+        .padding(.horizontal, 23)
+    }
 }
