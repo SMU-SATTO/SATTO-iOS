@@ -18,13 +18,14 @@ struct TimeTableMakeView: View {
             AnyView(EssentialClassesSelectorView()),
             AnyView(MajorCountSelectorView(timeTableMainViewModel: timeTableMainViewModel)),
             AnyView(InvalidTimeSelectorView()),
+            AnyView(MidCheckView()),
             AnyView(MajorCombinationSelectorView()),
             AnyView(FinalTimetableSelectorView())
         ]
     }
     
     var body: some View {
-        ZStack(alignment: .bottom) {
+        VStack {
             VStack {
                 CustomPageControl(
                     totalIndex: tabs.count,
@@ -32,9 +33,8 @@ struct TimeTableMakeView: View {
                 )
                 .animation(.spring(), value: UUID())
                 .padding(.horizontal)
-                Spacer()
             }
-            .padding(.top, 20)
+            .padding(.top, 0)
             
             TabView(selection: $selectedTab) {
                 ForEach(0..<tabs.count, id: \.self) { index in
@@ -42,7 +42,8 @@ struct TimeTableMakeView: View {
                 }
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
-            .padding(.top, 100)
+            .frame(height: 600)
+            .padding(.top, 20)
             
             HStack(spacing: 20) {
                 if (selectedTab != 0) {
@@ -57,18 +58,16 @@ struct TimeTableMakeView: View {
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10)
                                     .inset(by: 2)
-                                    .stroke(.blue, lineWidth: 2)
+                                    .stroke(.blue, lineWidth: 1.5)
                                     .overlay {
                                         Text("이전으로")
                                             .font(
                                                 Font.custom("Pretendard", size: 18)
                                                     .weight(.semibold)
                                             )
-                                            .foregroundStyle(Color(red: 0.11, green: 0.33, blue: 1))
-                                        
+                                            .foregroundStyle(Color(red: 0.11, green: 0.33, blue: 1))           
                                     }
                             )
-                        
                     }
                 }
                 if (selectedTab != 6) {
@@ -89,7 +88,6 @@ struct TimeTableMakeView: View {
                 }
             }
         }
-        .padding(.bottom, 100)
         .animation(.easeInOut, value: UUID())
     }
 }

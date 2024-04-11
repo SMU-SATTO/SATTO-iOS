@@ -15,39 +15,49 @@ struct CreditRangePickerView: View {
     @State private var maximumCreditsRange: ClosedRange<Int> = 0...22
     var body: some View {
         VStack {
-            Text("이번 학기에 듣고 싶은\n학점 범위를 선택해 주세요.")
-                .font(
-                    Font.custom("Pretendard", size: 18)
-                        .weight(.semibold)
-                )
-                .lineSpacing(5)
-                .frame(width: 320, alignment: .topLeading)
-            Text("ex) 17학점~19학점 사이")
-                .font(Font.custom("Pretendard", size: 12))
-                .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
-                .frame(width: 320, alignment: .topLeading)
-                .padding(.top, 5)
-            
-            Text("최소 학점을 선택하세요")
-            // 최소 학점 선택 Picker
-            Picker(selection: $minimumCredit, label: Text("최소 학점")) {
-                ForEach(0..<maximumCreditsRange.upperBound + 1, id: \.self) { credit in
-                    Text("\(credit)").tag(credit)
+            Text("이번 학기에 들을 학점을 선택해 주세요.")
+                .font(.sb16)
+
+            HStack(spacing: 10) {
+                Text("최소 학점")
+                // 최소 학점 선택 Picker
+                ZStack {
+                    RoundedRectangle(cornerRadius: 5)
+                        .foregroundStyle(Color.gray.opacity(0.1))
+                        .frame(width: 80, height: 30)
+                    Picker(selection: $minimumCredit, label: Text("최소 학점")) {
+                        ForEach(0..<maximumCreditsRange.upperBound + 1, id: \.self) { credit in
+                            Text("\(credit)").tag(credit)
+                        }
+                    }
+                    .tint(.black)
+                    .padding(.horizontal)
                 }
+                .frame(width: 100, height: 30)
             }
-            .padding(.horizontal)
-            
-            Text("최대 학점을 선택하세요")
-            // 최대 학점 선택 Picker
-            Picker(selection: $maximumCredit, label: Text("최대 학점")) {
-                ForEach(minimumCredit...22, id: \.self) { credit in
-                    Text("\(credit)").tag(credit)
+            .padding(.top, 50)
+            HStack(spacing: 10) {
+                Text("최대 학점")
+                // 최대 학점 선택 Picker
+                ZStack {
+                    RoundedRectangle(cornerRadius: 5)
+                        .foregroundStyle(Color.gray.opacity(0.1))
+                        .frame(width: 80, height: 30)
+                    
+                    Picker(selection: $maximumCredit, label: Text("최대 학점")) {
+                        ForEach(minimumCredit...22, id: \.self) { credit in
+                            Text("\(credit)").tag(credit)
+                        }
+                    }
+                    .tint(.black)
+                    .padding(.horizontal)
+                    .onChange(of: minimumCredit) { newValue in
+                        maximumCreditsRange = newValue...22
+                    }
                 }
+                .frame(width: 100, height: 30)
             }
-            .padding(.horizontal)
-            .onChange(of: minimumCredit) { newValue in
-                maximumCreditsRange = newValue...22
-            }
+            .padding(.top, 10)
         }
     }
 }
