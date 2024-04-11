@@ -31,7 +31,7 @@
 		AAA950562BA5C396004E16C8 /* Pretendard-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = AAA950492BA5C396004E16C8 /* Pretendard-Thin.otf */; };
 		AAA950662BA5C39B004E16C8 /* SearchSheetTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950572BA5C39B004E16C8 /* SearchSheetTabView.swift */; };
 		AAA950672BA5C39B004E16C8 /* MajorCombinationSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950592BA5C39B004E16C8 /* MajorCombinationSelectorView.swift */; };
-		AAA950682BA5C39B004E16C8 /* CreditRangePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9505A2BA5C39B004E16C8 /* CreditRangePickerView.swift */; };
+		AAA950682BA5C39B004E16C8 /* CreditPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9505A2BA5C39B004E16C8 /* CreditPickerView.swift */; };
 		AAA950692BA5C39B004E16C8 /* InvalidTimeSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9505B2BA5C39B004E16C8 /* InvalidTimeSelectorView.swift */; };
 		AAA9506A2BA5C39B004E16C8 /* EssentialClassesSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9505C2BA5C39B004E16C8 /* EssentialClassesSelectorView.swift */; };
 		AAA9506B2BA5C39B004E16C8 /* FinalTimetableSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9505D2BA5C39B004E16C8 /* FinalTimetableSelectorView.swift */; };
@@ -84,7 +84,7 @@
 		AAA950492BA5C396004E16C8 /* Pretendard-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Thin.otf"; sourceTree = "<group>"; };
 		AAA950572BA5C39B004E16C8 /* SearchSheetTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchSheetTabView.swift; sourceTree = "<group>"; };
 		AAA950592BA5C39B004E16C8 /* MajorCombinationSelectorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MajorCombinationSelectorView.swift; sourceTree = "<group>"; };
-		AAA9505A2BA5C39B004E16C8 /* CreditRangePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreditRangePickerView.swift; sourceTree = "<group>"; };
+		AAA9505A2BA5C39B004E16C8 /* CreditPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreditPickerView.swift; sourceTree = "<group>"; };
 		AAA9505B2BA5C39B004E16C8 /* InvalidTimeSelectorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvalidTimeSelectorView.swift; sourceTree = "<group>"; };
 		AAA9505C2BA5C39B004E16C8 /* EssentialClassesSelectorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EssentialClassesSelectorView.swift; sourceTree = "<group>"; };
 		AAA9505D2BA5C39B004E16C8 /* FinalTimetableSelectorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FinalTimetableSelectorView.swift; sourceTree = "<group>"; };
@@ -215,7 +215,7 @@
 			isa = PBXGroup;
 			children = (
 				AAA950802BA5E7A5004E16C8 /* TimeTableOptionView.swift */,
-				AAA9505A2BA5C39B004E16C8 /* CreditRangePickerView.swift */,
+				AAA9505A2BA5C39B004E16C8 /* CreditPickerView.swift */,
 				AAA9505C2BA5C39B004E16C8 /* EssentialClassesSelectorView.swift */,
 				AAA9505F2BA5C39B004E16C8 /* MajorCountSelectorView.swift */,
 				AAA9505B2BA5C39B004E16C8 /* InvalidTimeSelectorView.swift */,
@@ -402,7 +402,7 @@
 				AAA9503B2BA5C380004E16C8 /* ChartModel.swift in Sources */,
 				AAA950672BA5C39B004E16C8 /* MajorCombinationSelectorView.swift in Sources */,
 				AAA950872BA72395004E16C8 /* GESheetView.swift in Sources */,
-				AAA950682BA5C39B004E16C8 /* CreditRangePickerView.swift in Sources */,
+				AAA950682BA5C39B004E16C8 /* CreditPickerView.swift in Sources */,
 				AAA9503D2BA5C380004E16C8 /* TotalCreditsPieChartView.swift in Sources */,
 				AAA9503C2BA5C380004E16C8 /* GraduationRequirementsRadarView.swift in Sources */,
 				AAA950712BA5C39B004E16C8 /* TimeTableMenuView.swift in Sources */,

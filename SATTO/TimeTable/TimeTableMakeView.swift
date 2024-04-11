@@ -14,7 +14,7 @@ struct TimeTableMakeView: View {
     var tabs: [AnyView] {
         [
             AnyView(TimeTableOptionView()),
-            AnyView(CreditRangePickerView()),
+            AnyView(CreditPickerView()),
             AnyView(EssentialClassesSelectorView()),
             AnyView(MajorCountSelectorView(timeTableMainViewModel: timeTableMainViewModel)),
             AnyView(InvalidTimeSelectorView()),
@@ -65,7 +65,7 @@ struct TimeTableMakeView: View {
                                                 Font.custom("Pretendard", size: 18)
                                                     .weight(.semibold)
                                             )
-                                            .foregroundStyle(Color(red: 0.11, green: 0.33, blue: 1))           
+                                            .foregroundStyle(Color(red: 0.11, green: 0.33, blue: 1))
                                     }
                             )
                     }
