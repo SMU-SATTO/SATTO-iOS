@@ -74,7 +74,7 @@ struct EssentialClassesSelectorView: View {
             } timebar: { time in
                 // Add customized timebar
                 Text("\(time.hour)")
-                    .padding(.trailing, 10)
+                    .padding(.trailing, 3)
             } weekbar: { week in
                 // week: LectureWeeks enum
                 // You can use week.symbol, week.shortSymbol, week.veryShortSymbol
@@ -87,9 +87,9 @@ struct EssentialClassesSelectorView: View {
             .lectureTableWeekdays([.sun, .mon, .tue, .wed, .thu, .fri, .sat])
             
             .lectureTableTimes(startAt: .init(hour: 8, minute: 0), endAt: .init(hour: 22, minute: 0)) // 시작, 끝 시간 설정
-            
-            .lectureTableBorder(width: 2, radius: 5, color: "#ff8000") // table 그리드 선 색 변경
-            .lectureTableBar(time: .init(height: 10, width: 40), week: .init(height: 20, width: 10)) //날짜, 시간 위치 변경 가능
+            .lectureTableBorder(width: 0.5, radius: 0, color: "#979797") // table 그리드 선 색 변경
+            .lectureTableBar(time: .init(height: 0, width: 30), week: .init(height: 30, width: 10)) //날짜, 시간 위치 변경 가능
+            .frame(width: 350, height: 500)
             .onTapGesture {
                 isShowBottomSheet.toggle()
             }
