@@ -39,11 +39,12 @@ struct SearchSheetTabView: View {
                         }) {
                             Text(optionCategories[category])
                                 .font(.b16)
+                                .foregroundStyle(selectedCategories[category] ? Color(red: 0.11, green: 0.33, blue: 1) : .gray500)
                                 .foregroundStyle(.blue)
                                 .frame(width: 70, height: 30)
                                 .background(
                                     RoundedRectangle(cornerRadius: 20)
-                                        .foregroundStyle(selectedCategories[category] ? Color(red: 0.91, green: 0.94, blue: 1) : .clear)
+                                        .foregroundStyle(selectedCategories[category] ? Color(red: 0.91, green: 0.94, blue: 1) : .gray50)
                                         .frame(width: 70, height: 30)
                                         .padding(EdgeInsets(top: -5, leading: -5, bottom: -5, trailing: -5))
                                 )
@@ -102,15 +103,12 @@ struct SearchSheetTabView: View {
                                 .overlay(
                                     Text(gradeOptions[index])
                                         .foregroundStyle(selectedGrades[index] ? .blue : .black)
-                                        .font(
-                                            Font.custom("Pretendard", size: 14)
-                                                .weight(.semibold)
-                                        )
+                                        .font(.sb14)
                                 )
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 20)
                                         .inset(by: 0.5)
-                                        .stroke(selectedGrades[index] ? .blue : Color.gray200, lineWidth: 1.5)
+                                        .stroke(selectedGrades[index] ? .blue : Color.gray200, lineWidth: 1)
                                 )
                         }
                     }

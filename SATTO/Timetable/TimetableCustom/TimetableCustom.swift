@@ -1,5 +1,5 @@
 //
-//  TimeTableCustom.swift
+//  TimetableCustom.swift
 //  SATTO
 //
 //  Created by yeongjoon on 4/28/24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TimeTableCustom: View {
+struct TimetableCustom: View {
     @Binding var stackPath: [Route]
     
     var body: some View {
@@ -16,5 +16,5 @@ struct TimeTableCustom: View {
 }
 
 #Preview {
-    TimeTableCustom(stackPath: .constant([.timeTableCustom]))
+    TimetableCustom(stackPath: .constant([.timetableCustom]))
 }

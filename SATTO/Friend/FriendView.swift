@@ -12,9 +12,9 @@ enum Route: Hashable {
     case followerSearch
     case followingSearch
     case friend
-    case timeTableMake
-    case timeTableOption
-    case timeTableCustom
+    case timetableMake
+    case timetableOption
+    case timetableCustom
     //    @ViewBuilder var view: some View {
     //        switch self {
     //        case .search:

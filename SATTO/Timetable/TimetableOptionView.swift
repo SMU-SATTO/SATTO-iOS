@@ -1,5 +1,5 @@
 //
-//  TimeTableOptionView.swift
+//  TimetableOptionView.swift
 //  SATTO
 //
 //  Created by 김영준 on 3/16/24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TimeTableOptionView: View {
+struct TimetableOptionView: View {
     @Binding var stackPath: [Route]
     
     @State private var isAutoSelected = false
@@ -30,10 +30,10 @@ struct TimeTableOptionView: View {
                 }
                 Button(action: {
                     if isAutoSelected {
-                        stackPath.append(Route.timeTableMake)
+                        stackPath.append(Route.timetableMake)
                     }
                     else if isCustomSelected {
-                        stackPath.append(Route.timeTableCustom)
+                        stackPath.append(Route.timetableCustom)
                     }
                 }) {
                     RoundedRectangle(cornerRadius: 10)
@@ -76,5 +76,5 @@ struct TimeTableOptionView: View {
 }
 
 #Preview {
-    TimeTableOptionView(stackPath: .constant([.timeTableMake]))
+    TimetableOptionView(stackPath: .constant([.timetableMake]))
 }

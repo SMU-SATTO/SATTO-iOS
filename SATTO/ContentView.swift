@@ -19,7 +19,7 @@ struct ContentView: View {
                     Image(selectedTab == Tab.home ? "home.fill" : "home")
                     Text("홈")
                 }.tag(Tab.home)
-                TimeTableMainView(stackPath: $stackPath).tabItem {
+                TimetableMainView(stackPath: $stackPath).tabItem {
                     Image(selectedTab == Tab.timeTable ? "timeTable.fill" : "timeTable")
                     Text("시간표")
                 }.tag(Tab.timeTable)
@@ -47,12 +47,12 @@ struct ContentView: View {
                     SearchView(stackPath: $stackPath, TextFieldPlacehold: "팔로잉 목록")
                 case .friend:
                     FriendView(stackPath: $stackPath)
-                case .timeTableMake:
-                    TimeTableMakeView(stackPath: $stackPath)
-                case .timeTableOption:
-                    TimeTableOptionView(stackPath: $stackPath)
-                case .timeTableCustom:
-                    TimeTableCustom(stackPath: $stackPath)
+                case .timetableMake:
+                    TimetableMakeView(stackPath: $stackPath)
+                case .timetableOption:
+                    TimetableOptionView(stackPath: $stackPath)
+                case .timetableCustom:
+                    TimetableCustom(stackPath: $stackPath)
                 default:
                     EmptyView()
                 }

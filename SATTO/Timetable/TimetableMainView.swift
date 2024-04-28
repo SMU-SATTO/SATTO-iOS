@@ -1,5 +1,5 @@
 //
-//  TimeTableMainView.swift
+//  TimetableMainView.swift
 //  SATTO
 //
 //  Created by 김영준 on 3/6/24.
@@ -10,7 +10,7 @@ import PopupView
 import DGCharts
 import JHTimeTable
 
-struct TimeTableMainView: View {
+struct TimetableMainView: View {
     @Binding var stackPath: [Route]
     
     @State private var selectedTab = "이수 학점"
@@ -67,7 +67,7 @@ struct TimeTableMainView: View {
                                     
                                     Button(action: {
                                         //MARK: - 화면 이동
-                                        stackPath.append(Route.timeTableOption)
+                                        stackPath.append(Route.timetableOption)
                                     }) {
                                         RoundedRectangle(cornerRadius: 7)
                                             .fill(Color(red: 0.11, green: 0.33, blue: 1))
@@ -176,7 +176,7 @@ struct TimeTableMainView: View {
             }
         }
         .popup(isPresented: $isMenuOpen, view: {
-            TimeTableMenuView(isMenuOpen: $isMenuOpen)
+            TimetableMenuView(isMenuOpen: $isMenuOpen)
         }, customize: {
             $0
                 .position(.trailing)
@@ -208,5 +208,5 @@ struct CustomPickerView: View {
 }
 
 #Preview {
-    TimeTableMainView(stackPath: .constant([.timeTableMake]))
+    TimetableMainView(stackPath: .constant([.timetableMake]))
 }

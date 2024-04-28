@@ -1,5 +1,5 @@
 //
-//  TimeTableMakeView.swift
+//  TimetableMakeView.swift
 //  SATTO
 //
 //  Created by 김영준 on 2/29/24.
@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct TimeTableMakeView: View {
+struct TimetableMakeView: View {
     @Binding var stackPath: [Route]
     
-    @StateObject var timeTableMainViewModel = TimeTableMainViewModel()
+    @StateObject var timeTableMainViewModel = TimetableMainViewModel()
     @State private var selectedTab = 0
     
     var tabs: [AnyView] {
@@ -136,5 +136,5 @@ struct CustomPageControl: View {
 
 
 #Preview {
-    TimeTableMakeView(stackPath: .constant([.timeTableMake]))
+    TimetableMakeView(stackPath: .constant([.timetableMake]))
 }
