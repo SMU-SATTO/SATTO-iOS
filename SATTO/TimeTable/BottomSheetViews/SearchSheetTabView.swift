@@ -68,10 +68,7 @@ struct SearchSheetTabView: View {
                                 .foregroundStyle(.gray)
                                 .padding(.leading, 15)
                             TextField("듣고 싶은 과목을 입력해 주세요", text: $searchText)
-                                .font(
-                                    .custom("Apple SD Gothic Neo", size: 15)
-                                    .weight(.semibold)
-                                )
+                                .font(.sb14)
                                 .foregroundStyle(.gray)
                                 .padding(.leading, 5)
                             Button(action: {

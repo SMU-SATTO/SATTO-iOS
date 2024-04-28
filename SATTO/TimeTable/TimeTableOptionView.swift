@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct TimeTableOptionView: View {
+    @Binding var stackPath: [Route]
+    
     @State private var isAutoSelected = false
     @State private var isCustomSelected = false
     
@@ -26,6 +28,23 @@ struct TimeTableOptionView: View {
                     isCustomSelected = true
                     isAutoSelected = false
                 }
+                Button(action: {
+                    if isAutoSelected {
+                        stackPath.append(Route.timeTableMake)
+                    }
+                    else if isCustomSelected {
+                        stackPath.append(Route.timeTableCustom)
+                    }
+                }) {
+                    RoundedRectangle(cornerRadius: 10)
+                        .frame(width: 150, height: 50)
+                        .overlay(
+                            Text("다음으로")
+                                .font(.sb18)
+                                .foregroundStyle(.white)
+                        )
+                }
+                .disabled(isAutoSelected == false && isCustomSelected == false)
             }
             .padding(.top, 50)
         }
@@ -57,5 +76,5 @@ struct TimeTableOptionView: View {
 }
 
 #Preview {
-    TimeTableOptionView()
+    TimeTableOptionView(stackPath: .constant([.timeTableMake]))
 }
