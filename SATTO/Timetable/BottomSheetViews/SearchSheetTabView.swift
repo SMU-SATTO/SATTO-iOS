@@ -20,8 +20,8 @@ struct SearchSheetTabView: View {
     
     var tabs: [AnyView] {
         [
-            AnyView(DepartmentSheetView()),
-            AnyView(GradeSheetView()),
+            AnyView(DefaultSheetView()),
+            AnyView(GradeSheetView()), 
             AnyView(GESheetView()),
             AnyView(ELearnSheetView()),
             AnyView(TimeSheetView())
@@ -38,7 +38,7 @@ struct SearchSheetTabView: View {
                             selectedCategories[category].toggle()
                         }) {
                             Text(optionCategories[category])
-                                .font(.b16)
+                                .font(.sb16)
                                 .foregroundStyle(selectedCategories[category] ? Color(red: 0.11, green: 0.33, blue: 1) : .gray500)
                                 .foregroundStyle(.blue)
                                 .frame(width: 70, height: 30)
@@ -103,7 +103,7 @@ struct SearchSheetTabView: View {
                                 .overlay(
                                     Text(gradeOptions[index])
                                         .foregroundStyle(selectedGrades[index] ? .blue : .black)
-                                        .font(.sb14)
+                                        .font(.sb12)
                                 )
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 20)
@@ -119,6 +119,9 @@ struct SearchSheetTabView: View {
             ForEach(0..<tabs.count, id: \.self) { index in
                 tabs[index].tag(index)
             }
+        }
+        .onAppear {
+            UIScrollView.appearance().isScrollEnabled = false
         }
         .tabViewStyle(.page(indexDisplayMode: .never))
     }

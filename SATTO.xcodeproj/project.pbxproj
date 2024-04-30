@@ -47,7 +47,7 @@
 		AAA950792BA5C48B004E16C8 /* DGChartsDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = AAA950782BA5C48B004E16C8 /* DGChartsDynamic */; };
 		AAA9507C2BA5C498004E16C8 /* PopupView in Frameworks */ = {isa = PBXBuildFile; productRef = AAA9507B2BA5C498004E16C8 /* PopupView */; };
 		AAA950812BA5E7A5004E16C8 /* TimetableOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950802BA5E7A5004E16C8 /* TimetableOptionView.swift */; };
-		AAA950832BA722EF004E16C8 /* DepartmentSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950822BA722EF004E16C8 /* DepartmentSheetView.swift */; };
+		AAA950832BA722EF004E16C8 /* DefaultSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950822BA722EF004E16C8 /* DefaultSheetView.swift */; };
 		AAA950852BA7231A004E16C8 /* GradeSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950842BA7231A004E16C8 /* GradeSheetView.swift */; };
 		AAA950872BA72395004E16C8 /* GESheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950862BA72395004E16C8 /* GESheetView.swift */; };
 		AAA950892BA723B6004E16C8 /* ELearnSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950882BA723B6004E16C8 /* ELearnSheetView.swift */; };
@@ -72,6 +72,7 @@
 		AA1018A12BDE812A009E6804 /* TimetableCustom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableCustom.swift; sourceTree = "<group>"; };
 		AA1018A52BDE87A1009E6804 /* TimetableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableViewModel.swift; sourceTree = "<group>"; };
 		AA1018A82BDE882C009E6804 /* TimetableModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableModel.swift; sourceTree = "<group>"; };
+		AA1018AA2BDE9C80009E6804 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		AA9E219B2BC81FC800F0566A /* MidCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidCheckView.swift; sourceTree = "<group>"; };
 		AAA950372BA5C380004E16C8 /* ChartModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartModel.swift; sourceTree = "<group>"; };
 		AAA950382BA5C380004E16C8 /* GraduationRequirementsRadarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraduationRequirementsRadarView.swift; sourceTree = "<group>"; };
@@ -98,7 +99,7 @@
 		AAA950632BA5C39B004E16C8 /* TimetableMakeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimetableMakeView.swift; sourceTree = "<group>"; };
 		AAA950642BA5C39B004E16C8 /* TimetableMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimetableMenuView.swift; sourceTree = "<group>"; };
 		AAA950802BA5E7A5004E16C8 /* TimetableOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableOptionView.swift; sourceTree = "<group>"; };
-		AAA950822BA722EF004E16C8 /* DepartmentSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepartmentSheetView.swift; sourceTree = "<group>"; };
+		AAA950822BA722EF004E16C8 /* DefaultSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSheetView.swift; sourceTree = "<group>"; };
 		AAA950842BA7231A004E16C8 /* GradeSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeSheetView.swift; sourceTree = "<group>"; };
 		AAA950862BA72395004E16C8 /* GESheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GESheetView.swift; sourceTree = "<group>"; };
 		AAA950882BA723B6004E16C8 /* ELearnSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ELearnSheetView.swift; sourceTree = "<group>"; };
@@ -231,7 +232,7 @@
 			isa = PBXGroup;
 			children = (
 				AAA950572BA5C39B004E16C8 /* SearchSheetTabView.swift */,
-				AAA950822BA722EF004E16C8 /* DepartmentSheetView.swift */,
+				AAA950822BA722EF004E16C8 /* DefaultSheetView.swift */,
 				AAA950842BA7231A004E16C8 /* GradeSheetView.swift */,
 				AAA950862BA72395004E16C8 /* GESheetView.swift */,
 				AAA950882BA723B6004E16C8 /* ELearnSheetView.swift */,
@@ -294,6 +295,7 @@
 		AACB4BCE2B40712D00169C52 /* SATTO */ = {
 			isa = PBXGroup;
 			children = (
+				AA1018AA2BDE9C80009E6804 /* Info.plist */,
 				AACB4BCF2B40712D00169C52 /* SATTOApp.swift */,
 				AACB4BD12B40712D00169C52 /* LoginView.swift */,
 				AAA9508F2BB5A319004E16C8 /* HomeView.swift */,
@@ -443,7 +445,7 @@
 				AAA9508B2BA723C2004E16C8 /* TimeSheetView.swift in Sources */,
 				AAA950892BA723B6004E16C8 /* ELearnSheetView.swift in Sources */,
 				AAA950702BA5C39B004E16C8 /* TimetableMakeView.swift in Sources */,
-				AAA950832BA722EF004E16C8 /* DepartmentSheetView.swift in Sources */,
+				AAA950832BA722EF004E16C8 /* DefaultSheetView.swift in Sources */,
 				AAA9504D2BA5C396004E16C8 /* Font.swift in Sources */,
 				3B1270DC2BB147DC00E38F86 /* EventView.swift in Sources */,
 				AACB4BD02B40712D00169C52 /* SATTOApp.swift in Sources */,
@@ -583,6 +585,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"SATTO/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SATTO/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -611,6 +614,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"SATTO/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SATTO/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

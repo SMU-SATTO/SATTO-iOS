@@ -8,6 +8,6 @@
 import Foundation
 
 class TimetableViewModel: ObservableObject {
-    @Published var subjectData = TimetableModel(sbjDivcls: "", sbjNo: "", name: "", time: "")
+    @Published var subjectData = TimetableModel(sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", name: "컴퓨터네트워크", time: "목4 목5 목6 ")
     
 }
