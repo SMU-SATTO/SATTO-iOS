@@ -27,7 +27,7 @@ struct MidCheckView: View {
                 )
                 .padding(.top, 20)
             VStack(alignment: .leading, spacing: 10) {
-                selectedOptionInfo(info: "현재 선택한 학점 범위", infoColor: .gray900, range: "17-19")
+                selectedOptionInfo(info: "선택한 학점", infoColor: .gray900, range: "19")
                 selectedOptionInfo(info: "전공 개수", infoColor: .gray900, range: "3개")
                 selectedOptionInfo(info: "이러닝 개수", infoColor: .gray900, range: "2개")
                 selectedOptionInfo(info: "제외된 시간대", infoColor: .red, range: "월3, 화4, 금6")

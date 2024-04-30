@@ -1,5 +1,5 @@
 //
-//  TimeTableMakeView.swift
+//  TimetableMakeView.swift
 //  SATTO
 //
 //  Created by 김영준 on 2/29/24.
@@ -7,16 +7,16 @@
 
 import SwiftUI
 
-struct TimeTableMakeView: View {
-    @StateObject var timeTableMainViewModel = TimeTableMainViewModel()
+struct TimetableMakeView: View {
+    @Binding var stackPath: [Route]
+    
+    @StateObject var timeTableMainViewModel = TimetableMainViewModel()
     @State private var selectedTab = 0
     
     var tabs: [AnyView] {
         [
-            AnyView(TimeTableOptionView()),
-            AnyView(CreditRangePickerView()),
+            AnyView(CreditPickerView()),
             AnyView(EssentialClassesSelectorView()),
-            AnyView(MajorCountSelectorView(timeTableMainViewModel: timeTableMainViewModel)),
             AnyView(InvalidTimeSelectorView()),
             AnyView(MidCheckView()),
             AnyView(MajorCombinationSelectorView()),
@@ -40,6 +40,10 @@ struct TimeTableMakeView: View {
                 ForEach(0..<tabs.count, id: \.self) { index in
                     tabs[index].tag(index)
                 }
+                
+            }
+            .onAppear {
+                UIScrollView.appearance().isScrollEnabled = false
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
             .frame(height: 600)
@@ -61,11 +65,8 @@ struct TimeTableMakeView: View {
                                     .stroke(.blue, lineWidth: 1.5)
                                     .overlay {
                                         Text("이전으로")
-                                            .font(
-                                                Font.custom("Pretendard", size: 18)
-                                                    .weight(.semibold)
-                                            )
-                                            .foregroundStyle(Color(red: 0.11, green: 0.33, blue: 1))           
+                                            .font(.sb18)
+                                            .foregroundStyle(Color(red: 0.11, green: 0.33, blue: 1))
                                     }
                             )
                     }
@@ -81,7 +82,7 @@ struct TimeTableMakeView: View {
                             .frame(width: 150, height: 50)
                             .overlay {
                                 Text("다음으로")
-                                    .font(Font.custom("Pretendard", size: 18))
+                                    .font(.sb18)
                                     .foregroundStyle(.white)
                             }
                     }
@@ -135,5 +136,5 @@ struct CustomPageControl: View {
 
 
 #Preview {
-    TimeTableMakeView()
+    TimetableMakeView(stackPath: .constant([.timetableMake]))
 }

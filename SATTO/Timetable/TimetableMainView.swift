@@ -1,5 +1,5 @@
 //
-//  TimeTableMainView.swift
+//  TimetableMainView.swift
 //  SATTO
 //
 //  Created by 김영준 on 3/6/24.
@@ -10,7 +10,9 @@ import PopupView
 import DGCharts
 import JHTimeTable
 
-struct TimeTableMainView: View {
+struct TimetableMainView: View {
+    @Binding var stackPath: [Route]
+    
     @State private var selectedTab = "이수 학점"
     @State private var selectedPickerIndex = "총 이수학점"
     
@@ -34,10 +36,7 @@ struct TimeTableMainView: View {
                                             selectedTab = "시간표"
                                         }) {
                                             Text("시간표")
-                                                .font(
-                                                    Font.custom("Pretendard", size: 14)
-                                                        .weight(.semibold)
-                                                )
+                                                .font(.sb14)
                                                 .foregroundStyle(.black)
                                         }
                                     }
@@ -53,29 +52,22 @@ struct TimeTableMainView: View {
                                         }
                                     }
                                     Spacer()
-                                    
-                                   
                                 }
                                 
                                 VStack(alignment: .leading) {
                                     Text("2024년 1학기 시간표가 업로드됐어요!")
-                                        .font(
-                                            Font.custom("Pretendard", size: 16)
-                                                .weight(.bold)
-                                        )
+                                        .font(.b16)
                                         .foregroundStyle(.black)
                                         .padding(.top, 20)
                                     
                                     Text("민재님을 위한 시간표를 만들어 드릴게요.")
-                                        .font(
-                                            Font.custom("Pretendard", size: 12)
-                                                .weight(.medium)
-                                        )
+                                        .font(.m12)
                                         .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
                                         .padding(.top, 5)
                                     
                                     Button(action: {
-                                        
+                                        //MARK: - 화면 이동
+                                        stackPath.append(Route.timetableOption)
                                     }) {
                                         RoundedRectangle(cornerRadius: 7)
                                             .fill(Color(red: 0.11, green: 0.33, blue: 1))
@@ -184,7 +176,7 @@ struct TimeTableMainView: View {
             }
         }
         .popup(isPresented: $isMenuOpen, view: {
-            TimeTableMenuView(isMenuOpen: $isMenuOpen)
+            TimetableMenuView(isMenuOpen: $isMenuOpen)
         }, customize: {
             $0
                 .position(.trailing)
@@ -204,10 +196,7 @@ struct CustomPickerView: View {
             .frame(height: 30)
             .overlay(
                 Text(text)
-                    .font(
-                        Font.custom("Pretendard", size: 14)
-                            .weight(.semibold)
-                    )
+                    .font(.sb14)
                     .foregroundStyle(selectedOption == text ? Color.blue : Color.black)
             )
             .onTapGesture {
@@ -219,5 +208,5 @@ struct CustomPickerView: View {
 }
 
 #Preview {
-    TimeTableMainView()
+    TimetableMainView(stackPath: .constant([.timetableMake]))
 }

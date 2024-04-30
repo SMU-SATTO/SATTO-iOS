@@ -1,5 +1,5 @@
 //
-//  TimeTableMenuView.swift
+//  TimetableMenuView.swift
 //  SATTO
 //
 //  Created by 김영준 on 3/15/24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TimeTableMenuView: View {
+struct TimetableMenuView: View {
     @Binding var isMenuOpen: Bool
     var body: some View {
         VStack {
@@ -55,5 +55,5 @@ struct TimeTableMenuView: View {
 }
 
 #Preview {
-    TimeTableMenuView(isMenuOpen: .constant(true))
+    TimetableMenuView(isMenuOpen: .constant(true))
 }
