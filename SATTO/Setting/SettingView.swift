@@ -56,8 +56,8 @@ struct SettingView: View {
                     
                     LazyVStack(spacing: 15) {
                         
-                        SettingOptionCell()
-                        SettingOptionCell()
+                        SettingOptionCell(settingImageName: "account", settingName: "계정 공개")
+                        SettingOptionCell(settingImageName: "bus", settingName: "버스 우회 정보")
                         
                     }
                     .padding(.vertical, 12)
@@ -72,10 +72,10 @@ struct SettingView: View {
                     
                     LazyVStack(spacing: 15) {
                         
-                        SettingOptionCell()
-                        SettingOptionCell()
-                        SettingOptionCell()
-                        SettingOptionCell()
+                        SettingOptionCell(settingImageName: "ask", settingName: "문의하기")
+                        SettingOptionCell(settingImageName: "logout", settingName: "현재 버전")
+                        SettingOptionCell(settingImageName: "logout", settingName: "로그아웃")
+                        SettingOptionCell(settingImageName: "delete", settingName: "탈퇴하기")
                         
                     }
                     .padding(.vertical, 12)
@@ -146,13 +146,17 @@ struct MySquare: Shape {
 }
 
 struct SettingOptionCell: View {
+    
+    var settingImageName: String
+    var settingName: String
+    
     var body: some View {
         HStack(spacing: 0) {
-            Image("account")
+            Image(settingImageName)
                 .padding(.leading, 5)
                 .padding(.trailing, 14)
             
-            Text("계정 공개")
+            Text(settingName)
                 .font(Font.custom("Pretendard", size: 14))
                 .foregroundColor(Color.gray600)
             
