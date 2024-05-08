@@ -13,6 +13,7 @@
 		AA1018A22BDE812A009E6804 /* TimetableCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1018A12BDE812A009E6804 /* TimetableCustom.swift */; };
 		AA1018A62BDE87A1009E6804 /* TimetableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1018A52BDE87A1009E6804 /* TimetableViewModel.swift */; };
 		AA1018A92BDE882C009E6804 /* TimetableModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1018A82BDE882C009E6804 /* TimetableModel.swift */; };
+		AA51CDFE2BE3AD87003799CB /* TimeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA51CDFD2BE3AD87003799CB /* TimeTableView.swift */; };
 		AA9E219C2BC81FC800F0566A /* MidCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E219B2BC81FC800F0566A /* MidCheckView.swift */; };
 		AA9E802D2B498DB400D51447 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = AA9E802C2B498DB400D51447 /* CombineMoya */; };
 		AA9E802F2B498DB400D51447 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = AA9E802E2B498DB400D51447 /* Moya */; };
@@ -73,6 +74,7 @@
 		AA1018A52BDE87A1009E6804 /* TimetableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableViewModel.swift; sourceTree = "<group>"; };
 		AA1018A82BDE882C009E6804 /* TimetableModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableModel.swift; sourceTree = "<group>"; };
 		AA1018AA2BDE9C80009E6804 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		AA51CDFD2BE3AD87003799CB /* TimeTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTableView.swift; sourceTree = "<group>"; };
 		AA9E219B2BC81FC800F0566A /* MidCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidCheckView.swift; sourceTree = "<group>"; };
 		AAA950372BA5C380004E16C8 /* ChartModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartModel.swift; sourceTree = "<group>"; };
 		AAA950382BA5C380004E16C8 /* GraduationRequirementsRadarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraduationRequirementsRadarView.swift; sourceTree = "<group>"; };
@@ -258,6 +260,7 @@
 		AAA950652BA5C39B004E16C8 /* Timetable */ = {
 			isa = PBXGroup;
 			children = (
+				AA51CDFD2BE3AD87003799CB /* TimeTableView.swift */,
 				AAA950612BA5C39B004E16C8 /* TimetableMainView.swift */,
 				AAA950642BA5C39B004E16C8 /* TimetableMenuView.swift */,
 				AAA950802BA5E7A5004E16C8 /* TimetableOptionView.swift */,
@@ -429,6 +432,7 @@
 				AAA950692BA5C39B004E16C8 /* InvalidTimeSelectorView.swift in Sources */,
 				AAA9506E2BA5C39B004E16C8 /* TimetableMainView.swift in Sources */,
 				3B742B7C2BBE7C570000399F /* CompareTimeTableView.swift in Sources */,
+				AA51CDFE2BE3AD87003799CB /* TimeTableView.swift in Sources */,
 				3B742B5A2BB687D60000399F /* SearchView.swift in Sources */,
 				AAA950662BA5C39B004E16C8 /* SearchSheetTabView.swift in Sources */,
 				AAA950852BA7231A004E16C8 /* GradeSheetView.swift in Sources */,
