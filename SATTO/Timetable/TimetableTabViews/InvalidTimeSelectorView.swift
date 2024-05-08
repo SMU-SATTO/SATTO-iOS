@@ -9,8 +9,8 @@ import SwiftUI
 
 //MARK: - 불가능한 시간대 선택
 struct InvalidTimeSelectorView: View {
-    var cellWidth: CGFloat = 40
-    var cellHeight: CGFloat = 25
+    var cellWidth: CGFloat = 45
+    var cellHeight: CGFloat = 30
     var cellWidthSpacing: CGFloat = 0.5
     var cellHeightSpacing: CGFloat = 0.5
     
@@ -18,20 +18,20 @@ struct InvalidTimeSelectorView: View {
     
     let timeSlots = ["8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00"]
     
-    let weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    let weekdays = ["월", "화", "수", "목", "금", "토", "일"]
     var weekdayNum = 7
-    var timeCellNum = 12
+    var timeCellNum = 13
     
-    var numSubviews = 84
+    var numSubviews = 91
     
     var minTime = 8
-    var maxTime = 21
+    var maxTime = 22
     
     @State private var selectedSubviews = Set<Int>()
     @State private var alreadySelectedSubviews = Set<Int>()
     
     var rectangles = Rectangles()
-      
+  
     var body: some View {
         VStack {
             Text("불가능한 시간대가 있으면\n선택해 주세요.")
@@ -73,6 +73,9 @@ struct InvalidTimeSelectorView: View {
                         spacing: 0,
                         content: {
                             ForEach(0 ..< subviews.count, id: \.self) { i in
+                                let weekdayIndex = i % weekdayNum // 요일 인덱스
+                                let timeIndex = i / weekdayNum + minTime // 시간대 인덱스 (시작 시간에 따라 증가)
+                                let text = "\(weekdays[weekdayIndex])\(timeIndex)"
                                 subviews[i]
                                     .frame(width: cellWidth, height: cellHeight)
                                     .background() {
@@ -117,8 +120,24 @@ struct InvalidTimeSelectorView: View {
                     )
                 }
             }
+            VStack {
+                Text("선택된 index 출력: \(selectedIndexesText)")
+            }
         }
     }
+    
+    // 선택된 셀의 인덱스를 기반으로 요일과 시간을 계산하여 텍스트로 반환하는 계산된 속성
+    private var selectedIndexesText: String {
+        let selectedIndexes = selectedSubviews.map { i in
+            let weekdayIndex = i % weekdayNum // 요일 인덱스
+            ///아래의 1을 minTime으로 바꾸면 1교시가 월8로 표시됨
+            let timeIndex = i / weekdayNum + 0 // 시간대 인덱스 (시작 시간에 따라 증가)
+            return (weekdayIndex, timeIndex) // 튜플로 반환
+        }
+        let sortedIndexes = selectedIndexes.sorted { $0.0 == $1.0 ? $0.1 < $1.1 : $0.0 < $1.0 } // 요일로 먼저 정렬하고, 시간으로 정렬
+        return sortedIndexes.map { "\(weekdays[$0.0])\($0.1)" }.joined(separator: " ")
+    }
+
     
     private var dragSelect: some Gesture {
         DragGesture(minimumDistance: 0)
