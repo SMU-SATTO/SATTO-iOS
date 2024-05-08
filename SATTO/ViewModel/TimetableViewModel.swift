@@ -5,17 +5,28 @@
 //  Created by yeongjoon on 4/28/24.
 //
 
-import Foundation
+import SwiftUI
 import JHTimeTable
 
 class TimetableViewModel: ObservableObject {
+    let colorSelectionManager = ColorSelectionManager()
+    
     @Published var subjectData = TimetableModel(sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", name: "컴퓨터네트워크", time: "목4 금5 금6")
+    @Published var subjectData2 = TimetableModel(sbjDivcls: "HAEA0008-2", sbjNo: "HAEA0008", name: "운영체제", time: "월1 월2 월3")
+    @Published var subjectData3 = TimetableModel(sbjDivcls: "HAEA0008-3", sbjNo: "HAEA0008", name: "소프트웨어공학", time: "월4 목3 금4")
+    lazy var timetableData: Datum = {
+        return Datum(timetable: [self.subjectData, self.subjectData2, self.subjectData3], totalTime: "a", isPublic: true, isRepresent: true, createdAt: "today")
+    }()
     
-    let addTime = 8 // 1교시는 9시부터 시작
     
-    func convertToLectureModels(from timetableModel: TimetableModel) -> [LectureModel] {
+    private let addTime = 8 // 1교시는 9시부터 시작
+    
+    /// JHTimeTable 모델 형식으로 바꿔주는 함수
+    private func convertToLectureModels(from timetableModel: TimetableModel) -> [LectureModel] {
         let components = timetableModel.time.components(separatedBy: " ")
         var lectureModels: [LectureModel] = []
+        
+        let setRandomColor = colorSelectionManager.randomColor()
         
         for component in components {
             guard let week = week(for: component) else {
@@ -30,7 +41,7 @@ class TimetableViewModel: ObservableObject {
             let endTime = LectureTableTime(hour: startTime.hour + 1, minute: startTime.minute)
             
             let lectureModel = LectureModel(title: timetableModel.name,
-                                            color: "FF0000",
+                                            color: setRandomColor,
                                             week: week,
                                             startAt: startTime,
                                             endAt: endTime)
@@ -40,7 +51,7 @@ class TimetableViewModel: ObservableObject {
         return mergeAdjacentLectures(lectureModels)
     }
     
-    func parseTime(from timeString: String) -> LectureTableTime? {
+    private func parseTime(from timeString: String) -> LectureTableTime? {
         let digits = timeString.filter { $0.isNumber }
         guard let hour = Int(digits) else {
             return nil
@@ -49,7 +60,7 @@ class TimetableViewModel: ObservableObject {
         return LectureTableTime(hour: hour + addTime, minute: 0)
     }
     
-    func week(for component: String) -> LectureWeeks? {
+    private func week(for component: String) -> LectureWeeks? {
         let day = component.prefix(1) // 첫 번째 문자 추출
         switch day {
         case "월": return .mon
@@ -63,7 +74,8 @@ class TimetableViewModel: ObservableObject {
         }
     }
     
-    func mergeAdjacentLectures(_ lectures: [LectureModel]) -> [LectureModel] {
+    /// 연속된 강의 합치는 함수
+    private func mergeAdjacentLectures(_ lectures: [LectureModel]) -> [LectureModel] {
         var mergedLectures: [LectureModel] = []
         
         // 시작 시간을 기준으로 강의들을 정렬
@@ -100,7 +112,28 @@ class TimetableViewModel: ObservableObject {
     }
 
     
+//    func convertToLectureModels() -> [LectureModel] {
+//        return convertToLectureModels(from: subjectData)
+//    }
     func convertToLectureModels() -> [LectureModel] {
-        return convertToLectureModels(from: subjectData)
+        return timetableData.timetable.flatMap { convertToLectureModels(from: $0) } // 옵셔널 체이닝 추가
+    }
+}
+
+class ColorSelectionManager {
+    var selectedColors: Set<Color> = []
+    
+    let colors: [Color] = [.red, .blue, .green, .orange, .yellow, .purple, .pink, .cyan, .teal, .indigo]
+
+    func randomColor() -> Color {
+        var availableColors = colors.filter { !selectedColors.contains($0) }
+        if availableColors.isEmpty {
+            availableColors = colors
+            selectedColors.removeAll()
+        }
+        let randomIndex = Int.random(in: 0..<availableColors.count)
+        let selectedColor = availableColors[randomIndex]
+        selectedColors.insert(selectedColor)
+        return selectedColor
     }
 }

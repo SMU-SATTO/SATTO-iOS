@@ -1,5 +1,5 @@
 //
-//  TimeTableView.swift
+//  TimetableView.swift
 //  SATTO
 //
 //  Created by yeongjoon on 5/2/24.
@@ -8,7 +8,7 @@
 import SwiftUI
 import JHTimeTable
 
-struct TimeTableView: View {
+struct TimetableView: View {
     @ObservedObject var timetableViewModel: TimetableViewModel
     @State var isFirst = true
     
@@ -32,6 +32,8 @@ struct TimeTableView: View {
             ForEach(timetableViewModel.convertToLectureModels()) { lecture in
                 ZStack(alignment: .topLeading) {
                     Rectangle()
+                        .foregroundStyle(lecture.color)
+                        
                     Text(lecture.title)
                         .font(.caption)
                         .fontWeight(.bold)
@@ -83,5 +85,5 @@ struct LectureView: View {
 
 
 #Preview {
-    TimeTableView(timetableViewModel: TimetableViewModel())
+    TimetableView(timetableViewModel: TimetableViewModel())
 }

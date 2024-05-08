@@ -24,7 +24,7 @@ struct EssentialClassesSelectorView: View {
                     .frame(width: 320, alignment: .topLeading)
                     .padding(.top, 5)
             }
-            TimeTableView(timetableViewModel: TimetableViewModel())
+            TimetableView(timetableViewModel: TimetableViewModel())
                 .onTapGesture {
                     isShowBottomSheet.toggle()
                 }
