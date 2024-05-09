@@ -7,21 +7,7 @@
 
 import SwiftUI
 
-enum Route: Hashable {
-    case search
-    case followerSearch
-    case followingSearch
-    case friend
-    case timetableMake
-    case timetableOption
-    case timetableCustom
-    //    @ViewBuilder var view: some View {
-    //        switch self {
-    //        case .search:
-    //            SearchView()
-    //        }
-    //    }
-}
+
 
 
 
@@ -29,7 +15,7 @@ struct FriendView: View {
     
     @State var show = false
     @Namespace var namespace
-//    @State private var stackPath: [Route] = []
+
     @Binding var stackPath: [Route]
     var body: some View {
 //        NavigationStack(path: $stackPath) {
@@ -184,20 +170,7 @@ struct FriendView: View {
             }
             .background(Color.info20, ignoresSafeAreaEdges: .top)
             .navigationBarBackButtonHidden()
-//            .navigationDestination(for: Route.self) { route in
-//                switch route {
-//                case .search:
-//                    SearchView(stackPath: $stackPath, TextFieldPlacehold: "친구의 학번을 입력해 주세요")
-//                case .followerSearch:
-//                    SearchView(stackPath: $stackPath, TextFieldPlacehold: "팔로워 목록")
-//                case .followingSearch:
-//                    SearchView(stackPath: $stackPath, TextFieldPlacehold: "팔로잉 목록")
-//                case .friend:
-//                    FriendView()
-//                }
-//            }
-            
-//        }
+
     }
 }
 
@@ -297,11 +270,16 @@ struct GraduationRequirementsView: View {
             
             Spacer()
             
+            CircularProgressView()
+                .frame(width: 116, height: 116)
+            
         }
         .padding(.horizontal, 20)
         
     }
 }
+
+
 
 
 struct ProfileImageCell: View {
@@ -321,9 +299,100 @@ struct ProfileImageCell: View {
     }
 }
 
+//struct ProgressViewTest: View {
+//    // 1
+//    @State var progress: Double = 0
+//    
+//    var body: some View {
+//        VStack {
+//            Spacer()
+//            ZStack {
+//                // 2
+//                CircularProgressView(progress: progress)
+//                // 3
+//                Text("\(progress * 100, specifier: "%.0f")")
+//                    .font(.largeTitle)
+//                    .bold()
+//            }.frame(width: 200, height: 200)
+//            Spacer()
+//            HStack {
+//                // 4
+//                Slider(value: $progress, in: 0...1)
+//                // 5
+//                Button("Reset") {
+//                    resetProgress()
+//                }.buttonStyle(.borderedProminent)
+//            }
+//        }
+//    }
+//    
+//    func resetProgress() {
+//        progress = 0
+//    }
+//}
+
+struct CircularProgressView: View {
+    
+//    let divide: Int
+//    let progress: Double
+    let progress_1: Int = 60
+    let progress_2: Int = 33
+    let total: Int = 130
+
+    
+    
+    
+    var body: some View {
+        ZStack {
+            Circle()
+                .stroke(
+                    Color(red: 0.96, green: 0.96, blue: 0.96),
+                    lineWidth: 10
+                )
+            
+            Circle()
+                .trim(from: 0, to: Double(progress_1 + progress_2) / Double(total))
+                .stroke(
+                    Color(red: 0.39, green: 0.52, blue: 0),
+                    style: StrokeStyle(
+                        lineWidth: 10,
+                        lineCap: .square
+                    )
+                )
+                .rotationEffect(.degrees(-90))
+//                .animation(.easeOut, value: progress)
+            
+            Circle()
+                .trim(from: 0, to: Double(progress_1) / Double(total))
+                .stroke(
+                    Color(red: 0.39, green: 0.52, blue: 1),
+                    style: StrokeStyle(
+                        lineWidth: 10,
+                        lineCap: .square
+                    )
+                )
+                .rotationEffect(.degrees(-90))
+//                .animation(.easeOut, value: progress)
+            VStack(spacing: 0) {
+                Text("Uncompleted")
+                    .font(.m10)
+                    .foregroundColor(Color.gray800)
+                
+                Text("\(progress_1 + progress_2) / \(total)")
+            }
+
+        }
+    }
+}
+
+
 #Preview {
     FriendView(stackPath: .constant([.friend]))
 }
+
+//#Preview {
+//    ProgressViewTest()
+//}
 
 //struct GraduationRequirementsView_Previews: PreviewProvider {
 //    @Namespace static var namespace: Namespace.ID
