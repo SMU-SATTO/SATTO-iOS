@@ -30,100 +30,143 @@ struct InvalidTimeSelectorView: View {
     @State private var selectedSubviews = Set<Int>()
     @State private var alreadySelectedSubviews = Set<Int>()
     
+    @State private var isFirstUsing = true
+    
     var rectangles = Rectangles()
   
     var body: some View {
-        VStack {
-            Text("불가능한 시간대가 있으면\n선택해 주세요.")
-                .font(.sb18)
-                .lineSpacing(5)
-                .frame(width: 320, alignment: .topLeading)
-            
-            let subviews = (0..<numSubviews).map { i in
-                TimeCellRectangle(selectedSubviews: $selectedSubviews, index: i)
-            }
-            HStack {
-                /// 왼쪽 시간대 설정
-                VStack(spacing: 0) {
-                    ForEach((minTime..<maxTime), id: \.self) { hour in
-                        Text("\(hour):00")
-                            .font(.m12)
-                            .frame(width: cellWidth, height: cellHeight)
+        ZStack {
+            VStack {
+                Text("불가능한 시간대가 있으면\n선택해 주세요.")
+                    .font(.sb18)
+                    .lineSpacing(5)
+                    .frame(width: 320, alignment: .topLeading)
+                
+                let subviews = (0..<numSubviews).map { i in
+                    TimeCellRectangle(selectedSubviews: $selectedSubviews, index: i)
+                }
+                HStack {
+                    /// 왼쪽 시간대 설정
+                    VStack(spacing: 0) {
+                        ForEach((minTime..<maxTime), id: \.self) { hour in
+                            Text("\(hour):00")
+                                .font(.m12)
+                                .frame(width: cellWidth, height: cellHeight)
+                        }
+                    }
+                    .padding(.top, 30)
+                    VStack {
+                        LazyVGrid(
+                            columns: [GridItem](repeating: GridItem(spacing: 0), count: weekdayNum),
+                            content: {
+                                ForEach(0 ..< weekdayNum, id: \.self) { i in
+                                    Text(weekdays[i])
+                                        .font(.m12)
+                                        .padding(.leading, cellWidthSpacing)
+                                        .padding(.top, cellHeightSpacing)
+                                }
+                            }
+                        )
+                        .frame(width: cellWidth * CGFloat(weekdayNum) + cellWidthSpacing * (CGFloat(weekdayNum) + 2),
+                               height: 20)
+                        
+                        LazyVGrid(
+                            //MARK: - 가로 설정
+                            columns: [GridItem](repeating: GridItem(spacing: 0), count: weekdayNum),
+                            spacing: 0,
+                            content: {
+                                ForEach(0 ..< subviews.count, id: \.self) { i in
+                                    //                                let weekdayIndex = i % weekdayNum // 요일 인덱스
+                                    //                                let timeIndex = i / weekdayNum + minTime // 시간대 인덱스 (시작 시간에 따라 증가)
+                                    //                                let text = "\(weekdays[weekdayIndex])\(timeIndex)"
+                                    subviews[i]
+                                        .frame(width: cellWidth, height: cellHeight)
+                                        .background() {
+                                            GeometryReader { gp -> Color in
+                                                rectangles.content[i] = gp.frame(in: .named("container"))
+                                                return Color.clear
+                                            }
+                                        }
+                                    //spacing 동작이 가운데부터 뜯어서 padding으로 구현
+                                        .padding(.leading, cellWidthSpacing)
+                                        .padding(.top, cellHeightSpacing)
+                                }
+                            }
+                        )
+                        .frame(width: cellWidth * CGFloat(weekdayNum) + cellWidthSpacing * (CGFloat(weekdayNum) + 2),
+                               height: cellHeight * CGFloat(timeCellNum) + cellHeightSpacing * CGFloat(timeCellNum))
+                        .coordinateSpace(name: "container")
+                        .gesture(dragSelect)
+                        .background(
+                            // 그리드 선
+                            GeometryReader { proxy in
+                                Path { path in
+                                    let width = proxy.size.width
+                                    let height = proxy.size.height
+                                    let cellWidth = width / CGFloat(weekdayNum)
+                                    let cellHeight = height / CGFloat(numSubviews / weekdayNum)
+                                    //세로
+                                    for i in 0...weekdayNum {
+                                        let x = CGFloat(i) * cellWidth
+                                        path.move(to: CGPoint(x: x, y: 0 - cellHeightSpacing / 2))
+                                        path.addLine(to: CGPoint(x: x, y: height + cellHeightSpacing / 2))
+                                    }
+                                    //가로
+                                    for i in 0...numSubviews / weekdayNum {
+                                        let y = CGFloat(i) * cellHeight
+                                        path.move(to: CGPoint(x: 0 - cellWidthSpacing / 2, y: y))
+                                        path.addLine(to: CGPoint(x: width + cellWidthSpacing / 2, y: y))
+                                    }
+                                }
+                                .stroke(Color.black, lineWidth: lineWidth)
+                            }
+                        )
                     }
                 }
-                .padding(.top, 30)
                 VStack {
-                    LazyVGrid(
-                        columns: [GridItem](repeating: GridItem(spacing: 0), count: weekdayNum),
-                        content: {
-                            ForEach(0 ..< weekdayNum, id: \.self) { i in
-                                Text(weekdays[i])
-                                    .font(.m12)
-                                    .padding(.leading, cellWidthSpacing)
-                                    .padding(.top, cellHeightSpacing)
-                            }
-                        }
-                    )
-                    .frame(width: cellWidth * CGFloat(weekdayNum) + cellWidthSpacing * (CGFloat(weekdayNum) + 2),
-                           height: 20)
-                    
-                    LazyVGrid(
-                        //MARK: - 가로 설정
-                        columns: [GridItem](repeating: GridItem(spacing: 0), count: weekdayNum),
-                        spacing: 0,
-                        content: {
-                            ForEach(0 ..< subviews.count, id: \.self) { i in
-                                let weekdayIndex = i % weekdayNum // 요일 인덱스
-                                let timeIndex = i / weekdayNum + minTime // 시간대 인덱스 (시작 시간에 따라 증가)
-                                let text = "\(weekdays[weekdayIndex])\(timeIndex)"
-                                subviews[i]
-                                    .frame(width: cellWidth, height: cellHeight)
-                                    .background() {
-                                        GeometryReader { gp -> Color in
-                                            rectangles.content[i] = gp.frame(in: .named("container"))
-                                            return Color.clear
-                                        }
-                                    }
-                                //spacing 동작이 가운데부터 뜯어서 padding으로 구현
-                                    .padding(.leading, cellWidthSpacing)
-                                    .padding(.top, cellHeightSpacing)
-                            }
-                        }
-                    )
-                    .frame(width: cellWidth * CGFloat(weekdayNum) + cellWidthSpacing * (CGFloat(weekdayNum) + 2),
-                           height: cellHeight * CGFloat(timeCellNum) + cellHeightSpacing * CGFloat(timeCellNum))
-                    .coordinateSpace(name: "container")
-                    .gesture(dragSelect)
-                    .background(
-                        // 그리드 선
-                        GeometryReader { proxy in
-                            Path { path in
-                                let width = proxy.size.width
-                                let height = proxy.size.height
-                                let cellWidth = width / CGFloat(weekdayNum)
-                                let cellHeight = height / CGFloat(numSubviews / weekdayNum)
-                                //세로
-                                for i in 0...weekdayNum {
-                                    let x = CGFloat(i) * cellWidth
-                                    path.move(to: CGPoint(x: x, y: 0 - cellHeightSpacing / 2))
-                                    path.addLine(to: CGPoint(x: x, y: height + cellHeightSpacing / 2))
-                                }
-                                //가로
-                                for i in 0...numSubviews / weekdayNum {
-                                    let y = CGFloat(i) * cellHeight
-                                    path.move(to: CGPoint(x: 0 - cellWidthSpacing / 2, y: y))
-                                    path.addLine(to: CGPoint(x: width + cellWidthSpacing / 2, y: y))
-                                }
-                            }
-                            .stroke(Color.black, lineWidth: lineWidth)
-                        }
-                    )
+                    Text("선택된 index 출력: \(selectedIndexesText)")
                 }
             }
-            VStack {
-                Text("선택된 index 출력: \(selectedIndexesText)")
-            }
         }
+        .popup(isPresented: $isFirstUsing, view: {
+            if selectedIndexesText.split(separator: " ").count > 30 {
+                RoundedRectangle(cornerRadius: 20)
+                    .foregroundStyle(.white)
+                    .frame(width: 300, height: 300)
+                    .overlay(
+                        VStack(spacing: 30) {
+                            Image(systemName: "exclamationmark.triangle.fill")
+                                .resizable()
+                                .frame(width: 100, height: 100)
+                                .foregroundStyle(.yellow)
+                                
+                            Text("불가능한 시간대가 많으면\n원활한 시간표 생성이 어려울 수 있어요.")
+                                .font(.sb16)
+                                .lineSpacing(5)
+                                .multilineTextAlignment(.center)
+                            Button(action: {
+                                isFirstUsing = false
+                            }) {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundStyle(.blue)
+                                    .frame(width: 250, height: 40)
+                                    .overlay(
+                                        Text("확인했어요")
+                                            .font(.sb14)
+                                            .foregroundStyle(.white)
+                                    )
+                            }
+                        }
+                    )
+            }
+        }, customize: {
+            $0
+                .position(.center)
+                .appearFrom(.bottom)
+                .closeOnTapOutside(false)
+                .closeOnTap(false)
+                .backgroundColor(.black.opacity(0.5))
+        })
     }
     
     // 선택된 셀의 인덱스를 기반으로 요일과 시간을 계산하여 텍스트로 반환하는 계산된 속성
