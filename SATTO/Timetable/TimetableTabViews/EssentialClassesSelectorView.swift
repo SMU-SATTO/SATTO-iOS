@@ -26,7 +26,7 @@ struct EssentialClassesSelectorView: View {
             }
             TimetableView(timetableViewModel: TimetableViewModel())
                 .onTapGesture {
-                    isShowBottomSheet.toggle()
+                    isShowBottomSheet = true
                 }
                 .sheet(isPresented: $isShowBottomSheet, content: {
                     SearchSheetTabView()
