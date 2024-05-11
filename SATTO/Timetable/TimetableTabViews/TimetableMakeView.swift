@@ -19,6 +19,7 @@ struct TimetableMakeView: View {
     let selectedValues = SelectedValues()
     
     @State private var midCheckPopup = false
+    @State var invalidPopup = false
     
     var body: some View {
         ZStack {
@@ -97,6 +98,43 @@ struct TimetableMakeView: View {
             }
             .animation(.easeInOut, value: UUID())
         }
+        .popup(isPresented: $invalidPopup, view: {
+            RoundedRectangle(cornerRadius: 20)
+                .foregroundStyle(.white)
+                .frame(width: 300, height: 300)
+                .overlay(
+                    VStack(spacing: 30) {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .resizable()
+                            .frame(width: 100, height: 100)
+                            .foregroundStyle(.yellow)
+                        
+                        Text("불가능한 시간대가 많으면\n원활한 시간표 생성이 어려울 수 있어요.")
+                            .font(.sb16)
+                            .lineSpacing(5)
+                            .multilineTextAlignment(.center)
+                        Button(action: {
+                            invalidPopup = false
+                        }) {
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundStyle(.blue)
+                                .frame(width: 250, height: 40)
+                                .overlay(
+                                    Text("확인했어요")
+                                        .font(.sb14)
+                                        .foregroundStyle(.white)
+                                )
+                        }
+                    }
+                )
+        }, customize: {
+            $0
+                .position(.center)
+                .appearFrom(.bottom)
+                .closeOnTapOutside(false)
+                .closeOnTap(false)
+                .backgroundColor(.black.opacity(0.5))
+        })
         .popup(isPresented: $midCheckPopup, view: {
             RoundedRectangle(cornerRadius: 20)
                 .foregroundStyle(.white)
@@ -201,7 +239,7 @@ struct TimetableMakeView: View {
         case .essentialClasses:
             return AnyView(EssentialClassesSelectorView())
         case .invalidTime:
-            return AnyView(InvalidTimeSelectorView())
+            return AnyView(InvalidTimeSelectorView(invalidPopup: $invalidPopup))
         case .midCheck:
             return AnyView(MidCheckView().environmentObject(selectedValues))
         case .majorCombination:
@@ -236,15 +274,21 @@ struct CustomPageControl: View {
         HStack {
             //MARK: - 개수 수정 필요
             ForEach(0..<totalIndex, id: \.self) { index in
-                if selectedIndex == index {
+                if selectedIndex > index {
+                    // 지나온 페이지
+                    Rectangle()
+                        .fill(Color(red: 0.06, green: 0.51, blue: 0.79))
+                        .frame(height: rectangleHeight)
+                        .clipShape(RoundedRectangle(cornerRadius: rectangleRadius))
+                } else if selectedIndex == index {
+                    // 선택된 페이지
                     Rectangle()
                         .fill(.gray.opacity(0.3))
                         .frame(height: rectangleHeight)
                         .clipShape(RoundedRectangle(cornerRadius: rectangleRadius))
                         .overlay {
-                           Rectangle()
-                            //MARK: - 색깔 asset 설정
-                                .fill(Color(red: 0.06, green: 0.51, blue: 0.79))
+                            Rectangle()
+                                .fill(Color(red: 0.06, green: 0.81, blue: 0.79))
                                 .frame(height: rectangleHeight)
                                 .clipShape(
                                     RoundedRectangle(cornerRadius: rectangleRadius)
@@ -252,13 +296,13 @@ struct CustomPageControl: View {
                                 .matchedGeometryEffect(id: "IndicatorAnimationId", in: animation)
                         }
                 } else {
+                    // 나머지 페이지
                     Rectangle()
                         .fill(.gray.opacity(0.3))
                         .frame(height: rectangleHeight)
-                        .clipShape(
-                            RoundedRectangle(cornerRadius: rectangleRadius)
-                        )
+                        .clipShape(RoundedRectangle(cornerRadius: rectangleRadius))
                 }
+                
             }
         }
     }

@@ -94,7 +94,7 @@ struct DefaultSheetView: View {
                 .overlay(
                     isSubjectSelected ?
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color(red: 0.4, green: 0.31, blue: 1), lineWidth: 0.5)
+                            .stroke(Color(red: 0.4, green: 0.31, blue: 1), lineWidth: 0.8)
                         : nil
                 )
                 .onTapGesture {

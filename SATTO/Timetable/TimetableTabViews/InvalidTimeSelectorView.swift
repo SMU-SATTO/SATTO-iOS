@@ -31,6 +31,7 @@ struct InvalidTimeSelectorView: View {
     @State private var alreadySelectedSubviews = Set<Int>()
     
     @State private var isFirstUsing = true
+    @Binding var invalidPopup: Bool
     
     var rectangles = Rectangles()
   
@@ -128,46 +129,14 @@ struct InvalidTimeSelectorView: View {
                 }
             }
         }
-        .popup(isPresented: $isFirstUsing, view: {
-            if selectedIndexesText.split(separator: " ").count > 30 {
-                RoundedRectangle(cornerRadius: 20)
-                    .foregroundStyle(.white)
-                    .frame(width: 300, height: 300)
-                    .overlay(
-                        VStack(spacing: 30) {
-                            Image(systemName: "exclamationmark.triangle.fill")
-                                .resizable()
-                                .frame(width: 100, height: 100)
-                                .foregroundStyle(.yellow)
-                                
-                            Text("불가능한 시간대가 많으면\n원활한 시간표 생성이 어려울 수 있어요.")
-                                .font(.sb16)
-                                .lineSpacing(5)
-                                .multilineTextAlignment(.center)
-                            Button(action: {
-                                isFirstUsing = false
-                            }) {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .foregroundStyle(.blue)
-                                    .frame(width: 250, height: 40)
-                                    .overlay(
-                                        Text("확인했어요")
-                                            .font(.sb14)
-                                            .foregroundStyle(.white)
-                                    )
-                            }
-                        }
-                    )
+        .onChange(of: selectedIndexesText) { newValue in
+            if newValue.split(separator: " ").count > 30 {
+                invalidPopup = true
             }
-        }, customize: {
-            $0
-                .position(.center)
-                .appearFrom(.bottom)
-                .closeOnTapOutside(false)
-                .closeOnTap(false)
-                .backgroundColor(.black.opacity(0.5))
-        })
+        }
+       
     }
+    
     
     // 선택된 셀의 인덱스를 기반으로 요일과 시간을 계산하여 텍스트로 반환하는 계산된 속성
     private var selectedIndexesText: String {
@@ -243,5 +212,5 @@ class Rectangles {
 }
 
 #Preview {
-    InvalidTimeSelectorView()
+    InvalidTimeSelectorView(invalidPopup: .constant(true))
 }
