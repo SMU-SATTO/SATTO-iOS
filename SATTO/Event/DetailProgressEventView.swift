@@ -9,12 +9,7 @@ import SwiftUI
 
 struct DetailProgressEventView: View {
     
-    var eventName: String
-    var eventPeriod: String
-    var eventImage: String
-    var eventDeadLine: String
-    var eventNumberOfParticipants: String
-    var eventDescription: String
+    @ObservedObject var eventViewModel: EventViewModel
     
     @Binding var stackPath: [Route]
     
@@ -36,7 +31,7 @@ struct DetailProgressEventView: View {
                             .font(.m18)
                             .padding(.trailing, 7)
                         
-                        Text(eventDeadLine)
+                        Text("??일 남음")
                             .font(.m12)
                             .foregroundColor(Color(red: 0.84, green: 0.36, blue: 0.34))
                             .padding(.horizontal, 11)
@@ -176,5 +171,5 @@ struct EventFeedCell: View {
 }
 
 #Preview {
-    DetailProgressEventView(eventName: "개강맞이 시간표 경진대회", eventPeriod: "2024.02.15 - 2024.03.28", eventImage: "sb", eventDeadLine: "6일 남음", eventNumberOfParticipants: "256명 참여", eventDescription: "내 시간표를 공유해 시간표 경진대회에 참여해 보세요!", stackPath: .constant([.detailProgressEvent]))
+    DetailProgressEventView(eventViewModel: EventViewModel(), stackPath: .constant([.detailProgressEvent]))
 }

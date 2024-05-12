@@ -9,6 +9,9 @@ import SwiftUI
 
 struct ProgressEventView: View {
     @State private var selectedPage: EventTab = .progressEvent
+    
+    @ObservedObject var eventViewModel: EventViewModel
+    
     @Namespace var namespace
     
     @Binding var stackPath: [Route]
@@ -22,11 +25,18 @@ struct ProgressEventView: View {
                     
                     VStack(spacing: 0){
                         
-                        ProgressEventCell(eventName: "개강맞이 시간표 경진대회", eventPeriod: "2024.02.15 - 2024.03.28", eventImage: "sb", eventDeadLine: "6일 남음", eventNumberOfParticipants: "256명 참여", eventDescription: "내 시간표를 공유해 시간표 경진대회에 참여해 보세요!")
-                            .onTapGesture {
-                                stackPath.append(.detailProgressEvent)
-                            }
-                            .padding(.top, 27)
+                        ForEach(eventViewModel.events, id: \.id) { event in
+                            ProgressEventCell(eventName: event.title, eventPeriod: "\(event.startDate)", eventImage: "sb", eventDeadLine: "??일 남음", eventNumberOfParticipants: event.evnetFeed.count, eventDescription: event.description)
+                                .onTapGesture {
+                                    stackPath.append(.detailProgressEvent)
+                                }
+                        }
+                        
+//                        ProgressEventCell(eventName: "개강맞이 시간표 경진대회", eventPeriod: "2024.02.15 - 2024.03.28", eventImage: "sb", eventDeadLine: "6일 남음", eventNumberOfParticipants: "256명 참여", eventDescription: "내 시간표를 공유해 시간표 경진대회에 참여해 보세요!")
+//                            .onTapGesture {
+//                                stackPath.append(.detailProgressEvent)
+//                            }
+//                            .padding(.top, 27)
                         
                         
                         
@@ -46,7 +56,7 @@ struct ProgressEventCell: View {
     var eventPeriod: String
     var eventImage: String
     var eventDeadLine: String
-    var eventNumberOfParticipants: String
+    var eventNumberOfParticipants: Int
     var eventDescription: String
     
     var body: some View {
@@ -96,7 +106,7 @@ struct ProgressEventCell: View {
                                     
                                     Spacer()
                                     
-                                    Text(eventNumberOfParticipants)
+                                    Text("\(eventNumberOfParticipants)")
                                         .font(.m12)
                                     
                                 }
@@ -120,5 +130,5 @@ struct ProgressEventCell: View {
 
 
 #Preview {
-    ProgressEventView(stackPath: .constant([.progressEvent]))
+    ProgressEventView(eventViewModel: EventViewModel(), stackPath: .constant([.progressEvent]))
 }

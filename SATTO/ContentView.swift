@@ -55,8 +55,8 @@ struct ContentView: View {
                     TimetableCustom(stackPath: $stackPath)
                 case .event:
                     EventView(stackPath: $stackPath)
-                case .progressEvent:
-                    ProgressEventView(stackPath: $stackPath)
+//                case .progressEvent:
+//                    ProgressEventView(stackPath: $stackPath)
                 case .announcementEvent:
                     AnnouncementEventView(stackPath: $stackPath)
                 default:

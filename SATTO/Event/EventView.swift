@@ -14,6 +14,8 @@ enum EventTab {
 
 struct EventView: View {
     
+    @StateObject var eventViewModel = EventViewModel()
+    
     @State private var selectedPage: EventTab = .progressEvent
 //    @Namespace var namespace
     
@@ -83,18 +85,17 @@ struct EventView: View {
             
             TabView(selection: $selectedPage) {
                 
-                ProgressEventView(stackPath: $stackPath)
+                ProgressEventView(eventViewModel: eventViewModel, stackPath: $stackPath)
                     .tag(EventTab.progressEvent)
                 
                 
-                AnnouncementEventView(stackPath: $stackPath)
+                AnnouncementEventView(stackPath: $stackPath, eventViewModel: eventViewModel)
                     .tag(EventTab.announcementOfWinners)
                 
             }
             .tabViewStyle(PageTabViewStyle())
         }
-        
-    }
+
 }
 
 

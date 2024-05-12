@@ -10,6 +10,7 @@ import SwiftUI
 struct AnnouncementEventView: View {
     
     @Binding var stackPath: [Route]
+    @ObservedObject var eventViewModel: EventViewModel
     
     var body: some View {
         ScrollView {
@@ -63,5 +64,5 @@ struct AnnouncementEvnetCell: View {
 }
 
 #Preview {
-    AnnouncementEventView(stackPath: .constant([.announcementEvent]))
+    AnnouncementEventView(stackPath: .constant([.announcementEvent]), eventViewModel: EventViewModel())
 }
