@@ -31,7 +31,7 @@
     {
       "identity" : "moya",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Moya/Moya",
+      "location" : "https://github.com/Moya/Moya.git",
       "state" : {
         "revision" : "c263811c1f3dbf002be9bd83107f7cdc38992b26",
         "version" : "15.0.3"
@@ -40,7 +40,7 @@
     {
       "identity" : "popupview",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/exyte/PopupView",
+      "location" : "https://github.com/exyte/PopupView.git",
       "state" : {
         "revision" : "8c85ff09d474dd3cfb69aba33046395bcf365573",
         "version" : "2.9.1"

@@ -12,6 +12,7 @@ struct SATTOApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(NavigationPathFinder.shared)
         }
     }
 }

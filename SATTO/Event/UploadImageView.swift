@@ -9,6 +9,7 @@ import SwiftUI
 
 struct UploadImageView: View {
     
+    @ObservedObject var eventViewModel: EventViewModel
     
     var body: some View {
         VStack(spacing: 0) {
@@ -64,5 +65,5 @@ struct UploadImageView: View {
 }
 
 #Preview {
-    UploadImageView()
+    UploadImageView(eventViewModel: EventViewModel())
 }

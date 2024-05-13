@@ -12,86 +12,67 @@ enum EventTab {
     case announcementOfWinners
 }
 
+
+enum EventRoute: Hashable {
+    case progressEvent
+    case announcementEvent
+    case detailProgressEvent
+}
+
+final class NavigationPathFinder: ObservableObject {
+    static let shared = NavigationPathFinder()
+    private init() { }
+    
+    @Published var path: [EventRoute] = []
+    
+    func addPath(route: EventRoute) {
+        path.append(route)
+    }
+    
+    func popToRoot() {
+        path = .init()
+    }
+}
+
 struct EventView: View {
     
     @State private var selectedPage: EventTab = .progressEvent
-//    @Namespace var namespace
+
+//    @State private var eventStackPath: [EventRoute] = []
     
-    @Binding var stackPath: [Route]
+    @StateObject var eventViewModel = EventViewModel()
+    
+    @EnvironmentObject var navPathFinder: NavigationPathFinder
     
     var body: some View {
         
-        VStack(spacing: 0) {
-            
+        NavigationStack(path: $navPathFinder.path) {
             VStack(spacing: 0) {
                 
-                HStack(spacing: 0) {
+                EventTopTabBar(selectedPage: $selectedPage)
+                
+                TabView(selection: $selectedPage) {
                     
-                    Text("진행 중인 이벤트")
-                        .font(.b14)
-                        .foregroundColor(selectedPage == .progressEvent ? .black : .gray)
-                        .onTapGesture {
-                            withAnimation {
-                                selectedPage = .progressEvent
-                            }
-                        }
-                        .padding(.bottom, 19)
-                        .background(
-                            
-                            Rectangle()
-                                .fill(selectedPage == .progressEvent ? Color.red : Color.clear)
-                                .frame(height: 3)
-                                .cornerRadius(30)
-                            
-                            ,alignment: .bottom
-                            
-                        )
-                        .padding(.trailing, 24)
+                    ProgressEventView(eventViewModel: eventViewModel)
+                        .tag(EventTab.progressEvent)
                     
                     
+                    AnnouncementEventView(eventViewModel: eventViewModel)
+                        .tag(EventTab.announcementOfWinners)
                     
-                    
-                    Text("당첨자 발표")
-                        .font(.system(size: 14))
-                        .foregroundColor(selectedPage == .announcementOfWinners ? .black : .gray)
-                        .onTapGesture {
-                            withAnimation {
-                                selectedPage = .announcementOfWinners
-                            }
-                        }
-                        .padding(.bottom, 19)
-                        .background(
-                            
-                            Rectangle()
-                                .fill(selectedPage == .announcementOfWinners ? Color.red : Color.clear)
-                                .frame(height: 3)
-                                .cornerRadius(30)
-                            
-                            ,alignment: .bottom
-                        )
-                    
-                    Spacer()
                 }
-                .background(
-                    SattoDivider()
-                        .padding(.bottom, 1),
-                    alignment: .bottom
-                )
-                
+                .tabViewStyle(PageTabViewStyle())
             }
-            .padding(.horizontal, 20)
-            
-            TabView(selection: $selectedPage) {
-                
-                ProgressEventView(stackPath: $stackPath)
-                    .tag(EventTab.progressEvent)
-                
-                
-                AnnouncementEventView(stackPath: $stackPath)
-                    .tag(EventTab.announcementOfWinners)
-                
+            .navigationDestination(for: EventRoute.self) { route in
+                switch route {
+                case .progressEvent:
+                    ProgressEventView(eventViewModel: eventViewModel)
+                case .announcementEvent:
+                    AnnouncementEventView(eventViewModel: eventViewModel)
+                case .detailProgressEvent:
+                    DetailProgressEventView(eventViewModel: eventViewModel)
+                }
             }
-            .tabViewStyle(PageTabViewStyle())
         }
         
     }
@@ -111,7 +92,8 @@ struct SattoDivider: View {
 
 
 #Preview {
-    EventView(stackPath: .constant([.event]))
+    EventView()
+        .environmentObject(NavigationPathFinder.shared)
 }
 
 //#Preview {
@@ -119,3 +101,68 @@ struct SattoDivider: View {
 //}
 
 
+
+struct EventTopTabBar: View {
+    
+    @Binding var selectedPage: EventTab
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            
+            HStack(spacing: 0) {
+                
+                Text("진행 중인 이벤트")
+                    .font(.b14)
+                    .foregroundColor(selectedPage == .progressEvent ? .black : .gray)
+                    .onTapGesture {
+                        withAnimation {
+                            selectedPage = .progressEvent
+                        }
+                    }
+                    .padding(.bottom, 19)
+                    .background(
+                        
+                        Rectangle()
+                            .fill(selectedPage == .progressEvent ? Color.red : Color.clear)
+                            .frame(height: 3)
+                            .cornerRadius(30)
+                        
+                        ,alignment: .bottom
+                        
+                    )
+                    .padding(.trailing, 24)
+                
+                
+                
+                
+                Text("당첨자 발표")
+                    .font(.system(size: 14))
+                    .foregroundColor(selectedPage == .announcementOfWinners ? .black : .gray)
+                    .onTapGesture {
+                        withAnimation {
+                            selectedPage = .announcementOfWinners
+                        }
+                    }
+                    .padding(.bottom, 19)
+                    .background(
+                        
+                        Rectangle()
+                            .fill(selectedPage == .announcementOfWinners ? Color.red : Color.clear)
+                            .frame(height: 3)
+                            .cornerRadius(30)
+                        
+                        ,alignment: .bottom
+                    )
+                
+                Spacer()
+            }
+            .background(
+                SattoDivider()
+                    .padding(.bottom, 1),
+                alignment: .bottom
+            )
+            
+        }
+        .padding(.horizontal, 20)
+    }
+}
