@@ -13,7 +13,7 @@ struct ContentView: View {
     
     var body: some View {
 
-        NavigationStack(path: $stackPath){
+//        NavigationStack(path: $stackPath){
             TabView(selection: $selectedTab) {
                 HomeView().tabItem {
                     Image(selectedTab == Tab.home ? "home.fill" : "home")
@@ -27,7 +27,9 @@ struct ContentView: View {
                     Image(selectedTab == Tab.friend ? "friend.fill" : "friend")
                     Text("친구관리")
                 }.tag(Tab.friend)
-                EventView(stackPath: $stackPath).tabItem {
+                EventView()
+                    .environmentObject(NavigationPathFinder.shared)
+                    .tabItem {
                     Image(selectedTab == Tab.event ? "event.fill" : "event")
                     Text("이벤트")
                 }.tag(Tab.event)
@@ -53,17 +55,17 @@ struct ContentView: View {
                     TimetableOptionView(stackPath: $stackPath)
                 case .timetableCustom:
                     TimetableCustom(stackPath: $stackPath)
-                case .event:
-                    EventView(stackPath: $stackPath)
-                case .progressEvent:
-                    ProgressEventView(stackPath: $stackPath)
-                case .announcementEvent:
-                    AnnouncementEventView(stackPath: $stackPath)
+//                case .event:
+//                    EventView(stackPath: $stackPath)
+//                case .progressEvent:
+//                    ProgressEventView(stackPath: $stackPath)
+//                case .announcementEvent:
+//                    AnnouncementEventView(stackPath: $stackPath)
                 default:
                     EmptyView()
                 }
             }
-        }
+//        }
     }
 }
 
@@ -75,10 +77,10 @@ enum Route: Hashable {
     case timetableMake
     case timetableOption
     case timetableCustom
-    case event
-    case progressEvent
-    case announcementEvent
-    case detailProgressEvent
+//    case event
+//    case progressEvent
+//    case announcementEvent
+//    case detailProgressEvent
 }
 
 enum Tab: String {
@@ -91,4 +93,5 @@ enum Tab: String {
 
 #Preview {
     ContentView()
+        .environmentObject(NavigationPathFinder.shared)
 }

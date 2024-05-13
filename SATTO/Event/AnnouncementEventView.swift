@@ -9,11 +9,15 @@ import SwiftUI
 
 struct AnnouncementEventView: View {
     
-    @Binding var stackPath: [Route]
+//    @Binding var stackPath: [Route]
+    @ObservedObject var eventViewModel: EventViewModel
     
     var body: some View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 0){
+                NavigationLink(value: EventRoute.announcementEvent, label: {
+                    Text("asd")
+                })
                 AnnouncementEvnetCell(announcementOfWinnersTitle: "개강맞이 시간표 경진대회 당첨자 발표", adminProfile: "Avatar", postDate: "Someone  글쓴이・3일 전 ")
                 
             }
@@ -63,5 +67,5 @@ struct AnnouncementEvnetCell: View {
 }
 
 #Preview {
-    AnnouncementEventView(stackPath: .constant([.announcementEvent]))
+    AnnouncementEventView(eventViewModel: EventViewModel())
 }
