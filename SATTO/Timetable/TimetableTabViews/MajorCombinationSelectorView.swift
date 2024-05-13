@@ -9,6 +9,7 @@ import SwiftUI
 
 //MARK: - 가능한 전공 조합 선택하는 페이지
 struct MajorCombinationSelectorView: View {
+    @State private var isButtonSelected = false
     var body: some View {
         VStack {
             HStack {
@@ -47,33 +48,41 @@ struct MajorCombinationSelectorView: View {
     /// 전공 개수에 따라 과목 개수가 달라짐
     @ViewBuilder
     func majorRectangle(lec: String, lecNum: Int) -> some View {
-        RoundedRectangle(cornerRadius: 10)
-            .foregroundStyle(.white)
-            .shadow(color: Color(red: 0.75, green: 0.75, blue: 0.75).opacity(0.25), radius: 5, x: 0, y: 0)
-            .frame(width: 330, height: 28 * CGFloat(lecNum))
-            .overlay(
-                ZStack {
-                    VStack {
-                        ForEach(0..<lecNum, id: \.self) { _ in
-                            HStack {
-                                Text("subject")
-                                Text("time")
+        Button(action: {
+            isButtonSelected.toggle()
+        }) {
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundStyle(.white)
+                .shadow(color: Color(red: 0.75, green: 0.75, blue: 0.75).opacity(0.25), radius: 5, x: 0, y: 0)
+                .frame(width: 330, height: 28 * CGFloat(lecNum))
+                .overlay(
+                    ZStack {
+                        VStack {
+                            ForEach(0..<lecNum, id: \.self) { _ in
+                                HStack {
+                                    Text("subject")
+                                    Text("time")
+                                }
                             }
                         }
-                    }
-                    VStack {
-                        HStack {
+                        VStack {
+                            HStack {
+                                Spacer()
+                                Text("30개")
+                                    .font(.m12)
+                                    .foregroundStyle(.red)
+                                    .padding(.trailing, 10)
+                            }
+                            .padding(.top, 10)
                             Spacer()
-                            Text("30개")
-                                .font(.m12)
-                                .foregroundStyle(.red)
-                                .padding(.trailing, 10)
                         }
-                        .padding(.top, 10)
-                        Spacer()
                     }
-                }
-            )
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10) // 선택된 경우 테두리를 변경
+                        .stroke(isButtonSelected ? Color.blue : Color.clear, lineWidth: 2)
+                )
+        }
     }
 }
 

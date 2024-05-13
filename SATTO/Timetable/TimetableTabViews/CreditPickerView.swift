@@ -7,14 +7,17 @@
 
 import SwiftUI
 
+class SelectedValues: ObservableObject {
+    @Published var minimumCredit = 6
+    @Published var majorNum = 0
+    @Published var ELearnNum = 0
+}
+
 //MARK: - 학점 범위 선택
 struct CreditPickerView: View {
     //MARK: - 사용자 학년에 따라 start 학점 6 아니고 12로 바꿔야함 -> 12학점 미만 선택시 알림 띄우는 형식도 괜찮을듯
-    @State var minimumCredit = 6
+    @EnvironmentObject var selectedValues: SelectedValues
     
-    @State var majorNum = 0
-    
-    @State var ELearnNum = 0
     var body: some View {
         VStack {
             Text("이번 학기에 들을 학점을 선택해 주세요.")
@@ -27,7 +30,7 @@ struct CreditPickerView: View {
                     RoundedRectangle(cornerRadius: 5)
                         .foregroundStyle(Color.gray.opacity(0.1))
                         .frame(width: 80, height: 30)
-                    Picker(selection: $minimumCredit, label: Text("")) {
+                    Picker(selection: $selectedValues.minimumCredit, label: Text("")) {
                         ForEach(6...22, id: \.self) { credit in
                             Text("\(credit)").tag(credit)
                         }
@@ -50,7 +53,7 @@ struct CreditPickerView: View {
                     RoundedRectangle(cornerRadius: 5)
                         .foregroundStyle(Color.gray.opacity(0.1))
                         .frame(width: 80, height: 30)
-                    Picker(selection: $majorNum, label: Text("")) {
+                    Picker(selection: $selectedValues.majorNum, label: Text("")) {
                         ForEach(0...7, id: \.self) { credit in
                             Text("\(credit)").tag(credit)
                         }
@@ -73,7 +76,7 @@ struct CreditPickerView: View {
                     RoundedRectangle(cornerRadius: 5)
                         .foregroundStyle(Color.gray.opacity(0.1))
                         .frame(width: 80, height: 30)
-                    Picker(selection: $ELearnNum, label: Text("")) {
+                    Picker(selection: $selectedValues.ELearnNum, label: Text("")) {
                         ForEach(0...2, id: \.self) { credit in
                             Text("\(credit)").tag(credit)
                         }
@@ -89,6 +92,10 @@ struct CreditPickerView: View {
 }
 
 
-#Preview {
-    CreditPickerView()
+struct CreditPickerView_Previews: PreviewProvider {
+    static var previews: some View {
+        let selectedValues = SelectedValues() // 프리뷰에서 사용할 환경 객체 생성
+        CreditPickerView()
+            .environmentObject(selectedValues) // 생성된 환경 객체를 뷰에 제공
+    }
 }

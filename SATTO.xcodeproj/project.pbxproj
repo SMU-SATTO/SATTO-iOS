@@ -65,6 +65,10 @@
 		AACB4BD22B40712D00169C52 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACB4BD12B40712D00169C52 /* LoginView.swift */; };
 		AACB4BD72B40712F00169C52 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AACB4BD62B40712F00169C52 /* Preview Assets.xcassets */; };
 		AAE233192BB6812200BC3240 /* Assets.xcassets in Sources */ = {isa = PBXBuildFile; fileRef = AAE233182BB6812200BC3240 /* Assets.xcassets */; };
+		AAFE95842BF20C1900B3342A /* SATTOAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAFE95832BF20C1900B3342A /* SATTOAPI.swift */; };
+		AAFE95872BF20E5000B3342A /* SATTOManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAFE95862BF20E5000B3342A /* SATTOManager.swift */; };
+		AAFE95892BF2149100B3342A /* SATTONetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAFE95882BF2149100B3342A /* SATTONetworking.swift */; };
+		AAFE958B2BF2209E00B3342A /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAFE958A2BF2209E00B3342A /* Response.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -120,6 +124,10 @@
 		AACB4BD12B40712D00169C52 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		AACB4BD62B40712F00169C52 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AAE233182BB6812200BC3240 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		AAFE95832BF20C1900B3342A /* SATTOAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SATTOAPI.swift; sourceTree = "<group>"; };
+		AAFE95862BF20E5000B3342A /* SATTOManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SATTOManager.swift; sourceTree = "<group>"; };
+		AAFE95882BF2149100B3342A /* SATTONetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SATTONetworking.swift; sourceTree = "<group>"; };
+		AAFE958A2BF2209E00B3342A /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -323,6 +331,10 @@
 				AACB4BD12B40712D00169C52 /* LoginView.swift */,
 				AAA9508F2BB5A319004E16C8 /* HomeView.swift */,
 				3B1270D52BB147A200E38F86 /* ContentView.swift */,
+				AAFE95862BF20E5000B3342A /* SATTOManager.swift */,
+				AAFE95882BF2149100B3342A /* SATTONetworking.swift */,
+				AAFE958A2BF2209E00B3342A /* Response.swift */,
+				AAFE95852BF20C2E00B3342A /* API */,
 				AA1018A72BDE8810009E6804 /* Model */,
 				AA1018A42BDE878D009E6804 /* ViewModel */,
 				3B0CF0292BB165D800E876B7 /* Setting */,
@@ -342,6 +354,14 @@
 				AACB4BD62B40712F00169C52 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		AAFE95852BF20C2E00B3342A /* API */ = {
+			isa = PBXGroup;
+			children = (
+				AAFE95832BF20C1900B3342A /* SATTOAPI.swift */,
+			);
+			path = API;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -451,12 +471,15 @@
 				AAA9506A2BA5C39B004E16C8 /* EssentialClassesSelectorView.swift in Sources */,
 				AAA9506F2BA5C39B004E16C8 /* TimetableMainViewModel.swift in Sources */,
 				AAA950692BA5C39B004E16C8 /* InvalidTimeSelectorView.swift in Sources */,
+				AAFE95872BF20E5000B3342A /* SATTOManager.swift in Sources */,
 				AAA9506E2BA5C39B004E16C8 /* TimetableMainView.swift in Sources */,
 				3B742B7C2BBE7C570000399F /* CompareTimeTableView.swift in Sources */,
 				AA51CDFE2BE3AD87003799CB /* TimetableView.swift in Sources */,
 				3B742B5A2BB687D60000399F /* SearchView.swift in Sources */,
 				AAA950662BA5C39B004E16C8 /* SearchSheetTabView.swift in Sources */,
+				AAFE95892BF2149100B3342A /* SATTONetworking.swift in Sources */,
 				AAA950852BA7231A004E16C8 /* GradeSheetView.swift in Sources */,
+				AAFE958B2BF2209E00B3342A /* Response.swift in Sources */,
 				AAA9503B2BA5C380004E16C8 /* ChartModel.swift in Sources */,
 				AA1018A92BDE882C009E6804 /* TimetableModel.swift in Sources */,
 				AA1018A62BDE87A1009E6804 /* TimetableViewModel.swift in Sources */,
@@ -466,6 +489,7 @@
 				3B8335BF2BEA18650008EFB5 /* AnnouncementEventView.swift in Sources */,
 				AAA9503D2BA5C380004E16C8 /* TotalCreditsPieChartView.swift in Sources */,
 				AAA9503C2BA5C380004E16C8 /* GraduationRequirementsRadarView.swift in Sources */,
+				AAFE95842BF20C1900B3342A /* SATTOAPI.swift in Sources */,
 				3B8335BD2BEA182D0008EFB5 /* ProgressEventView.swift in Sources */,
 				AAA950712BA5C39B004E16C8 /* TimetableMenuView.swift in Sources */,
 				AAA950812BA5E7A5004E16C8 /* TimetableOptionView.swift in Sources */,
