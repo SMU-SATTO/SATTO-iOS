@@ -10,6 +10,10 @@
 		3B1270DC2BB147DC00E38F86 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1270DB2BB147DC00E38F86 /* EventView.swift */; };
 		3B742B5A2BB687D60000399F /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B742B592BB687D60000399F /* SearchView.swift */; };
 		3B742B7C2BBE7C570000399F /* CompareTimeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B742B7B2BBE7C570000399F /* CompareTimeTableView.swift */; };
+		3B8335BD2BEA182D0008EFB5 /* ProgressEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8335BC2BEA182D0008EFB5 /* ProgressEventView.swift */; };
+		3B8335BF2BEA18650008EFB5 /* AnnouncementEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8335BE2BEA18650008EFB5 /* AnnouncementEventView.swift */; };
+		3B8335C12BEA19030008EFB5 /* DetailProgressEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8335C02BEA19030008EFB5 /* DetailProgressEventView.swift */; };
+		3B8335C32BEA197D0008EFB5 /* UploadImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8335C22BEA197D0008EFB5 /* UploadImageView.swift */; };
 		AA1018A22BDE812A009E6804 /* TimetableCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1018A12BDE812A009E6804 /* TimetableCustom.swift */; };
 		AA1018A62BDE87A1009E6804 /* TimetableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1018A52BDE87A1009E6804 /* TimetableViewModel.swift */; };
 		AA1018A92BDE882C009E6804 /* TimetableModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1018A82BDE882C009E6804 /* TimetableModel.swift */; };
@@ -74,6 +78,10 @@
 		3B1270DD2BB147E300E38F86 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		3B742B592BB687D60000399F /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		3B742B7B2BBE7C570000399F /* CompareTimeTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareTimeTableView.swift; sourceTree = "<group>"; };
+		3B8335BC2BEA182D0008EFB5 /* ProgressEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressEventView.swift; sourceTree = "<group>"; };
+		3B8335BE2BEA18650008EFB5 /* AnnouncementEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementEventView.swift; sourceTree = "<group>"; };
+		3B8335C02BEA19030008EFB5 /* DetailProgressEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProgressEventView.swift; sourceTree = "<group>"; };
+		3B8335C22BEA197D0008EFB5 /* UploadImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadImageView.swift; sourceTree = "<group>"; };
 		AA1018A12BDE812A009E6804 /* TimetableCustom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableCustom.swift; sourceTree = "<group>"; };
 		AA1018A52BDE87A1009E6804 /* TimetableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableViewModel.swift; sourceTree = "<group>"; };
 		AA1018A82BDE882C009E6804 /* TimetableModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableModel.swift; sourceTree = "<group>"; };
@@ -155,6 +163,10 @@
 			isa = PBXGroup;
 			children = (
 				3B1270DB2BB147DC00E38F86 /* EventView.swift */,
+				3B8335BC2BEA182D0008EFB5 /* ProgressEventView.swift */,
+				3B8335BE2BEA18650008EFB5 /* AnnouncementEventView.swift */,
+				3B8335C02BEA19030008EFB5 /* DetailProgressEventView.swift */,
+				3B8335C22BEA197D0008EFB5 /* UploadImageView.swift */,
 			);
 			path = Event;
 			sourceTree = "<group>";
@@ -165,6 +177,13 @@
 				3B1270DD2BB147E300E38F86 /* SettingView.swift */,
 			);
 			path = Setting;
+			sourceTree = "<group>";
+		};
+		3B8335C42BEA19A90008EFB5 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 		AA1018A02BDE8094009E6804 /* TimetableCustom */ = {
@@ -306,6 +325,7 @@
 		AACB4BCE2B40712D00169C52 /* SATTO */ = {
 			isa = PBXGroup;
 			children = (
+				3B8335C42BEA19A90008EFB5 /* Helper */,
 				AA1018AA2BDE9C80009E6804 /* Info.plist */,
 				AACB4BCF2B40712D00169C52 /* SATTOApp.swift */,
 				AACB4BD12B40712D00169C52 /* LoginView.swift */,
@@ -441,6 +461,7 @@
 			files = (
 				AA9E219C2BC81FC800F0566A /* MidCheckView.swift in Sources */,
 				AAE233192BB6812200BC3240 /* Assets.xcassets in Sources */,
+				3B8335C12BEA19030008EFB5 /* DetailProgressEventView.swift in Sources */,
 				AAA9508E2BB5A266004E16C8 /* SettingView.swift in Sources */,
 				AAA950902BB5A319004E16C8 /* HomeView.swift in Sources */,
 				AAA9508D2BB5A263004E16C8 /* FriendView.swift in Sources */,
@@ -465,13 +486,16 @@
 				AAA950672BA5C39B004E16C8 /* MajorCombinationSelectorView.swift in Sources */,
 				AAA950872BA72395004E16C8 /* GESheetView.swift in Sources */,
 				AAA950682BA5C39B004E16C8 /* CreditPickerView.swift in Sources */,
+				3B8335BF2BEA18650008EFB5 /* AnnouncementEventView.swift in Sources */,
 				AAA9503D2BA5C380004E16C8 /* TotalCreditsPieChartView.swift in Sources */,
 				AAA9503C2BA5C380004E16C8 /* GraduationRequirementsRadarView.swift in Sources */,
 				AAFE95842BF20C1900B3342A /* SATTOAPI.swift in Sources */,
+				3B8335BD2BEA182D0008EFB5 /* ProgressEventView.swift in Sources */,
 				AAA950712BA5C39B004E16C8 /* TimetableMenuView.swift in Sources */,
 				AAA950812BA5E7A5004E16C8 /* TimetableOptionView.swift in Sources */,
 				AAA9508B2BA723C2004E16C8 /* TimeSheetView.swift in Sources */,
 				AAA950892BA723B6004E16C8 /* ELearnSheetView.swift in Sources */,
+				3B8335C32BEA197D0008EFB5 /* UploadImageView.swift in Sources */,
 				AAA950702BA5C39B004E16C8 /* TimetableMakeView.swift in Sources */,
 				AAA950832BA722EF004E16C8 /* DefaultSheetView.swift in Sources */,
 				AAA9504D2BA5C396004E16C8 /* Font.swift in Sources */,
