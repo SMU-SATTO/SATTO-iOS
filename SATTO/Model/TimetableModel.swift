@@ -8,18 +8,19 @@
 import SwiftUI
 import JHTimeTable
 
-// MARK: - Welcome
-struct Welcome: Codable {
-    let data: [Datum]
-}
-
-// MARK: - Datum
+//MARK: - Datum
 struct Datum: Codable {
     let timetable: [TimetableModel]
     let totalTime: String
     let isPublic, isRepresent: Bool
     let createdAt: String
 }
+
+// MARK: - Timetable
+struct Timetable: Codable {
+    let sbjDivcls, sbjNo, name, time: String
+}
+
 
 // MARK: - TimetableModel
 /// TimetableModel(sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", name: "컴퓨터네트워크", time: "목4 목5 목6 ")
