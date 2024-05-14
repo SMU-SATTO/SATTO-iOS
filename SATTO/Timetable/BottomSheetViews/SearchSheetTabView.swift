@@ -14,8 +14,6 @@ struct SearchSheetTabView: View {
     
     @State private var searchText = ""
     
-    private let gradeOptions = ["전체", "1학년", "2학년", "3학년", "4학년"]
-    @State private var selectedGrades: [String: Bool] = [:]
     var body: some View {
         VStack {
             //MARK: - 검색, 학과, 학년, 교양, e-러닝 ... 가로 스크롤
@@ -80,64 +78,40 @@ struct SearchSheetTabView: View {
             switch selectedTab {
             case "학년":
                 // 학년에 따른 뷰
-                HStack(spacing: 10) {
-                    ForEach(gradeOptions.indices, id: \.self) { index in
-                        HStack(spacing: 10) {
-                            Button(action: {
-                                if index == 0 {
-                                    self.selectedGrades = Dictionary(uniqueKeysWithValues: self.gradeOptions.map { ($0, false) })
-                                    self.selectedGrades[gradeOptions[0]] = true
-                                } else {
-                                    self.selectedGrades[gradeOptions[0]] = false
-                                    self.selectedGrades[gradeOptions[index], default: false].toggle()
-                                }
-                            }) {
-                                RoundedRectangle(cornerRadius: 20)
-                                    .foregroundStyle(.clear)
-                                    .frame(width: 60, height: 30)
-                                    .overlay(
-                                        Text(gradeOptions[index])
-                                            .foregroundStyle(selectedGrades[gradeOptions[index], default: false] ? .blue : .black)
-                                            .font(.sb12)
-                                    )
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 20)
-                                            .inset(by: 0.5)
-                                            .stroke(selectedGrades[gradeOptions[index], default: false] ? .blue : Color.gray200, lineWidth: 1)
-                                    )
-                            }
-                        }
-                    }
-                }
-                .onAppear {
-                    //MARK: - 중복 가능하게 수정 필요
-                    self.selectedGrades[gradeOptions[0]] = true
-                }
+                GradeSheetView()
+                    .frame(height: 30)
             case "학과":
-                // 학과에 따른 뷰
+                // 학과에 따른 뷰 - 삭제
                 EmptyView()
             case "교양":
                 // 교양에 따른 뷰
-                EmptyView()
+                GESheetView()
+                    .frame(height: 30)
             case "e-러닝":
                 // e-러닝에 따른 뷰
-                EmptyView()
+                ELearnSheetView()
+                    .frame(height: 30)
             case "시간":
                 // 시간에 따른 뷰
-                EmptyView()
+                TimeSheetView()
+                    .padding(.top, 10)
             default:
                 EmptyView()
             }
-            
-            ScrollView {
-                DefaultSheetView()
-                    .padding(EdgeInsets(top: 5, leading: 20, bottom: 5, trailing: 20))
-                
-                Spacer()
+            if selectedTab != "시간" {
+                ScrollView {
+                    DefaultSheetView()
+                        .padding(EdgeInsets(top: 5, leading: 20, bottom: 5, trailing: 20))
+                    
+                    Spacer()
+                }
+                .ignoresSafeArea(.all)
+                .onAppear {
+                    UIScrollView.appearance().isScrollEnabled = false
+                }
             }
-            .ignoresSafeArea(.all)
-            .onAppear {
-                UIScrollView.appearance().isScrollEnabled = false
+            else {
+                Spacer()
             }
         }
         

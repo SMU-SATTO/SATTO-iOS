@@ -11,7 +11,7 @@ import Moya
 class SATTONetworking {
     static func getTimeTableListFromAuto(done: @escaping () -> Void, failure: @escaping () -> Void) {
         let provider = MoyaProvider<SATTOAPI>()
-        provider.request(.getTimeTableListFromAuto) { result in
+        provider.request(SATTOAPI.getTimeTableListFromAuto) { result in
             switch result {
             case .success(let response):
                 do {
@@ -28,7 +28,7 @@ class SATTONetworking {
     
     static func getTimeTableListFromCustom(done: @escaping () -> Void, failure: @escaping () -> Void) {
         let provider = MoyaProvider<SATTOAPI>()
-        provider.request(.getTimeTableListFromCustom) { result in
+        provider.request(SATTOAPI.getTimeTableListFromCustom) { result in
             switch result {
             case .success(let response):
                 do {
