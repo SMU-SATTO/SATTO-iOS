@@ -28,6 +28,38 @@ struct TimetableModel: Codable {
     let sbjDivcls, sbjNo, name, time: String
 }
 
+//MARK: - TimetableDetailModel
+///  TimetableDetailModel(major: "전공", "sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", sbjName: "과목명", prof: "교수명", "time: "목4 목5 목6 ", enrollmentCapacity: 200, enrolledStudents: 230)
+struct TimetableDetailModel: Codable {
+    let major: String
+    let sbjDivcls, sbjNo, sbjName, prof, time: String
+    let enrollmentCapacity, enrolledStudents: Int
+    let yesterdayEnrolledData, threeDaysAgoEnrolledData: Int
+    
+    
+    init(major: String, sbjDivcls: String, sbjNo: String, sbjName: String, prof: String, time: String, enrollmentCapacity: Int, enrolledStudents: Int, yesterdayEnrolledData: Int, threeDaysAgoEnrolledData: Int) {
+        self.major = major
+        self.sbjDivcls = sbjDivcls
+        self.sbjNo = sbjNo
+        self.sbjName = sbjName
+        self.prof = prof
+        self.time = time
+        self.enrollmentCapacity = enrollmentCapacity
+        self.enrolledStudents = enrolledStudents
+        self.yesterdayEnrolledData = yesterdayEnrolledData
+        self.threeDaysAgoEnrolledData = threeDaysAgoEnrolledData
+    }
+}
+
+struct TimetableDetailList: Codable {
+    let timetable: [TimetableDetailModel]
+    
+    init(timetable: [TimetableDetailModel]) {
+        self.timetable = timetable
+    }
+}
+
+
 struct LectureModel: Identifiable {
     var id = UUID()
     var title: String
