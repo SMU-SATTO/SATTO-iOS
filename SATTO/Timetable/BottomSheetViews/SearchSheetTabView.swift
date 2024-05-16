@@ -7,12 +7,15 @@
 
 import SwiftUI
 
+//MARK: - todo: 중복 선택 구현
 struct SearchSheetTabView: View {
     @State private var selectedTab = ""
     @State private var selectedCategories: [String: Bool] = [:]
     private let categories = ["학년", "교양", "e-러닝", "시간"]
     
     @State private var searchText = ""
+    
+    var showResultAction: () -> Void
     
     var body: some View {
         VStack {
@@ -44,36 +47,38 @@ struct SearchSheetTabView: View {
                 .padding(.top, 10)
             }
             .padding(.horizontal, 15)
-            .padding(.top, 10)
+            .padding(.top, 20)
             //MARK: - 검색 바
-            VStack {
-                RoundedRectangle(cornerRadius: 30)
-                    .foregroundStyle(Color(red: 0.97, green: 0.97, blue: 0.98))
-                    .frame(height: 40)
-                    .overlay(
-                        HStack {
-                            Image(systemName: "magnifyingglass")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 19, height: 19)
-                                .foregroundStyle(.gray)
-                                .padding(.leading, 15)
-                            TextField("듣고 싶은 과목을 입력해 주세요", text: $searchText)
-                                .font(.sb14)
-                                .foregroundStyle(.gray)
-                                .padding(.leading, 5)
-                            Button(action: {
-                                searchText.removeAll()
-                            }) {
-                                Image(systemName: "xmark.circle.fill")
+            if selectedTab != "시간" {
+                VStack {
+                    RoundedRectangle(cornerRadius: 30)
+                        .foregroundStyle(Color(red: 0.97, green: 0.97, blue: 0.98))
+                        .frame(height: 40)
+                        .overlay(
+                            HStack {
+                                Image(systemName: "magnifyingglass")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 19, height: 19)
                                     .foregroundStyle(.gray)
+                                    .padding(.leading, 15)
+                                TextField("듣고 싶은 과목을 입력해 주세요", text: $searchText)
+                                    .font(.sb14)
+                                    .foregroundStyle(.gray)
+                                    .padding(.leading, 5)
+                                Button(action: {
+                                    searchText.removeAll()
+                                }) {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .foregroundStyle(.gray)
+                                }
+                                Spacer()
                             }
-                            Spacer()
-                        }
-                    )
+                        )
+                }
+                .padding(.horizontal, 15)
+                .padding(.top, 10)
             }
-            .padding(.horizontal, 15)
-            .padding(.top, 10)
             //MARK: - Option에 따라 다른 뷰 제공
             switch selectedTab {
             case "학년":
@@ -99,15 +104,11 @@ struct SearchSheetTabView: View {
                 EmptyView()
             }
             if selectedTab != "시간" {
-                ScrollView {
-                    DefaultSheetView()
+                VStack {
+                    DefaultSheetView(showResultAction: showResultAction)
                         .padding(EdgeInsets(top: 5, leading: 20, bottom: 5, trailing: 20))
                     
                     Spacer()
-                }
-                .ignoresSafeArea(.all)
-                .onAppear {
-                    UIScrollView.appearance().isScrollEnabled = false
                 }
             }
             else {
@@ -119,5 +120,5 @@ struct SearchSheetTabView: View {
 }
 
 #Preview {
-    SearchSheetTabView()
+    SearchSheetTabView(showResultAction: {})
 }
