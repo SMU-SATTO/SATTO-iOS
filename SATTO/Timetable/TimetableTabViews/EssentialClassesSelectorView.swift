@@ -29,7 +29,7 @@ struct EssentialClassesSelectorView: View {
                     isShowBottomSheet = true
                 }
                 .sheet(isPresented: $isShowBottomSheet, content: {
-                    SearchSheetTabView()
+                    SearchSheetTabView(showResultAction: {isShowBottomSheet = false})
                         .presentationDetents([.medium, .large])
                 })
         }

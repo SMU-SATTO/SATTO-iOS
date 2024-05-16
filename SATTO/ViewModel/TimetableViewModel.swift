@@ -14,6 +14,18 @@ class TimetableViewModel: ObservableObject {
     @Published var subjectData = TimetableModel(sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", name: "컴퓨터네트워크", time: "목4 금5 금6")
     @Published var subjectData2 = TimetableModel(sbjDivcls: "HAEA0008-2", sbjNo: "HAEA0008", name: "운영체제", time: "월1 월2 월3")
     @Published var subjectData3 = TimetableModel(sbjDivcls: "HAEA0008-3", sbjNo: "HAEA0008", name: "소프트웨어공학", time: "월4 목3 금4")
+    
+//    @Published var subjectDetailDataList: [TimetableDetailModel] = []
+    @Published var subjectDetailDataList: [TimetableDetailModel] = [
+        TimetableDetailModel(major: "전공", sbjDivcls: "ABC-03", sbjNo: "ABC", sbjName: "과목명", prof: "홍길동", time: "화2 화3 화4", enrollmentCapacity: 100, enrolledStudents: 115, yesterdayEnrolledData: 100, threeDaysAgoEnrolledData: 80),
+        TimetableDetailModel(major: "전공", sbjDivcls: "DEF-05", sbjNo: "DEF", sbjName: "데이터베이스", prof: "춘향이", time: "월4 월5 월6", enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),
+        TimetableDetailModel(major: "교양", sbjDivcls: "FAS-05", sbjNo: "DEF", sbjName: "운영체제", prof: "가나다", time: "월4 월5 월6", enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),
+        TimetableDetailModel(major: "전공", sbjDivcls: "QWE-01", sbjNo: "DEF", sbjName: "English and Foundations(speaking)", prof: "프란시스 브래넌", time: "월1 월2 월3", enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),
+        TimetableDetailModel(major: "교양", sbjDivcls: "ASD-02", sbjNo: "DEF", sbjName: "데이터마이닝", prof: "아자차카", time: "월4 월5 월6", enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),
+        TimetableDetailModel(major: "전공", sbjDivcls: "ZXC-08", sbjNo: "DEF", sbjName: "컴퓨터수학", prof: "타파하", time: "월4 월5 월6", enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30)
+    ]
+
+    
     lazy var timetableData: Datum = {
         return Datum(timetable: [self.subjectData, self.subjectData2, self.subjectData3], totalTime: "a", isPublic: true, isRepresent: true, createdAt: "today")
     }()
