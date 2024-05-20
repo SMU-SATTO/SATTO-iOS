@@ -12,6 +12,7 @@ struct LoginView: View {
     @State private var password = ""
     var body: some View {
         VStack {
+            
             Image("SATTO")
                 .resizable()
                 .frame(width: 300, height: 400)

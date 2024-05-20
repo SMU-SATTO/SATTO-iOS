@@ -15,15 +15,14 @@ struct SettingView: View {
 
         
         ZStack {
-//            ScrollView {
+            
+            background
+            
+            ScrollView {
                 VStack(spacing: 0) {
-                    MySquare()
-                        .fill(Color.red)
-                        .frame(maxWidth: .infinity, minHeight: 230)
                         
-                    
                     ProfileImageCell(inCircleSize: 125, outCircleSize: 130)
-                        .padding(.top, -100)
+                        .padding(.top, 130)
                         .padding(.bottom, 14)
                     
                     Text("한민재")
@@ -35,90 +34,118 @@ struct SettingView: View {
                         .foregroundColor(Color.gray600)
                         .padding(.bottom, 14)
                     
-                    LazyVStack(spacing: 15) {
+                    VStack(spacing: 18) {
+                        VStack(spacing: 0) {
+                            
+                            SettingToggle(toogleTitle: "계정 공개", toggleImage: "account")
+                            SettingToggle(toogleTitle: "버스 우회 정보", toggleImage: "bus")
+                            SettingToggle(toogleTitle: "알림 기능", toggleImage: "alarm")
+                            SettingToggle(toogleTitle: "다크모드", toggleImage: "darkmode")
+                            
+                        }
+                        .padding(.vertical, 5)
+                        .background(
+                            border
+                        )
                         
-                        Toggle1()
-                        Toggle1()
-                        Toggle1()
-                        Toggle1()
+                        VStack(spacing: 0) {
+                            
+                            SettingOptionCell(settingImageName: "edit", settingName: "시간표 수정하기")
+                            SettingOptionCell(settingImageName: "info", settingName: "공지사항")
+                            
+                        }
+                        .padding(.vertical, 5)
+                        .background(
+                            border
+                        )
                         
+                        VStack(spacing: 0) {
+                            
+                            SettingOptionCell(settingImageName: "ask", settingName: "문의하기")
+                            SettingOptionCell(settingImageName: "logout", settingName: "현재 버전")
+                            SettingOptionCell(settingImageName: "logout", settingName: "로그아웃")
+                            SettingOptionCell(settingImageName: "delete", settingName: "탈퇴하기")
+                            
+                        }
+                        .padding(.vertical, 5)
+                        .background(
+                            border
+                        )
+                        .padding(.bottom, 100)
                     }
-                    .padding(.vertical, 12)
-                    .background(
-                        Rectangle()
-                            .foregroundColor(.white)
-                            .cornerRadius(8)
-                            .shadow(radius: 5, x: 0, y: 0)
-                    )
                     .padding(.horizontal, 25)
-                    .padding(.bottom, 18)
-                    
-                    
-                    LazyVStack(spacing: 15) {
-                        
-                        SettingOptionCell(settingImageName: "account", settingName: "계정 공개")
-                        SettingOptionCell(settingImageName: "bus", settingName: "버스 우회 정보")
-                        
-                    }
-                    .padding(.vertical, 12)
-                    .background(
-                        Rectangle()
-                            .foregroundColor(.white)
-                            .cornerRadius(8)
-                            .shadow(radius: 5, x: 0, y: 0)
-                    )
-                    .padding(.horizontal, 25)
-                    .padding(.bottom, 18)
-                    
-                    LazyVStack(spacing: 15) {
-                        
-                        SettingOptionCell(settingImageName: "ask", settingName: "문의하기")
-                        SettingOptionCell(settingImageName: "logout", settingName: "현재 버전")
-                        SettingOptionCell(settingImageName: "logout", settingName: "로그아웃")
-                        SettingOptionCell(settingImageName: "delete", settingName: "탈퇴하기")
-                        
-                    }
-                    .padding(.vertical, 12)
-                    .background(
-                        Rectangle()
-                            .foregroundColor(.white)
-                            .cornerRadius(8)
-                            .shadow(radius: 5, x: 0, y: 0)
-                    )
-                    .padding(.horizontal, 25)
-                    .padding(.bottom, 100)
-                    
                 }
-                
-                
-//            }
-            .ignoresSafeArea()
+            }
         }
+        .ignoresSafeArea()
+    }
+    
+    var background: some View {
+        VStack(spacing: 0) {
+            MySquare()
+                .fill(Color.gray100)
+            .frame(maxWidth: .infinity, maxHeight: 230)
+            
+            Spacer()
+        }
+    }
+    
+    var border: some View {
+        Rectangle()
+            .foregroundColor(.white)
+            .cornerRadius(8)
+            .shadow(radius: 5, x: 0, y: 0)
     }
 }
 
 
-struct Toggle1: View {
-    @State private var isOn = true
+struct SettingToggle: View {
+    @State private var isOn = false
+    var toogleTitle: String
+    var toggleImage: String
     
     var body: some View {
         
             Toggle(isOn: $isOn) {
                 HStack(spacing: 0) {
-                    Image("account")
+                    Image(toggleImage)
                         .padding(.leading, 5)
                         .padding(.trailing, 14)
                     
-                    Text("계정 공개")
+                    Text(toogleTitle)
                         .font(Font.custom("Pretendard", size: 14))
                         .foregroundColor(Color.gray600)
                 }
                 
             }
+            .tint(Color(red: 0.18, green: 0.5, blue: 0.93))
             .padding(.horizontal, 23)
+            .padding(.vertical, 7)
         
     }
         
+}
+
+struct SettingOptionCell: View {
+    
+    var settingImageName: String
+    var settingName: String
+    
+    var body: some View {
+        HStack(spacing: 0) {
+            Image(settingImageName)
+                .padding(.leading, 5)
+                .padding(.trailing, 14)
+            
+            Text(settingName)
+                .font(Font.custom("Pretendard", size: 14))
+                .foregroundColor(Color.gray600)
+            
+            Spacer()
+        }
+        .padding(.horizontal, 23)
+        .padding(.vertical, 8)
+    }
 }
 
 
@@ -145,23 +172,4 @@ struct MySquare: Shape {
     ContentView()
 }
 
-struct SettingOptionCell: View {
-    
-    var settingImageName: String
-    var settingName: String
-    
-    var body: some View {
-        HStack(spacing: 0) {
-            Image(settingImageName)
-                .padding(.leading, 5)
-                .padding(.trailing, 14)
-            
-            Text(settingName)
-                .font(Font.custom("Pretendard", size: 14))
-                .foregroundColor(Color.gray600)
-            
-            Spacer()
-        }
-        .padding(.horizontal, 23)
-    }
-}
+
