@@ -299,48 +299,11 @@ struct ProfileImageCell: View {
     }
 }
 
-//struct ProgressViewTest: View {
-//    // 1
-//    @State var progress: Double = 0
-//    
-//    var body: some View {
-//        VStack {
-//            Spacer()
-//            ZStack {
-//                // 2
-//                CircularProgressView(progress: progress)
-//                // 3
-//                Text("\(progress * 100, specifier: "%.0f")")
-//                    .font(.largeTitle)
-//                    .bold()
-//            }.frame(width: 200, height: 200)
-//            Spacer()
-//            HStack {
-//                // 4
-//                Slider(value: $progress, in: 0...1)
-//                // 5
-//                Button("Reset") {
-//                    resetProgress()
-//                }.buttonStyle(.borderedProminent)
-//            }
-//        }
-//    }
-//    
-//    func resetProgress() {
-//        progress = 0
-//    }
-//}
-
 struct CircularProgressView: View {
     
-//    let divide: Int
-//    let progress: Double
     let progress_1: Int = 60
     let progress_2: Int = 33
     let total: Int = 130
-
-    
-    
     
     var body: some View {
         ZStack {
@@ -389,16 +352,4 @@ struct CircularProgressView: View {
 #Preview {
     FriendView(stackPath: .constant([.friend]))
 }
-
-//#Preview {
-//    ProgressViewTest()
-//}
-
-//struct GraduationRequirementsView_Previews: PreviewProvider {
-//    @Namespace static var namespace: Namespace.ID
-//    static var previews: some View {
-//        GraduationRequirementsView (namespace: namespace, show: .constant(false))
-//    }
-//}
-
 
