@@ -62,7 +62,7 @@ struct TimetableMainView: View {
                                     
                                     Text("민재님을 위한 시간표를 만들어 드릴게요.")
                                         .font(.m12)
-                                        .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                                        .foregroundStyle(.gray400)
                                         .padding(.top, 5)
                                     
                                     Button(action: {

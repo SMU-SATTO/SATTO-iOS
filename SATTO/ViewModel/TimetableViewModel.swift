@@ -8,33 +8,84 @@
 import SwiftUI
 import JHTimeTable
 
+///서버에서 받아온 뷰모델
 class TimetableViewModel: ObservableObject {
     let colorSelectionManager = ColorSelectionManager()
     
-    @Published var subjectData = TimetableModel(sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", name: "컴퓨터네트워크", time: "목4 금5 금6")
-    @Published var subjectData2 = TimetableModel(sbjDivcls: "HAEA0008-2", sbjNo: "HAEA0008", name: "운영체제", time: "월1 월2 월3")
-    @Published var subjectData3 = TimetableModel(sbjDivcls: "HAEA0008-3", sbjNo: "HAEA0008", name: "소프트웨어공학", time: "월4 목3 금4")
+    @Published var subjectData = TimetableModel(sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", sbjName: "컴퓨터네트워크", time: "목4 금5 금6")
+    @Published var subjectData2 = TimetableModel(sbjDivcls: "HAEA0008-2", sbjNo: "HAEA0008", sbjName: "운영체제", time: "월1 월2 월3")
+    @Published var subjectData3 = TimetableModel(sbjDivcls: "HAEA0008-3", sbjNo: "HAEA0008", sbjName: "소프트웨어공학", time: "월4 목3 금4")
     
 //    @Published var subjectDetailDataList: [TimetableDetailModel] = []
     @Published var subjectDetailDataList: [TimetableDetailModel] = [
-        TimetableDetailModel(major: "전공", sbjDivcls: "ABC-03", sbjNo: "ABC", sbjName: "과목명", prof: "홍길동", time: "화2 화3 화4", enrollmentCapacity: 100, enrolledStudents: 115, yesterdayEnrolledData: 100, threeDaysAgoEnrolledData: 80),
-        TimetableDetailModel(major: "전공", sbjDivcls: "DEF-05", sbjNo: "DEF", sbjName: "데이터베이스", prof: "춘향이", time: "월4 월5 월6", enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),
-        TimetableDetailModel(major: "교양", sbjDivcls: "FAS-05", sbjNo: "DEF", sbjName: "운영체제", prof: "가나다", time: "월4 월5 월6", enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),
-        TimetableDetailModel(major: "전공", sbjDivcls: "QWE-01", sbjNo: "DEF", sbjName: "English and Foundations(speaking)", prof: "프란시스 브래넌", time: "월1 월2 월3", enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),
-        TimetableDetailModel(major: "교양", sbjDivcls: "ASD-02", sbjNo: "DEF", sbjName: "데이터마이닝", prof: "아자차카", time: "월4 월5 월6", enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),
-        TimetableDetailModel(major: "전공", sbjDivcls: "ZXC-08", sbjNo: "DEF", sbjName: "컴퓨터수학", prof: "타파하", time: "월4 월5 월6", enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30)
+        TimetableDetailModel(major: "전공", sbjDivcls: "ABC-03", sbjNo: "ABC", sbjName: "과목명", prof: "홍길동", time: "화2 화3 화4", credit: 3, enrollmentCapacity: 100, enrolledStudents: 115, yesterdayEnrolledData: 100, threeDaysAgoEnrolledData: 80),
+        TimetableDetailModel(major: "전공", sbjDivcls: "DEF-05", sbjNo: "DEF", sbjName: "데이터베이스", prof: "춘향이", time: "월4 월5 월6", credit: 3, enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),
+        TimetableDetailModel(major: "교양", sbjDivcls: "FAS-05", sbjNo: "DEF", sbjName: "운영체제", prof: "가나다", time: "월4 월5 월6", credit: 3, enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),
+        TimetableDetailModel(major: "전공", sbjDivcls: "QWE-01", sbjNo: "DEF", sbjName: "English and Foundations(speaking)", prof: "프란시스 브래넌", time: "월1 월2 월3", credit: 3, enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),
+        TimetableDetailModel(major: "교양", sbjDivcls: "ASD-02", sbjNo: "DEF", sbjName: "데이터마이닝", prof: "아자차카", time: "월4 월5 월6", credit: 3, enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),
+        TimetableDetailModel(major: "전공", sbjDivcls: "ZXC-08", sbjNo: "DEF", sbjName: "컴퓨터수학", prof: "타파하", time: "월4 월5 월6", credit: 3, enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),
+        TimetableDetailModel(major: "전공", sbjDivcls: "ZXC-09", sbjNo: "DEF", sbjName: "이산수학", prof: "교수명", time: "월2 월3 월4", credit: 5, enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),
+        TimetableDetailModel(major: "전공", sbjDivcls: "ZXC-10", sbjNo: "DEF", sbjName: "소프트웨어공학", prof: "교수명2", time: "월4 월5 월6", credit: 7, enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30)
     ]
+    
+    @Published var selectedSubjects: [TimetableBase] = []
+    
+    func isSelectedSubjectsEmpty() -> Bool {
+        return selectedSubjects.isEmpty
+    }
+    
+    func addSubject(_ subject: TimetableBase) {
+        if !selectedSubjects.contains(where: { $0.sbjDivcls == subject.sbjDivcls }) && !isTimeOverlapping(for: subject) {
+            selectedSubjects.append(subject)
+        }
+    }
+        
+    func removeSubject(_ subject: TimetableBase) {
+        if let index = selectedSubjects.firstIndex(where: { $0.sbjDivcls == subject.sbjDivcls }) {
+            selectedSubjects.remove(at: index)
+        }
+    }
+    
+    func toggleSelection(subject: TimetableBase) -> Bool {
+        if let index = selectedSubjects.firstIndex(where: { $0.sbjDivcls == subject.sbjDivcls }) {
+            selectedSubjects.remove(at: index)
+            return true
+        } else if !isTimeOverlapping(for: subject) {
+            selectedSubjects.append(subject)
+            return true
+        }
+        return false
+    }
 
+    func isSelected(subject: TimetableBase) -> Bool {
+        return selectedSubjects.contains(where: { $0.sbjDivcls == subject.sbjDivcls })
+    }
     
-    lazy var timetableData: Datum = {
-        return Datum(timetable: [self.subjectData, self.subjectData2, self.subjectData3], totalTime: "a", isPublic: true, isRepresent: true, createdAt: "today")
-    }()
+    func isTimeOverlapping(for subject: TimetableBase) -> Bool {
+        let newSubjectTimes = parseTimes(for: subject)
+        for existingSubject in selectedSubjects {
+            let existingSubjectTimes = parseTimes(for: existingSubject)
+            if newSubjectTimes.contains(where: { newTime in
+                existingSubjectTimes.contains(where: { $0 == newTime })
+            }) {
+                return true
+            }
+        }
+        return false
+    }
     
+    private func parseTimes(for subject: TimetableBase) -> [String] {
+        return subject.time.components(separatedBy: " ")
+    }
+    
+    func clear() {
+        selectedSubjects.removeAll()
+    }
     
     private let addTime = 8 // 1교시는 9시부터 시작
     
     /// JHTimeTable 모델 형식으로 바꿔주는 함수
-    private func convertToLectureModels(from timetableModel: TimetableModel) -> [LectureModel] {
+    private func convertToLectureModels(from timetableModel: TimetableBase) -> [LectureModel] {
         let components = timetableModel.time.components(separatedBy: " ")
         var lectureModels: [LectureModel] = []
         
@@ -52,7 +103,7 @@ class TimetableViewModel: ObservableObject {
             // 끝나는 시간은 시작 시간에 1시간을 더한 값으로 설정
             let endTime = LectureTableTime(hour: startTime.hour + 1, minute: startTime.minute)
             
-            let lectureModel = LectureModel(title: timetableModel.name,
+            let lectureModel = LectureModel(title: timetableModel.sbjName,
                                             color: setRandomColor,
                                             week: week,
                                             startAt: startTime,
@@ -123,13 +174,17 @@ class TimetableViewModel: ObservableObject {
         return mergedLectures
     }
 
-    
-//    func convertToLectureModels() -> [LectureModel] {
-//        return convertToLectureModels(from: subjectData)
-//    }
-    func convertToLectureModels() -> [LectureModel] {
-        return timetableData.timetable.flatMap { convertToLectureModels(from: $0) } // 옵셔널 체이닝 추가
+    /// true: 사용자가 바텀시트에서 선택한 과목뷰, false: 서버에서 받아온 과목뷰
+    func convertToLectureModels(usingSelectedSubjects: Bool) -> [LectureModel] {
+        let allTimetableData: [TimetableBase]
+        if usingSelectedSubjects {
+            allTimetableData = selectedSubjects
+        } else {
+            allTimetableData = [subjectData, subjectData2, subjectData3] + subjectDetailDataList
+        }
+        return allTimetableData.flatMap { convertToLectureModels(from: $0) }
     }
+
 }
 
 class ColorSelectionManager {

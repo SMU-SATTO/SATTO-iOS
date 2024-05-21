@@ -10,7 +10,10 @@ import SwiftUI
 struct TimetableCustom: View {
     @Binding var stackPath: [Route]
     
+    @StateObject var timetableViewModel = TimetableViewModel()
+    
     @State private var isShowBottomSheet = false
+    @State private var isUsingSelectedSubjects = true
     var body: some View {
         VStack {
             VStack (spacing: 2) {
@@ -18,12 +21,12 @@ struct TimetableCustom: View {
                     .font(.sb18)
                     .frame(width: 320, alignment: .topLeading)
             }
-            TimetableView(timetableViewModel: TimetableViewModel())
+            TimetableView(timetableViewModel: timetableViewModel, usingSelectedSubjects: $isUsingSelectedSubjects)
                 .onTapGesture {
                     isShowBottomSheet = true
                 }
                 .sheet(isPresented: $isShowBottomSheet, content: {
-                    SearchSheetTabView(showResultAction: {isShowBottomSheet = false})
+                    SearchSheetTabView(timetableViewModel: timetableViewModel, showResultAction: {isShowBottomSheet = false})
                         .presentationDetents([.medium, .large])
                 })
         }
