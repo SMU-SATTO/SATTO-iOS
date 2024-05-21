@@ -11,7 +11,9 @@ struct ProgressEventView: View {
     @State private var selectedPage: EventTab = .progressEvent
     @Namespace var namespace
     
-    @Binding var stackPath: [Route]
+//    @Binding var stackPath: [Route]
+    @ObservedObject var eventViewModel: EventViewModel
+    @EnvironmentObject var navPathFinder: NavigationPathFinder
     
     var body: some View {
         
@@ -22,18 +24,36 @@ struct ProgressEventView: View {
                     
                     VStack(spacing: 0){
                         
-                        ProgressEventCell(eventName: "개강맞이 시간표 경진대회", eventPeriod: "2024.02.15 - 2024.03.28", eventImage: "sb", eventDeadLine: "6일 남음", eventNumberOfParticipants: "256명 참여", eventDescription: "내 시간표를 공유해 시간표 경진대회에 참여해 보세요!")
-                            .onTapGesture {
-                                stackPath.append(.detailProgressEvent)
-                            }
-                            .padding(.top, 27)
+                        ForEach(eventViewModel.events, id: \.id) { progressEvent in
+//                            NavigationLink(value: EventRoute.detailProgressEvent, label: {
+//                                ProgressEventCell(eventName: progressEvent.title, eventPeriod: "2024.02.15 - 2024.03.28", eventImage: "sb", eventDeadLine: "6일 남음", eventNumberOfParticipants: "256명 참여", eventDescription: progressEvent.description)
+//                                    .padding(.top, 27)
+//                            })
+                            Button(action: {
+                                navPathFinder.addPath(route: .detailProgressEvent)
+                                eventViewModel.event = progressEvent
+                            }, label: {
+                                ProgressEventCell(eventName: progressEvent.title, eventPeriod: "2024.02.15 - 2024.03.28", eventImage: "sb", eventDeadLine: "6일 남음", eventNumberOfParticipants: "256명 참여", eventDescription: progressEvent.description)
+                                    .padding(.top, 27)
+                            })
+                        }
                         
+                        ForEach(eventViewModel.events, id: \.id) { progressEvent in
+                            NavigationLink(value: EventRoute.detailProgressEvent, label: {
+                                ProgressEventCell(eventName: progressEvent.title, eventPeriod: "2024.02.15 - 2024.03.28", eventImage: "sb", eventDeadLine: "6일 남음", eventNumberOfParticipants: "256명 참여", eventDescription: progressEvent.description)
+                                    .padding(.top, 27)
+                                
+                                
+
+                            })
+                        }
                         
                         
                     }
+                    .padding(.horizontal, 20)
                     
                 }
-                .padding(.horizontal, 20)
+//                .padding(.horizontal, 20)
                 
         }
         
@@ -120,5 +140,5 @@ struct ProgressEventCell: View {
 
 
 #Preview {
-    ProgressEventView(stackPath: .constant([.progressEvent]))
+    ProgressEventView(eventViewModel: EventViewModel())
 }

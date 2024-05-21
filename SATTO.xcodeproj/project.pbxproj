@@ -14,6 +14,8 @@
 		3B8335BF2BEA18650008EFB5 /* AnnouncementEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8335BE2BEA18650008EFB5 /* AnnouncementEventView.swift */; };
 		3B8335C12BEA19030008EFB5 /* DetailProgressEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8335C02BEA19030008EFB5 /* DetailProgressEventView.swift */; };
 		3B8335C32BEA197D0008EFB5 /* UploadImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8335C22BEA197D0008EFB5 /* UploadImageView.swift */; };
+		3BD5322B2BF06ADB00152A77 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD5322A2BF06ADB00152A77 /* Event.swift */; };
+		3BD5322D2BF06AEB00152A77 /* EventViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD5322C2BF06AEB00152A77 /* EventViewModel.swift */; };
 		AA1018A22BDE812A009E6804 /* TimetableCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1018A12BDE812A009E6804 /* TimetableCustom.swift */; };
 		AA1018A62BDE87A1009E6804 /* TimetableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1018A52BDE87A1009E6804 /* TimetableViewModel.swift */; };
 		AA1018A92BDE882C009E6804 /* TimetableModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1018A82BDE882C009E6804 /* TimetableModel.swift */; };
@@ -83,6 +85,8 @@
 		3B8335BE2BEA18650008EFB5 /* AnnouncementEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementEventView.swift; sourceTree = "<group>"; };
 		3B8335C02BEA19030008EFB5 /* DetailProgressEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProgressEventView.swift; sourceTree = "<group>"; };
 		3B8335C22BEA197D0008EFB5 /* UploadImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadImageView.swift; sourceTree = "<group>"; };
+		3BD5322A2BF06ADB00152A77 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		3BD5322C2BF06AEB00152A77 /* EventViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventViewModel.swift; sourceTree = "<group>"; };
 		AA1018A12BDE812A009E6804 /* TimetableCustom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableCustom.swift; sourceTree = "<group>"; };
 		AA1018A52BDE87A1009E6804 /* TimetableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableViewModel.swift; sourceTree = "<group>"; };
 		AA1018A82BDE882C009E6804 /* TimetableModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableModel.swift; sourceTree = "<group>"; };
@@ -188,6 +192,22 @@
 			path = Helper;
 			sourceTree = "<group>";
 		};
+		3BD532282BF06AB900152A77 /* Event */ = {
+			isa = PBXGroup;
+			children = (
+				3BD5322A2BF06ADB00152A77 /* Event.swift */,
+			);
+			path = Event;
+			sourceTree = "<group>";
+		};
+		3BD532292BF06AC400152A77 /* Event */ = {
+			isa = PBXGroup;
+			children = (
+				3BD5322C2BF06AEB00152A77 /* EventViewModel.swift */,
+			);
+			path = Event;
+			sourceTree = "<group>";
+		};
 		AA1018A02BDE8094009E6804 /* TimetableCustom */ = {
 			isa = PBXGroup;
 			children = (
@@ -199,6 +219,7 @@
 		AA1018A42BDE878D009E6804 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				3BD532292BF06AC400152A77 /* Event */,
 				AA1018A52BDE87A1009E6804 /* TimetableViewModel.swift */,
 				AAA950622BA5C39B004E16C8 /* TimetableMainViewModel.swift */,
 			);
@@ -208,6 +229,7 @@
 		AA1018A72BDE8810009E6804 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				3BD532282BF06AB900152A77 /* Event */,
 				AA1018A82BDE882C009E6804 /* TimetableModel.swift */,
 			);
 			path = Model;
@@ -479,6 +501,7 @@
 				AAA9506E2BA5C39B004E16C8 /* TimetableMainView.swift in Sources */,
 				3B742B7C2BBE7C570000399F /* CompareTimeTableView.swift in Sources */,
 				AA51CDFE2BE3AD87003799CB /* TimetableView.swift in Sources */,
+				3BD5322D2BF06AEB00152A77 /* EventViewModel.swift in Sources */,
 				3B742B5A2BB687D60000399F /* SearchView.swift in Sources */,
 				AAA950662BA5C39B004E16C8 /* SearchSheetTabView.swift in Sources */,
 				AAFE95892BF2149100B3342A /* SATTONetworking.swift in Sources */,
@@ -490,6 +513,7 @@
 				AAA950672BA5C39B004E16C8 /* MajorCombinationSelectorView.swift in Sources */,
 				AAA950872BA72395004E16C8 /* GESheetView.swift in Sources */,
 				AAA950682BA5C39B004E16C8 /* CreditPickerView.swift in Sources */,
+				3BD5322B2BF06ADB00152A77 /* Event.swift in Sources */,
 				3B8335BF2BEA18650008EFB5 /* AnnouncementEventView.swift in Sources */,
 				AAA9503D2BA5C380004E16C8 /* TotalCreditsPieChartView.swift in Sources */,
 				AAA9503C2BA5C380004E16C8 /* GraduationRequirementsRadarView.swift in Sources */,

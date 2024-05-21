@@ -9,14 +9,16 @@ import SwiftUI
 
 struct DetailProgressEventView: View {
     
-    var eventName: String
-    var eventPeriod: String
-    var eventImage: String
-    var eventDeadLine: String
-    var eventNumberOfParticipants: String
-    var eventDescription: String
+    var eventName: String = "??"
+    var eventPeriod: String = "??"
+    var eventImage: String = "??"
+    var eventDeadLine: String = "??"
+    var eventNumberOfParticipants: String = "??"
+    var eventDescription: String = "??"
     
-    @Binding var stackPath: [Route]
+//    @Binding var stackPath: [Route]
+    @ObservedObject var eventViewModel: EventViewModel
+//    @StateObject var detailEventViewModel: DetailEventViewModel
     
     let columns = [
         //        GridItem(.flexible(), spacing: 0),
@@ -32,7 +34,7 @@ struct DetailProgressEventView: View {
                     Rectangle()
                         .frame(height: 0)
                     HStack(spacing: 0) {
-                        Text("학교 사진 콘테스트")
+                        Text(eventViewModel.event!.title)
                             .font(.m18)
                             .padding(.trailing, 7)
                         
@@ -110,8 +112,8 @@ struct DetailProgressEventView: View {
                         }
                         
                         LazyVGrid(columns: columns, spacing: 18) {
-                            ForEach(0..<20, id: \.self) {i in
-                                EventFeedCell()
+                            ForEach(eventViewModel.event!.feeds, id: \.id) { feed in
+                                EventFeedCell(eventViewModel: eventViewModel)
                                 
                             }
                         }
@@ -132,6 +134,9 @@ struct DetailProgressEventView: View {
 }
 
 struct EventFeedCell: View {
+    
+    @ObservedObject var eventViewModel: EventViewModel
+    
     var body: some View {
         ZStack(alignment: .bottom){
             Image("eventSampleImage")
@@ -175,6 +180,6 @@ struct EventFeedCell: View {
     }
 }
 
-#Preview {
-    DetailProgressEventView(eventName: "개강맞이 시간표 경진대회", eventPeriod: "2024.02.15 - 2024.03.28", eventImage: "sb", eventDeadLine: "6일 남음", eventNumberOfParticipants: "256명 참여", eventDescription: "내 시간표를 공유해 시간표 경진대회에 참여해 보세요!", stackPath: .constant([.detailProgressEvent]))
-}
+//#Preview {
+//    DetailProgressEventView(eventName: "개강맞이 시간표 경진대회", eventPeriod: "2024.02.15 - 2024.03.28", eventImage: "sb", eventDeadLine: "6일 남음", eventNumberOfParticipants: "256명 참여", eventDescription: "내 시간표를 공유해 시간표 경진대회에 참여해 보세요!", eventViewModel: EventViewModel())
+//}
