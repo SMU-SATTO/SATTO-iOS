@@ -10,7 +10,11 @@ import JHTimeTable
 
 //MARK: - 필수로 들어야 할 과목 선택
 struct EssentialClassesSelectorView: View {
+    @ObservedObject var timetableViewModel: TimetableViewModel
+    
     @State private var isShowBottomSheet = false
+    @State private var usingSelectedSubjects = true
+    
     var body: some View {
         VStack {
             VStack (spacing: 2) {
@@ -20,16 +24,16 @@ struct EssentialClassesSelectorView: View {
                     .frame(width: 320, alignment: .topLeading)
                 Text("ex) 재수강, 교양필수, 전공필수")
                     .font(.m12)
-                    .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                    .foregroundStyle(.gray400)
                     .frame(width: 320, alignment: .topLeading)
                     .padding(.top, 5)
             }
-            TimetableView(timetableViewModel: TimetableViewModel())
+            TimetableView(timetableViewModel: timetableViewModel, usingSelectedSubjects: $usingSelectedSubjects)
                 .onTapGesture {
                     isShowBottomSheet = true
                 }
                 .sheet(isPresented: $isShowBottomSheet, content: {
-                    SearchSheetTabView(showResultAction: {isShowBottomSheet = false})
+                    SearchSheetTabView(timetableViewModel: timetableViewModel, showResultAction: {isShowBottomSheet = false})
                         .presentationDetents([.medium, .large])
                 })
         }
@@ -37,5 +41,5 @@ struct EssentialClassesSelectorView: View {
 }
 
 #Preview {
-    EssentialClassesSelectorView()
+    EssentialClassesSelectorView(timetableViewModel: TimetableViewModel())
 }

@@ -67,7 +67,7 @@ struct TimetableOptionView: View {
                                     .frame(width: 130, height: 130)
                                 Text(title)
                                     .font(isSelected.wrappedValue ? .sb14 : .m14)
-                                    .foregroundStyle(isSelected.wrappedValue ? Color(red: 0.28, green: 0.18, blue: 0.89) : Color(red: 0.45, green: 0.47, blue: 0.5))
+                                    .foregroundStyle(isSelected.wrappedValue ? Color(red: 0.28, green: 0.18, blue: 0.89) : .gray400)
                             }
                         }
                 )

@@ -21,29 +21,36 @@ struct Timetable: Codable {
     let sbjDivcls, sbjNo, name, time: String
 }
 
+protocol TimetableBase: Codable {
+    var sbjDivcls: String { get }
+    var sbjNo: String { get }
+    var sbjName: String { get }
+    var time: String { get }
+}
 
 // MARK: - TimetableModel
 /// TimetableModel(sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", name: "컴퓨터네트워크", time: "목4 목5 목6 ")
-struct TimetableModel: Codable {
-    let sbjDivcls, sbjNo, name, time: String
+struct TimetableModel: TimetableBase {
+    let sbjDivcls, sbjNo, sbjName, time: String
 }
 
 //MARK: - TimetableDetailModel
 ///  TimetableDetailModel(major: "전공", "sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", sbjName: "과목명", prof: "교수명", "time: "목4 목5 목6 ", enrollmentCapacity: 200, enrolledStudents: 230)
-struct TimetableDetailModel: Codable {
+struct TimetableDetailModel: TimetableBase {
     let major: String
     let sbjDivcls, sbjNo, sbjName, prof, time: String
-    let enrollmentCapacity, enrolledStudents: Int
+    let credit, enrollmentCapacity, enrolledStudents: Int
     let yesterdayEnrolledData, threeDaysAgoEnrolledData: Int
     
     
-    init(major: String, sbjDivcls: String, sbjNo: String, sbjName: String, prof: String, time: String, enrollmentCapacity: Int, enrolledStudents: Int, yesterdayEnrolledData: Int, threeDaysAgoEnrolledData: Int) {
+    init(major: String, sbjDivcls: String, sbjNo: String, sbjName: String, prof: String, time: String, credit: Int, enrollmentCapacity: Int, enrolledStudents: Int, yesterdayEnrolledData: Int, threeDaysAgoEnrolledData: Int) {
         self.major = major
         self.sbjDivcls = sbjDivcls
         self.sbjNo = sbjNo
         self.sbjName = sbjName
         self.prof = prof
         self.time = time
+        self.credit = credit
         self.enrollmentCapacity = enrollmentCapacity
         self.enrolledStudents = enrolledStudents
         self.yesterdayEnrolledData = yesterdayEnrolledData

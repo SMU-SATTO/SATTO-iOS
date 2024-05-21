@@ -7,21 +7,18 @@
 
 import SwiftUI
 import Charts
+import PopupView
 
+//MARK: - 할일
+/// 같은 시간대 비교해서 중복선택하면 선택 못하게 해야함
+/// 학점 넘치는 선택은 어떻게 처리?
 
-
-struct SubjectDetail {
-    var subject: TimetableDetailModel
-    var isExpanded: Bool = false
-    var isSelected: Bool = false
-}
-
-struct DefaultSheetView: View {
-    @ObservedObject var timetableViewModel = TimetableViewModel()
+struct SubjectSheetView: View {
+    ///서버에서 받아온 TimetableViewModel
+    @ObservedObject var timetableViewModel: TimetableViewModel
     
-    @State private var selectedSubjects: [TimetableDetailModel] = []
-    @State private var selectedSubjectIndex: [Int] = []
     @State private var expandedSubjectIndex: Int?
+    @State private var showFloater: Bool = false
     
     var showResultAction: () -> Void
     
@@ -31,7 +28,7 @@ struct DefaultSheetView: View {
                 ForEach(timetableViewModel.subjectDetailDataList.indices, id: \.self) { index in
                     let subjectDetail = timetableViewModel.subjectDetailDataList[index]
                     RoundedRectangle(cornerRadius: 10)
-                        .foregroundStyle(isSelected(at: index) ? Color.white : Color.gray50)
+                        .foregroundStyle(timetableViewModel.isSelected(subject: subjectDetail) ? Color.white : Color.gray50)
                         .frame(width: 330, height: isExpanded(at: index) ? 310 : 130)
                         .shadow(color: Color(red: 0.65, green: 0.65, blue: 0.65).opacity(0.25), radius: 6.23, x: 0, y: 1.22)
                         .overlay(
@@ -62,7 +59,7 @@ struct DefaultSheetView: View {
                                             .font(.m14)
                                         Spacer()
                                     }
-                                    .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                                    .foregroundStyle(.gray400)
                                 }
                                 .padding(.leading, 10)
                                 
@@ -76,6 +73,7 @@ struct DefaultSheetView: View {
                                     Text("담은인원")
                                     Text("\(subjectDetail.enrolledStudents)")
                                 }
+                                .font(.m16)
                                 .padding(.leading, 10)
                                 Spacer()
                                 if isExpanded(at: index) {
@@ -93,11 +91,13 @@ struct DefaultSheetView: View {
                                 HStack {
                                     Spacer()
                                     Button(action: {
-                                        toggleSelection(at: index)
-                                        //MARK: - 강의 리스트에 추가
-                                        
+                                        let selectionSuccess = timetableViewModel.toggleSelection(subject: subjectDetail)
+                                        //MARK: - 시간 겹친다고 알림 띄우기 토스트창으로? 띄우기
+                                        if !selectionSuccess {
+                                            showFloater = true
+                                        }
                                     }) {
-                                        Image(systemName: isSelected(at: index) ?  "checkmark.circle.fill" : "plus.circle.fill")
+                                        Image(systemName: timetableViewModel.isSelected(subject: subjectDetail) ?  "checkmark.circle.fill" : "plus.circle.fill")
                                             .resizable()
                                             .frame(width: 25, height: 25)
                                     }
@@ -107,7 +107,7 @@ struct DefaultSheetView: View {
                             }
                         )
                         .overlay(
-                            isSelected(at: index) ?
+                            timetableViewModel.isSelected(subject: subjectDetail) ?
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(Color(red: 0.4, green: 0.31, blue: 1), lineWidth: 1)
                             : nil
@@ -119,9 +119,10 @@ struct DefaultSheetView: View {
                         }
                 }
                 .padding(.horizontal, 10)
+                .padding(.vertical, 10)
             }
 
-            if selectedSubjectIndex.count != 0 {
+            if !timetableViewModel.isSelectedSubjectsEmpty() {
                 VStack(spacing: 0) {
                     HStack {
                         Text("선택한 과목")
@@ -133,14 +134,18 @@ struct DefaultSheetView: View {
                     }
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 15) {
-                            ForEach(selectedSubjects, id: \.sbjDivcls) { subject in
+                            ForEach(timetableViewModel.selectedSubjects, id: \.sbjDivcls) { subject in
                                 HStack {
                                     Text(subject.sbjName)
                                         .font(.m14)
-                                    Image(systemName: "xmark.circle")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 12)
+                                    Button(action: {
+                                        timetableViewModel.removeSubject(subject)
+                                    }) {
+                                        Image(systemName: "xmark.circle")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 12)
+                                    }
                                 }
                                 .foregroundStyle(.gray600)
                                 .frame(height: 60)
@@ -152,13 +157,11 @@ struct DefaultSheetView: View {
                                     .padding(EdgeInsets(top: 0, leading: -5, bottom: 0, trailing: -5))
                             )
                         }
-                        
                         .padding(.leading, 20)
                     }
                     HStack {
                         Button(action: {
-                            selectedSubjects.removeAll()
-                            selectedSubjectIndex.removeAll()
+                            timetableViewModel.clear()
                         }) {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(Color(red: 0.4, green: 0.31, blue: 1), lineWidth: 1)
@@ -176,7 +179,7 @@ struct DefaultSheetView: View {
                                 .foregroundStyle(Color("blue_7"))
                                 .frame(width: 170, height: 40)
                                 .overlay(
-                                    Text("19개 결과 보기")
+                                    Text("\(timetableViewModel.selectedSubjects.count)개 결과 보기")
                                         .font(.sb14)
                                         .foregroundStyle(.white)
                                 )
@@ -184,6 +187,22 @@ struct DefaultSheetView: View {
                     }
                 }
             }
+        }
+        .popup(isPresented: $showFloater) {
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundStyle(.white)
+                .frame(width: 200, height: 50)
+                .shadow(radius: 10)
+                .overlay(
+                    Text("시간대가 겹쳐요!")
+                )
+        } customize: {
+            $0
+                .type(.floater())
+                .position(.bottom)
+                .animation(.spring())
+                .closeOnTapOutside(true)
+                .autohideIn(0.7)
         }
     }
     
@@ -194,28 +213,11 @@ struct DefaultSheetView: View {
         return index == expandedSubjectIndex
     }
     
-    private func isSelected(at index: Int) -> Bool {
-        return selectedSubjectIndex.contains(index)
-    }
-    
     private func toggleExpansion(at index: Int) {
         if isExpanded(at: index) {
             expandedSubjectIndex = nil
         } else {
             expandedSubjectIndex = index
-        }
-    }
-    
-    private func toggleSelection(at index: Int) {
-        let selectedSubject = timetableViewModel.subjectDetailDataList[index]
-        if let selectedIndex = selectedSubjectIndex.firstIndex(of: index) {
-            selectedSubjectIndex.remove(at: selectedIndex)
-            if let indexToRemove = selectedSubjects.firstIndex(where: { $0.sbjDivcls == selectedSubject.sbjDivcls }) {
-                selectedSubjects.remove(at: indexToRemove)
-            }
-        } else {
-            selectedSubjectIndex.append(index)
-            selectedSubjects.append(selectedSubject)
         }
     }
 }
@@ -268,5 +270,5 @@ struct SubjectChartView: View {
 
 
 #Preview {
-    DefaultSheetView(showResultAction: {})
+    SubjectSheetView(timetableViewModel: TimetableViewModel(), showResultAction: {})
 }

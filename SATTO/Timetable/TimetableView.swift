@@ -10,7 +10,7 @@ import JHTimeTable
 
 struct TimetableView: View {
     @ObservedObject var timetableViewModel: TimetableViewModel
-    @State var isFirst = true
+    @Binding var usingSelectedSubjects: Bool
     
     var body: some View {
         ///테스트 코드
@@ -29,7 +29,7 @@ struct TimetableView: View {
 //            Text("End")
 //        }
         JHLectureTable {
-            ForEach(timetableViewModel.convertToLectureModels()) { lecture in
+            ForEach(timetableViewModel.convertToLectureModels(usingSelectedSubjects: usingSelectedSubjects)) { lecture in
                 ZStack(alignment: .topLeading) {
                     Rectangle()
                         .foregroundStyle(lecture.color)
@@ -43,7 +43,6 @@ struct TimetableView: View {
                 .lectureTableTime(week: lecture.week,
                                   startAt: lecture.startAt,
                                   endAt: lecture.endAt)
-//                .id(lecture.title)
             }
         } timebar: { time in
             // Add customized timebar
@@ -85,5 +84,5 @@ struct LectureView: View {
 
 
 #Preview {
-    TimetableView(timetableViewModel: TimetableViewModel())
+    TimetableView(timetableViewModel: TimetableViewModel(), usingSelectedSubjects: .constant(false))
 }
