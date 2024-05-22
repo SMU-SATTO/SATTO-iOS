@@ -7,16 +7,10 @@
 
 import SwiftUI
 
-class SelectedValues: ObservableObject {
-    @Published var minimumCredit = 6
-    @Published var majorNum = 0
-    @Published var ELearnNum = 0
-}
-
 //MARK: - 학점 범위 선택
 struct CreditPickerView: View {
     //MARK: - 사용자 학년에 따라 start 학점 6 아니고 12로 바꿔야함 -> 12학점 미만 선택시 알림 띄우는 형식도 괜찮을듯
-    @EnvironmentObject var selectedValues: SelectedValues
+    @ObservedObject var selectedValues: SelectedValues
     
     var body: some View {
         VStack {
@@ -30,7 +24,7 @@ struct CreditPickerView: View {
                     RoundedRectangle(cornerRadius: 5)
                         .foregroundStyle(Color.gray.opacity(0.1))
                         .frame(width: 80, height: 30)
-                    Picker(selection: $selectedValues.minimumCredit, label: Text("")) {
+                    Picker(selection: $selectedValues.credit, label: Text("")) {
                         ForEach(6...22, id: \.self) { credit in
                             Text("\(credit)").tag(credit)
                         }
@@ -92,10 +86,6 @@ struct CreditPickerView: View {
 }
 
 
-struct CreditPickerView_Previews: PreviewProvider {
-    static var previews: some View {
-        let selectedValues = SelectedValues() // 프리뷰에서 사용할 환경 객체 생성
-        CreditPickerView()
-            .environmentObject(selectedValues) // 생성된 환경 객체를 뷰에 제공
-    }
+#Preview {
+    CreditPickerView(selectedValues: SelectedValues())
 }

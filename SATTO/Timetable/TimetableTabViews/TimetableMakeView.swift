@@ -15,9 +15,11 @@ struct TimetableMakeView: View {
     @Binding var stackPath: [Route]
     
     @StateObject var timetableViewModel = TimetableViewModel()
-    @StateObject var timeTableMainViewModel = TimetableMainViewModel()
+    @StateObject var selectedValues = SelectedValues()
     @State private var selectedView: SelectedView = .creditPicker
-    let selectedValues = SelectedValues()
+    
+    @State private var selectedSubviews = Set<Int>()
+    @State private var alreadySelectedSubviews = Set<Int>()
     
     @State private var midCheckPopup = false
     @State var invalidPopup = false
@@ -236,13 +238,13 @@ struct TimetableMakeView: View {
     func tabViewContent(for view: SelectedView) -> AnyView {
         switch view {
         case .creditPicker:
-            return AnyView(CreditPickerView().environmentObject(selectedValues))
+            return AnyView(CreditPickerView(selectedValues: selectedValues))
         case .essentialClasses:
-            return AnyView(EssentialClassesSelectorView(timetableViewModel: timetableViewModel))
+            return AnyView(EssentialClassesSelectorView(timetableViewModel: timetableViewModel, selectedValues: selectedValues))
         case .invalidTime:
-            return AnyView(InvalidTimeSelectorView(invalidPopup: $invalidPopup))
+            return AnyView(InvalidTimeSelectorView(selectedValues: selectedValues, selectedSubviews: $selectedSubviews, alreadySelectedSubviews: $alreadySelectedSubviews, invalidPopup: $invalidPopup))
         case .midCheck:
-            return AnyView(MidCheckView().environmentObject(selectedValues))
+            return AnyView(MidCheckView(selectedValues: selectedValues))
         case .majorCombination:
             return AnyView(MajorCombinationSelectorView())
         case .finalTimetable:

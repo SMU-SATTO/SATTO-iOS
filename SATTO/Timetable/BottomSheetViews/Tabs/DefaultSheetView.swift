@@ -16,6 +16,7 @@ import PopupView
 struct SubjectSheetView: View {
     ///서버에서 받아온 TimetableViewModel
     @ObservedObject var timetableViewModel: TimetableViewModel
+    @ObservedObject var selectedValues: SelectedValues
     
     @State private var expandedSubjectIndex: Int?
     @State private var showFloater: Bool = false
@@ -28,7 +29,7 @@ struct SubjectSheetView: View {
                 ForEach(timetableViewModel.subjectDetailDataList.indices, id: \.self) { index in
                     let subjectDetail = timetableViewModel.subjectDetailDataList[index]
                     RoundedRectangle(cornerRadius: 10)
-                        .foregroundStyle(timetableViewModel.isSelected(subject: subjectDetail) ? Color.white : Color.gray50)
+                        .foregroundStyle(selectedValues.isSelected(subject: subjectDetail) ? Color.white : Color.gray50)
                         .frame(width: 330, height: isExpanded(at: index) ? 310 : 130)
                         .shadow(color: Color(red: 0.65, green: 0.65, blue: 0.65).opacity(0.25), radius: 6.23, x: 0, y: 1.22)
                         .overlay(
@@ -91,13 +92,13 @@ struct SubjectSheetView: View {
                                 HStack {
                                     Spacer()
                                     Button(action: {
-                                        let selectionSuccess = timetableViewModel.toggleSelection(subject: subjectDetail)
+                                        let selectionSuccess = selectedValues.toggleSelection(subject: subjectDetail)
                                         //MARK: - 시간 겹친다고 알림 띄우기 토스트창으로? 띄우기
                                         if !selectionSuccess {
                                             showFloater = true
                                         }
                                     }) {
-                                        Image(systemName: timetableViewModel.isSelected(subject: subjectDetail) ?  "checkmark.circle.fill" : "plus.circle.fill")
+                                        Image(systemName: selectedValues.isSelected(subject: subjectDetail) ?  "checkmark.circle.fill" : "plus.circle.fill")
                                             .resizable()
                                             .frame(width: 25, height: 25)
                                     }
@@ -107,7 +108,7 @@ struct SubjectSheetView: View {
                             }
                         )
                         .overlay(
-                            timetableViewModel.isSelected(subject: subjectDetail) ?
+                            selectedValues.isSelected(subject: subjectDetail) ?
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(Color(red: 0.4, green: 0.31, blue: 1), lineWidth: 1)
                             : nil
@@ -122,7 +123,7 @@ struct SubjectSheetView: View {
                 .padding(.vertical, 10)
             }
 
-            if !timetableViewModel.isSelectedSubjectsEmpty() {
+            if !selectedValues.isSelectedSubjectsEmpty() {
                 VStack(spacing: 0) {
                     HStack {
                         Text("선택한 과목")
@@ -134,12 +135,12 @@ struct SubjectSheetView: View {
                     }
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 15) {
-                            ForEach(timetableViewModel.selectedSubjects, id: \.sbjDivcls) { subject in
+                            ForEach(selectedValues.selectedSubjects, id: \.sbjDivcls) { subject in
                                 HStack {
-                                    Text(subject.sbjName)
+                                    Text("\(subject.sbjName)")
                                         .font(.m14)
                                     Button(action: {
-                                        timetableViewModel.removeSubject(subject)
+                                        selectedValues.removeSubject(subject)
                                     }) {
                                         Image(systemName: "xmark.circle")
                                             .resizable()
@@ -161,7 +162,7 @@ struct SubjectSheetView: View {
                     }
                     HStack {
                         Button(action: {
-                            timetableViewModel.clear()
+                            selectedValues.clear()
                         }) {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(Color(red: 0.4, green: 0.31, blue: 1), lineWidth: 1)
@@ -179,7 +180,7 @@ struct SubjectSheetView: View {
                                 .foregroundStyle(Color("blue_7"))
                                 .frame(width: 170, height: 40)
                                 .overlay(
-                                    Text("\(timetableViewModel.selectedSubjects.count)개 결과 보기")
+                                    Text("\(selectedValues.selectedSubjects.count)개 결과 보기")
                                         .font(.sb14)
                                         .foregroundStyle(.white)
                                 )
@@ -270,5 +271,5 @@ struct SubjectChartView: View {
 
 
 #Preview {
-    SubjectSheetView(timetableViewModel: TimetableViewModel(), showResultAction: {})
+    SubjectSheetView(timetableViewModel: TimetableViewModel(), selectedValues: SelectedValues(), showResultAction: {})
 }

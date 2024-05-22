@@ -11,6 +11,7 @@ struct TimetableCustom: View {
     @Binding var stackPath: [Route]
     
     @StateObject var timetableViewModel = TimetableViewModel()
+    @StateObject var selectedValues = SelectedValues()
     
     @State private var isShowBottomSheet = false
     @State private var isUsingSelectedSubjects = true
@@ -21,12 +22,12 @@ struct TimetableCustom: View {
                     .font(.sb18)
                     .frame(width: 320, alignment: .topLeading)
             }
-            TimetableView(timetableViewModel: timetableViewModel, usingSelectedSubjects: $isUsingSelectedSubjects)
+            TimetableView(timetableBaseArray: selectedValues.selectedSubjects)
                 .onTapGesture {
                     isShowBottomSheet = true
                 }
                 .sheet(isPresented: $isShowBottomSheet, content: {
-                    SearchSheetTabView(timetableViewModel: timetableViewModel, showResultAction: {isShowBottomSheet = false})
+                    SearchSheetTabView(timetableViewModel: timetableViewModel, selectedValues: selectedValues, showResultAction: {isShowBottomSheet = false})
                         .presentationDetents([.medium, .large])
                 })
         }

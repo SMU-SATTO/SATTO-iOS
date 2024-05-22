@@ -10,6 +10,10 @@ import SwiftUI
 //MARK: - todo: 중복 선택 구현
 struct SearchSheetTabView: View {
     @ObservedObject var timetableViewModel: TimetableViewModel
+    @ObservedObject var selectedValues: SelectedValues
+    
+    @State private var selectedSubviews = Set<Int>()
+    @State private var alreadySelectedSubviews = Set<Int>()
     
     @State private var selectedTab = ""
     @State private var selectedCategories: [String: Bool] = [:]
@@ -100,14 +104,14 @@ struct SearchSheetTabView: View {
                     .frame(height: 30)
             case "시간":
                 // 시간에 따른 뷰
-                TimeSheetView()
+                TimeSheetView(selectedValues: selectedValues, selectedSubviews: $selectedSubviews, alreadySelectedSubviews: $alreadySelectedSubviews)
                     .padding(.top, 10)
             default:
                 EmptyView()
             }
             if selectedTab != "시간" {
                 VStack {
-                    SubjectSheetView(timetableViewModel: timetableViewModel, showResultAction: showResultAction)
+                    SubjectSheetView(timetableViewModel: timetableViewModel, selectedValues: selectedValues, showResultAction: showResultAction)
                         .padding(EdgeInsets(top: 5, leading: 20, bottom: 5, trailing: 20))
                     
                     Spacer()
@@ -122,5 +126,5 @@ struct SearchSheetTabView: View {
 }
 
 #Preview {
-    SearchSheetTabView(timetableViewModel: TimetableViewModel(), showResultAction: {})
+    SearchSheetTabView(timetableViewModel: TimetableViewModel(), selectedValues: SelectedValues(), showResultAction: {})
 }
