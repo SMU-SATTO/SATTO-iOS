@@ -78,7 +78,7 @@ struct ClearButtonTextField: View {
                     text = ""
                 }) {
                     Image("Icon")
-                        .foregroundColor(.gray)
+//                        .foregroundColor(.gray)
                         .padding(.trailing, 10)
                 }
             }
@@ -87,7 +87,7 @@ struct ClearButtonTextField: View {
         .padding(.vertical, 10)
         .background(
             Rectangle()
-                .fill(Color.gray)
+                .fill(Color(red: 0.91, green: 0.92, blue: 0.93))
                 .cornerRadius(30)
         )
     }
