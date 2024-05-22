@@ -46,7 +46,7 @@
 		AAA9506A2BA5C39B004E16C8 /* EssentialClassesSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9505C2BA5C39B004E16C8 /* EssentialClassesSelectorView.swift */; };
 		AAA9506B2BA5C39B004E16C8 /* FinalTimetableSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9505D2BA5C39B004E16C8 /* FinalTimetableSelectorView.swift */; };
 		AAA9506E2BA5C39B004E16C8 /* TimetableMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950612BA5C39B004E16C8 /* TimetableMainView.swift */; };
-		AAA9506F2BA5C39B004E16C8 /* TimetableMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950622BA5C39B004E16C8 /* TimetableMainViewModel.swift */; };
+		AAA9506F2BA5C39B004E16C8 /* SelectedValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950622BA5C39B004E16C8 /* SelectedValues.swift */; };
 		AAA950702BA5C39B004E16C8 /* TimetableMakeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950632BA5C39B004E16C8 /* TimetableMakeView.swift */; };
 		AAA950712BA5C39B004E16C8 /* TimetableMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950642BA5C39B004E16C8 /* TimetableMenuView.swift */; };
 		AAA950742BA5C484004E16C8 /* JHTimeTable in Frameworks */ = {isa = PBXBuildFile; productRef = AAA950732BA5C484004E16C8 /* JHTimeTable */; };
@@ -114,7 +114,7 @@
 		AAA9505C2BA5C39B004E16C8 /* EssentialClassesSelectorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EssentialClassesSelectorView.swift; sourceTree = "<group>"; };
 		AAA9505D2BA5C39B004E16C8 /* FinalTimetableSelectorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FinalTimetableSelectorView.swift; sourceTree = "<group>"; };
 		AAA950612BA5C39B004E16C8 /* TimetableMainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimetableMainView.swift; sourceTree = "<group>"; };
-		AAA950622BA5C39B004E16C8 /* TimetableMainViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimetableMainViewModel.swift; sourceTree = "<group>"; };
+		AAA950622BA5C39B004E16C8 /* SelectedValues.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedValues.swift; sourceTree = "<group>"; };
 		AAA950632BA5C39B004E16C8 /* TimetableMakeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimetableMakeView.swift; sourceTree = "<group>"; };
 		AAA950642BA5C39B004E16C8 /* TimetableMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimetableMenuView.swift; sourceTree = "<group>"; };
 		AAA950802BA5E7A5004E16C8 /* TimetableOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableOptionView.swift; sourceTree = "<group>"; };
@@ -212,7 +212,7 @@
 			isa = PBXGroup;
 			children = (
 				AA1018A52BDE87A1009E6804 /* TimetableViewModel.swift */,
-				AAA950622BA5C39B004E16C8 /* TimetableMainViewModel.swift */,
+				AAA950622BA5C39B004E16C8 /* SelectedValues.swift */,
 			);
 			path = Timetable;
 			sourceTree = "<group>";
@@ -223,6 +223,31 @@
 				AA1018A82BDE882C009E6804 /* TimetableModel.swift */,
 			);
 			path = Timetable;
+			sourceTree = "<group>";
+		};
+		AA0B714B2BFD994100216A32 /* Tabs */ = {
+			isa = PBXGroup;
+			children = (
+				AAA9505A2BA5C39B004E16C8 /* CreditPickerView.swift */,
+				AAA9505C2BA5C39B004E16C8 /* EssentialClassesSelectorView.swift */,
+				AAA9505B2BA5C39B004E16C8 /* InvalidTimeSelectorView.swift */,
+				AA9E219B2BC81FC800F0566A /* MidCheckView.swift */,
+				AAA950592BA5C39B004E16C8 /* MajorCombinationSelectorView.swift */,
+				AAA9505D2BA5C39B004E16C8 /* FinalTimetableSelectorView.swift */,
+			);
+			path = Tabs;
+			sourceTree = "<group>";
+		};
+		AA0B714C2BFE62B100216A32 /* Tabs */ = {
+			isa = PBXGroup;
+			children = (
+				AAA950822BA722EF004E16C8 /* DefaultSheetView.swift */,
+				AAA950842BA7231A004E16C8 /* GradeSheetView.swift */,
+				AAA950862BA72395004E16C8 /* GESheetView.swift */,
+				AAA950882BA723B6004E16C8 /* ELearnSheetView.swift */,
+				AAA9508A2BA723C2004E16C8 /* TimeSheetView.swift */,
+			);
+			path = Tabs;
 			sourceTree = "<group>";
 		};
 		AA1018A02BDE8094009E6804 /* TimetableCustom */ = {
@@ -301,11 +326,7 @@
 			isa = PBXGroup;
 			children = (
 				AAA950572BA5C39B004E16C8 /* SearchSheetTabView.swift */,
-				AAA950822BA722EF004E16C8 /* DefaultSheetView.swift */,
-				AAA950842BA7231A004E16C8 /* GradeSheetView.swift */,
-				AAA950862BA72395004E16C8 /* GESheetView.swift */,
-				AAA950882BA723B6004E16C8 /* ELearnSheetView.swift */,
-				AAA9508A2BA723C2004E16C8 /* TimeSheetView.swift */,
+				AA0B714C2BFE62B100216A32 /* Tabs */,
 			);
 			path = BottomSheetViews;
 			sourceTree = "<group>";
@@ -314,12 +335,7 @@
 			isa = PBXGroup;
 			children = (
 				AAA950632BA5C39B004E16C8 /* TimetableMakeView.swift */,
-				AAA9505A2BA5C39B004E16C8 /* CreditPickerView.swift */,
-				AAA9505C2BA5C39B004E16C8 /* EssentialClassesSelectorView.swift */,
-				AAA9505B2BA5C39B004E16C8 /* InvalidTimeSelectorView.swift */,
-				AA9E219B2BC81FC800F0566A /* MidCheckView.swift */,
-				AAA950592BA5C39B004E16C8 /* MajorCombinationSelectorView.swift */,
-				AAA9505D2BA5C39B004E16C8 /* FinalTimetableSelectorView.swift */,
+				AA0B714B2BFD994100216A32 /* Tabs */,
 			);
 			path = TimetableTabViews;
 			sourceTree = "<group>";
@@ -511,7 +527,7 @@
 				AACB4BD22B40712D00169C52 /* LoginView.swift in Sources */,
 				AAFE958D2BF25BCC00B3342A /* TimeSelectorView.swift in Sources */,
 				AAA9506A2BA5C39B004E16C8 /* EssentialClassesSelectorView.swift in Sources */,
-				AAA9506F2BA5C39B004E16C8 /* TimetableMainViewModel.swift in Sources */,
+				AAA9506F2BA5C39B004E16C8 /* SelectedValues.swift in Sources */,
 				AAA950692BA5C39B004E16C8 /* InvalidTimeSelectorView.swift in Sources */,
 				AAFE95872BF20E5000B3342A /* SATTOManager.swift in Sources */,
 				AAA9506E2BA5C39B004E16C8 /* TimetableMainView.swift in Sources */,
