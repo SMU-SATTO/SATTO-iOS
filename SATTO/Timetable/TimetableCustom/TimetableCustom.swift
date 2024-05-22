@@ -13,6 +13,9 @@ struct TimetableCustom: View {
     @StateObject var timetableViewModel = TimetableViewModel()
     @StateObject var selectedValues = SelectedValues()
     
+    @State private var selectedSubviews = Set<Int>()
+    @State private var alreadySelectedSubviews = Set<Int>()
+    
     @State private var isShowBottomSheet = false
     @State private var isUsingSelectedSubjects = true
     var body: some View {
@@ -27,8 +30,14 @@ struct TimetableCustom: View {
                     isShowBottomSheet = true
                 }
                 .sheet(isPresented: $isShowBottomSheet, content: {
-                    SearchSheetTabView(timetableViewModel: timetableViewModel, selectedValues: selectedValues, showResultAction: {isShowBottomSheet = false})
-                        .presentationDetents([.medium, .large])
+                    SearchSheetTabView(
+                        timetableViewModel: timetableViewModel,
+                        selectedValues: selectedValues,
+                        selectedSubviews: $selectedSubviews,
+                        alreadySelectedSubviews: $alreadySelectedSubviews,
+                        showResultAction: {isShowBottomSheet = false}
+                    )
+                    .presentationDetents([.medium, .large])
                 })
         }
     }

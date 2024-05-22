@@ -13,6 +13,9 @@ struct EssentialClassesSelectorView: View {
     @ObservedObject var timetableViewModel: TimetableViewModel
     @ObservedObject var selectedValues: SelectedValues
     
+    @State private var selectedSubviews = Set<Int>()
+    @State private var alreadySelectedSubviews = Set<Int>()
+    
     @State private var isShowBottomSheet = false
     @State private var usingSelectedSubjects = true
     
@@ -34,8 +37,14 @@ struct EssentialClassesSelectorView: View {
                     isShowBottomSheet = true
                 }
                 .sheet(isPresented: $isShowBottomSheet, content: {
-                    SearchSheetTabView(timetableViewModel: timetableViewModel, selectedValues: selectedValues, showResultAction: {isShowBottomSheet = false})
-                        .presentationDetents([.medium, .large])
+                    SearchSheetTabView(
+                        timetableViewModel: timetableViewModel,
+                        selectedValues: selectedValues,
+                        selectedSubviews: $selectedSubviews,
+                        alreadySelectedSubviews: $alreadySelectedSubviews,
+                        showResultAction: {isShowBottomSheet = false}
+                    )
+                    .presentationDetents([.medium, .large])
                 })
         }
     }
