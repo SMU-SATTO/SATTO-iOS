@@ -27,109 +27,43 @@ struct TimetableMakeView: View {
     var body: some View {
         ZStack {
             VStack {
-                VStack {
-                    CustomPageControl(
-                        totalIndex: SelectedView.allCases.count,
-                        selectedIndex: selectedViewIndex()
-                    )
-                    .animation(.spring(), value: UUID())
-                    .padding(.horizontal)
-                }
-                .padding(.top, 0)
-                
-                TabView(selection: $selectedView) {
-                    ForEach(SelectedView.allCases, id: \.self) { view in
-                        tabViewContent(for: view)
-                            .tag(view)
-                    }
-                }
-                .onAppear {
-                    UIScrollView.appearance().isScrollEnabled = false
-                }
-                .tabViewStyle(.page(indexDisplayMode: .never))
-                .frame(height: 600)
-                .padding(.top, 20)
-                
-                HStack(spacing: 20) {
-                    //MARK: - 시간표 생성 이후에 이전으로 지우기
-                    if selectedView != .creditPicker && selectedView != .majorCombination {
-                        Button(action: {
-                            navigateBack()
-                        }) {
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(.white)
-                                .frame(width: 150, height: 50)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .inset(by: 2)
-                                        .stroke(.blue, lineWidth: 1.5)
-                                        .overlay {
-                                            Text("이전으로")
-                                                .font(.sb18)
-                                                .foregroundStyle(Color(red: 0.11, green: 0.33, blue: 1))
-                                        }
-                                )
+                GeometryReader { geometry in
+                    VStack {
+                        CustomPageControl(
+                            totalIndex: SelectedView.allCases.count,
+                            selectedIndex: selectedViewIndex()
+                        )
+                        .animation(.spring(), value: UUID())
+                        .padding(.horizontal)
+                        
+                        TabView(selection: $selectedView) {
+                            ForEach(SelectedView.allCases, id: \.self) { view in
+                                tabViewContent(for: view)
+                                    .tag(view)
+                            }
                         }
+                        .onAppear {
+                            UIScrollView.appearance().isScrollEnabled = false //드래그제스처로 탭뷰 넘기는거 방지
+                        }
+                        .tabViewStyle(.page(indexDisplayMode: .never))
+                        .padding(.top, 20)
+                    }
+                    .padding(.top, 0)
+                }
+                HStack(spacing: 20) {
+                    if selectedView != .creditPicker && selectedView != .majorCombination {
+                        backButton
                     }
                     if selectedView != .finalTimetable {
-                        Button(action: {
-                            if selectedView == .midCheck {
-                                midCheckPopup = true
-                            }
-                            else {
-                                navigateForward()
-                            }
-                        }) {
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(Color(red: 0.11, green: 0.33, blue: 1))
-                                .frame(width: 150, height: 50)
-                                .overlay {
-                                    if selectedView == .midCheck {
-                                        Text("시간표 생성하기")
-                                            .font(.sb18)
-                                            .foregroundStyle(.white)
-                                    }
-                                    else {
-                                        Text("다음으로")
-                                            .font(.sb18)
-                                            .foregroundStyle(.white)
-                                    }
-                                }
-                        }
+                        nextButton
                     }
                 }
+                .padding(EdgeInsets(top: 0, leading: 15, bottom: 10, trailing: 15))
             }
             .animation(.easeInOut, value: UUID())
         }
         .popup(isPresented: $invalidPopup, view: {
-            RoundedRectangle(cornerRadius: 20)
-                .foregroundStyle(.white)
-                .frame(width: 300, height: 300)
-                .overlay(
-                    VStack(spacing: 30) {
-                        Image(systemName: "exclamationmark.triangle.fill")
-                            .resizable()
-                            .frame(width: 100, height: 100)
-                            .foregroundStyle(.yellow)
-                        
-                        Text("불가능한 시간대가 많으면\n원활한 시간표 생성이 어려울 수 있어요.")
-                            .font(.sb16)
-                            .lineSpacing(5)
-                            .multilineTextAlignment(.center)
-                        Button(action: {
-                            invalidPopup = false
-                        }) {
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(.blue)
-                                .frame(width: 250, height: 40)
-                                .overlay(
-                                    Text("확인했어요")
-                                        .font(.sb14)
-                                        .foregroundStyle(.white)
-                                )
-                        }
-                    }
-                )
+            invalidPopupView
         }, customize: {
             $0
                 .position(.center)
@@ -139,52 +73,7 @@ struct TimetableMakeView: View {
                 .backgroundColor(.black.opacity(0.5))
         })
         .popup(isPresented: $midCheckPopup, view: {
-            RoundedRectangle(cornerRadius: 20)
-                .foregroundStyle(.white)
-                .frame(width: 300, height: 360)
-                .overlay(
-                    VStack(spacing: 30) {
-                        Image(systemName: "exclamationmark.warninglight")
-                            .resizable()
-                            .frame(width: 100, height: 100)
-                        Text("시간표를 생성하면\n현재 설정은 수정할 수 없어요!!")
-                            .font(.sb16)
-                            .lineSpacing(5)
-                            .multilineTextAlignment(.center)
-                        VStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(.blue)
-                                .frame(width: 250, height: 40)
-                                .overlay(
-                                    Button(action: {
-                                        navigateForward()
-                                        midCheckPopup = false
-                                    }) {
-                                        Text("시간표 생성하러 가기")
-                                            .font(.sb14)
-                                            .foregroundStyle(.white)
-                                    }
-                                )
-                            Button(action: {
-                                midCheckPopup = false
-                            }) {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .fill(.white)
-                                    .frame(width: 250, height: 40)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .inset(by: 2)
-                                            .stroke(.blue, lineWidth: 1.5)
-                                            .overlay {
-                                                Text("조금 더 고민해보기")
-                                                    .font(.sb14)
-                                                    .foregroundStyle(Color(red: 0.11, green: 0.33, blue: 1))
-                                            }
-                                    )
-                            }
-                        }
-                    }
-                )
+            midCheckPopupView
         }, customize: {
             $0
                 .position(.center)
@@ -192,8 +81,139 @@ struct TimetableMakeView: View {
                 .backgroundColor(.black.opacity(0.5))
         })
     }
+    
+    private var backButton: some View {
+        GeometryReader { geometry in
+            Button(action: {
+                navigateBack()
+            }) {
+                Text("이전으로")
+                    .font(.sb18)
+                    .foregroundStyle(Color(red: 0.11, green: 0.33, blue: 1))
+                    .frame(maxWidth: 150, maxHeight: .infinity)
+            }
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(.white)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .inset(by: 2)
+                            .stroke(.blue, lineWidth: 1.5)
+                    )
+            )
+            .frame(width: geometry.size.width, height: geometry.size.height)
+        }
+        .frame(height: 45)
+    }
+    
+    private var nextButton: some View {
+        GeometryReader { geometry in
+            Button(action: {
+                if selectedView == .midCheck {
+                    midCheckPopup = true
+                } else {
+                    navigateForward()
+                }
+            }) {
+                Text(selectedView == .midCheck ? "시간표 생성하기" : "다음으로")
+                    .font(.sb18)
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: 150, maxHeight: .infinity)
+            }
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color(red: 0.11, green: 0.33, blue: 1))
+            )
+            .frame(width: geometry.size.width, height: geometry.size.height)
+        }
+        .frame(height: 45)
+    }
+    
+    private var invalidPopupView: some View {
+        RoundedRectangle(cornerRadius: 20)
+            .foregroundStyle(.white)
+            .frame(width: 300, height: 300)
+            .overlay(
+                VStack(spacing: 30) {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .resizable()
+                        .frame(width: 100, height: 100)
+                        .foregroundStyle(.yellow)
+                    
+                    Text("불가능한 시간대가 많으면\n원활한 시간표 생성이 어려울 수 있어요.")
+                        .font(.sb16)
+                        .lineSpacing(5)
+                        .multilineTextAlignment(.center)
+                    Button(action: {
+                        invalidPopup = false
+                    }) {
+                        Text("확인했어요")
+                            .font(.sb14)
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    }
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundStyle(.blue)
+                    )
+                    .frame(height: 40)
+                    .padding(.horizontal, 15)
+                }
+            )
+    }
+    
+    private var midCheckPopupView: some View {
+        RoundedRectangle(cornerRadius: 20)
+            .foregroundStyle(.white)
+            .frame(width: 300, height: 360)
+            .overlay(
+                VStack(spacing: 30) {
+                    Image(systemName: "exclamationmark.warninglight")
+                        .resizable()
+                        .frame(width: 100, height: 100)
+                    Text("시간표를 생성하면\n현재 설정은 수정할 수 없어요!!")
+                        .font(.sb16)
+                        .lineSpacing(5)
+                        .multilineTextAlignment(.center)
+                    VStack {
+                        Button(action: {
+                            navigateForward()
+                            midCheckPopup = false
+                        }) {
+                            Text("시간표 생성하러 가기")
+                                .font(.sb14)
+                                .foregroundStyle(.white)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        }
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundStyle(.blue)
+                        )
+                        .frame(height: 40)
+                        Button(action: {
+                            midCheckPopup = false
+                        }) {
+                            Text("조금 더 고민해보기")
+                                .font(.sb14)
+                                .foregroundStyle(Color(red: 0.11, green: 0.33, blue: 1))
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        }
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(.white)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .inset(by: 2)
+                                        .stroke(.blue, lineWidth: 1.5)
+                                )
+                        )
+                        .frame(height: 40)
+                    }
+                    .padding(.horizontal, 15)
+                }
+            )
+    }
 
-    // 이전 뷰로 이동하는 함수
     func navigateBack() {
         switch selectedView {
         case .essentialClasses:

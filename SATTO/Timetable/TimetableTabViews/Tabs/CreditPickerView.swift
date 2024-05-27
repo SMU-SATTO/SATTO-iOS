@@ -13,7 +13,7 @@ struct CreditPickerView: View {
     @ObservedObject var selectedValues: SelectedValues
     
     var body: some View {
-        VStack {
+        ScrollView {
             Text("이번 학기에 들을 학점을 선택해 주세요.")
                 .font(.sb16)
 

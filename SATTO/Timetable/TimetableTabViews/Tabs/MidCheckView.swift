@@ -11,7 +11,7 @@ struct MidCheckView: View {
     @ObservedObject var selectedValues: SelectedValues
     
     var body: some View {
-        VStack {
+        ScrollView {
             HStack {
                 VStack(alignment: .leading, spacing: 3) {
                     Text("이렇게 시간표를 생성해드릴까요?")

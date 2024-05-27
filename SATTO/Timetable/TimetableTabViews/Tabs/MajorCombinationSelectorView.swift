@@ -11,7 +11,7 @@ import SwiftUI
 struct MajorCombinationSelectorView: View {
     @State private var isButtonSelected = false
     var body: some View {
-        VStack {
+        ScrollView {
             HStack {
                 VStack(alignment: .leading, spacing: 5) {
                     Text("90개의 시간표가 만들어졌어요!")

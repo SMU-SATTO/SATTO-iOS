@@ -12,8 +12,8 @@ struct SearchSheetTabView: View {
     @ObservedObject var timetableViewModel: TimetableViewModel
     @ObservedObject var selectedValues: SelectedValues
     
-    @State private var selectedSubviews = Set<Int>()
-    @State private var alreadySelectedSubviews = Set<Int>()
+    @Binding var selectedSubviews: Set<Int>
+    @Binding var alreadySelectedSubviews: Set<Int>
     
     @State private var selectedTab = ""
     @State private var selectedCategories: [String: Bool] = [:]
@@ -82,7 +82,7 @@ struct SearchSheetTabView: View {
                             }
                         )
                 }
-                .padding(.horizontal, 15)
+                .padding(.horizontal, 10)
                 .padding(.top, 10)
             }
             //MARK: - Option에 따라 다른 뷰 제공
@@ -126,5 +126,5 @@ struct SearchSheetTabView: View {
 }
 
 #Preview {
-    SearchSheetTabView(timetableViewModel: TimetableViewModel(), selectedValues: SelectedValues(), showResultAction: {})
+    SearchSheetTabView(timetableViewModel: TimetableViewModel(), selectedValues: SelectedValues(), selectedSubviews: .constant([]), alreadySelectedSubviews: .constant([]), showResultAction: {})
 }
