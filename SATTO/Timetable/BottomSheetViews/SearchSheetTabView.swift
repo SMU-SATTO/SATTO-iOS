@@ -82,7 +82,7 @@ struct SearchSheetTabView: View {
                             }
                         )
                 }
-                .padding(.horizontal, 15)
+                .padding(.horizontal, 10)
                 .padding(.top, 10)
             }
             //MARK: - Option에 따라 다른 뷰 제공
