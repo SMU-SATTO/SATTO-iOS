@@ -23,7 +23,9 @@ struct ContentView: View {
                     Image(selectedTab == Tab.timeTable ? "timeTable.fill" : "timeTable")
                     Text("시간표")
                 }.tag(Tab.timeTable)
-                FriendView(stackPath: $stackPath).tabItem {
+                FriendView()
+                    .environmentObject(FriendNavigationPathFinder.shared)
+                    .tabItem {
                     Image(selectedTab == Tab.friend ? "friend.fill" : "friend")
                     Text("친구관리")
                 }.tag(Tab.friend)
@@ -41,14 +43,14 @@ struct ContentView: View {
             .accentColor(Color.blue7)
             .navigationDestination(for: Route.self) { route in
                 switch route {
-                case .search:
-                    SearchView(stackPath: $stackPath, TextFieldPlacehold: "친구의 학번을 입력해 주세요")
-                case .followerSearch:
-                    SearchView(stackPath: $stackPath, TextFieldPlacehold: "팔로워 목록")
-                case .followingSearch:
-                    SearchView(stackPath: $stackPath, TextFieldPlacehold: "팔로잉 목록")
-                case .friend:
-                    FriendView(stackPath: $stackPath)
+//                case .search:
+//                    SearchView(stackPath: $stackPath, TextFieldPlacehold: "친구의 학번을 입력해 주세요")
+//                case .followerSearch:
+//                    SearchView(stackPath: $stackPath, TextFieldPlacehold: "팔로워 목록")
+//                case .followingSearch:
+//                    SearchView(stackPath: $stackPath, TextFieldPlacehold: "팔로잉 목록")
+//                case .friend:
+//                    FriendView(stackPath: $stackPath)
                 case .timetableMake:
                     TimetableMakeView(stackPath: $stackPath)
                 case .timetableOption:
@@ -70,10 +72,10 @@ struct ContentView: View {
 }
 
 enum Route: Hashable {
-    case search
-    case followerSearch
-    case followingSearch
-    case friend
+//    case search
+//    case followerSearch
+//    case followingSearch
+//    case friend
     case timetableMake
     case timetableOption
     case timetableCustom

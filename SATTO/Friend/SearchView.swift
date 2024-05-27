@@ -10,8 +10,8 @@ import SwiftUI
 struct SearchView: View {
     
     @State var text = ""
-    @Binding var stackPath: [Route]
-    
+//    @Binding var stackPath: [Route]
+    @EnvironmentObject var navPathFinder: FriendNavigationPathFinder
     var TextFieldPlacehold: String
     
     var body: some View {
@@ -20,7 +20,7 @@ struct SearchView: View {
             HStack(spacing: 0) {
                 
                 Button(action: {
-                    stackPath.popLast()
+                    navPathFinder.path.popLast()
                 }, label: {
                     Image("Classic")
                 })
@@ -45,7 +45,7 @@ struct SearchView: View {
             //            Spacer()
             ScrollView {
                 ForEach(0 ..< 10) { item in
-                    FriendCell(name: "한민재", studentID: 20201499, isFollowing: false, stackPath: $stackPath)
+                    FriendCell(name: "한민재", studentID: 20201499, isFollowing: false)
                         .padding(.bottom, 15)
                         .padding(.top, 10)
                 }
@@ -78,7 +78,7 @@ struct ClearButtonTextField: View {
                     text = ""
                 }) {
                     Image("Icon")
-                        .foregroundColor(.gray)
+//                        .foregroundColor(.gray)
                         .padding(.trailing, 10)
                 }
             }
@@ -87,7 +87,7 @@ struct ClearButtonTextField: View {
         .padding(.vertical, 10)
         .background(
             Rectangle()
-                .fill(Color.gray)
+                .fill(Color(red: 0.91, green: 0.92, blue: 0.93))
                 .cornerRadius(30)
         )
     }
@@ -105,7 +105,8 @@ struct FriendCell: View {
     var studentID: Int
     var isFollowing: Bool
     
-    @Binding var stackPath: [Route]
+    @EnvironmentObject var navPathFinder: FriendNavigationPathFinder
+    
     
     var body: some View {
         HStack(spacing: 0) {
@@ -121,7 +122,7 @@ struct FriendCell: View {
                 .padding(.leading, 20)
             
             Button(action: {
-                stackPath.append(.friend)
+                navPathFinder.addPath(route: .friend)
             }, label: {
                 VStack(alignment: .leading, spacing: 0) {
                     // m16
@@ -176,9 +177,7 @@ struct FriendCell: View {
 }
 
 #Preview {
-    SearchView(stackPath: .constant([.search]), TextFieldPlacehold: "검색")
+    SearchView(TextFieldPlacehold: "검색")
+    .environmentObject(FriendNavigationPathFinder.shared)
 }
 
-#Preview {
-    ContentView()
-}
