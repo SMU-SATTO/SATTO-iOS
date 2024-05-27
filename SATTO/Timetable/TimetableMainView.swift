@@ -45,9 +45,7 @@ struct TimetableMainView: View {
                                             selectedTab = "이수 학점"
                                         }) {
                                             Text("이수 학점")
-                                                .font(
-                                                    Font.custom("Pretendard", size: 14)
-                                                )
+                                                .font(.sb14)
                                                 .foregroundStyle(.black)
                                         }
                                     }
@@ -99,7 +97,8 @@ struct TimetableMainView: View {
                     VStack {
                         HStack {
                             Text("\(username)님의 이번 학기 시간표")
-                                .padding(.leading, 10)
+                                .font(.b14)
+                                .padding(.leading, 30)
                             Spacer()
                             //MARK: - 오른쪽 메뉴 오픈
                             Button(action: {
@@ -148,9 +147,11 @@ struct TimetableMainView: View {
                 else if selectedTab == "이수 학점" {
                     HStack {
                         Text("\(username)님의 이수 학점")
+                            .font(.b14)
                             .padding(.leading, 30)
                         Spacer()
                     }
+                    .padding(.top, 10)
                     RoundedRectangle(cornerRadius: 30)
                         .fill(Color(red: 0.96, green: 0.96, blue: 0.98))
                         .frame(height: 50)

@@ -14,10 +14,13 @@ struct TimeSheetView: View {
     @Binding var alreadySelectedSubviews: Set<Int>
     
     var body: some View {
-        TimeSelectorView(selectedValues: selectedValues, title: "보고싶은 시간대를 선택해주세요.",
-                         preselectedSlots: [],
-                         selectedSubviews: $selectedSubviews,
-                         alreadySelectedSubviews: $alreadySelectedSubviews, invalidPopup: .constant(false))
+        ScrollView {
+            TimeSelectorView(selectedValues: selectedValues, title: "보고싶은 시간대를 선택해주세요.",
+                             preselectedSlots: [],
+                             selectedSubviews: $selectedSubviews,
+                             alreadySelectedSubviews: $alreadySelectedSubviews, invalidPopup: .constant(false))
+            .padding(.horizontal, 10)
+        }
     }
 }
 
