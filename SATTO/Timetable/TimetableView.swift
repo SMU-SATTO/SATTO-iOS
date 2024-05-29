@@ -14,30 +14,18 @@ struct TimetableView: View {
     var body: some View {
         JHLectureTable {
             ForEach(convertToLectureModels(from: timetableBaseArray)) { lecture in
-                ZStack(alignment: .topLeading) {
-                    Rectangle()
-                        .foregroundStyle(lecture.color)
-                    
-                    Text(lecture.title)
-                        .font(.caption)
-                        .fontWeight(.bold)
-                        .foregroundColor(Color.white)
-                        .padding(EdgeInsets(top: 2, leading: 3, bottom: 0, trailing: 0))
-                }
+                LectureView(lecture: lecture)
                 .lectureTableTime(week: lecture.week,
                                   startAt: lecture.startAt,
                                   endAt: lecture.endAt)
             }
         } timebar: { time in
-            // Add customized timebar
-            Text("\(time.hour == 12 ? "\(time.hour)pm" : (time.hour > 12 ? "\(time.hour - 12)pm" : "\(time.hour)am"))")
+            Text(formatTime(time))
                 .font(.r12)
                 .padding(.trailing, 3)
             
         } weekbar: { week in
-            // week: LectureWeeks enum
             // You can use week.symbol, week.shortSymbol, week.veryShortSymbol
-            // Add cusomized weekbar
             Text("\(week)".capitalized)
                 .font(.m14)
         } background: {
@@ -47,7 +35,8 @@ struct TimetableView: View {
         .lectureTableTimes(startAt: .init(hour: 9, minute: 0), endAt: .init(hour: 22, minute: 0)) // 시작, 끝 시간 설정
         .lectureTableBorder(width: 0.5, radius: 0, color: "#979797") // table 그리드 선 색 변경
         .lectureTableBar(time: .init(height: 0, width: 35), week: .init(height: 30, width: 10)) //날짜, 시간 위치 변경 가능, 시간, 주 크기 변경
-        .frame(width: 350, height: 500)
+        .aspectRatio(7/10, contentMode: .fit)
+        .frame(maxWidth: 350, maxHeight: 500)
     }
     
     private func convertToLectureModels(from timetableBaseArray: [TimetableBase]) -> [LectureModel] {
@@ -56,38 +45,22 @@ struct TimetableView: View {
     
     private func convertToLectureModels(from timetableBase: TimetableBase) -> [LectureModel] {
         let components = timetableBase.time.components(separatedBy: " ")
-        var lectureModels: [LectureModel] = []
-        
-        let setRandomColor = ColorSelectionManager().randomColor()// Assuming a method to generate random colors
-        
-        for component in components {
-            guard let week = week(for: component) else {
-                continue
-            }
-            
-            guard let startTime = parseTime(from: component) else {
-                continue
-            }
-            
+        let color = ColorSelectionManager().randomColor()
+        let lectureModels = components.compactMap { component -> LectureModel? in
+            guard let week = week(for: component), let startTime = parseTime(from: component) else { return nil }
             let endTime = LectureTableTime(hour: startTime.hour + 1, minute: startTime.minute)
-            
-            let lectureModel = LectureModel(title: timetableBase.sbjName,
-                                            color: setRandomColor,
-                                            week: week,
-                                            startAt: startTime,
-                                            endAt: endTime)
-            lectureModels.append(lectureModel)
+            return LectureModel(title: timetableBase.sbjName,
+                                color: color, week: week,
+                                startAt: startTime,
+                                endAt: endTime
+            )
         }
         
         return mergeAdjacentLectures(lectureModels)
     }
     
     private func parseTime(from timeString: String) -> LectureTableTime? {
-        let digits = timeString.filter { $0.isNumber }
-        guard let hour = Int(digits) else {
-            return nil
-        }
-        
+        guard let hour = Int(timeString.filter { $0.isNumber }) else { return nil }
         return LectureTableTime(hour: hour + 8, minute: 0) // 1교시 9시부터 시작
     }
     
@@ -133,6 +106,13 @@ struct TimetableView: View {
         
         return mergedLectures
     }
+    
+    private func formatTime(_ time: LectureTableTime) -> String {
+        let hour = time.hour
+        let period = hour >= 12 ? "pm" : "am"
+        let formattedHour = hour == 12 ? 12 : hour > 12 ? hour - 12 : hour
+        return "\(formattedHour)\(period)"
+    }
 }
 
 struct LectureView: View {
@@ -141,6 +121,7 @@ struct LectureView: View {
     var body: some View {
         ZStack(alignment: .topLeading) {
             Rectangle()
+                .foregroundStyle(lecture.color)
             Text(lecture.title)
                 .font(.caption)
                 .fontWeight(.bold)
