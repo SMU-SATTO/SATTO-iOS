@@ -10,7 +10,7 @@ import SwiftUI
 struct OptionSheetView: View {
     let options: [String]
     @Binding var selectedOptions: [String: Bool]
-    let isToggleFirst: Bool
+    let allowsDuplicates: Bool
 
     @State private var isFirstTimeAccess = true
 
@@ -47,7 +47,7 @@ struct OptionSheetView: View {
 
     // MARK: - Handle Option Selection
     private func handleOptionSelection(for option: String) {
-        if isToggleFirst {
+        if allowsDuplicates {
             if option == options.first {
                 selectedOptions = Dictionary(uniqueKeysWithValues: options.map { ($0, false) })
                 selectedOptions[option] = true
@@ -72,5 +72,5 @@ struct OptionSheetView: View {
 }
 
 #Preview {
-    OptionSheetView(options: ["전체", "1학년", "2학년", "3학년", "4학년"], selectedOptions: .constant([:]), isToggleFirst: true)
+    OptionSheetView(options: ["전체", "1학년", "2학년", "3학년", "4학년"], selectedOptions: .constant([:]), allowsDuplicates: true)
 }

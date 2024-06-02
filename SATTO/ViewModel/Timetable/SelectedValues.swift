@@ -30,8 +30,8 @@ class SelectedValues: ObservableObject {
     @Published var credit: Int = 6
     @Published var majorNum: Int = 0
     @Published var ELearnNum: Int = 0
-//    @Published var essentialSubjects: [TimetableBase] = []
-    @Published var selectedSubjects: [TimetableBase] = []
+//    @Published var essentialSubjects: [SubjectModelBase] = []
+    @Published var selectedSubjects: [SubjectModelBase] = []
     ///"월1 월2 월3"
     @Published var invalidTimes: String = ""
     
@@ -39,19 +39,19 @@ class SelectedValues: ObservableObject {
         return selectedSubjects.isEmpty
     }
     
-    func addSubject(_ subject: TimetableBase) {
+    func addSubject(_ subject: SubjectModelBase) {
         if !selectedSubjects.contains(where: { $0.sbjDivcls == subject.sbjDivcls }) && !isTimeOverlapping(for: subject) {
             selectedSubjects.append(subject)
         }
     }
         
-    func removeSubject(_ subject: TimetableBase) {
+    func removeSubject(_ subject: SubjectModelBase) {
         if let index = selectedSubjects.firstIndex(where: { $0.sbjDivcls == subject.sbjDivcls }) {
             selectedSubjects.remove(at: index)
         }
     }
     
-    func toggleSelection(subject: TimetableBase) -> Bool {
+    func toggleSelection(subject: SubjectModelBase) -> Bool {
         if let index = selectedSubjects.firstIndex(where: { $0.sbjDivcls == subject.sbjDivcls }) {
             selectedSubjects.remove(at: index)
             return true
@@ -62,11 +62,11 @@ class SelectedValues: ObservableObject {
         return false
     }
 
-    func isSelected(subject: TimetableBase) -> Bool {
+    func isSelected(subject: SubjectModelBase) -> Bool {
         return selectedSubjects.contains(where: { $0.sbjDivcls == subject.sbjDivcls })
     }
     
-    func isTimeOverlapping(for subject: TimetableBase) -> Bool {
+    func isTimeOverlapping(for subject: SubjectModelBase) -> Bool {
         let newSubjectTimes = parseTimes(for: subject)
         for existingSubject in selectedSubjects {
             let existingSubjectTimes = parseTimes(for: existingSubject)
@@ -87,7 +87,7 @@ class SelectedValues: ObservableObject {
         selectedSubjects.removeAll()
     }
     
-    private func parseTimes(for subject: TimetableBase) -> [String] {
+    private func parseTimes(for subject: SubjectModelBase) -> [String] {
         return subject.time.components(separatedBy: " ")
     }
     //MARK: - Post 요청
