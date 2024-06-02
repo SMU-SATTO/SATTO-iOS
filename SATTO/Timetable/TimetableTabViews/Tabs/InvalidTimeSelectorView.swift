@@ -22,6 +22,7 @@ struct InvalidTimeSelectorView: View {
                              preselectedSlots: selectedValues.parsePreselectedSlots(),
                              selectedSubviews: $selectedSubviews,
                              alreadySelectedSubviews: $alreadySelectedSubviews, invalidPopup: $invalidPopup)
+            .padding(.horizontal, 15)
         }
     }
 }

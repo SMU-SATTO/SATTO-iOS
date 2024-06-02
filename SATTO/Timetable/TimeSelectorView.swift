@@ -7,21 +7,18 @@
 
 import SwiftUI
 
-/// 학점 최대치 넘어가면 선택 못하게 해야하나? ex) 18학점 최대인데 18학점 이상 선택하는 경우의 수
-/// 미리 시간대 선택하고 이전으로 돌아가서 수업 선택하면 중복으로 선택되는 이슈 있음
-/// 바텀시트뷰에서 사용 방법 생각해야함
 struct TimeSelectorView: View {
     @ObservedObject var selectedValues: SelectedValues
     
-    var title: String
-    var cellWidth: CGFloat = 45
+    var title: String = ""
+    var cellWidth: CGFloat = 40
     var cellHeight: CGFloat = 30
     var cellWidthSpacing: CGFloat = 0.5
     var cellHeightSpacing: CGFloat = 0.5
     var lineWidth: CGFloat = 1
     var minTime: Int = 8
     var maxTime: Int = 22
-    var preselectedSlots: [String]
+    var preselectedSlots: [String] = []
     @Binding var selectedSubviews: Set<Int>
     @Binding var alreadySelectedSubviews: Set<Int>
     
@@ -81,7 +78,7 @@ struct TimeSelectorView: View {
         VStack(spacing: 0) {
             ForEach(minTime..<maxTime, id: \.self) { hour in
                 Text("\(hour):00")
-                    .font(.m12)
+                    .font(.m10)
                     .frame(width: cellWidth, height: cellHeight)
             }
         }
@@ -227,4 +224,8 @@ struct TimeCellRectangle: View {
                 preselectedIndexes.contains(index) ? Color.black.opacity(0.3) : Color.clear
             )
     }
+}
+
+#Preview {
+    TimeSelectorView(selectedValues: SelectedValues(), selectedSubviews: .constant([]), alreadySelectedSubviews: .constant([]), invalidPopup: .constant(false))
 }

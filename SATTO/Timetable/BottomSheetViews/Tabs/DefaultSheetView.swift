@@ -48,7 +48,7 @@ struct SubjectSheetView: View {
                     subjectCardView(subjectDetail, at: index, containerSize: containerSize)
                         .padding(.horizontal, 10)
                 }
-                .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
+                .padding(EdgeInsets(top: 10, leading: 10, bottom: 20, trailing: 10))
             }
         }
     }
@@ -159,6 +159,7 @@ struct SubjectSheetView: View {
                     Image(systemName: selectedValues.isSelected(subject: subjectDetail) ? "checkmark.circle.fill" : "plus.circle.fill")
                         .resizable()
                         .frame(width: 25, height: 25)
+                        .foregroundStyle(Color("blue_2"))
                 }
                 .padding([.top, .trailing], 20)
             }
@@ -300,13 +301,6 @@ struct SubjectSheetView: View {
     }
 }
 
-//MARK: - 수강인원 그래프 구현
-struct ValuePerSubjectCategory {
-    var category: String
-    var value: Int
-    var date: String
-}
-
 struct SubjectChartView: View {
     let subjectChartData: [ValuePerSubjectCategory]
     
@@ -345,7 +339,6 @@ struct SubjectChartView: View {
         }
     }
 }
-
 
 #Preview {
     SubjectSheetView(timetableViewModel: TimetableViewModel(), selectedValues: SelectedValues(), showResultAction: {})
