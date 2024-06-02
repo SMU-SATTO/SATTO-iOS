@@ -80,7 +80,7 @@ struct SearchSheetTabView: View {
                 .frame(width: 70, height: 30)
                 .background(
                     RoundedRectangle(cornerRadius: 20)
-                        .foregroundStyle(selectedCategories[category, default: false] ? Color("blue_7") : .gray50)
+                        .foregroundStyle(selectedCategories[category, default: false] ? Color("Info02") : .gray50)
                         .frame(width: 70, height: 30)
                         .padding(EdgeInsets(top: -5, leading: -5, bottom: -5, trailing: -5))
                 )
