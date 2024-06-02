@@ -8,8 +8,7 @@
 import SwiftUI
 import PopupView
 
-
-
+//MARK: - 팝업 상위뷰로 넘겨야 백그라운드 색 제대로 변함
 struct FinalTimetableSelectorView: View {
     @State var showingPopup = false
 
@@ -17,7 +16,7 @@ struct FinalTimetableSelectorView: View {
         ZStack {
             VStack(alignment: .leading) {
                 Text("좌우로 스크롤해 \n원하는 시간표를 골라보세요!")
-                Text("OpenPopupView")
+                TimetableView(timetableBaseArray: [])
                     .onTapGesture {
                         showingPopup.toggle()
                     }
@@ -43,22 +42,37 @@ struct selectPopup: View {
     var body: some View {
         VStack {
             RoundedRectangle(cornerRadius: 20)
-                .frame(width: 300, height: 450)
+                .frame(width: 300, height: 600)
                 .foregroundStyle(.white)
                 .overlay(
-                    VStack {
+                    VStack(spacing: 0) {
+                        TimetableView(timetableBaseArray: [])
+                            .padding(.horizontal, 30)
                         RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(.blue1)
-                            .frame(width: 250, height: 44)
-                            .shadow(color: Color(red: 0.96, green: 0.51, blue: 0.16).opacity(0.16), radius: 4, x: 0, y: 4)
+                            .foregroundStyle(Color("blue_7"))
+                            .frame(height: 40)
+                            .padding(.horizontal, 30)
                             .overlay(
                                 Text("네, 결정했어요")
+                                    .font(.sb14)
                                     .foregroundStyle(.white)
                             )
+                        
                         RoundedRectangle(cornerRadius: 10)
                             .foregroundStyle(.white)
-                            .frame(width: 250, height: 44)
-                            .shadow(color: Color(red: 0.96, green: 0.51, blue: 0.16).opacity(0.16), radius: 4, x: 0, y: 4)
+                            .frame(height: 40)
+                            .padding(.horizontal, 30)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color("blue_7"), lineWidth: 1.5)
+                                    .padding(.horizontal, 30)
+                                    .overlay(
+                                        Text("아니요, 더 둘러볼래요")
+                                            .font(.sb14)
+                                            .foregroundStyle(Color("blue_7"))
+                                    )
+                            )
+                            .padding([.top, .bottom], 20)
                     }
                 )
         }
