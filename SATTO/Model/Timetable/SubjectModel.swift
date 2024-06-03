@@ -15,7 +15,7 @@ struct MajorCombinationModel: Codable {
 
 //MARK: - Datum
 struct Datum: Codable {
-    let timetable: [SubjectModel]
+    let subjectData: [SubjectModel]
     let totalTime: String
     let isPublic, isRepresent: Bool
     let createdAt: String

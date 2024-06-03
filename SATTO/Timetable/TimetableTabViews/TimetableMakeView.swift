@@ -16,6 +16,8 @@ struct TimetableMakeView: View {
     
     @StateObject var subjectViewModel = SubjectViewModel()
     @StateObject var selectedValues = SelectedValues()
+    @StateObject var bottomSheetViewModel = BottomSheetViewModel()
+    
     @State private var selectedView: SelectedView = .creditPicker
     
     @State private var selectedSubviews = Set<Int>()
@@ -260,7 +262,7 @@ struct TimetableMakeView: View {
         case .creditPicker:
             return AnyView(CreditPickerView(selectedValues: selectedValues))
         case .essentialClasses:
-            return AnyView(EssentialClassesSelectorView(subjectViewModel: subjectViewModel, selectedValues: selectedValues))
+            return AnyView(EssentialClassesSelectorView(subjectViewModel: subjectViewModel, selectedValues: selectedValues, bottomSheetViewModel: bottomSheetViewModel))
         case .invalidTime:
             return AnyView(InvalidTimeSelectorView(selectedValues: selectedValues, selectedSubviews: $selectedSubviews, alreadySelectedSubviews: $alreadySelectedSubviews, invalidPopup: $invalidPopup))
         case .midCheck:

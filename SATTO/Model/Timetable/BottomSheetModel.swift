@@ -9,10 +9,11 @@ import Foundation
 
 //MARK: - 바텀시트 필터링 모델
 struct BottomSheetModel: Codable {
-    let grade: Int
-    let GEOption: String
-    let eLearn: Int
-    let time: String
+    var grade: [Int]
+    var GEOption: [String]
+    var BGEOption: String
+    var eLearn: Int
+    var time: String
 }
 
 //MARK: - 바텀시트 수강인원 그래프 모델

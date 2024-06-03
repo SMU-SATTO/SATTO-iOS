@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol TimeSelectorViewModelProtocol: ObservableObject {
+    var selectedTimes: String { get set }
+}
+
 class SelectedMajorCombination: ObservableObject {
     @Published var selectedMajorCombs: [[String]] = []
     
@@ -22,18 +26,17 @@ class SelectedMajorCombination: ObservableObject {
     func isSelected(_ combination: [String]) -> Bool {
         return selectedMajorCombs.contains(combination)
     }
-    
     //MARK: - POST 요청
 }
 
-class SelectedValues: ObservableObject {
+class SelectedValues: TimeSelectorViewModelProtocol {
     @Published var credit: Int = 6
     @Published var majorNum: Int = 0
     @Published var ELearnNum: Int = 0
 //    @Published var essentialSubjects: [SubjectModelBase] = []
     @Published var selectedSubjects: [SubjectModelBase] = []
     ///"월1 월2 월3"
-    @Published var invalidTimes: String = ""
+    @Published var selectedTimes: String = ""
     
     func isSelectedSubjectsEmpty() -> Bool {
         return selectedSubjects.isEmpty
@@ -92,3 +95,60 @@ class SelectedValues: ObservableObject {
     }
     //MARK: - Post 요청
 }
+
+//MARK: - BottomSheetModel로 파싱 필요 및 파싱 과정에서 균형교양 미포함시 resetBGE()
+final class BottomSheetViewModel: TimeSelectorViewModelProtocol {
+    @Published var bottomSheetFilter: BottomSheetModel = BottomSheetModel(
+        grade: [1, 2],
+        GEOption: ["균형교양"],
+        BGEOption: "인문영역",
+        eLearn: 1,
+        time: "월1 월2 월3"
+    )
+    
+    @Published var selectedGrades: [String] = ["전체"]
+    @Published var selectedGE: [String] = ["전체"]
+    @Published var selectedBGE: [String] = []
+    @Published var selectedELOption: [String] = ["전체"]
+    @Published var selectedTimes: String = ""
+    
+    func resetBGE() {
+        selectedBGE = []
+    }
+    
+    func isGradeSelected() -> Bool {
+        if selectedGrades.isEmpty || selectedGrades.contains("전체") {
+            return false
+        }
+        return true
+    }
+    
+    func isGESelected() -> Bool {
+        if selectedGE.isEmpty || selectedGE.contains("전체") {
+            return false
+        }
+        return true
+    }
+    
+    func isBGESelected() -> Bool {
+        if selectedBGE.isEmpty {
+            return false
+        }
+        return true
+    }
+    
+    func isELOptionSelected() -> Bool {
+        if selectedELOption.isEmpty || selectedELOption.contains("전체") {
+            return false
+        }
+        return true
+    }
+    
+    func isTimeSelected() -> Bool {
+        if selectedTimes == "" {
+            return false
+        }
+        return true
+    }
+}
+

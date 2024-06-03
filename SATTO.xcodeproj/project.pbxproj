@@ -19,7 +19,6 @@
 		AA0B714E2C07C77100216A32 /* TimetableProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0B714D2C07C77100216A32 /* TimetableProgressView.swift */; };
 		AA0DFC6D2C0CE660002ED3C9 /* BottomSheetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0DFC6C2C0CE660002ED3C9 /* BottomSheetModel.swift */; };
 		AA0DFC6F2C0CEAD7002ED3C9 /* OptionSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0DFC6E2C0CEAD7002ED3C9 /* OptionSheetView.swift */; };
-		AA0DFC712C0CFFE6002ED3C9 /* BottomSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0DFC702C0CFFE6002ED3C9 /* BottomSheetViewModel.swift */; };
 		AA1018A22BDE812A009E6804 /* TimetableCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1018A12BDE812A009E6804 /* TimetableCustom.swift */; };
 		AA1018A62BDE87A1009E6804 /* SubjectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1018A52BDE87A1009E6804 /* SubjectViewModel.swift */; };
 		AA1018A92BDE882C009E6804 /* SubjectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1018A82BDE882C009E6804 /* SubjectModel.swift */; };
@@ -91,7 +90,6 @@
 		AA0B714D2C07C77100216A32 /* TimetableProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableProgressView.swift; sourceTree = "<group>"; };
 		AA0DFC6C2C0CE660002ED3C9 /* BottomSheetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetModel.swift; sourceTree = "<group>"; };
 		AA0DFC6E2C0CEAD7002ED3C9 /* OptionSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionSheetView.swift; sourceTree = "<group>"; };
-		AA0DFC702C0CFFE6002ED3C9 /* BottomSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetViewModel.swift; sourceTree = "<group>"; };
 		AA1018A12BDE812A009E6804 /* TimetableCustom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableCustom.swift; sourceTree = "<group>"; };
 		AA1018A52BDE87A1009E6804 /* SubjectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectViewModel.swift; sourceTree = "<group>"; };
 		AA1018A82BDE882C009E6804 /* SubjectModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectModel.swift; sourceTree = "<group>"; };
@@ -215,7 +213,6 @@
 			children = (
 				AA1018A52BDE87A1009E6804 /* SubjectViewModel.swift */,
 				AAA950622BA5C39B004E16C8 /* SelectedValues.swift */,
-				AA0DFC702C0CFFE6002ED3C9 /* BottomSheetViewModel.swift */,
 			);
 			path = Timetable;
 			sourceTree = "<group>";
@@ -559,7 +556,6 @@
 				AAA950812BA5E7A5004E16C8 /* TimetableOptionView.swift in Sources */,
 				AAA9508B2BA723C2004E16C8 /* TimeSheetView.swift in Sources */,
 				3B8335C32BEA197D0008EFB5 /* UploadImageView.swift in Sources */,
-				AA0DFC712C0CFFE6002ED3C9 /* BottomSheetViewModel.swift in Sources */,
 				AAA950702BA5C39B004E16C8 /* TimetableMakeView.swift in Sources */,
 				AAA950832BA722EF004E16C8 /* DefaultSheetView.swift in Sources */,
 				AAA9504D2BA5C396004E16C8 /* Font.swift in Sources */,

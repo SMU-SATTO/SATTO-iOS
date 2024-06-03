@@ -12,6 +12,7 @@ struct TimetableCustom: View {
     
     @StateObject var subjectViewModel = SubjectViewModel()
     @StateObject var selectedValues = SelectedValues()
+    @StateObject var bottomSheetViewModel = BottomSheetViewModel()
     
     @State private var selectedSubviews = Set<Int>()
     @State private var alreadySelectedSubviews = Set<Int>()
@@ -31,6 +32,7 @@ struct TimetableCustom: View {
                     BottomSheetTabView(
                         subjectViewModel: subjectViewModel,
                         selectedValues: selectedValues,
+                        bottomSheetViewModel: bottomSheetViewModel,
                         selectedSubviews: $selectedSubviews,
                         alreadySelectedSubviews: $alreadySelectedSubviews,
                         showResultAction: {isShowBottomSheet = false}
