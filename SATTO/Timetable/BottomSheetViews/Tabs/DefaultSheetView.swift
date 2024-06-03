@@ -100,12 +100,15 @@ struct SubjectSheetView: View {
     private func subjectInfoView(_ subjectDetail: SubjectDetailModel) -> some View {
         VStack(spacing: 3) {
             HStack {
-                Text(subjectDetail.sbjName)
-                    .font(.sb16)
-                    .foregroundStyle(.black)
-                Text(subjectDetail.prof)
-                    .font(.m14)
-                    .foregroundStyle(.black)
+                VStack(alignment: .leading) {
+                    Text(subjectDetail.sbjName)
+                        .font(.sb16)
+                        .foregroundStyle(.black)
+                        .padding(.trailing, 30)
+                    Text(subjectDetail.prof)
+                        .font(.m14)
+                        .foregroundStyle(.black)
+                }
                 Spacer()
             }
             HStack {
