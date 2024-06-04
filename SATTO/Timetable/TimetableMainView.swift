@@ -48,7 +48,7 @@ struct TimetableMainView: View {
     
     private var headerView: some View {
         UnevenRoundedRectangle(bottomLeadingRadius: 20, bottomTrailingRadius: 20)
-            .fill(Color(red: 0.85, green: 0.87, blue: 1))
+            .foregroundStyle(.banner)
             .frame(height: 160)
             .overlay(
                 ZStack {

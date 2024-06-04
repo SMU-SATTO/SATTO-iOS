@@ -8,17 +8,9 @@
 import SwiftUI
 import JHTimeTable
 
-struct MajorCombinationModel: Codable {
+struct MajorCombModel: Codable {
     let lec: [String]
     let combCount: Int
-}
-
-//MARK: - Datum
-struct Datum: Codable {
-    let subjectData: [SubjectModel]
-    let totalTime: String
-    let isPublic, isRepresent: Bool
-    let createdAt: String
 }
 
 protocol SubjectModelBase: Codable {

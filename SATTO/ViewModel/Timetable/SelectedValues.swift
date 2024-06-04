@@ -11,24 +11,6 @@ protocol TimeSelectorViewModelProtocol: ObservableObject {
     var selectedTimes: String { get set }
 }
 
-class SelectedMajorCombination: ObservableObject {
-    @Published var selectedMajorCombs: [[String]] = []
-    
-    func toggleSelection(_ combination: [String]) {
-        if selectedMajorCombs.contains(combination) {
-            selectedMajorCombs.removeAll(where: { $0 == combination })
-        }
-        else {
-            selectedMajorCombs.append(combination)
-        }
-    }
-        
-    func isSelected(_ combination: [String]) -> Bool {
-        return selectedMajorCombs.contains(combination)
-    }
-    //MARK: - POST 요청
-}
-
 class SelectedValues: TimeSelectorViewModelProtocol {
     @Published var credit: Int = 6
     @Published var majorNum: Int = 0
