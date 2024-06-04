@@ -8,14 +8,15 @@
 import SwiftUI
 
 struct TimeSheetView: View {
-    @ObservedObject var selectedValues: SelectedValues
+    @ObservedObject var bottomSheetViewModel: BottomSheetViewModel
     
     @Binding var selectedSubviews: Set<Int>
     @Binding var alreadySelectedSubviews: Set<Int>
     
     var body: some View {
         ScrollView {
-            TimeSelectorView(selectedValues: selectedValues, title: "보고싶은 시간대를 선택해주세요.",
+            TimeSelectorView(viewModel: bottomSheetViewModel,
+                             title: "보고싶은 시간대를 선택해주세요.",
                              preselectedSlots: [],
                              selectedSubviews: $selectedSubviews,
                              alreadySelectedSubviews: $alreadySelectedSubviews, invalidPopup: .constant(false))
@@ -25,5 +26,5 @@ struct TimeSheetView: View {
 }
 
 #Preview {
-    TimeSheetView(selectedValues: SelectedValues(), selectedSubviews: .constant([]), alreadySelectedSubviews: .constant([]))
+    TimeSheetView(bottomSheetViewModel: BottomSheetViewModel(), selectedSubviews: .constant([]), alreadySelectedSubviews: .constant([]))
 }

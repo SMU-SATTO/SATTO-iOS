@@ -1,5 +1,5 @@
 //
-//  MajorCombinationSelectorView.swift
+//  MajorCombSelectorView.swift
 //  SATTO
 //
 //  Created by 김영준 on 3/5/24.
@@ -8,22 +8,17 @@
 import SwiftUI
 
 //MARK: - 가능한 전공 조합 선택하는 페이지
-struct MajorCombinationSelectorView: View {
+struct MajorCombSelectorView: View {
+    @ObservedObject var viewModel: MajorCombViewModel
     /// 위로 올려야함 stateobject
-    @StateObject private var selectedMajorCombination = SelectedMajorCombination()
-    
-    @State private var majorCombinations: [MajorCombinationModel] = [
-        MajorCombinationModel(lec: ["과목명1", "과목명2", "과목명3"], combCount: 30),
-        MajorCombinationModel(lec: ["과목명2", "과목명4", "과목명3"], combCount: 10),
-        MajorCombinationModel(lec: ["과목명1", "과목명5", "과목명7"], combCount: 20)
-    ]
+    @StateObject private var selectedMajorComb = SelectedMajorComb()
     
     var body: some View {
         ScrollView {
             HStack {
                 VStack(alignment: .leading, spacing: 5) {
                     HStack(spacing: 0) {
-                        Text("\(majorCombinations.count)개의 전공 조합, \(majorCombinations.reduce(0) { $0 + $1.combCount })개의 시간표")
+                        Text("\(viewModel.majorCombinations.count)개의 전공 조합, \(viewModel.majorCombinations.reduce(0) { $0 + $1.combCount })개의 시간표")
                             .font(.sb16)
                             .foregroundColor(Color("blue_6"))
                         Text("가 만들어졌어요!")
@@ -48,8 +43,8 @@ struct MajorCombinationSelectorView: View {
                 .padding(.top, 20)
                 .padding(.bottom, 20)
             
-            ForEach(majorCombinations.indices, id: \.self) { index in
-                majorRectangle(combination: majorCombinations[index])
+            ForEach(viewModel.majorCombinations.indices, id: \.self) { index in
+                majorRectangle(combination: viewModel.majorCombinations[index])
             }
             
             VStack {
@@ -57,7 +52,7 @@ struct MajorCombinationSelectorView: View {
                     .font(.m14)
                     .foregroundColor(Color.gray800)
                 
-                ForEach(selectedMajorCombination.selectedMajorCombs, id: \.self) { combination in
+                ForEach(selectedMajorComb.selectedMajorCombs, id: \.self) { combination in
                     HStack(spacing: 0) {
                         ForEach(combination, id: \.self) { item in
                             Text(item)
@@ -77,9 +72,9 @@ struct MajorCombinationSelectorView: View {
     }
     
     @ViewBuilder
-    private func majorRectangle(combination: MajorCombinationModel) -> some View {
+    private func majorRectangle(combination: MajorCombModel) -> some View {
         Button(action: {
-            selectedMajorCombination.toggleSelection(combination.lec)
+            selectedMajorComb.toggleSelection(combination.lec)
         }) {
             ZStack {
                     VStack(spacing: 3) {
@@ -107,7 +102,7 @@ struct MajorCombinationSelectorView: View {
                     .shadow(color: Color(red: 0.75, green: 0.75, blue: 0.75).opacity(0.75), radius: 5, x: 0, y: 0)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(selectedMajorCombination.isSelected(combination.lec) ? Color("blue_6") : Color.clear, lineWidth: 1)
+                            .stroke(selectedMajorComb.isSelected(combination.lec) ? Color("blue_6") : Color.clear, lineWidth: 1)
                     )
                     .padding(.vertical, -10)
             )
@@ -118,5 +113,5 @@ struct MajorCombinationSelectorView: View {
 }
 
 #Preview {
-    MajorCombinationSelectorView()
+    MajorCombSelectorView(viewModel: MajorCombViewModel())
 }

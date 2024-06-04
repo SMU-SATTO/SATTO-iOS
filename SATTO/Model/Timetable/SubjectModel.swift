@@ -1,5 +1,5 @@
 //
-//  TimetableModel.swift
+//  SubjectModel.swift
 //  SATTO
 //
 //  Created by yeongjoon on 4/28/24.
@@ -8,35 +8,27 @@
 import SwiftUI
 import JHTimeTable
 
-struct MajorCombinationModel: Codable {
+struct MajorCombModel: Codable {
     let lec: [String]
     let combCount: Int
 }
 
-//MARK: - Datum
-struct Datum: Codable {
-    let timetable: [TimetableModel]
-    let totalTime: String
-    let isPublic, isRepresent: Bool
-    let createdAt: String
-}
-
-protocol TimetableBase: Codable {
+protocol SubjectModelBase: Codable {
     var sbjDivcls: String { get }
     var sbjNo: String { get }
     var sbjName: String { get }
     var time: String { get }
 }
 
-// MARK: - TimetableModel
-/// TimetableModel(sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", name: "컴퓨터네트워크", time: "목4 목5 목6 ")
-struct TimetableModel: TimetableBase {
+// MARK: - SubjectModel
+/// SubjectModel(sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", name: "컴퓨터네트워크", time: "목4 목5 목6 ")
+struct SubjectModel: SubjectModelBase {
     let sbjDivcls, sbjNo, sbjName, time: String
 }
 
-//MARK: - TimetableDetailModel
-///  TimetableDetailModel(major: "전공", "sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", sbjName: "과목명", prof: "교수명", "time: "목4 목5 목6 ", enrollmentCapacity: 200, enrolledStudents: 230)
-struct TimetableDetailModel: TimetableBase {
+//MARK: - SubjectDetailModel
+///  SubjectDetailModel(major: "전공", "sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", sbjName: "과목명", prof: "교수명", "time: "목4 목5 목6 ", enrollmentCapacity: 200, enrolledStudents: 230)
+struct SubjectDetailModel: SubjectModelBase {
     let major: String
     let sbjDivcls, sbjNo, sbjName, prof, time: String
     let credit, enrollmentCapacity, enrolledStudents: Int
@@ -58,11 +50,11 @@ struct TimetableDetailModel: TimetableBase {
     }
 }
 
-struct TimetableDetailList: Codable {
-    let timetable: [TimetableDetailModel]
+struct SubjectDetailList: Codable {
+    let subject: [SubjectDetailModel]
     
-    init(timetable: [TimetableDetailModel]) {
-        self.timetable = timetable
+    init(subject: [SubjectDetailModel]) {
+        self.subject = subject
     }
 }
 

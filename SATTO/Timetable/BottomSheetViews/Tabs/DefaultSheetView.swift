@@ -13,8 +13,8 @@ import PopupView
 /// 학점 넘치는 선택은 어떻게 처리?
 
 struct SubjectSheetView: View {
-    ///서버에서 받아온 TimetableViewModel
-    @ObservedObject var timetableViewModel: TimetableViewModel
+    ///서버에서 받아온 subjectViewModel
+    @ObservedObject var subjectViewModel: SubjectViewModel
     @ObservedObject var selectedValues: SelectedValues
     
     @State private var expandedSubjectIndex: Int?
@@ -43,8 +43,8 @@ struct SubjectSheetView: View {
     private func subjectListView(containerSize: CGSize) -> some View {
         ScrollView {
             VStack {
-                ForEach(timetableViewModel.subjectDetailDataList.indices, id: \.self) { index in
-                    let subjectDetail = timetableViewModel.subjectDetailDataList[index]
+                ForEach(subjectViewModel.subjectDetailDataList.indices, id: \.self) { index in
+                    let subjectDetail = subjectViewModel.subjectDetailDataList[index]
                     subjectCardView(subjectDetail, at: index, containerSize: containerSize)
                         .padding(.horizontal, 10)
                 }
@@ -53,7 +53,7 @@ struct SubjectSheetView: View {
         }
     }
     
-    private func subjectCardView(_ subjectDetail: TimetableDetailModel, at index: Int, containerSize: CGSize) -> some View {
+    private func subjectCardView(_ subjectDetail: SubjectDetailModel, at index: Int, containerSize: CGSize) -> some View {
         ZStack {
             subjectCardContent(subjectDetail, at: index, containerSize: containerSize)
             subjectCardButton(subjectDetail)
@@ -74,7 +74,7 @@ struct SubjectSheetView: View {
         .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
     }
     
-    private func subjectCardContent(_ subjectDetail: TimetableDetailModel, at index: Int, containerSize: CGSize) -> some View {
+    private func subjectCardContent(_ subjectDetail: SubjectDetailModel, at index: Int, containerSize: CGSize) -> some View {
         VStack(alignment: .leading) {
             subjectMajorView(subjectDetail)
             subjectInfoView(subjectDetail)
@@ -85,7 +85,7 @@ struct SubjectSheetView: View {
         }
     }
     
-    private func subjectMajorView(_ subjectDetail: TimetableDetailModel) -> some View {
+    private func subjectMajorView(_ subjectDetail: SubjectDetailModel) -> some View {
         RoundedRectangle(cornerRadius: 20)
             .foregroundStyle(Color(red: 0.91, green: 0.94, blue: 1))
             .frame(width: 50, height: 23)
@@ -97,15 +97,18 @@ struct SubjectSheetView: View {
             .padding([.leading, .top], 10)
     }
     
-    private func subjectInfoView(_ subjectDetail: TimetableDetailModel) -> some View {
+    private func subjectInfoView(_ subjectDetail: SubjectDetailModel) -> some View {
         VStack(spacing: 3) {
             HStack {
-                Text(subjectDetail.sbjName)
-                    .font(.sb16)
-                    .foregroundStyle(.black)
-                Text(subjectDetail.prof)
-                    .font(.m14)
-                    .foregroundStyle(.black)
+                VStack(alignment: .leading) {
+                    Text(subjectDetail.sbjName)
+                        .font(.sb16)
+                        .foregroundStyle(.black)
+                        .padding(.trailing, 30)
+                    Text(subjectDetail.prof)
+                        .font(.m14)
+                        .foregroundStyle(.black)
+                }
                 Spacer()
             }
             HStack {
@@ -120,7 +123,7 @@ struct SubjectSheetView: View {
         .padding(.leading, 10)
     }
     
-    private func subjectEnrollmentView(_ subjectDetail: TimetableDetailModel) -> some View {
+    private func subjectEnrollmentView(_ subjectDetail: SubjectDetailModel) -> some View {
         VStack(alignment: .leading) {
             Rectangle()
                 .foregroundStyle(Color(red: 0.67, green: 0.75, blue: 0.94))
@@ -137,7 +140,7 @@ struct SubjectSheetView: View {
         }
     }
     
-    private func subjectChartView(_ subjectDetail: TimetableDetailModel, containerSize: CGSize) -> some View {
+    private func subjectChartView(_ subjectDetail: SubjectDetailModel, containerSize: CGSize) -> some View {
         HStack {
             Spacer()
             SubjectChartView(todayEnrolledData: subjectDetail.enrolledStudents, yesterdayEnrolledData: subjectDetail.yesterdayEnrolledData, threeDaysAgoEnrolledData: subjectDetail.threeDaysAgoEnrolledData)
@@ -146,7 +149,7 @@ struct SubjectSheetView: View {
         .padding(.bottom, 10)
     }
     
-    private func subjectCardButton(_ subjectDetail: TimetableDetailModel) -> some View {
+    private func subjectCardButton(_ subjectDetail: SubjectDetailModel) -> some View {
         VStack {
             HStack {
                 Spacer()
@@ -167,7 +170,7 @@ struct SubjectSheetView: View {
         }
     }
     
-    private func subjectCardBorder(_ subjectDetail: TimetableDetailModel) -> some View {
+    private func subjectCardBorder(_ subjectDetail: SubjectDetailModel) -> some View {
         selectedValues.isSelected(subject: subjectDetail) ?
         RoundedRectangle(cornerRadius: 10)
             .stroke(Color(red: 0.4, green: 0.31, blue: 1), lineWidth: 1)
@@ -200,14 +203,14 @@ struct SubjectSheetView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 15) {
                 ForEach(selectedValues.selectedSubjects, id: \.sbjDivcls) { subject in
-                    selectedSubjectItemView(subject as! TimetableDetailModel)
+                    selectedSubjectItemView(subject as! SubjectDetailModel)
                 }
             }
             .padding(.leading, 20)
         }
     }
     
-    private func selectedSubjectItemView(_ subject: TimetableDetailModel) -> some View {
+    private func selectedSubjectItemView(_ subject: SubjectDetailModel) -> some View {
         HStack {
             Text(subject.sbjName)
                 .font(.m14)
@@ -341,5 +344,5 @@ struct SubjectChartView: View {
 }
 
 #Preview {
-    SubjectSheetView(timetableViewModel: TimetableViewModel(), selectedValues: SelectedValues(), showResultAction: {})
+    SubjectSheetView(subjectViewModel: SubjectViewModel(), selectedValues: SelectedValues(), showResultAction: {})
 }

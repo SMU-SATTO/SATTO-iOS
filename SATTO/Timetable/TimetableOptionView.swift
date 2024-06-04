@@ -50,12 +50,11 @@ struct TimetableOptionView: View {
         }
     }
     
-    @ViewBuilder
     private func optionButton(imageName: String, title: String, isSelected: Binding<Bool>, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             RoundedRectangle(cornerRadius: 20)
                 .frame(width: 240, height: 180)
-                .foregroundStyle(isSelected.wrappedValue ? Color(red: 0.96, green: 0.98, blue: 1) : .gray100)
+                .foregroundStyle(isSelected.wrappedValue ? Color(.info05) : .gray100)
                 .overlay(
                     RoundedRectangle(cornerRadius: 20)
                         .inset(by: 1)

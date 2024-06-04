@@ -9,7 +9,7 @@ import SwiftUI
 import JHTimeTable
 
 struct TimetableView: View {
-    let timetableBaseArray: [TimetableBase]
+    let timetableBaseArray: [SubjectModelBase]
     
     var body: some View {
         JHLectureTable {
@@ -39,11 +39,11 @@ struct TimetableView: View {
         .frame(maxWidth: 350, maxHeight: 500)
     }
     
-    private func convertToLectureModels(from timetableBaseArray: [TimetableBase]) -> [LectureModel] {
+    private func convertToLectureModels(from timetableBaseArray: [SubjectModelBase]) -> [LectureModel] {
         return timetableBaseArray.flatMap { convertToLectureModels(from: $0) }
     }
     
-    private func convertToLectureModels(from timetableBase: TimetableBase) -> [LectureModel] {
+    private func convertToLectureModels(from timetableBase: SubjectModelBase) -> [LectureModel] {
         let components = timetableBase.time.components(separatedBy: " ")
         let color = ColorSelectionManager().randomColor()
         let lectureModels = components.compactMap { component -> LectureModel? in
@@ -78,7 +78,7 @@ struct TimetableView: View {
         }
     }
     
-    private func getWeeks(from timetableBaseArray: [TimetableBase]) -> [LectureWeeks] {
+    private func getWeeks(from timetableBaseArray: [SubjectModelBase]) -> [LectureWeeks] {
         let weeks: [LectureWeeks] = [.mon, .tue, .wed, .thu, .fri]
         
         for timetable in timetableBaseArray {
@@ -90,7 +90,7 @@ struct TimetableView: View {
         return weeks
     }
     
-    private func getEndTime(from timetableBaseArray: [TimetableBase]) -> Int {
+    private func getEndTime(from timetableBaseArray: [SubjectModelBase]) -> Int {
         for endTime in timetableBaseArray {
             if endTime.time.contains("10") || endTime.time.contains("11") {
                 return 24

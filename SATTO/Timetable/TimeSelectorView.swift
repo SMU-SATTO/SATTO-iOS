@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct TimeSelectorView: View {
-    @ObservedObject var selectedValues: SelectedValues
+struct TimeSelectorView<VM>: View where VM: TimeSelectorViewModelProtocol{
+    @ObservedObject var viewModel: VM
     
     var title: String = ""
     var cellWidth: CGFloat = 40
@@ -42,7 +42,7 @@ struct TimeSelectorView: View {
                 invalidPopup = true
                 disposable = false
             }
-            selectedValues.invalidTimes = newValue
+            viewModel.selectedTimes = newValue
         }
     }
     
@@ -227,5 +227,5 @@ struct TimeCellRectangle: View {
 }
 
 #Preview {
-    TimeSelectorView(selectedValues: SelectedValues(), selectedSubviews: .constant([]), alreadySelectedSubviews: .constant([]), invalidPopup: .constant(false))
+    TimeSelectorView(viewModel: SelectedValues(), selectedSubviews: .constant([]), alreadySelectedSubviews: .constant([]), invalidPopup: .constant(false))
 }

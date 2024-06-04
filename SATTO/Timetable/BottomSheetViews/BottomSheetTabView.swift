@@ -1,5 +1,5 @@
 //
-//  SearchSheetTabView.swift
+//  BottomSheetTabView.swift
 //  SATTO
 //
 //  Created by 김영준 on 3/6/24.
@@ -7,34 +7,31 @@
 
 import SwiftUI
 
-//MARK: - todo: 중복 선택 구현
-struct SearchSheetTabView: View {
-    @ObservedObject var timetableViewModel: TimetableViewModel
+/// 균형교양 빼면 세부정보도 전부 빠지게 수정 - 파싱과정에서
+struct BottomSheetTabView: View {
+    @ObservedObject var subjectViewModel: SubjectViewModel
     @ObservedObject var selectedValues: SelectedValues
+    @ObservedObject var bottomSheetViewModel: BottomSheetViewModel
     
     @Binding var selectedSubviews: Set<Int>
     @Binding var alreadySelectedSubviews: Set<Int>
     
     @State private var selectedTab = ""
-    @State private var selectedCategories: [String: Bool] = [:]
+    @State private var selectedCategories: [String] = []
     @State private var searchText = ""
     
     private let categories = ["학년", "교양", "e-러닝", "시간"]
     
     private let gradeOptions = ["전체", "1학년", "2학년", "3학년", "4학년"]
-    @State private var selectedGrades: [String: Bool] = [:]
-    
-    private let GEOptions = ["전체", "일반교양", "기초교양", "균형교양", "교양필수"]
-    @State private var selectedGE: [String: Bool] = [:]
-    
-    private let ELearnOptions = ["전체", "E러닝만 보기", "E러닝 빼고 보기"]
-    @State private var selectedELOption: [String: Bool] = [:]
+    private let GEOptions = ["전체", "일반교양", "균형교양", "교양필수"]
+    private let BGEOptions = ["인문영역", "사회영역", "자연영역", "예술영역"]
+    private let eLearnOptions = ["전체", "E러닝만 보기", "E러닝 빼고 보기"]
     
     var showResultAction: () -> Void
     
     var body: some View {
         VStack(spacing: 15) {
-            categoryScrollView
+            categoryView
                 .padding(.horizontal, 15)
                 .padding(.top, 20)
             
@@ -42,7 +39,6 @@ struct SearchSheetTabView: View {
                 searchBar
                     .padding(.horizontal, 20)
             }
-            
             selectedTabView
                 .padding(.horizontal, 10)
             
@@ -55,35 +51,44 @@ struct SearchSheetTabView: View {
         }
     }
     
-    private var categoryScrollView: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 10) {
-                ForEach(categories, id: \.self) { category in
-                    categoryButton(category: category)
-                }
+    private var categoryView: some View {
+        HStack(spacing: 10) {
+            ForEach(categories, id: \.self) { category in
+                categoryButton(category: category)
             }
-            .padding(.top, 10)
         }
+        .padding(.top, 10)
     }
     
     private func categoryButton(category: String) -> some View {
-        Button(action: {
-            selectedCategories[category, default: false].toggle()
-            selectedCategories.keys.forEach { key in
-                selectedCategories[key] = (key == category)
-            }
+        let isSelected = selectedTab == category
+        let isCategorySelected: Bool
+        
+        switch category {
+        case "학년":
+            isCategorySelected = bottomSheetViewModel.isGradeSelected()
+        case "교양":
+            isCategorySelected = bottomSheetViewModel.isGESelected()
+        case "e-러닝":
+            isCategorySelected = bottomSheetViewModel.isELOptionSelected()
+        case "시간":
+            isCategorySelected = bottomSheetViewModel.isTimeSelected()
+        default:
+            isCategorySelected = false
+        }
+        
+        return Button(action: {
             selectedTab = category
         }) {
             Text(category)
-                .font(.sb16)
-                .foregroundStyle(selectedCategories[category, default: false] ? Color("blue_7") : .gray500)
-                .frame(width: 70, height: 30)
+                .font(.m16)
+                .foregroundStyle(isSelected || isCategorySelected ? Color("blue_7") : .gray500)
                 .background(
                     RoundedRectangle(cornerRadius: 20)
-                        .foregroundStyle(selectedCategories[category, default: false] ? Color("Info02") : .gray50)
-                        .frame(width: 70, height: 30)
-                        .padding(EdgeInsets(top: -5, leading: -5, bottom: -5, trailing: -5))
+                        .foregroundStyle(isSelected ? Color("Info02") : .gray50)
+                        .padding(EdgeInsets(top: -5, leading: -15, bottom: -5, trailing: -15))
                 )
+                .padding(EdgeInsets(top: 5, leading: 15, bottom: 5, trailing: 15))
         }
     }
     
@@ -120,13 +125,16 @@ struct SearchSheetTabView: View {
     private var selectedTabView: some View {
         switch selectedTab {
         case "학년":
-            OptionSheetView(options: gradeOptions, selectedOptions: $selectedGrades, isToggleFirst: true)
+            OptionSheetView(options: gradeOptions, selectedOptions: $bottomSheetViewModel.selectedGrades, allowsDuplicates: true)
         case "교양":
-            OptionSheetView(options: GEOptions, selectedOptions: $selectedGE, isToggleFirst: true)
+            OptionSheetView(options: GEOptions, selectedOptions: $bottomSheetViewModel.selectedGE, allowsDuplicates: true)
+            if bottomSheetViewModel.selectedGE.contains("균형교양") {
+                OptionSheetView(options: BGEOptions, selectedOptions: $bottomSheetViewModel.selectedBGE, allowsDuplicates: false)
+            }
         case "e-러닝":
-            OptionSheetView(options: ELearnOptions, selectedOptions: $selectedELOption, isToggleFirst: false)
+            OptionSheetView(options: eLearnOptions, selectedOptions: $bottomSheetViewModel.selectedELOption, allowsDuplicates: false)
         case "시간":
-            TimeSheetView(selectedValues: selectedValues, selectedSubviews: $selectedSubviews, alreadySelectedSubviews: $alreadySelectedSubviews)
+            TimeSheetView(bottomSheetViewModel: bottomSheetViewModel, selectedSubviews: $selectedSubviews, alreadySelectedSubviews: $alreadySelectedSubviews)
                 .padding(.top, 10)
         default:
             EmptyView()
@@ -136,12 +144,12 @@ struct SearchSheetTabView: View {
     // MARK: - Subject Sheet View
     private var subjectSheetView: some View {
         VStack {
-            SubjectSheetView(timetableViewModel: timetableViewModel, selectedValues: selectedValues, showResultAction: showResultAction)
+            SubjectSheetView(subjectViewModel: subjectViewModel, selectedValues: selectedValues, showResultAction: showResultAction)
                 .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
         }
     }
 }
 
 #Preview {
-    SearchSheetTabView(timetableViewModel: TimetableViewModel(), selectedValues: SelectedValues(), selectedSubviews: .constant([]), alreadySelectedSubviews: .constant([]), showResultAction: {})
+    BottomSheetTabView(subjectViewModel: SubjectViewModel(), selectedValues: SelectedValues(), bottomSheetViewModel: BottomSheetViewModel(), selectedSubviews: .constant([]), alreadySelectedSubviews: .constant([]), showResultAction: {})
 }

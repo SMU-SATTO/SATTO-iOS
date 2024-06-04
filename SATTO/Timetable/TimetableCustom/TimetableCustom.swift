@@ -10,8 +10,9 @@ import SwiftUI
 struct TimetableCustom: View {
     @Binding var stackPath: [Route]
     
-    @StateObject var timetableViewModel = TimetableViewModel()
+    @StateObject var subjectViewModel = SubjectViewModel()
     @StateObject var selectedValues = SelectedValues()
+    @StateObject var bottomSheetViewModel = BottomSheetViewModel()
     
     @State private var selectedSubviews = Set<Int>()
     @State private var alreadySelectedSubviews = Set<Int>()
@@ -28,9 +29,10 @@ struct TimetableCustom: View {
                     isShowBottomSheet = true
                 }
                 .sheet(isPresented: $isShowBottomSheet, content: {
-                    SearchSheetTabView(
-                        timetableViewModel: timetableViewModel,
+                    BottomSheetTabView(
+                        subjectViewModel: subjectViewModel,
                         selectedValues: selectedValues,
+                        bottomSheetViewModel: bottomSheetViewModel,
                         selectedSubviews: $selectedSubviews,
                         alreadySelectedSubviews: $alreadySelectedSubviews,
                         showResultAction: {isShowBottomSheet = false}

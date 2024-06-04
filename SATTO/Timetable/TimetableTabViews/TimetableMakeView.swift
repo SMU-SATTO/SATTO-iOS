@@ -14,8 +14,11 @@ struct TimetableMakeView: View {
 
     @Binding var stackPath: [Route]
     
-    @StateObject var timetableViewModel = TimetableViewModel()
+    @StateObject var subjectViewModel = SubjectViewModel()
+    @StateObject var majorCombViewModel = MajorCombViewModel()
     @StateObject var selectedValues = SelectedValues()
+    @StateObject var bottomSheetViewModel = BottomSheetViewModel()
+    
     @State private var selectedView: SelectedView = .creditPicker
     
     @State private var selectedSubviews = Set<Int>()
@@ -179,6 +182,7 @@ struct TimetableMakeView: View {
                         Button(action: {
                             navigateForward()
                             midCheckPopup = false
+                            majorCombViewModel.fetchMajorCombinations(GPA: selectedValues.credit, requiredLect: selectedValues.selectedSubjects, majorCount: selectedValues.majorNum, cyberCount: selectedValues.ELearnNum, impossibleTimeZone: selectedValues.selectedTimes)
                         }) {
                             Text("시간표 생성하러 가기")
                                 .font(.sb14)
@@ -260,13 +264,13 @@ struct TimetableMakeView: View {
         case .creditPicker:
             return AnyView(CreditPickerView(selectedValues: selectedValues))
         case .essentialClasses:
-            return AnyView(EssentialClassesSelectorView(timetableViewModel: timetableViewModel, selectedValues: selectedValues))
+            return AnyView(EssentialClassesSelectorView(subjectViewModel: subjectViewModel, selectedValues: selectedValues, bottomSheetViewModel: bottomSheetViewModel))
         case .invalidTime:
             return AnyView(InvalidTimeSelectorView(selectedValues: selectedValues, selectedSubviews: $selectedSubviews, alreadySelectedSubviews: $alreadySelectedSubviews, invalidPopup: $invalidPopup))
         case .midCheck:
             return AnyView(MidCheckView(selectedValues: selectedValues))
         case .majorCombination:
-            return AnyView(MajorCombinationSelectorView())
+            return AnyView(MajorCombSelectorView(viewModel: majorCombViewModel))
         case .finalTimetable:
             return AnyView(FinalTimetableSelectorView())
         }

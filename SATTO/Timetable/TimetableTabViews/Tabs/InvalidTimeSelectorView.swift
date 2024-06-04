@@ -17,7 +17,7 @@ struct InvalidTimeSelectorView: View {
     
     var body: some View {
         ScrollView {
-            TimeSelectorView(selectedValues: selectedValues,
+            TimeSelectorView(viewModel: selectedValues,
                              title: "불가능한 시간대가 있으면\n선택해 주세요.",
                              preselectedSlots: selectedValues.parsePreselectedSlots(),
                              selectedSubviews: $selectedSubviews,

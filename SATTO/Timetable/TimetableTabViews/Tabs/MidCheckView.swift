@@ -60,9 +60,9 @@ struct MidCheckView: View {
                     selectedOptionInfo(
                         header: "제외된 시간대",
                         headerColor: .red,
-                        content: selectedValues.invalidTimes.isEmpty
+                        content: selectedValues.selectedTimes.isEmpty
                             ? "선택된 불가능한 시간이 없어요"
-                            : selectedValues.invalidTimes
+                            : selectedValues.selectedTimes
                                 .split(separator: " ")
                                 .map { String($0) }
                                 .joined(separator: ", ")
