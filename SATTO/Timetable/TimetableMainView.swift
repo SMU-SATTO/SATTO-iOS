@@ -18,7 +18,7 @@ struct TimetableMainView: View {
     
     @Namespace private var namespace
     
-    @State var username = "민재"
+    @State var username = "홍길동"
     
     @State var selectedIndex = 0
     
@@ -100,7 +100,7 @@ struct TimetableMainView: View {
         GeometryReader { geometry in
             HStack {
                 Spacer()
-                Image("TimeTableMainView_SATTO")
+                Image("")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: geometry.size.width * 0.35)
