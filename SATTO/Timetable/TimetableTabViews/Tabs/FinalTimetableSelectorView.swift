@@ -16,6 +16,7 @@ struct FinalTimetableSelectorView: View {
         ZStack {
             VStack(alignment: .leading) {
                 Text("좌우로 스크롤해 \n원하는 시간표를 골라보세요!")
+                    .font(.sb16)
                 TimetableView(timetableBaseArray: [])
                     .onTapGesture {
                         showingPopup.toggle()

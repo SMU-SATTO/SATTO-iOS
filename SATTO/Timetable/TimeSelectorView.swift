@@ -37,12 +37,21 @@ struct TimeSelectorView<VM>: View where VM: TimeSelectorViewModelProtocol{
             scheduleGrid
             selectedIndexesView
         }
+        .onAppear {
+            removePreselectedIndexes()
+        }
         .onChange(of: selectedIndexesText) { newValue in
             if newValue.split(separator: " ").count > 30 && disposable{
                 invalidPopup = true
                 disposable = false
             }
             viewModel.selectedTimes = newValue
+        }
+    }
+    
+    private func removePreselectedIndexes() {
+        for index in preselectedIndexes {
+            selectedSubviews.remove(index)
         }
     }
     

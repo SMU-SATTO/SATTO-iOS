@@ -53,6 +53,8 @@ struct ContentView: View {
 //                    FriendView(stackPath: $stackPath)
                 case .timetableMake:
                     TimetableMakeView(stackPath: $stackPath)
+                case .timetableMenu:
+                    TimetableMenuView(stackPath: $stackPath)
                 case .timetableOption:
                     TimetableOptionView(stackPath: $stackPath)
                 case .timetableCustom:
@@ -77,6 +79,7 @@ enum Route: Hashable {
 //    case followingSearch
 //    case friend
     case timetableMake
+    case timetableMenu
     case timetableOption
     case timetableCustom
 //    case event
