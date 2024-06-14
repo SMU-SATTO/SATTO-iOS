@@ -8,52 +8,76 @@
 import SwiftUI
 
 struct TimetableMenuView: View {
-    @Binding var isMenuOpen: Bool
+    @Binding var stackPath: [Route]
     var body: some View {
+        ScrollView {
+            VStack(spacing: 10) {
+                timetableBlock(headerText: "2024년 1학기", timetableList: ["시간표", "2"])
+                timetableBlock(headerText: "2023년 2학기", timetableList: ["3", "9", "10"])
+                timetableBlock(headerText: "2023년 1학기", timetableList: ["4", "6"])
+            }
+            .padding(.horizontal, 20)
+        }
+        .navigationBarBackButtonHidden(true)
+        .navigationTitle("시간표 목록")
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: {
+                    stackPath.removeLast()
+                }) {
+                    Image(systemName: "chevron.left")
+                        .foregroundStyle(.black)
+                }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Text("temp")
+            }
+        }
+    }
+    
+    private func timetableBlock(headerText: String, timetableList: [String]) -> some View {
         VStack {
-            UnevenRoundedRectangle(cornerRadii: .init(topLeading: 20, bottomLeading: 20))
-                .fill(.white)
-                .frame(width: 220)
-                .overlay(
-                    VStack {
-                        HStack {
-                            Spacer()
-                            Button(action: {
-                                isMenuOpen = false
-                            }) {
-                                Image(systemName: "xmark")
-                                    .resizable()
-                                    .frame(width: 12, height: 12)
-                                    .foregroundStyle(.black)
-                            }
-                            .padding(.trailing, 20)
-                        }
-                        .padding(.top, 20)
-                        
-                        HStack {
-                            Circle()
-                                .foregroundStyle(.black)
-                                .frame(width: 60, height: 60)
-                            VStack {
-                                HStack {
-                                    Text("김영준")
-                                    Text("201911111")
-                                }
-                                Text("컴퓨터과학과")
-                            }
-                        }
-                        
-                        VStack(alignment: .leading) {
-                            Text("전체 시간표 보기")
-                        }
-                        
+            headerView(headerText: headerText)
+            contentView(timetableList: timetableList)
+        }
+        .background(
+            RoundedRectangle(cornerRadius: 15)
+                .stroke(Color("skyblue"), lineWidth: 2)
+        )
+    }
+    
+    private func headerView(headerText: String) -> some View {
+        HStack {
+            Text(headerText)
+                .font(.b18)
+                .padding(.top, 15)
+                .padding(.leading, 20)
+            Spacer()
+        }
+    }
+    
+    private func contentView(timetableList: [String]) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            ForEach(timetableList, id: \.self) { timetableName in
+                Button(action: {
+                    stackPath.removeLast()
+                }) {
+                    HStack {
+                        Text(timetableName)
+                            .font(.m18)
+                            .foregroundStyle(.black)
                         Spacer()
                     }
-                )
+                }
+                
+            }
+            .padding(.horizontal, 20)
+            .padding(.bottom, 10)
         }
+        .padding(.top, 10)
     }
 }
 
 #Preview {
-    TimetableMenuView(isMenuOpen: .constant(true))
+    TimetableMenuView(stackPath: .constant([]))
 }

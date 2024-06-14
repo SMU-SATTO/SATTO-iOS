@@ -33,6 +33,7 @@ extension Font {
     static let b13: Font = .custom("Pretendard-Bold", size: 13)
     static let b14: Font = .custom("Pretendard-Bold", size: 14)
     static let b16: Font = .custom("Pretendard-Bold", size: 16)
+    static let b18: Font = .custom("Pretendard-Bold", size: 18)
     static let b20: Font = .custom("Pretendard-Bold", size: 20)
     
 }
