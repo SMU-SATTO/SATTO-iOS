@@ -21,9 +21,12 @@ struct TimetableCustom: View {
     @State private var isUsingSelectedSubjects = true
     var body: some View {
         VStack {
-            Text("이번 학기에 들을 과목을 선택해 주세요.")
-                .font(.sb18)
-                .frame(width: 320, alignment: .topLeading)
+            HStack {
+                Text("이번 학기에 들을 과목을 선택해 주세요.")
+                    .font(.sb18)
+                Spacer()
+            }
+            .padding(.horizontal, 30)
             TimetableView(timetableBaseArray: selectedValues.selectedSubjects)
                 .onTapGesture {
                     isShowBottomSheet = true

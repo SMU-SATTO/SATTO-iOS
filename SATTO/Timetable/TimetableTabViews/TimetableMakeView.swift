@@ -92,16 +92,16 @@ struct TimetableMakeView: View {
             }) {
                 Text("이전으로")
                     .font(.sb18)
-                    .foregroundStyle(Color(red: 0.11, green: 0.33, blue: 1))
+                    .foregroundStyle(Color.buttonBlue)
                     .frame(maxWidth: 150, maxHeight: .infinity)
             }
             .background(
                 RoundedRectangle(cornerRadius: 10)
-                    .fill(.white)
+                    .foregroundStyle(.clear)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
                             .inset(by: 2)
-                            .stroke(.blue, lineWidth: 1.5)
+                            .stroke(Color.buttonBlue, lineWidth: 1.5)
                     )
             )
             .frame(width: geometry.size.width, height: geometry.size.height)
@@ -125,7 +125,7 @@ struct TimetableMakeView: View {
             }
             .background(
                 RoundedRectangle(cornerRadius: 10)
-                    .fill(Color(red: 0.11, green: 0.33, blue: 1))
+                    .foregroundStyle(Color.buttonBlue)
             )
             .frame(width: geometry.size.width, height: geometry.size.height)
         }
@@ -134,7 +134,7 @@ struct TimetableMakeView: View {
     
     private var invalidPopupView: some View {
         RoundedRectangle(cornerRadius: 20)
-            .foregroundStyle(.white)
+            .foregroundStyle(Color.popupBackground)
             .frame(width: 300, height: 300)
             .overlay(
                 VStack(spacing: 30) {
@@ -152,12 +152,12 @@ struct TimetableMakeView: View {
                     }) {
                         Text("확인했어요")
                             .font(.sb14)
-                            .foregroundStyle(.white)
+                            .foregroundStyle(Color.white)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                     .background(
                         RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(.blue)
+                            .foregroundStyle(Color.buttonBlue)
                     )
                     .frame(height: 40)
                     .padding(.horizontal, 15)
@@ -167,7 +167,7 @@ struct TimetableMakeView: View {
     
     private var midCheckPopupView: some View {
         RoundedRectangle(cornerRadius: 20)
-            .foregroundStyle(.white)
+            .foregroundStyle(.popupBackground)
             .frame(width: 300, height: 360)
             .overlay(
                 VStack(spacing: 30) {
@@ -191,7 +191,7 @@ struct TimetableMakeView: View {
                         }
                         .background(
                             RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(.blue)
+                                .foregroundStyle(Color.buttonBlue)
                         )
                         .frame(height: 40)
                         Button(action: {
@@ -199,16 +199,16 @@ struct TimetableMakeView: View {
                         }) {
                             Text("조금 더 고민해보기")
                                 .font(.sb14)
-                                .foregroundStyle(Color(red: 0.11, green: 0.33, blue: 1))
+                                .foregroundStyle(Color.buttonBlue)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
                         .background(
                             RoundedRectangle(cornerRadius: 10)
-                                .fill(.white)
+                                .foregroundStyle(.clear)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 10)
                                         .inset(by: 2)
-                                        .stroke(.blue, lineWidth: 1.5)
+                                        .stroke(Color.buttonBlue, lineWidth: 1.5)
                                 )
                         )
                         .frame(height: 40)
@@ -304,7 +304,7 @@ struct CustomPageControl: View {
                 if selectedIndex > index {
                     // 지나온 페이지
                     Rectangle()
-                        .fill(Color(red: 0.06, green: 0.51, blue: 0.79))
+                        .foregroundStyle(Color.pagecontrolPrevious)
                         .frame(height: rectangleHeight)
                         .clipShape(RoundedRectangle(cornerRadius: rectangleRadius))
                 } else if selectedIndex == index {
@@ -315,7 +315,7 @@ struct CustomPageControl: View {
                         .clipShape(RoundedRectangle(cornerRadius: rectangleRadius))
                         .overlay {
                             Rectangle()
-                                .fill(Color(red: 0.06, green: 0.81, blue: 0.79))
+                                .foregroundStyle(Color.pagecontrolCurrent)
                                 .frame(height: rectangleHeight)
                                 .clipShape(
                                     RoundedRectangle(cornerRadius: rectangleRadius)
@@ -338,4 +338,5 @@ struct CustomPageControl: View {
 
 #Preview {
     TimetableMakeView(stackPath: .constant([.timetableMake]))
+        .preferredColorScheme(.dark)
 }

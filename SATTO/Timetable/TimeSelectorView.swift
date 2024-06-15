@@ -71,7 +71,7 @@ struct TimeSelectorView<VM>: View where VM: TimeSelectorViewModelProtocol{
                 .frame(width: 320, alignment: .topLeading)
             Text("드래그로 선택할 수 있어요.")
                 .font(.sb12)
-                .foregroundColor(.gray)
+                .foregroundStyle(.gray)
                 .frame(width: 320, alignment: .topLeading)
         }
     }
@@ -146,7 +146,7 @@ struct TimeSelectorView<VM>: View where VM: TimeSelectorViewModelProtocol{
             Path { path in
                 drawGridLines(path: &path, width: proxy.size.width, height: proxy.size.height)
             }
-            .stroke(Color.black, lineWidth: lineWidth)
+            .stroke(Color.blackWhite, lineWidth: lineWidth)
         }
     }
     
@@ -228,13 +228,14 @@ struct TimeCellRectangle: View {
     
     var body: some View {
         Rectangle()
-            .foregroundColor(preselectedIndexes.contains(index) ? .gray : selectedSubviews.contains(index) ? .gray200 : .white)
+            .foregroundStyle(preselectedIndexes.contains(index) ? .gray : selectedSubviews.contains(index) ? Color.timeselectorCellSelected : .timeselectorCellUnselected)
             .overlay(
-                preselectedIndexes.contains(index) ? Color.black.opacity(0.3) : Color.clear
+                preselectedIndexes.contains(index) ? Color.timeselectorCellPreselected : Color.clear
             )
     }
 }
 
 #Preview {
-    TimeSelectorView(viewModel: SelectedValues(), selectedSubviews: .constant([]), alreadySelectedSubviews: .constant([]), invalidPopup: .constant(false))
+    TimeSelectorView(viewModel: SelectedValues(), selectedSubviews: .constant([16, 17, 18]), alreadySelectedSubviews: .constant([]), invalidPopup: .constant(false))
+        .preferredColorScheme(.light)
 }

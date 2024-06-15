@@ -146,7 +146,7 @@ struct LectureView: View {
             Text(lecture.title)
                 .font(.caption)
                 .fontWeight(.bold)
-                .foregroundColor(Color.white)
+                .foregroundStyle(Color.blackWhite)
                 .padding(EdgeInsets(top: 2, leading: 3, bottom: 0, trailing: 0))
         }
     }
@@ -155,4 +155,5 @@ struct LectureView: View {
 
 #Preview {
     TimetableView(timetableBaseArray: [])
+        .preferredColorScheme(.dark)
 }

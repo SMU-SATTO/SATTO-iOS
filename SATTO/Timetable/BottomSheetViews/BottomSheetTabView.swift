@@ -30,23 +30,27 @@ struct BottomSheetTabView: View {
     var showResultAction: () -> Void
     
     var body: some View {
-        VStack(spacing: 15) {
-            categoryView
-                .padding(.horizontal, 15)
-                .padding(.top, 20)
-            
-            if selectedTab != "시간" {
-                searchBar
-                    .padding(.horizontal, 20)
-            }
-            selectedTabView
-                .padding(.horizontal, 10)
-            
-            if selectedTab != "시간" {
-                subjectSheetView
-                Spacer()
-            } else {
-                Spacer()
+        ZStack {
+            Color.popupBackground
+                .ignoresSafeArea(.all)
+            VStack(spacing: 15) {
+                categoryView
+                    .padding(.horizontal, 15)
+                    .padding(.top, 20)
+                
+                if selectedTab != "시간" {
+                    searchBar
+                        .padding(.horizontal, 20)
+                }
+                selectedTabView
+                    .padding(.horizontal, 10)
+                
+                if selectedTab != "시간" {
+                    subjectSheetView
+                    Spacer()
+                } else {
+                    Spacer()
+                }
             }
         }
     }
@@ -85,7 +89,7 @@ struct BottomSheetTabView: View {
                 .foregroundStyle(isSelected || isCategorySelected ? Color("blue_7") : .gray500)
                 .background(
                     RoundedRectangle(cornerRadius: 20)
-                        .foregroundStyle(isSelected ? Color("Info02") : .gray50)
+                        .foregroundStyle(isSelected ? Color.pickerSelected : Color.pickerBackground)
                         .padding(EdgeInsets(top: -5, leading: -15, bottom: -5, trailing: -15))
                 )
                 .padding(EdgeInsets(top: 5, leading: 15, bottom: 5, trailing: 15))
@@ -95,7 +99,7 @@ struct BottomSheetTabView: View {
     private var searchBar: some View {
         VStack {
             RoundedRectangle(cornerRadius: 30)
-                .foregroundStyle(Color("gray50"))
+                .foregroundStyle(Color.searchbarBackground)
                 .frame(height: 40)
                 .overlay(
                     HStack {
@@ -103,18 +107,19 @@ struct BottomSheetTabView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 19, height: 19)
-                            .foregroundStyle(.gray)
+                            .foregroundStyle(Color.searchbarText)
                             .padding(.leading, 15)
                         TextField("듣고 싶은 과목을 입력해 주세요", text: $searchText)
                             .font(.sb14)
-                            .foregroundStyle(.gray)
+                            .foregroundStyle(Color.searchbarText)
                             .padding(.leading, 5)
                         Button(action: {
                             searchText.removeAll()
                         }) {
                             Image(systemName: "xmark.circle.fill")
-                                .foregroundStyle(.gray)
+                                .foregroundStyle(Color.searchbarText)
                         }
+                        .padding(.trailing, 3)
                         Spacer()
                     }
                 )
@@ -152,4 +157,5 @@ struct BottomSheetTabView: View {
 
 #Preview {
     BottomSheetTabView(subjectViewModel: SubjectViewModel(), selectedValues: SelectedValues(), bottomSheetViewModel: BottomSheetViewModel(), selectedSubviews: .constant([]), alreadySelectedSubviews: .constant([]), showResultAction: {})
+        .preferredColorScheme(.dark)
 }
