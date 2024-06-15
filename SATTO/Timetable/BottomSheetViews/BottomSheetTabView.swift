@@ -86,10 +86,10 @@ struct BottomSheetTabView: View {
         }) {
             Text(category)
                 .font(.m16)
-                .foregroundStyle(isSelected || isCategorySelected ? Color("blue_7") : .gray500)
+                .foregroundStyle(isSelected || isCategorySelected ? Color.categoryTextSelected : Color.categoryTextUnselected)
                 .background(
                     RoundedRectangle(cornerRadius: 20)
-                        .foregroundStyle(isSelected ? Color.pickerSelected : Color.pickerBackground)
+                        .foregroundStyle(isSelected ? Color.categorySelected : Color.pickerBackground)
                         .padding(EdgeInsets(top: -5, leading: -15, bottom: -5, trailing: -15))
                 )
                 .padding(EdgeInsets(top: 5, leading: 15, bottom: 5, trailing: 15))

@@ -53,13 +53,13 @@ struct TimetableProgressView: View {
         ZStack {
             Circle()
                 .stroke(
-                    Color.pink.opacity(0.5),
+                    Color.smuprogressBackground,
                     lineWidth: 20
                 )
             Circle()
                 .trim(from: 0, to: 0.25)
                 .stroke(
-                    Color.pink,
+                    Color.smuprogress,
                     style: StrokeStyle(
                         lineWidth: 20,
                         lineCap: .round
@@ -72,7 +72,6 @@ struct TimetableProgressView: View {
 }
 
 #Preview {
-    VStack {
-        TimetableProgressView()
-    }
+    TimetableProgressView()
+        .preferredColorScheme(.dark)
 }

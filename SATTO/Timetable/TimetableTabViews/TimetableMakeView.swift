@@ -19,16 +19,19 @@ struct TimetableMakeView: View {
     @StateObject var selectedValues = SelectedValues()
     @StateObject var bottomSheetViewModel = BottomSheetViewModel()
     
-    @State private var selectedView: SelectedView = .creditPicker
+    @State private var selectedView: SelectedView = .finalTimetable
     
     @State private var selectedSubviews = Set<Int>()
     @State private var alreadySelectedSubviews = Set<Int>()
     
     @State private var midCheckPopup = false
-    @State var invalidPopup = false
+    @State private var invalidPopup = false
+    @State private var finalSelectPopup = false
     
     var body: some View {
         ZStack {
+            Color.backgroundDefault
+                .ignoresSafeArea(.all)
             VStack {
                 GeometryReader { geometry in
                     VStack {
@@ -83,6 +86,16 @@ struct TimetableMakeView: View {
                 .appearFrom(.bottom)
                 .backgroundColor(.black.opacity(0.5))
         })
+        .popup(isPresented: $finalSelectPopup, view: {
+            finalSelectPopupView
+        }, customize: {
+            $0
+                .position(.center)
+                .appearFrom(.bottom)
+                .closeOnTapOutside(false)
+                .closeOnTap(false)
+                .backgroundColor(.black.opacity(0.5))
+        })
     }
     
     private var backButton: some View {
@@ -91,7 +104,7 @@ struct TimetableMakeView: View {
                 navigateBack()
             }) {
                 Text("이전으로")
-                    .font(.sb18)
+                    .font(.sb16)
                     .foregroundStyle(Color.buttonBlue)
                     .frame(maxWidth: 150, maxHeight: .infinity)
             }
@@ -119,7 +132,7 @@ struct TimetableMakeView: View {
                 }
             }) {
                 Text(selectedView == .midCheck ? "시간표 생성하기" : "다음으로")
-                    .font(.sb18)
+                    .font(.sb16)
                     .foregroundStyle(.white)
                     .frame(maxWidth: 150, maxHeight: .infinity)
             }
@@ -217,6 +230,56 @@ struct TimetableMakeView: View {
                 }
             )
     }
+    
+    private var finalSelectPopupView: some View {
+        VStack {
+            RoundedRectangle(cornerRadius: 20)
+                .frame(width: 300, height: 600)
+                .foregroundStyle(Color.popupBackground)
+                .overlay(
+                    VStack(spacing: 0) {
+                        TimetableView(timetableBaseArray: [])
+                            .padding(.horizontal, 30)
+                        Text("이 시간표를 이번 학기 시간표로\n결정하시겠어요?")
+                            .font(.sb16)
+                            .foregroundStyle(Color.blackWhite200)
+                            .multilineTextAlignment(.center)
+                        
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundStyle(Color.buttonBlue)
+                            .frame(height: 40)
+                            .padding(.horizontal, 30)
+                            .overlay(
+                                Text("네, 결정했어요")
+                                    .font(.sb14)
+                                    .foregroundStyle(.white)
+                            )
+                            .padding(.top, 10)
+                        
+                        Button(action: {
+                            finalSelectPopup = false
+                        }) {
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundStyle(Color.clear)
+                                .frame(height: 40)
+                                .padding(.horizontal, 30)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.buttonBlue, lineWidth: 1.5)
+                                        .padding(.horizontal, 30)
+                                        .overlay(
+                                            Text("아니요, 더 둘러볼래요")
+                                                .font(.sb14)
+                                                .foregroundStyle(Color.buttonBlue)
+                                        )
+                                )
+                                .padding(.top, 10)
+                                .padding(.bottom, 20)
+                        }
+                    }
+                )
+        }
+    }
 
     func navigateBack() {
         switch selectedView {
@@ -272,7 +335,7 @@ struct TimetableMakeView: View {
         case .majorCombination:
             return AnyView(MajorCombSelectorView(viewModel: majorCombViewModel))
         case .finalTimetable:
-            return AnyView(FinalTimetableSelectorView())
+            return AnyView(FinalTimetableSelectorView(showingPopup: $finalSelectPopup))
         }
     }
 
