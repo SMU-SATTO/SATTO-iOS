@@ -25,10 +25,13 @@ struct TimetableMakeView: View {
     @State private var alreadySelectedSubviews = Set<Int>()
     
     @State private var midCheckPopup = false
-    @State var invalidPopup = false
+    @State private var invalidPopup = false
+    @State private var finalSelectPopup = false
     
     var body: some View {
         ZStack {
+            Color.backgroundDefault
+                .ignoresSafeArea(.all)
             VStack {
                 GeometryReader { geometry in
                     VStack {
@@ -65,8 +68,24 @@ struct TimetableMakeView: View {
             }
             .animation(.easeInOut, value: UUID())
         }
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                HStack {
+                    Button(action: {
+                        stackPath.removeLast()
+                    }) {
+                        Image(systemName: "chevron.left")
+                            .foregroundStyle(Color.blackWhite)
+                    }
+                    Text("시간표 생성하기")
+                        .font(.b18)
+                        .foregroundStyle(Color.blackWhite200)
+                }
+            }
+        }
         .popup(isPresented: $invalidPopup, view: {
-            invalidPopupView
+            InvalidPopupView(invalidPopup: $invalidPopup)
         }, customize: {
             $0
                 .position(.center)
@@ -76,11 +95,21 @@ struct TimetableMakeView: View {
                 .backgroundColor(.black.opacity(0.5))
         })
         .popup(isPresented: $midCheckPopup, view: {
-            midCheckPopupView
+            MidCheckPopupView(midCheckPopup: $midCheckPopup, navigateForward: navigateForward, majorCombViewModel: majorCombViewModel, selectedValues: selectedValues)
         }, customize: {
             $0
                 .position(.center)
                 .appearFrom(.bottom)
+                .backgroundColor(.black.opacity(0.5))
+        })
+        .popup(isPresented: $finalSelectPopup, view: {
+            FinalSelectPopupView(finalSelectPopup: $finalSelectPopup)
+        }, customize: {
+            $0
+                .position(.center)
+                .appearFrom(.bottom)
+                .closeOnTapOutside(false)
+                .closeOnTap(false)
                 .backgroundColor(.black.opacity(0.5))
         })
     }
@@ -91,17 +120,17 @@ struct TimetableMakeView: View {
                 navigateBack()
             }) {
                 Text("이전으로")
-                    .font(.sb18)
-                    .foregroundStyle(Color(red: 0.11, green: 0.33, blue: 1))
+                    .font(.sb16)
+                    .foregroundStyle(Color.buttonBlue)
                     .frame(maxWidth: 150, maxHeight: .infinity)
             }
             .background(
                 RoundedRectangle(cornerRadius: 10)
-                    .fill(.white)
+                    .foregroundStyle(.clear)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
                             .inset(by: 2)
-                            .stroke(.blue, lineWidth: 1.5)
+                            .stroke(Color.buttonBlue, lineWidth: 1.5)
                     )
             )
             .frame(width: geometry.size.width, height: geometry.size.height)
@@ -119,55 +148,23 @@ struct TimetableMakeView: View {
                 }
             }) {
                 Text(selectedView == .midCheck ? "시간표 생성하기" : "다음으로")
-                    .font(.sb18)
+                    .font(.sb16)
                     .foregroundStyle(.white)
                     .frame(maxWidth: 150, maxHeight: .infinity)
             }
             .background(
                 RoundedRectangle(cornerRadius: 10)
-                    .fill(Color(red: 0.11, green: 0.33, blue: 1))
+                    .foregroundStyle(Color.buttonBlue)
             )
             .frame(width: geometry.size.width, height: geometry.size.height)
         }
         .frame(height: 45)
     }
     
-    private var invalidPopupView: some View {
-        RoundedRectangle(cornerRadius: 20)
-            .foregroundStyle(.white)
-            .frame(width: 300, height: 300)
-            .overlay(
-                VStack(spacing: 30) {
-                    Image(systemName: "exclamationmark.triangle.fill")
-                        .resizable()
-                        .frame(width: 100, height: 100)
-                        .foregroundStyle(.yellow)
-                    
-                    Text("불가능한 시간대가 많으면\n원활한 시간표 생성이 어려울 수 있어요.")
-                        .font(.sb16)
-                        .lineSpacing(5)
-                        .multilineTextAlignment(.center)
-                    Button(action: {
-                        invalidPopup = false
-                    }) {
-                        Text("확인했어요")
-                            .font(.sb14)
-                            .foregroundStyle(.white)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    }
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(.blue)
-                    )
-                    .frame(height: 40)
-                    .padding(.horizontal, 15)
-                }
-            )
-    }
-    
+    //MARK: - server 연동 테스트 후 삭제 예정
     private var midCheckPopupView: some View {
         RoundedRectangle(cornerRadius: 20)
-            .foregroundStyle(.white)
+            .foregroundStyle(.popupBackground)
             .frame(width: 300, height: 360)
             .overlay(
                 VStack(spacing: 30) {
@@ -191,7 +188,7 @@ struct TimetableMakeView: View {
                         }
                         .background(
                             RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(.blue)
+                                .foregroundStyle(Color.buttonBlue)
                         )
                         .frame(height: 40)
                         Button(action: {
@@ -199,16 +196,16 @@ struct TimetableMakeView: View {
                         }) {
                             Text("조금 더 고민해보기")
                                 .font(.sb14)
-                                .foregroundStyle(Color(red: 0.11, green: 0.33, blue: 1))
+                                .foregroundStyle(Color.buttonBlue)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
                         .background(
                             RoundedRectangle(cornerRadius: 10)
-                                .fill(.white)
+                                .foregroundStyle(.clear)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 10)
                                         .inset(by: 2)
-                                        .stroke(.blue, lineWidth: 1.5)
+                                        .stroke(Color.buttonBlue, lineWidth: 1.5)
                                 )
                         )
                         .frame(height: 40)
@@ -272,7 +269,7 @@ struct TimetableMakeView: View {
         case .majorCombination:
             return AnyView(MajorCombSelectorView(viewModel: majorCombViewModel))
         case .finalTimetable:
-            return AnyView(FinalTimetableSelectorView())
+            return AnyView(FinalTimetableSelectorView(showingPopup: $finalSelectPopup))
         }
     }
 
@@ -286,7 +283,6 @@ struct TimetableMakeView: View {
         }
     }
 }
-
 
 struct CustomPageControl: View {
     let totalIndex: Int
@@ -304,7 +300,7 @@ struct CustomPageControl: View {
                 if selectedIndex > index {
                     // 지나온 페이지
                     Rectangle()
-                        .fill(Color(red: 0.06, green: 0.51, blue: 0.79))
+                        .foregroundStyle(Color.pagecontrolPrevious)
                         .frame(height: rectangleHeight)
                         .clipShape(RoundedRectangle(cornerRadius: rectangleRadius))
                 } else if selectedIndex == index {
@@ -315,7 +311,7 @@ struct CustomPageControl: View {
                         .clipShape(RoundedRectangle(cornerRadius: rectangleRadius))
                         .overlay {
                             Rectangle()
-                                .fill(Color(red: 0.06, green: 0.81, blue: 0.79))
+                                .foregroundStyle(Color.pagecontrolCurrent)
                                 .frame(height: rectangleHeight)
                                 .clipShape(
                                     RoundedRectangle(cornerRadius: rectangleRadius)
@@ -335,7 +331,7 @@ struct CustomPageControl: View {
     }
 }
 
-
 #Preview {
     TimetableMakeView(stackPath: .constant([.timetableMake]))
+        .preferredColorScheme(.dark)
 }

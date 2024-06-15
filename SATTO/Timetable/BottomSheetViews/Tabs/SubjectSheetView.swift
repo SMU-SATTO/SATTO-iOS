@@ -13,6 +13,7 @@ import PopupView
 /// 학점 넘치는 선택은 어떻게 처리?
 
 struct SubjectSheetView: View {
+    @Environment(\.colorScheme) var colorScheme
     ///서버에서 받아온 subjectViewModel
     @ObservedObject var subjectViewModel: SubjectViewModel
     @ObservedObject var selectedValues: SelectedValues
@@ -35,7 +36,7 @@ struct SubjectSheetView: View {
                     .position(.bottom)
                     .animation(.spring())
                     .closeOnTapOutside(true)
-                    .autohideIn(0.7)
+                    .autohideIn(1.5)
             }
         }
     }
@@ -62,8 +63,8 @@ struct SubjectSheetView: View {
         }
         .background(
             RoundedRectangle(cornerRadius: 10)
-                .foregroundStyle(selectedValues.isSelected(subject: subjectDetail) ? Color.white : Color.white)
-                .shadow(color: Color(red: 0.65, green: 0.65, blue: 0.65).opacity(0.65), radius: 6.23, x: 0, y: 1.22)
+                .foregroundStyle(selectedValues.isSelected(subject: subjectDetail) ? Color.subjectCardSelected : Color.subjectCardBackground)
+                .shadow(color: colorScheme == .light ? Color(red: 0.65, green: 0.65, blue: 0.65).opacity(0.65) : Color.clear, radius: 6.23, x: 0, y: 1.22)
                 .onTapGesture {
                     withAnimation {
                         toggleExpansion(at: index)
@@ -87,11 +88,11 @@ struct SubjectSheetView: View {
     
     private func subjectMajorView(_ subjectDetail: SubjectDetailModel) -> some View {
         RoundedRectangle(cornerRadius: 20)
-            .foregroundStyle(Color(red: 0.91, green: 0.94, blue: 1))
+            .foregroundStyle(Color.subjectMajorBackground)
             .frame(width: 50, height: 23)
             .overlay(
                 Text(subjectDetail.major)
-                    .foregroundStyle(.blue)
+                    .foregroundStyle(Color.subjectMajorText)
                     .font(.sb12)
             )
             .padding([.leading, .top], 10)
@@ -103,11 +104,9 @@ struct SubjectSheetView: View {
                 VStack(alignment: .leading) {
                     Text(subjectDetail.sbjName)
                         .font(.sb16)
-                        .foregroundStyle(.black)
                         .padding(.trailing, 30)
                     Text(subjectDetail.prof)
                         .font(.m14)
-                        .foregroundStyle(.black)
                 }
                 Spacer()
             }
@@ -162,7 +161,7 @@ struct SubjectSheetView: View {
                     Image(systemName: selectedValues.isSelected(subject: subjectDetail) ? "checkmark.circle.fill" : "plus.circle.fill")
                         .resizable()
                         .frame(width: 25, height: 25)
-                        .foregroundStyle(Color("blue_2"))
+                        .foregroundStyle(Color(red: 0.063, green: 0.51, blue: 0.788))
                 }
                 .padding([.top, .trailing], 20)
             }
@@ -173,7 +172,7 @@ struct SubjectSheetView: View {
     private func subjectCardBorder(_ subjectDetail: SubjectDetailModel) -> some View {
         selectedValues.isSelected(subject: subjectDetail) ?
         RoundedRectangle(cornerRadius: 10)
-            .stroke(Color(red: 0.4, green: 0.31, blue: 1), lineWidth: 1)
+            .stroke(Color.subjectCardBorder, lineWidth: 1)
         : nil
     }
     
@@ -193,7 +192,7 @@ struct SubjectSheetView: View {
         HStack {
             Text("선택한 과목")
                 .font(.sb14)
-                .foregroundStyle(.gray800)
+                .foregroundStyle(Color.blackWhite200)
                 .padding([.top, .leading], 10)
             Spacer()
         }
@@ -223,11 +222,11 @@ struct SubjectSheetView: View {
                     .frame(width: 12)
             }
         }
-        .foregroundStyle(.gray600)
+        .foregroundStyle(Color.blackWhite200)
         .frame(height: 60)
         .background(
             RoundedRectangle(cornerRadius: 6)
-                .foregroundStyle(.gray100)
+                .foregroundStyle(Color.subjectCardBackground)
                 .frame(height: 25)
                 .padding(EdgeInsets(top: 0, leading: -5, bottom: 0, trailing: -5))
         )
@@ -247,12 +246,12 @@ struct SubjectSheetView: View {
             }) {
                 Text("선택 초기화")
                     .font(.sb14)
+                    .foregroundStyle(Color.buttonBlue)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             .background(
                 RoundedRectangle(cornerRadius: 10)
-                    .stroke(Color(red: 0.4, green: 0.31, blue: 1), lineWidth: 1)
-                    .foregroundStyle(.white)
+                    .stroke(Color.buttonBlue, lineWidth: 1)
             )
             .frame(width: geometry.size.width, height: geometry.size.height)
         }
@@ -271,7 +270,7 @@ struct SubjectSheetView: View {
             }
             .background(
                 RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(Color("blue_7"))
+                    .foregroundStyle(Color.buttonBlue)
             )
             .frame(width: geometry.size.width, height: geometry.size.height)
         }
@@ -280,11 +279,12 @@ struct SubjectSheetView: View {
     
     private var floaterView: some View {
         RoundedRectangle(cornerRadius: 10)
-            .foregroundStyle(.white)
+            .foregroundStyle(Color.popupBackground)
             .frame(width: 200, height: 50)
             .shadow(radius: 10)
             .overlay(
                 Text("시간대가 겹쳐요!")
+                    .font(.sb16)
             )
     }
     
@@ -345,4 +345,5 @@ struct SubjectChartView: View {
 
 #Preview {
     SubjectSheetView(subjectViewModel: SubjectViewModel(), selectedValues: SelectedValues(), showResultAction: {})
+        .preferredColorScheme(.dark)
 }

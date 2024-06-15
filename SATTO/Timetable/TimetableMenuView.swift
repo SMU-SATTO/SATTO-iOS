@@ -10,27 +10,28 @@ import SwiftUI
 struct TimetableMenuView: View {
     @Binding var stackPath: [Route]
     var body: some View {
-        ScrollView {
-            VStack(spacing: 10) {
-                timetableBlock(headerText: "2024년 1학기", timetableList: ["시간표", "2"])
-                timetableBlock(headerText: "2023년 2학기", timetableList: ["3", "9", "10"])
-                timetableBlock(headerText: "2023년 1학기", timetableList: ["4", "6"])
-            }
-            .padding(.horizontal, 20)
-        }
-        .navigationBarBackButtonHidden(true)
-        .navigationTitle("시간표 목록")
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button(action: {
-                    stackPath.removeLast()
-                }) {
-                    Image(systemName: "chevron.left")
-                        .foregroundStyle(.black)
+        ZStack {
+            Color.backgroundDefault
+                .ignoresSafeArea(.all)
+            ScrollView {
+                VStack(spacing: 10) {
+                    timetableBlock(headerText: "2024년 1학기", timetableList: ["시간표", "2"])
+                    timetableBlock(headerText: "2023년 2학기", timetableList: ["3", "9", "10"])
+                    timetableBlock(headerText: "2023년 1학기", timetableList: ["4", "6"])
                 }
+                .padding(.horizontal, 20)
             }
-            ToolbarItem(placement: .topBarTrailing) {
-                Text("temp")
+            .navigationBarBackButtonHidden(true)
+            .navigationTitle("시간표 목록")
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: {
+                        stackPath.removeLast()
+                    }) {
+                        Image(systemName: "chevron.left")
+                            .foregroundStyle(Color.blackWhite)
+                    }
+                }
             }
         }
     }
@@ -42,7 +43,7 @@ struct TimetableMenuView: View {
         }
         .background(
             RoundedRectangle(cornerRadius: 15)
-                .stroke(Color("skyblue"), lineWidth: 2)
+                .stroke(Color.skyblue, lineWidth: 1.5)
         )
     }
     
@@ -65,7 +66,7 @@ struct TimetableMenuView: View {
                     HStack {
                         Text(timetableName)
                             .font(.m18)
-                            .foregroundStyle(.black)
+                            .foregroundStyle(Color.blackWhite)
                         Spacer()
                     }
                 }
@@ -80,4 +81,5 @@ struct TimetableMenuView: View {
 
 #Preview {
     TimetableMenuView(stackPath: .constant([]))
+        .preferredColorScheme(.dark)
 }

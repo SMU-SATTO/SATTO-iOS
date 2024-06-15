@@ -14,13 +14,11 @@ struct TimetableMainView: View {
     @Binding var stackPath: [Route]
     
     @State private var selectedTab = "시간표"
-    @State private var currSelectedOption = "전공"
+    @State private var currSelectedOption = "총 이수학점"
     
     @Namespace private var namespace
     
     @State var username = "홍길동"
-    
-    @State var selectedIndex = 0
     
     let majorCreditGoals = 72                  //전공 학점 목표
     @State var majorCredit: Double = 60        //전공 학점
@@ -29,12 +27,16 @@ struct TimetableMainView: View {
     @State var totalCredit: Double = 130       //전체 학점
     
     var body: some View {
-        ScrollView {
-            ZStack {
-                VStack {
-                    headerView
-                    tabContentView
-                    Spacer()
+        ZStack {
+            Color.backgroundDefault
+                .ignoresSafeArea(.all)
+            ScrollView {
+                ZStack {
+                    VStack {
+                        headerView
+                        tabContentView
+                        Spacer()
+                    }
                 }
             }
         }
@@ -42,7 +44,7 @@ struct TimetableMainView: View {
     
     private var headerView: some View {
         UnevenRoundedRectangle(bottomLeadingRadius: 20, bottomTrailingRadius: 20)
-            .foregroundStyle(.banner)
+            .foregroundStyle(Color.banner)
             .frame(height: 160)
             .overlay(
                 ZStack {
@@ -73,10 +75,9 @@ struct TimetableMainView: View {
         VStack(alignment: .leading, spacing: 3) {
             Text("2024년 2학기 시간표가 업로드됐어요!")
                 .font(.b16)
-                .foregroundStyle(.black)
             Text("\(username)님을 위한 시간표를 만들어 드릴게요.")
                 .font(.m12)
-                .foregroundStyle(.gray400)
+                .foregroundStyle(Color.bannerText)
         }
     }
     
@@ -89,7 +90,7 @@ struct TimetableMainView: View {
                 .foregroundStyle(.white)
                 .background(
                     RoundedRectangle(cornerRadius: 7)
-                        .fill(Color("blue_7"))
+                        .fill(Color.buttonBlue)
                         .padding(EdgeInsets(top: -10, leading: -15, bottom: -10, trailing: -15))
                 )
         }
@@ -131,7 +132,7 @@ struct TimetableMainView: View {
                     stackPath.append(Route.timetableMenu)
                 }) {
                     Image(systemName: "ellipsis")
-                        .foregroundStyle(.black)
+                        .foregroundStyle(Color.blackWhite)
                 }
                 .padding(.trailing, 20)
             }
@@ -153,7 +154,7 @@ struct TimetableMainView: View {
             .padding(.top, 10)
             
             RoundedRectangle(cornerRadius: 30)
-                .fill(Color(red: 0.96, green: 0.96, blue: 0.98))
+                .foregroundStyle(Color.pickerBackground)
                 .frame(height: 50)
                 .overlay(
                     HStack(spacing: 5) {
@@ -169,18 +170,24 @@ struct TimetableMainView: View {
             
             if currSelectedOption == "총 이수학점" {
                 pieChart
+                    .padding(.top, 5)
                 HStack {
                     Text("졸업까지 필요한 학점")
                         .font(.b14)
                         .padding(.leading, 30)
                     Spacer()
                 }
+                .padding(.top, 10)
                 
                 GraduationRequirementsRadarView(entries: ChartTransaction.allTransactions.map { RadarChartDataEntry(value: $0.quantity) })
                     .frame(width: 300, height: 300)
+                
+                Text("졸업까지 18학점이 남았어요!")
+                    .font(.sb14)
             }
             if currSelectedOption == "전공" {
                 pieChart
+                    .padding(.top, 5)
             }
         }
     }
@@ -191,7 +198,7 @@ struct TimetableMainView: View {
             ZStack {
                 if selectedOption.wrappedValue == text {
                     RoundedRectangle(cornerRadius: 30)
-                        .foregroundStyle(selectedOption.wrappedValue == text ? Color.white : Color.clear)
+                        .foregroundStyle(Color.pickerSelected)
                         .frame(height: 35)
                         .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
                         .matchedGeometryEffect(id: "selected", in: namespace)
@@ -199,7 +206,7 @@ struct TimetableMainView: View {
                 
                 Text(text)
                     .font(selectedOption.wrappedValue == text ? .sb14 : .m14)
-                    .foregroundStyle(selectedOption.wrappedValue == text ? Color("blue_4") : Color.black)
+                    .foregroundStyle(selectedOption.wrappedValue == text ? Color.pickerTextSelected : Color.pickerTextUnselected)
                     .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
             }
             .contentShape(RoundedRectangle(cornerRadius: 30))
@@ -212,22 +219,23 @@ struct TimetableMainView: View {
     private var pieChart: some View {
         HStack {
             PieChartView(slices: [
-                (majorCredit, Color(red: 0.39, green: 0.53, blue: 1)),
-                (GECredit, Color(red: 0.32, green: 0.69, blue: 0.03)),
-                (totalCredit - majorCredit - GECredit, .info02)
+                (majorCredit, Color.pieBlue),
+                (GECredit, Color.pieGreen),
+                (totalCredit - majorCredit - GECredit, Color.pieWhite)
             ], centerText: "SampleText\n \(Int(majorCredit + GECredit)) / \(Int(totalCredit))")
             .frame(width: 150)
+            
             VStack {
                 HStack {
                     Circle()
-                        .fill(Color(red: 0.39, green: 0.53, blue: 1))
+                        .fill(Color.pieBlue)
                         .frame(width: 12, height: 12)
                     Text("전공 \(Int(majorCredit)) / \(majorCreditGoals)")
                         .font(.m14)
                 }
                 HStack {
                     Circle()
-                        .fill(Color(red: 0.32, green: 0.69, blue: 0.03))
+                        .fill(Color.pieGreen)
                         .frame(width: 12, height: 12)
                     Text("교양 \(Int(GECredit)) / \(GECreditGoals)")
                         .font(.m14)
@@ -243,7 +251,7 @@ struct TimetableMainView: View {
         }) {
             Text(title)
                 .font(selectedTab == tab ? .sb16 : .sb14)
-                .foregroundStyle(selectedTab == tab ? Color("blue_5") : .black)
+                .foregroundStyle(selectedTab == tab ? Color.pickerTextSelected : Color.pickerTextUnselected)
         }
     }
 }
@@ -290,5 +298,7 @@ struct PieChartView: View {
 
 #Preview {
     TimetableMainView(stackPath: .constant([.timetableMake]))
+        .preferredColorScheme(.dark)
 }
+
 

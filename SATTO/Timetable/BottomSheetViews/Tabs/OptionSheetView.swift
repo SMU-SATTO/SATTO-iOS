@@ -28,7 +28,7 @@ struct OptionSheetView: View {
             handleOptionSelection(for: option)
         }) {
             Text(option)
-                .foregroundStyle(selectedOptions.contains(option) ? .blue : .black)
+                .foregroundStyle(selectedOptions.contains(option) ? Color.buttonBlue : Color.blackWhite)
                 .font(.sb12)
                 .background(
                     RoundedRectangle(cornerRadius: 20)
@@ -36,7 +36,7 @@ struct OptionSheetView: View {
                         .overlay(
                             RoundedRectangle(cornerRadius: 20)
                                 .inset(by: 0.5)
-                                .stroke(selectedOptions.contains(option) ? .blue : Color.gray200, lineWidth: 1)
+                                .stroke(selectedOptions.contains(option) ? Color.buttonBlue : Color.blackWhite, lineWidth: 1)
                         )
                         .padding(EdgeInsets(top: -7, leading: -13, bottom: -7, trailing: -13))
                 )
@@ -78,5 +78,6 @@ struct OptionSheetView: View {
 }
 
 #Preview {
-    OptionSheetView(options: ["전체", "1학년", "2학년", "3학년", "4학년"], selectedOptions: .constant([]), allowsDuplicates: false)
+    OptionSheetView(options: ["전체", "1학년", "2학년", "3학년", "4학년"], selectedOptions: .constant(["전체"]), allowsDuplicates: false)
+        .preferredColorScheme(.dark)
 }

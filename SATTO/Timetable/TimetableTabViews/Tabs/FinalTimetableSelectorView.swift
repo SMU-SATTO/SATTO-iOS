@@ -10,7 +10,7 @@ import PopupView
 
 //MARK: - 팝업 상위뷰로 넘겨야 백그라운드 색 제대로 변함
 struct FinalTimetableSelectorView: View {
-    @State var showingPopup = false
+    @Binding var showingPopup: Bool
 
     var body: some View {
         ZStack {
@@ -23,34 +23,28 @@ struct FinalTimetableSelectorView: View {
                     }
             }
         }
-        .popup(isPresented: $showingPopup) {
-            selectPopup()
-        } customize: {
-            $0
-            //                    .type(.floater())
-            //                    .position(.bottom) // 팝업 뷰가 위치할 방향
-                .appearFrom(.bottom) //튀어나올 위치
-                .animation(.spring()) //튀어나오는 애니메이션
-                .closeOnTapOutside(false) //밖에 클릭하면 close될건지?
-                .closeOnTap(false) //안에 클릭하면 close될건지?
-                .backgroundColor(.black.opacity(0.5))
-            
-        }
     }
 }
 
-struct selectPopup: View {
+struct FinalSelectPopupView: View {
+    @Binding var finalSelectPopup: Bool
+    
     var body: some View {
         VStack {
             RoundedRectangle(cornerRadius: 20)
                 .frame(width: 300, height: 600)
-                .foregroundStyle(.white)
+                .foregroundStyle(Color.popupBackground)
                 .overlay(
                     VStack(spacing: 0) {
                         TimetableView(timetableBaseArray: [])
                             .padding(.horizontal, 30)
+                        Text("이 시간표를 이번 학기 시간표로\n결정하시겠어요?")
+                            .font(.sb16)
+                            .foregroundStyle(Color.blackWhite200)
+                            .multilineTextAlignment(.center)
+                        
                         RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(Color("blue_7"))
+                            .foregroundStyle(Color.buttonBlue)
                             .frame(height: 40)
                             .padding(.horizontal, 30)
                             .overlay(
@@ -58,22 +52,28 @@ struct selectPopup: View {
                                     .font(.sb14)
                                     .foregroundStyle(.white)
                             )
+                            .padding(.top, 10)
                         
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(.white)
-                            .frame(height: 40)
-                            .padding(.horizontal, 30)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(Color("blue_7"), lineWidth: 1.5)
-                                    .padding(.horizontal, 30)
-                                    .overlay(
-                                        Text("아니요, 더 둘러볼래요")
-                                            .font(.sb14)
-                                            .foregroundStyle(Color("blue_7"))
-                                    )
-                            )
-                            .padding([.top, .bottom], 20)
+                        Button(action: {
+                            finalSelectPopup = false
+                        }) {
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundStyle(Color.clear)
+                                .frame(height: 40)
+                                .padding(.horizontal, 30)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.buttonBlue, lineWidth: 1.5)
+                                        .padding(.horizontal, 30)
+                                        .overlay(
+                                            Text("아니요, 더 둘러볼래요")
+                                                .font(.sb14)
+                                                .foregroundStyle(Color.buttonBlue)
+                                        )
+                                )
+                                .padding(.top, 10)
+                                .padding(.bottom, 20)
+                        }
                     }
                 )
         }
@@ -81,5 +81,6 @@ struct selectPopup: View {
 }
 
 #Preview {
-    FinalTimetableSelectorView()
+    FinalTimetableSelectorView(showingPopup: .constant(false))
+        .preferredColorScheme(.dark)
 }
