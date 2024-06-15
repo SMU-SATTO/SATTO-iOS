@@ -32,9 +32,6 @@ struct TimetableMenuView: View {
                             .foregroundStyle(Color.blackWhite)
                     }
                 }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Text("temp")
-                }
             }
         }
     }

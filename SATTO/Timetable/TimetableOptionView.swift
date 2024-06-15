@@ -53,6 +53,24 @@ struct TimetableOptionView: View {
                 .padding(.top, 50)
             }
         }
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                HStack {
+                    Button(action: {
+                        stackPath.removeLast()
+                    }) {
+                        HStack(spacing: 5) {
+                            Image(systemName: "chevron.left")
+                                .foregroundStyle(Color.blackWhite)
+                            Text("뒤로가기")
+                                .font(.b18)
+                                .foregroundStyle(Color.blackWhite200)
+                        }
+                    }
+                }
+            }
+        }
     }
     
     private func optionButton(imageName: String, title: String, isSelected: Binding<Bool>, action: @escaping () -> Void) -> some View {

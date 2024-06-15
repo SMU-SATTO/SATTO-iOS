@@ -19,7 +19,7 @@ struct TimetableMakeView: View {
     @StateObject var selectedValues = SelectedValues()
     @StateObject var bottomSheetViewModel = BottomSheetViewModel()
     
-    @State private var selectedView: SelectedView = .finalTimetable
+    @State private var selectedView: SelectedView = .creditPicker
     
     @State private var selectedSubviews = Set<Int>()
     @State private var alreadySelectedSubviews = Set<Int>()
@@ -68,8 +68,24 @@ struct TimetableMakeView: View {
             }
             .animation(.easeInOut, value: UUID())
         }
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                HStack {
+                    Button(action: {
+                        stackPath.removeLast()
+                    }) {
+                        Image(systemName: "chevron.left")
+                            .foregroundStyle(Color.blackWhite)
+                    }
+                    Text("시간표 생성하기")
+                        .font(.b18)
+                        .foregroundStyle(Color.blackWhite200)
+                }
+            }
+        }
         .popup(isPresented: $invalidPopup, view: {
-            invalidPopupView
+            InvalidPopupView(invalidPopup: $invalidPopup)
         }, customize: {
             $0
                 .position(.center)
@@ -79,7 +95,7 @@ struct TimetableMakeView: View {
                 .backgroundColor(.black.opacity(0.5))
         })
         .popup(isPresented: $midCheckPopup, view: {
-            midCheckPopupView
+            MidCheckPopupView(midCheckPopup: $midCheckPopup, navigateForward: navigateForward, majorCombViewModel: majorCombViewModel, selectedValues: selectedValues)
         }, customize: {
             $0
                 .position(.center)
@@ -87,7 +103,7 @@ struct TimetableMakeView: View {
                 .backgroundColor(.black.opacity(0.5))
         })
         .popup(isPresented: $finalSelectPopup, view: {
-            finalSelectPopupView
+            FinalSelectPopupView(finalSelectPopup: $finalSelectPopup)
         }, customize: {
             $0
                 .position(.center)
@@ -145,39 +161,7 @@ struct TimetableMakeView: View {
         .frame(height: 45)
     }
     
-    private var invalidPopupView: some View {
-        RoundedRectangle(cornerRadius: 20)
-            .foregroundStyle(Color.popupBackground)
-            .frame(width: 300, height: 300)
-            .overlay(
-                VStack(spacing: 30) {
-                    Image(systemName: "exclamationmark.triangle.fill")
-                        .resizable()
-                        .frame(width: 100, height: 100)
-                        .foregroundStyle(.yellow)
-                    
-                    Text("불가능한 시간대가 많으면\n원활한 시간표 생성이 어려울 수 있어요.")
-                        .font(.sb16)
-                        .lineSpacing(5)
-                        .multilineTextAlignment(.center)
-                    Button(action: {
-                        invalidPopup = false
-                    }) {
-                        Text("확인했어요")
-                            .font(.sb14)
-                            .foregroundStyle(Color.white)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    }
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(Color.buttonBlue)
-                    )
-                    .frame(height: 40)
-                    .padding(.horizontal, 15)
-                }
-            )
-    }
-    
+    //MARK: - server 연동 테스트 후 삭제 예정
     private var midCheckPopupView: some View {
         RoundedRectangle(cornerRadius: 20)
             .foregroundStyle(.popupBackground)
@@ -229,56 +213,6 @@ struct TimetableMakeView: View {
                     .padding(.horizontal, 15)
                 }
             )
-    }
-    
-    private var finalSelectPopupView: some View {
-        VStack {
-            RoundedRectangle(cornerRadius: 20)
-                .frame(width: 300, height: 600)
-                .foregroundStyle(Color.popupBackground)
-                .overlay(
-                    VStack(spacing: 0) {
-                        TimetableView(timetableBaseArray: [])
-                            .padding(.horizontal, 30)
-                        Text("이 시간표를 이번 학기 시간표로\n결정하시겠어요?")
-                            .font(.sb16)
-                            .foregroundStyle(Color.blackWhite200)
-                            .multilineTextAlignment(.center)
-                        
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(Color.buttonBlue)
-                            .frame(height: 40)
-                            .padding(.horizontal, 30)
-                            .overlay(
-                                Text("네, 결정했어요")
-                                    .font(.sb14)
-                                    .foregroundStyle(.white)
-                            )
-                            .padding(.top, 10)
-                        
-                        Button(action: {
-                            finalSelectPopup = false
-                        }) {
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(Color.clear)
-                                .frame(height: 40)
-                                .padding(.horizontal, 30)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color.buttonBlue, lineWidth: 1.5)
-                                        .padding(.horizontal, 30)
-                                        .overlay(
-                                            Text("아니요, 더 둘러볼래요")
-                                                .font(.sb14)
-                                                .foregroundStyle(Color.buttonBlue)
-                                        )
-                                )
-                                .padding(.top, 10)
-                                .padding(.bottom, 20)
-                        }
-                    }
-                )
-        }
     }
 
     func navigateBack() {
@@ -350,7 +284,6 @@ struct TimetableMakeView: View {
     }
 }
 
-
 struct CustomPageControl: View {
     let totalIndex: Int
     let selectedIndex: Int
@@ -397,7 +330,6 @@ struct CustomPageControl: View {
         }
     }
 }
-
 
 #Preview {
     TimetableMakeView(stackPath: .constant([.timetableMake]))
