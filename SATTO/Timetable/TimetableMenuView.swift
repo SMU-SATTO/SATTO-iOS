@@ -64,7 +64,7 @@ struct TimetableMenuView: View {
             ForEach(timetableList.indices, id: \.self) { index in
                 let timetableName = timetableList[index]
                 Button(action: {
-//                    stackPath.removeLast()
+                    stackPath.removeLast()
                 }) {
                     HStack {
                         Text(timetableName)

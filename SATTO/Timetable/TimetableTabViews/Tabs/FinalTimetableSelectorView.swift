@@ -36,11 +36,12 @@ struct FinalSelectPopupView: View {
                 .overlay(
                     VStack(spacing: 0) {
                         TimetableView(timetableBaseArray: [])
-                            .padding(.horizontal, 30)
+                            .padding(EdgeInsets(top: -45, leading: 15, bottom: 0, trailing: 15))
                         Text("이 시간표를 이번 학기 시간표로\n결정하시겠어요?")
                             .font(.sb16)
                             .foregroundStyle(Color.blackWhite200)
                             .multilineTextAlignment(.center)
+                            .padding(.top, -40)
                         
                         RoundedRectangle(cornerRadius: 10)
                             .foregroundStyle(Color.buttonBlue)
@@ -80,6 +81,7 @@ struct FinalSelectPopupView: View {
 }
 
 #Preview {
-    FinalTimetableSelectorView(showingPopup: .constant(false))
+//    FinalTimetableSelectorView(showingPopup: .constant(false))
+    FinalSelectPopupView(finalSelectPopup: .constant(true))
         .preferredColorScheme(.dark)
 }

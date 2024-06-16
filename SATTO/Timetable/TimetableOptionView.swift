@@ -40,7 +40,7 @@ struct TimetableOptionView: View {
                         }
                     }) {
                         RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(Color.buttonBlue)
+                            .foregroundStyle(!isAutoSelected && !isCustomSelected ? Color.gray: Color.buttonBlue)
                             .frame(width: 150, height: 50)
                             .overlay(
                                 Text("다음으로")
@@ -76,17 +76,20 @@ struct TimetableOptionView: View {
     private func optionButton(imageName: String, title: String, isSelected: Binding<Bool>, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             RoundedRectangle(cornerRadius: 20)
-                .frame(width: 240, height: 180)
+                .aspectRatio(4/3, contentMode: .fit)
+                .padding(.horizontal, 60)
                 .foregroundStyle(isSelected.wrappedValue ? Color.optionSelected : Color.optionUnselected)
                 .overlay(
                     RoundedRectangle(cornerRadius: 20)
                         .inset(by: 1)
                         .stroke(isSelected.wrappedValue ? Color.optionStrokeSelected : Color.optionStrokeUnselected, lineWidth: 1.3)
+                        .aspectRatio(4/3, contentMode: .fit)
                         .overlay {
                             VStack {
                                 Image(imageName)
                                     .resizable()
-                                    .frame(width: 130, height: 130)
+                                    .aspectRatio(1, contentMode: .fit)
+                                    .padding(.horizontal, 60)
                                 Text(title)
                                     .font(isSelected.wrappedValue ? .sb14 : .m14)
                                     .foregroundStyle(isSelected.wrappedValue ? Color.optionStrokeSelected : Color.blackWhite)
