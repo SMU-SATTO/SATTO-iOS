@@ -31,12 +31,10 @@ struct TimetableMainView: View {
             Color.backgroundDefault
                 .ignoresSafeArea(.all)
             ScrollView {
-                ZStack {
-                    VStack {
-                        headerView
-                        tabContentView
-                        Spacer()
-                    }
+                VStack {
+                    headerView
+                    tabContentView
+                    Spacer()
                 }
             }
         }

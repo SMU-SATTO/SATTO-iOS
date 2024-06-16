@@ -8,7 +8,6 @@
 import SwiftUI
 import PopupView
 
-//MARK: - 팝업 상위뷰로 넘겨야 백그라운드 색 제대로 변함
 struct FinalTimetableSelectorView: View {
     @Binding var showingPopup: Bool
 
