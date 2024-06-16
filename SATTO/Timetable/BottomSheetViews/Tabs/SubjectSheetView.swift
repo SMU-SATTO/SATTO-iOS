@@ -186,6 +186,7 @@ struct SubjectSheetView: View {
                 EmptyView()
             }
         }
+        .padding(.horizontal, 20)
     }
     
     private var selectedSubjectsHeaderView: some View {
@@ -193,7 +194,7 @@ struct SubjectSheetView: View {
             Text("선택한 과목")
                 .font(.sb14)
                 .foregroundStyle(Color.blackWhite200)
-                .padding([.top, .leading], 10)
+                .padding(.top, 10)
             Spacer()
         }
     }
@@ -205,7 +206,6 @@ struct SubjectSheetView: View {
                     selectedSubjectItemView(subject as! SubjectDetailModel)
                 }
             }
-            .padding(.leading, 20)
         }
     }
     
@@ -230,6 +230,7 @@ struct SubjectSheetView: View {
                 .frame(height: 25)
                 .padding(EdgeInsets(top: 0, leading: -5, bottom: 0, trailing: -5))
         )
+        .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5))
     }
     
     private var selectedSubjectsActionsView: some View {
