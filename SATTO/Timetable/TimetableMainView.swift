@@ -19,6 +19,10 @@ struct TimetableMainView: View {
     @Namespace private var namespace
     
     @State var username = "홍길동"
+    @State var currSemester = "2024년 2학기"
+    @State var timetableName = "시간표"
+    
+    @State private var bottomSheetPresented = true
     
     let majorCreditGoals = 72                  //전공 학점 목표
     @State var majorCredit: Double = 60        //전공 학점
@@ -31,15 +35,63 @@ struct TimetableMainView: View {
             Color.backgroundDefault
                 .ignoresSafeArea(.all)
             ScrollView {
-                ZStack {
-                    VStack {
-                        headerView
-                        tabContentView
-                        Spacer()
-                    }
+                VStack {
+                    headerView
+                    tabContentView
+                    Spacer()
                 }
             }
         }
+        .sheet(isPresented: $bottomSheetPresented, content: {
+            ZStack {
+                UnevenRoundedRectangle(cornerRadii: .init(topLeading: 20, topTrailing: 20))
+                    .foregroundStyle(Color.popupBackground)
+                VStack(spacing: 15) {
+                    HStack {
+                        Button(action: {
+                            
+                        }) {
+                            HStack {
+                                Image(systemName: "pencil")
+                                Text("이름 변경")
+                                    .font(.sb16)
+                            }
+                        }
+                        .foregroundStyle(.blackWhite200)
+                        Spacer()
+                    }
+                    HStack {
+                        Button(action: {
+                            
+                        }) {
+                            HStack {
+                                Image(systemName: "lock")
+                                Text("공개 범위 변경")
+                                    .font(.sb16)
+                            }
+                        }
+                        .foregroundStyle(.blackWhite200)
+                        Spacer()
+                    }
+                    HStack {
+                        Button(action: {
+                            
+                        }) {
+                            HStack {
+                                Image(systemName: "trash")
+                                Text("삭제")
+                                    .font(.sb16)
+                             
+                            }
+                        }
+                        .foregroundStyle(.blackWhite200)
+                        Spacer()
+                    }
+                }
+                .padding(.leading, 30)
+            }
+            .presentationDetents([.height(150)])
+        })
     }
     
     private var headerView: some View {
@@ -124,10 +176,16 @@ struct TimetableMainView: View {
     private var timetableView: some View {
         VStack {
             HStack {
-                Text("\(username)님의 이번 학기 시간표")
+                Text("\(currSemester) \(timetableName)")
                     .font(.b14)
                     .padding(.leading, 30)
                 Spacer()
+                Button(action: {
+                    bottomSheetPresented.toggle()
+                }) {
+                    Image(systemName: "gearshape")
+                        .foregroundStyle(Color.blackWhite)
+                }
                 Button(action: {
                     stackPath.append(Route.timetableMenu)
                 }) {

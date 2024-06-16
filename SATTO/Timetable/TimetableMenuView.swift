@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TimetableMenuView: View {
+    @Environment(\.colorScheme) var colorScheme
     @Binding var stackPath: [Route]
     var body: some View {
         ZStack {
@@ -42,8 +43,9 @@ struct TimetableMenuView: View {
             contentView(timetableList: timetableList)
         }
         .background(
-            RoundedRectangle(cornerRadius: 15)
-                .stroke(Color.skyblue, lineWidth: 1.5)
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundStyle(Color.menuCardBackground)
+                .shadow(color: colorScheme == .light ? Color(red: 0.65, green: 0.65, blue: 0.65).opacity(0.65) : Color.clear, radius: 6.23, x: 0, y: 1.22)
         )
     }
     
@@ -58,8 +60,9 @@ struct TimetableMenuView: View {
     }
     
     private func contentView(timetableList: [String]) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
-            ForEach(timetableList, id: \.self) { timetableName in
+        VStack(alignment: .leading, spacing: 0) {
+            ForEach(timetableList.indices, id: \.self) { index in
+                let timetableName = timetableList[index]
                 Button(action: {
                     stackPath.removeLast()
                 }) {
@@ -70,7 +73,10 @@ struct TimetableMenuView: View {
                         Spacer()
                     }
                 }
-                
+                .padding(.horizontal, 5)
+                if index < timetableList.count - 1 {
+                    Divider()
+                }
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 10)
@@ -81,5 +87,5 @@ struct TimetableMenuView: View {
 
 #Preview {
     TimetableMenuView(stackPath: .constant([]))
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
 }
