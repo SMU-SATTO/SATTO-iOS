@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct SignView: View {
-    let schoolId: Int = 201910914
+struct SignUpView: View {
+    let schoolId = "201910914"
     @State private var password = ""
     @State private var confirmPassword = ""
     @State private var passwordsMatch = true
@@ -21,48 +21,49 @@ struct SignView: View {
     @State private var showAlert = false
     @State private var navigateToLogin = false
     
+    @EnvironmentObject var navPathFinder: LoginNavigationPathFinder
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading, spacing: 16) {
             Text("이제 회원가입을\n완료해 주세요.")
                 .font(.title)
-                .foregroundColor(.black)
-                .padding(.vertical, 20)
-                .padding(.leading, 25)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            
+            Text("아이디")
             
             Text("\(schoolId)@sangmyung.kr")
-                .font(.subheadline)
-                .foregroundColor(.black)
-                .frame(width: 365, height: 50)
+                .padding(.vertical, 16)
+                .padding(.horizontal, 20)
+                .frame(maxWidth: .infinity)
+                .background(Color(red: 0.98, green: 0.98, blue: 0.98))
+                .cornerRadius(20)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 5)
-                        .stroke(Color.gray)
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(Color(red: 0.91, green: 0.92, blue: 0.93), lineWidth: 1)
+                    
                 )
-                .padding(.bottom, 30)
             
-            if !passwordError.isEmpty {
-                Text(passwordError)
-                    .font(.footnote)
-                    .foregroundColor(.red)
-                    .padding(.trailing, 20)
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-            }
+            Text("비밀번호")
             
             SecureField("비밀번호", text: $password)
-                .padding()
-                .frame(width: 365, height: 50)
+                .padding(.vertical, 16)
+                .padding(.horizontal, 20)
+                .background(Color(red: 0.98, green: 0.98, blue: 0.98))
+                .cornerRadius(20)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 5)
-                        .stroke(Color.gray)
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(Color(red: 0.91, green: 0.92, blue: 0.93), lineWidth: 1)
+                    
                 )
             
             SecureField("비밀번호 재입력", text: $confirmPassword)
-                .padding()
-                .frame(width: 365, height: 50)
+                .padding(.vertical, 16)
+                .padding(.horizontal, 20)
+                .background(Color(red: 0.98, green: 0.98, blue: 0.98))
+                .cornerRadius(20)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 5)
-                        .stroke(Color.gray)
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(Color(red: 0.91, green: 0.92, blue: 0.93), lineWidth: 1)
+                    
                 )
             
             Text("비밀번호는 숫자/영문자 혼합 6자 이상으로 작성해 주세요.")
@@ -70,38 +71,42 @@ struct SignView: View {
                 .foregroundColor(.black)
                 .padding(.bottom, 50)
                 .padding(.leading, 15)
-                .frame(maxWidth: .infinity, alignment: .leading)
+//                .frame(maxWidth: .infinity, alignment: .leading)
             
-            if !isNicknameEnabled && isButtonPressed {
-                Text("중복된 닉네임입니다.")
-                    .font(.footnote)
-                    .foregroundColor(.red)
-                    .padding(.trailing, 20)
-                    .frame(maxWidth: .infinity, alignment: .trailing)
+            Text("학과")
+            
+            Picker(selection: /*@START_MENU_TOKEN@*/.constant(1)/*@END_MENU_TOKEN@*/, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) {
+                /*@START_MENU_TOKEN@*/Text("1").tag(1)/*@END_MENU_TOKEN@*/
+                /*@START_MENU_TOKEN@*/Text("2").tag(2)/*@END_MENU_TOKEN@*/
             }
             
-            HStack {
-                TextField("닉네임", text: $nickname)
-                    .padding()
-                    .frame(width: 250, height: 50)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 5)
-                            .stroke(Color.gray)
-                    )
-                Button(action: {
-                    checkNickname()
-                }) {
-                    Text("중복 확인")
-                        .font(.footnote)
-                        .foregroundColor(.white)
-                        .frame(width: 89, height: 32)
-                        .background(
-                            RoundedRectangle(cornerRadius: 5)
-                                .fill(isNicknameEnabled ? Color.orange : Color.gray)
-                        )
-                }
-                .disabled(nickname.isEmpty)
+            Text("계정 공개 / 비공개")
+            
+            HStack(spacing: 10) {
+                Text("공개")
+                .padding(.vertical, 16)
+                                    .padding(.horizontal, 20)
+                                    .background(Color(red: 0.98, green: 0.98, blue: 0.98))
+                                    .cornerRadius(20)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .stroke(Color(red: 0.91, green: 0.92, blue: 0.93), lineWidth: 1)
+                                        
+                                    )
+                
+                Text("비공개")
+                .padding(.vertical, 16)
+                                    .padding(.horizontal, 20)
+                                    .background(Color(red: 0.98, green: 0.98, blue: 0.98))
+                                    .cornerRadius(20)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .stroke(Color(red: 0.91, green: 0.92, blue: 0.93), lineWidth: 1)
+                                        
+                                    )
             }
+            
+            
             
             Spacer()
             
@@ -121,6 +126,7 @@ struct SignView: View {
             }
             .padding(.bottom, 10)
         }
+        .padding(.horizontal, 20)
         .alert(isPresented: $showAlert) {
             Alert(
                 title: Text("회원가입 성공"),
@@ -175,5 +181,6 @@ struct SignView: View {
 }
 
 #Preview {
-    SignView()
+    SignUpView()
+        .environmentObject(NavigationPathFinder.shared)
 }

@@ -9,14 +9,9 @@
 /* Begin PBXBuildFile section */
 		3B1270DC2BB147DC00E38F86 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1270DB2BB147DC00E38F86 /* EventView.swift */; };
 		3B56A3432C09B7F40034B25B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56A3422C09B7F40034B25B /* LoginView.swift */; };
-		3B56A3452C09B8290034B25B /* LoginPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56A3442C09B8290034B25B /* LoginPageView.swift */; };
-		3B56A3472C09B8320034B25B /* SignUpPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56A3462C09B8320034B25B /* SignUpPageView.swift */; };
-		3B56A3492C09B83B0034B25B /* NextPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56A3482C09B83B0034B25B /* NextPageView.swift */; };
-		3B56A34B2C09B8400034B25B /* SchoolEmailPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56A34A2C09B8400034B25B /* SchoolEmailPageView.swift */; };
-		3B56A34D2C09B8460034B25B /* EmailPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56A34C2C09B8460034B25B /* EmailPageView.swift */; };
-		3B56A34F2C09B84B0034B25B /* EmailCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56A34E2C09B84B0034B25B /* EmailCheckView.swift */; };
-		3B56A3512C09B8500034B25B /* SignView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56A3502C09B8500034B25B /* SignView.swift */; };
-		3B56A3532C09B8560034B25B /* LoginNavigationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56A3522C09B8560034B25B /* LoginNavigationStackView.swift */; };
+		3B56A3472C09B8320034B25B /* AgreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56A3462C09B8320034B25B /* AgreeView.swift */; };
+		3B56A3492C09B83B0034B25B /* EmailAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56A3482C09B83B0034B25B /* EmailAuthView.swift */; };
+		3B56A3512C09B8500034B25B /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56A3502C09B8500034B25B /* SignUpView.swift */; };
 		3B56A3562C09B9F40034B25B /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3B56A3552C09B9F40034B25B /* KeychainSwift */; };
 		3B742B5A2BB687D60000399F /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B742B592BB687D60000399F /* SearchView.swift */; };
 		3B742B7C2BBE7C570000399F /* CompareTimeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B742B7B2BBE7C570000399F /* CompareTimeTableView.swift */; };
@@ -89,14 +84,9 @@
 		3B1270DB2BB147DC00E38F86 /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		3B1270DD2BB147E300E38F86 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		3B56A3422C09B7F40034B25B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		3B56A3442C09B8290034B25B /* LoginPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPageView.swift; sourceTree = "<group>"; };
-		3B56A3462C09B8320034B25B /* SignUpPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpPageView.swift; sourceTree = "<group>"; };
-		3B56A3482C09B83B0034B25B /* NextPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextPageView.swift; sourceTree = "<group>"; };
-		3B56A34A2C09B8400034B25B /* SchoolEmailPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolEmailPageView.swift; sourceTree = "<group>"; };
-		3B56A34C2C09B8460034B25B /* EmailPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailPageView.swift; sourceTree = "<group>"; };
-		3B56A34E2C09B84B0034B25B /* EmailCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailCheckView.swift; sourceTree = "<group>"; };
-		3B56A3502C09B8500034B25B /* SignView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignView.swift; sourceTree = "<group>"; };
-		3B56A3522C09B8560034B25B /* LoginNavigationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNavigationStackView.swift; sourceTree = "<group>"; };
+		3B56A3462C09B8320034B25B /* AgreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreeView.swift; sourceTree = "<group>"; };
+		3B56A3482C09B83B0034B25B /* EmailAuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailAuthView.swift; sourceTree = "<group>"; };
+		3B56A3502C09B8500034B25B /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		3B742B592BB687D60000399F /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		3B742B7B2BBE7C570000399F /* CompareTimeTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareTimeTableView.swift; sourceTree = "<group>"; };
 		3B8335BC2BEA182D0008EFB5 /* ProgressEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressEventView.swift; sourceTree = "<group>"; };
@@ -207,14 +197,9 @@
 			isa = PBXGroup;
 			children = (
 				3B56A3422C09B7F40034B25B /* LoginView.swift */,
-				3B56A3442C09B8290034B25B /* LoginPageView.swift */,
-				3B56A3462C09B8320034B25B /* SignUpPageView.swift */,
-				3B56A3482C09B83B0034B25B /* NextPageView.swift */,
-				3B56A34A2C09B8400034B25B /* SchoolEmailPageView.swift */,
-				3B56A34C2C09B8460034B25B /* EmailPageView.swift */,
-				3B56A34E2C09B84B0034B25B /* EmailCheckView.swift */,
-				3B56A3502C09B8500034B25B /* SignView.swift */,
-				3B56A3522C09B8560034B25B /* LoginNavigationStackView.swift */,
+				3B56A3462C09B8320034B25B /* AgreeView.swift */,
+				3B56A3482C09B83B0034B25B /* EmailAuthView.swift */,
+				3B56A3502C09B8500034B25B /* SignUpView.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -556,15 +541,13 @@
 				AAE233192BB6812200BC3240 /* Assets.xcassets in Sources */,
 				3B8335C12BEA19030008EFB5 /* DetailProgressEventView.swift in Sources */,
 				AAA9508E2BB5A266004E16C8 /* SettingView.swift in Sources */,
-				3B56A34D2C09B8460034B25B /* EmailPageView.swift in Sources */,
 				AAA950902BB5A319004E16C8 /* HomeView.swift in Sources */,
-				3B56A3512C09B8500034B25B /* SignView.swift in Sources */,
+				3B56A3512C09B8500034B25B /* SignUpView.swift in Sources */,
 				AAA9508D2BB5A263004E16C8 /* FriendView.swift in Sources */,
 				AAA9508C2BB5A260004E16C8 /* ContentView.swift in Sources */,
 				AA1018A22BDE812A009E6804 /* TimetableCustom.swift in Sources */,
 				AAFE958D2BF25BCC00B3342A /* TimeSelectorView.swift in Sources */,
 				AAA9506A2BA5C39B004E16C8 /* EssentialClassesSelectorView.swift in Sources */,
-				3B56A34B2C09B8400034B25B /* SchoolEmailPageView.swift in Sources */,
 				AAA9506F2BA5C39B004E16C8 /* SelectedValues.swift in Sources */,
 				AAA950692BA5C39B004E16C8 /* InvalidTimeSelectorView.swift in Sources */,
 				AAFE95872BF20E5000B3342A /* SATTOManager.swift in Sources */,
@@ -577,7 +560,6 @@
 				AAFE95892BF2149100B3342A /* SATTONetworking.swift in Sources */,
 				AAA950852BA7231A004E16C8 /* GradeSheetView.swift in Sources */,
 				AAFE958B2BF2209E00B3342A /* Response.swift in Sources */,
-				3B56A3532C09B8560034B25B /* LoginNavigationStackView.swift in Sources */,
 				AAA9503B2BA5C380004E16C8 /* ChartModel.swift in Sources */,
 				AA1018A92BDE882C009E6804 /* TimetableModel.swift in Sources */,
 				AA1018A62BDE87A1009E6804 /* TimetableViewModel.swift in Sources */,
@@ -585,9 +567,8 @@
 				AAA950872BA72395004E16C8 /* GESheetView.swift in Sources */,
 				AAA950682BA5C39B004E16C8 /* CreditPickerView.swift in Sources */,
 				3BD5322B2BF06ADB00152A77 /* Event.swift in Sources */,
-				3B56A3452C09B8290034B25B /* LoginPageView.swift in Sources */,
 				3B8335BF2BEA18650008EFB5 /* AnnouncementEventView.swift in Sources */,
-				3B56A3492C09B83B0034B25B /* NextPageView.swift in Sources */,
+				3B56A3492C09B83B0034B25B /* EmailAuthView.swift in Sources */,
 				AAA9503D2BA5C380004E16C8 /* TotalCreditsPieChartView.swift in Sources */,
 				AAA9503C2BA5C380004E16C8 /* GraduationRequirementsRadarView.swift in Sources */,
 				AAFE95842BF20C1900B3342A /* SATTOAPI.swift in Sources */,
@@ -602,8 +583,7 @@
 				AAA950832BA722EF004E16C8 /* DefaultSheetView.swift in Sources */,
 				AAA9504D2BA5C396004E16C8 /* Font.swift in Sources */,
 				3B1270DC2BB147DC00E38F86 /* EventView.swift in Sources */,
-				3B56A34F2C09B84B0034B25B /* EmailCheckView.swift in Sources */,
-				3B56A3472C09B8320034B25B /* SignUpPageView.swift in Sources */,
+				3B56A3472C09B8320034B25B /* AgreeView.swift in Sources */,
 				AACB4BD02B40712D00169C52 /* SATTOApp.swift in Sources */,
 				AAA9506B2BA5C39B004E16C8 /* FinalTimetableSelectorView.swift in Sources */,
 			);

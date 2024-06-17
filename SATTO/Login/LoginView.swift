@@ -8,13 +8,9 @@
 import SwiftUI
 
 enum LoginRoute: Hashable {
-    case loginPageView
-    case signUpPageView
-    case nextPageView
-    case SchoolEmailView
-    case EmailPageView
-    case EmailCheckView
-    case SignView
+    case AgreeView
+    case EmailAuthView
+    case SignUpView
 }
 
 final class LoginNavigationPathFinder: ObservableObject {
@@ -35,51 +31,66 @@ final class LoginNavigationPathFinder: ObservableObject {
 struct LoginView: View {
     @EnvironmentObject var navPathFinder: LoginNavigationPathFinder
     
-    @Binding var isLoggedin: Bool
-    @Binding var showLoginPage: Bool
-    
-    @Binding var studentID: Int
-    @Binding var username: String
+    @State private var username: String = ""
+    @State private var password: String = ""
     
     var body: some View {
         NavigationStack(path: $navPathFinder.path) {
-            VStack {
-                Image("Login")
-                    .padding()
+            VStack(spacing: 0) {
                 
+                
+                Image("SATTO")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: 300)
+                
+                
+                TextField("이메일 주소 입력", text: $username)
+                    .modifier(MyTextFieldModifier())
+                    .padding(.bottom, 8)
+                
+                SecureField("비밀번호 입력", text: $password)
+                    .modifier(MyTextFieldModifier())
+                    .padding(.bottom, 68)
                 
                 Button(action: {
-                    navPathFinder.addPath(route: .loginPageView)
+                    
                 }, label: {
                     Text("로그인")
+                        .foregroundStyle(.white)
+                        .padding(.vertical, 16)
+                        .frame(maxWidth: .infinity)
+                        .background(Color.blue)
+                        .cornerRadius(20)
+                        .padding(.bottom, 12)
+                    
                 })
                 
                 Button(action: {
-                    navPathFinder.addPath(route: .signUpPageView)
+                    navPathFinder.path.append(.AgreeView)
                 }, label: {
                     Text("회원가입")
+                        .foregroundStyle(Color(red: 0.3, green: 0.32, blue: 0.34))
+                        .padding(.vertical, 16)
+                        .frame(maxWidth: .infinity)
+                        .cornerRadius(20)
+                    
                 })
                 
-
+                Spacer()
+                
             }
+            .padding(.horizontal)
             .navigationBarHidden(true)
             .navigationBarTitle("", displayMode: .inline)
             .navigationDestination(for: LoginRoute.self) { route in
                 switch route {
-                case .loginPageView:
-                    LoginPageView(isLoggedin: $isLoggedin, showLoginPage: $showLoginPage, studentID: $studentID, username: $username)
-                case .signUpPageView:
-                    SignUpPageView()
-                case .nextPageView:
-                    NextPageView()
-                case .SchoolEmailView:
-                    SchoolEmailPageView()
-                case .EmailPageView:
-                    EmailPageView()
-                case .EmailCheckView:
-                    EmailCheckView()
-                case .SignView:
-                    SignView()
+                case .AgreeView:
+                    AgreeView()
+                case .EmailAuthView:
+                    EmailAuthView()
+                case .SignUpView:
+                    SignUpView()
                 }
             }
         }
@@ -89,7 +100,22 @@ struct LoginView: View {
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView(isLoggedin: .constant(false), showLoginPage: .constant(true), studentID: .constant(0), username: .constant(""))
+        LoginView()
             .environmentObject(LoginNavigationPathFinder.shared)
+    }
+}
+
+struct MyTextFieldModifier: ViewModifier {
+    func body(content: Content) -> some View{
+        content
+            .padding(.vertical, 16)
+            .padding(.horizontal, 20)
+            .background(Color(red: 0.98, green: 0.98, blue: 0.98))
+            .cornerRadius(20)
+            .overlay(
+                RoundedRectangle(cornerRadius: 20)
+                    .stroke(Color(red: 0.91, green: 0.92, blue: 0.93), lineWidth: 1)
+                
+            )
     }
 }
