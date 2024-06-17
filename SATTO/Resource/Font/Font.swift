@@ -10,6 +10,7 @@ import SwiftUI
 extension Font {
     static let r10: Font = .custom("Pretendard-Regular", size: 10)
     static let r12: Font = .custom("Pretendard-Regular", size: 12)
+    static let r14: Font = .custom("Pretendard-Regular", size: 14)
     
     static let m10: Font = .custom("Pretendard-Medium", size: 10)
     static let m11: Font = .custom("Pretendard-Medium", size: 11)
@@ -32,6 +33,7 @@ extension Font {
     static let b13: Font = .custom("Pretendard-Bold", size: 13)
     static let b14: Font = .custom("Pretendard-Bold", size: 14)
     static let b16: Font = .custom("Pretendard-Bold", size: 16)
+    static let b18: Font = .custom("Pretendard-Bold", size: 18)
     static let b20: Font = .custom("Pretendard-Bold", size: 20)
     static let b28: Font = .custom("Pretendard-Bold", size: 28)
     

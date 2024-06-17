@@ -14,60 +14,85 @@ struct TimetableOptionView: View {
     @State private var isCustomSelected = false
     
     var body: some View {
-        VStack {
-            Text("시간표 생성 방식을 선택해주세요")
-                .font(.sb18)
-            
-            VStack(spacing: 20) {
-                optionButton(imageName: "Auto", title: "자동으로 생성하기", isSelected: $isAutoSelected) {
-                    isAutoSelected = true
-                    isCustomSelected = false
-                }
+        ZStack {
+            Color.backgroundDefault
+                .ignoresSafeArea(.all)
+            VStack {
+                Text("시간표 생성 방식을 선택해 주세요.")
+                    .font(.sb18)
                 
-                optionButton(imageName: "Custom", title: "커스텀 생성하기", isSelected: $isCustomSelected) {
-                    isCustomSelected = true
-                    isAutoSelected = false
-                }
-                Button(action: {
-                    if isAutoSelected {
-                        stackPath.append(Route.timetableMake)
+                VStack(spacing: 20) {
+                    optionButton(imageName: "Auto", title: "자동으로 생성하기", isSelected: $isAutoSelected) {
+                        isAutoSelected = true
+                        isCustomSelected = false
                     }
-                    else if isCustomSelected {
-                        stackPath.append(Route.timetableCustom)
+                    
+                    optionButton(imageName: "Custom", title: "커스텀 생성하기", isSelected: $isCustomSelected) {
+                        isCustomSelected = true
+                        isAutoSelected = false
                     }
-                }) {
-                    RoundedRectangle(cornerRadius: 10)
-                        .frame(width: 150, height: 50)
-                        .overlay(
-                            Text("다음으로")
-                                .font(.sb18)
-                                .foregroundStyle(.white)
-                        )
+                    Button(action: {
+                        if isAutoSelected {
+                            stackPath.append(Route.timetableMake)
+                        }
+                        else if isCustomSelected {
+                            stackPath.append(Route.timetableCustom)
+                        }
+                    }) {
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundStyle(!isAutoSelected && !isCustomSelected ? Color.gray: Color.buttonBlue)
+                            .frame(width: 150, height: 50)
+                            .overlay(
+                                Text("다음으로")
+                                    .font(.sb18)
+                                    .foregroundStyle(.white)
+                            )
+                    }
+                    .disabled(isAutoSelected == false && isCustomSelected == false)
                 }
-                .disabled(isAutoSelected == false && isCustomSelected == false)
+                .padding(.top, 50)
             }
-            .padding(.top, 50)
+        }
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                HStack {
+                    Button(action: {
+                        stackPath.removeLast()
+                    }) {
+                        HStack(spacing: 5) {
+                            Image(systemName: "chevron.left")
+                                .foregroundStyle(Color.blackWhite)
+                            Text("뒤로가기")
+                                .font(.b18)
+                                .foregroundStyle(Color.blackWhite200)
+                        }
+                    }
+                }
+            }
         }
     }
     
-    @ViewBuilder
     private func optionButton(imageName: String, title: String, isSelected: Binding<Bool>, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             RoundedRectangle(cornerRadius: 20)
-                .frame(width: 240, height: 180)
-                .foregroundStyle(isSelected.wrappedValue ? Color(red: 0.96, green: 0.98, blue: 1) : .gray100)
+                .aspectRatio(4/3, contentMode: .fit)
+                .padding(.horizontal, 60)
+                .foregroundStyle(isSelected.wrappedValue ? Color.optionSelected : Color.optionUnselected)
                 .overlay(
                     RoundedRectangle(cornerRadius: 20)
                         .inset(by: 1)
-                        .stroke(isSelected.wrappedValue ? .blue1 : .gray200, lineWidth: 1.3)
+                        .stroke(isSelected.wrappedValue ? Color.optionStrokeSelected : Color.optionStrokeUnselected, lineWidth: 1.3)
+                        .aspectRatio(4/3, contentMode: .fit)
                         .overlay {
                             VStack {
                                 Image(imageName)
                                     .resizable()
-                                    .frame(width: 130, height: 130)
+                                    .aspectRatio(1, contentMode: .fit)
+                                    .padding(.horizontal, 60)
                                 Text(title)
                                     .font(isSelected.wrappedValue ? .sb14 : .m14)
-                                    .foregroundStyle(isSelected.wrappedValue ? Color(red: 0.28, green: 0.18, blue: 0.89) : .gray400)
+                                    .foregroundStyle(isSelected.wrappedValue ? Color.optionStrokeSelected : Color.blackWhite)
                             }
                         }
                 )
@@ -77,4 +102,5 @@ struct TimetableOptionView: View {
 
 #Preview {
     TimetableOptionView(stackPath: .constant([.timetableMake]))
+        .preferredColorScheme(.dark)
 }

@@ -9,83 +9,66 @@ import SwiftUI
 
 //MARK: - 학점 범위 선택
 struct CreditPickerView: View {
-    //MARK: - 사용자 학년에 따라 start 학점 6 아니고 12로 바꿔야함 -> 12학점 미만 선택시 알림 띄우는 형식도 괜찮을듯
     @ObservedObject var selectedValues: SelectedValues
     
     var body: some View {
-        ScrollView {
-            Text("이번 학기에 들을 학점을 선택해 주세요.")
-                .font(.sb16)
-
-            HStack(spacing: 10) {
-                Text("학점")
-                    .frame(width: 100, alignment: .trailing)
-                ZStack {
-                    RoundedRectangle(cornerRadius: 5)
-                        .foregroundStyle(Color.gray.opacity(0.1))
-                        .frame(width: 80, height: 30)
-                    Picker(selection: $selectedValues.credit, label: Text("")) {
-                        ForEach(6...22, id: \.self) { credit in
-                            Text("\(credit)").tag(credit)
-                        }
-                    }
-                    .tint(.black)
-                    .padding(.horizontal)
-                }
-                .frame(width: 100, height: 30)
-            }
-            .padding(.top, 10)
+        VStack {
+            SectionView(title: "학점", pickerRange: 6...22, selection: $selectedValues.credit)
             
-            Text("이번 학기에 들을 전공 개수를 선택해 주세요.")
-                .font(.sb16)
+            SectionView(title: "전공 개수", pickerRange: 0...7, selection: $selectedValues.majorNum)
                 .padding(.top, 20)
-
-            HStack(spacing: 10) {
-                Text("전공 개수")
-                    .frame(width: 100, alignment: .trailing)
-                ZStack {
-                    RoundedRectangle(cornerRadius: 5)
-                        .foregroundStyle(Color.gray.opacity(0.1))
-                        .frame(width: 80, height: 30)
-                    Picker(selection: $selectedValues.majorNum, label: Text("")) {
-                        ForEach(0...7, id: \.self) { credit in
-                            Text("\(credit)").tag(credit)
-                        }
-                    }
-                    .tint(.black)
-                    .padding(.horizontal)
-                }
-                .frame(width: 100, height: 30)
-            }
-            .padding(.top, 10)
             
-            Text("이번 학기에 들을 E-러닝 개수를 선택해 주세요")
-                .font(.sb16)
+            SectionView(title: "E-러닝 개수", pickerRange: 0...2, selection: $selectedValues.ELearnNum)
                 .padding(.top, 20)
+        }
+    }
+    
+    private struct SectionView: View {
+        let title: String
+        let pickerRange: ClosedRange<Int>
+        @Binding var selection: Int
+        
+        var body: some View {
+            VStack(spacing: 10) {
+                HStack(spacing: 0) {
+                    Text("이번 학기에 들을 ")
+                    Text(title)
+                        .foregroundStyle(Color.accentText)
+                    Text("을 선택해 주세요.")
+                    Spacer()
+                }
+                .font(.sb16)
+                .padding(.leading, 60)
 
-            HStack(spacing: 10) {
-                Text("E-러닝 개수")
-                    .frame(width: 100, alignment: .trailing)
-                ZStack {
-                    RoundedRectangle(cornerRadius: 5)
-                        .foregroundStyle(Color.gray.opacity(0.1))
-                        .frame(width: 80, height: 30)
-                    Picker(selection: $selectedValues.ELearnNum, label: Text("")) {
-                        ForEach(0...2, id: \.self) { credit in
-                            Text("\(credit)").tag(credit)
+                HStack(spacing: 10) {
+                    Text(title)
+                        .font(.sb16)
+                        .foregroundStyle(Color.blackWhite400)
+                    Spacer()
+                    Picker(selection: $selection, label: Text("")) {
+                        ForEach(pickerRange, id: \.self) { value in
+                            Text("\(value)").tag(value)
                         }
                     }
-                    .tint(.black)
-                    .padding(.horizontal)
+                    .tint(.blackWhite)
+                    .background(
+                        RoundedRectangle(cornerRadius: 5)
+                            .foregroundStyle(Color.creditPickerBackground)
+                            .padding(EdgeInsets(top: 5, leading: -5, bottom: 5, trailing: -5))
+                    )
+                    .padding(EdgeInsets(top: -5, leading: 5, bottom: -5, trailing: 5))
+                    
                 }
-                .frame(width: 100, height: 30)
+                .padding(.leading, 60)
+                .padding(.trailing, 120)
             }
-            .padding(.top, 10)
         }
     }
 }
 
 
+
 #Preview {
     CreditPickerView(selectedValues: SelectedValues())
+        .preferredColorScheme(.light)
 }

@@ -7,21 +7,18 @@
 
 import SwiftUI
 
-/// 학점 최대치 넘어가면 선택 못하게 해야하나? ex) 18학점 최대인데 18학점 이상 선택하는 경우의 수
-/// 미리 시간대 선택하고 이전으로 돌아가서 수업 선택하면 중복으로 선택되는 이슈 있음
-/// 바텀시트뷰에서 사용 방법 생각해야함
-struct TimeSelectorView: View {
-    @ObservedObject var selectedValues: SelectedValues
+struct TimeSelectorView<VM>: View where VM: TimeSelectorViewModelProtocol{
+    @ObservedObject var viewModel: VM
     
-    var title: String
-    var cellWidth: CGFloat = 45
+    var title: String = ""
+    var cellWidth: CGFloat = 40
     var cellHeight: CGFloat = 30
     var cellWidthSpacing: CGFloat = 0.5
     var cellHeightSpacing: CGFloat = 0.5
     var lineWidth: CGFloat = 1
     var minTime: Int = 8
     var maxTime: Int = 22
-    var preselectedSlots: [String]
+    var preselectedSlots: [String] = []
     @Binding var selectedSubviews: Set<Int>
     @Binding var alreadySelectedSubviews: Set<Int>
     
@@ -40,12 +37,21 @@ struct TimeSelectorView: View {
             scheduleGrid
             selectedIndexesView
         }
+        .onAppear {
+            removePreselectedIndexes()
+        }
         .onChange(of: selectedIndexesText) { newValue in
             if newValue.split(separator: " ").count > 30 && disposable{
                 invalidPopup = true
                 disposable = false
             }
-            selectedValues.invalidTimes = newValue
+            viewModel.selectedTimes = newValue
+        }
+    }
+    
+    private func removePreselectedIndexes() {
+        for index in preselectedIndexes {
+            selectedSubviews.remove(index)
         }
     }
     
@@ -65,7 +71,7 @@ struct TimeSelectorView: View {
                 .frame(width: 320, alignment: .topLeading)
             Text("드래그로 선택할 수 있어요.")
                 .font(.sb12)
-                .foregroundColor(.gray)
+                .foregroundStyle(.gray)
                 .frame(width: 320, alignment: .topLeading)
         }
     }
@@ -81,7 +87,7 @@ struct TimeSelectorView: View {
         VStack(spacing: 0) {
             ForEach(minTime..<maxTime, id: \.self) { hour in
                 Text("\(hour):00")
-                    .font(.m12)
+                    .font(.m10)
                     .frame(width: cellWidth, height: cellHeight)
             }
         }
@@ -140,7 +146,7 @@ struct TimeSelectorView: View {
             Path { path in
                 drawGridLines(path: &path, width: proxy.size.width, height: proxy.size.height)
             }
-            .stroke(Color.black, lineWidth: lineWidth)
+            .stroke(Color.blackWhite, lineWidth: lineWidth)
         }
     }
     
@@ -222,9 +228,14 @@ struct TimeCellRectangle: View {
     
     var body: some View {
         Rectangle()
-            .foregroundColor(preselectedIndexes.contains(index) ? .gray : selectedSubviews.contains(index) ? .gray200 : .white)
+            .foregroundStyle(preselectedIndexes.contains(index) ? .gray : selectedSubviews.contains(index) ? Color.timeselectorCellSelected : .timeselectorCellUnselected)
             .overlay(
-                preselectedIndexes.contains(index) ? Color.black.opacity(0.3) : Color.clear
+                preselectedIndexes.contains(index) ? Color.timeselectorCellPreselected : Color.clear
             )
     }
+}
+
+#Preview {
+    TimeSelectorView(viewModel: SelectedValues(), selectedSubviews: .constant([16, 17, 18]), alreadySelectedSubviews: .constant([]), invalidPopup: .constant(false))
+        .preferredColorScheme(.light)
 }

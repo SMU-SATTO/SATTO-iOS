@@ -9,7 +9,7 @@ import SwiftUI
 import JHTimeTable
 
 struct TimetableView: View {
-    let timetableBaseArray: [TimetableBase]
+    let timetableBaseArray: [SubjectModelBase]
     
     var body: some View {
         JHLectureTable {
@@ -31,19 +31,19 @@ struct TimetableView: View {
         } background: {
             // Add background
         }
-        .lectureTableWeekdays([.mon, .tue, .wed, .thu, .fri, .sat, .sun])
-        .lectureTableTimes(startAt: .init(hour: 9, minute: 0), endAt: .init(hour: 22, minute: 0)) // 시작, 끝 시간 설정
+        .lectureTableWeekdays(getWeeks(from: timetableBaseArray))
+        .lectureTableTimes(startAt: .init(hour: 9, minute: 0), endAt: .init(hour: 21, minute: 0)) // 시작, 끝 시간 설정
         .lectureTableBorder(width: 0.5, radius: 0, color: "#979797") // table 그리드 선 색 변경
         .lectureTableBar(time: .init(height: 0, width: 35), week: .init(height: 30, width: 10)) //날짜, 시간 위치 변경 가능, 시간, 주 크기 변경
         .aspectRatio(7/10, contentMode: .fit)
         .frame(maxWidth: 350, maxHeight: 500)
     }
     
-    private func convertToLectureModels(from timetableBaseArray: [TimetableBase]) -> [LectureModel] {
+    private func convertToLectureModels(from timetableBaseArray: [SubjectModelBase]) -> [LectureModel] {
         return timetableBaseArray.flatMap { convertToLectureModels(from: $0) }
     }
     
-    private func convertToLectureModels(from timetableBase: TimetableBase) -> [LectureModel] {
+    private func convertToLectureModels(from timetableBase: SubjectModelBase) -> [LectureModel] {
         let components = timetableBase.time.components(separatedBy: " ")
         let color = ColorSelectionManager().randomColor()
         let lectureModels = components.compactMap { component -> LectureModel? in
@@ -76,6 +76,27 @@ struct TimetableView: View {
         case "일": return .sun
         default: return nil
         }
+    }
+    
+    private func getWeeks(from timetableBaseArray: [SubjectModelBase]) -> [LectureWeeks] {
+        let weeks: [LectureWeeks] = [.mon, .tue, .wed, .thu, .fri]
+        
+        for timetable in timetableBaseArray {
+            if timetable.time.contains("토") || timetable.time.contains("일") {
+                return [.mon, .tue, .wed, .thu, .fri, .sat, .sun]
+            }
+        }
+        
+        return weeks
+    }
+    
+    private func getEndTime(from timetableBaseArray: [SubjectModelBase]) -> Int {
+        for endTime in timetableBaseArray {
+            if endTime.time.contains("10") || endTime.time.contains("11") {
+                return 24
+            }
+        }
+        return 21
     }
     
     private func mergeAdjacentLectures(_ lectures: [LectureModel]) -> [LectureModel] {
@@ -125,7 +146,7 @@ struct LectureView: View {
             Text(lecture.title)
                 .font(.caption)
                 .fontWeight(.bold)
-                .foregroundColor(Color.white)
+                .foregroundStyle(Color.blackWhite)
                 .padding(EdgeInsets(top: 2, leading: 3, bottom: 0, trailing: 0))
         }
     }
@@ -134,4 +155,5 @@ struct LectureView: View {
 
 #Preview {
     TimetableView(timetableBaseArray: [])
+        .preferredColorScheme(.dark)
 }

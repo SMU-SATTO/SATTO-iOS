@@ -8,57 +8,72 @@
 import SwiftUI
 import PopupView
 
-
-
 struct FinalTimetableSelectorView: View {
-    @State var showingPopup = false
+    @Binding var showingPopup: Bool
 
     var body: some View {
         ZStack {
             VStack(alignment: .leading) {
                 Text("좌우로 스크롤해 \n원하는 시간표를 골라보세요!")
-                Text("OpenPopupView")
+                    .font(.sb16)
+                TimetableView(timetableBaseArray: [])
                     .onTapGesture {
                         showingPopup.toggle()
                     }
             }
         }
-        .popup(isPresented: $showingPopup) {
-            selectPopup()
-        } customize: {
-            $0
-            //                    .type(.floater())
-            //                    .position(.bottom) // 팝업 뷰가 위치할 방향
-                .appearFrom(.bottom) //튀어나올 위치
-                .animation(.spring()) //튀어나오는 애니메이션
-                .closeOnTapOutside(false) //밖에 클릭하면 close될건지?
-                .closeOnTap(false) //안에 클릭하면 close될건지?
-                .backgroundColor(.black.opacity(0.5))
-            
-        }
     }
 }
 
-struct selectPopup: View {
+struct FinalSelectPopupView: View {
+    @Binding var finalSelectPopup: Bool
+    
     var body: some View {
         VStack {
             RoundedRectangle(cornerRadius: 20)
-                .frame(width: 300, height: 450)
-                .foregroundStyle(.white)
+                .frame(width: 300, height: 600)
+                .foregroundStyle(Color.popupBackground)
                 .overlay(
-                    VStack {
+                    VStack(spacing: 0) {
+                        TimetableView(timetableBaseArray: [])
+                            .padding(EdgeInsets(top: -45, leading: 15, bottom: 0, trailing: 15))
+                        Text("이 시간표를 이번 학기 시간표로\n결정하시겠어요?")
+                            .font(.sb16)
+                            .foregroundStyle(Color.blackWhite200)
+                            .multilineTextAlignment(.center)
+                            .padding(.top, -40)
+                        
                         RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(.blue1)
-                            .frame(width: 250, height: 44)
-                            .shadow(color: Color(red: 0.96, green: 0.51, blue: 0.16).opacity(0.16), radius: 4, x: 0, y: 4)
+                            .foregroundStyle(Color.buttonBlue)
+                            .frame(height: 40)
+                            .padding(.horizontal, 30)
                             .overlay(
                                 Text("네, 결정했어요")
+                                    .font(.sb14)
                                     .foregroundStyle(.white)
                             )
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(.white)
-                            .frame(width: 250, height: 44)
-                            .shadow(color: Color(red: 0.96, green: 0.51, blue: 0.16).opacity(0.16), radius: 4, x: 0, y: 4)
+                            .padding(.top, 10)
+                        
+                        Button(action: {
+                            finalSelectPopup = false
+                        }) {
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundStyle(Color.clear)
+                                .frame(height: 40)
+                                .padding(.horizontal, 30)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.buttonBlue, lineWidth: 1.5)
+                                        .padding(.horizontal, 30)
+                                        .overlay(
+                                            Text("아니요, 더 둘러볼래요")
+                                                .font(.sb14)
+                                                .foregroundStyle(Color.buttonBlue)
+                                        )
+                                )
+                                .padding(.top, 10)
+                                .padding(.bottom, 20)
+                        }
                     }
                 )
         }
@@ -66,5 +81,7 @@ struct selectPopup: View {
 }
 
 #Preview {
-    FinalTimetableSelectorView()
+//    FinalTimetableSelectorView(showingPopup: .constant(false))
+    FinalSelectPopupView(finalSelectPopup: .constant(true))
+        .preferredColorScheme(.dark)
 }

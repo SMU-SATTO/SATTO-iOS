@@ -10,8 +10,9 @@ import JHTimeTable
 
 //MARK: - 필수로 들어야 할 과목 선택
 struct EssentialClassesSelectorView: View {
-    @ObservedObject var timetableViewModel: TimetableViewModel
+    @ObservedObject var subjectViewModel: SubjectViewModel
     @ObservedObject var selectedValues: SelectedValues
+    @ObservedObject var bottomSheetViewModel: BottomSheetViewModel
     
     @State private var selectedSubviews = Set<Int>()
     @State private var alreadySelectedSubviews = Set<Int>()
@@ -40,9 +41,10 @@ struct EssentialClassesSelectorView: View {
                     isShowBottomSheet = true
                 }
                 .sheet(isPresented: $isShowBottomSheet, content: {
-                    SearchSheetTabView(
-                        timetableViewModel: timetableViewModel,
+                    BottomSheetTabView(
+                        subjectViewModel: subjectViewModel,
                         selectedValues: selectedValues,
+                        bottomSheetViewModel: bottomSheetViewModel,
                         selectedSubviews: $selectedSubviews,
                         alreadySelectedSubviews: $alreadySelectedSubviews,
                         showResultAction: {isShowBottomSheet = false}
@@ -54,5 +56,5 @@ struct EssentialClassesSelectorView: View {
 }
 
 #Preview {
-    EssentialClassesSelectorView(timetableViewModel: TimetableViewModel(), selectedValues: SelectedValues())
+    EssentialClassesSelectorView(subjectViewModel: SubjectViewModel(), selectedValues: SelectedValues(), bottomSheetViewModel: BottomSheetViewModel())
 }
