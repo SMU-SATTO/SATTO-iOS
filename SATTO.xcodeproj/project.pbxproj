@@ -202,13 +202,6 @@
 			path = Login;
 			sourceTree = "<group>";
 		};
-		3B8335C42BEA19A90008EFB5 /* Helper */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Helper;
-			sourceTree = "<group>";
-		};
 		3BD532282BF06AB900152A77 /* Event */ = {
 			isa = PBXGroup;
 			children = (
@@ -427,7 +420,6 @@
 			isa = PBXGroup;
 			children = (
 				3B56A3412C09B7B70034B25B /* Login */,
-				3B8335C42BEA19A90008EFB5 /* Helper */,
 				AA1018AA2BDE9C80009E6804 /* Info.plist */,
 				AACB4BCF2B40712D00169C52 /* SATTOApp.swift */,
 				AAA9508F2BB5A319004E16C8 /* HomeView.swift */,
@@ -580,7 +572,6 @@
 				3BD5322B2BF06ADB00152A77 /* Event.swift in Sources */,
 				3B8335BF2BEA18650008EFB5 /* AnnouncementEventView.swift in Sources */,
 				3B56A3492C09B83B0034B25B /* EmailAuthView.swift in Sources */,
-				AAA9503D2BA5C380004E16C8 /* TotalCreditsPieChartView.swift in Sources */,
 				AAA9503C2BA5C380004E16C8 /* GraduationRequirementsRadarView.swift in Sources */,
 				3B8335BD2BEA182D0008EFB5 /* ProgressEventView.swift in Sources */,
 				3B56A3432C09B7F40034B25B /* LoginView.swift in Sources */,
