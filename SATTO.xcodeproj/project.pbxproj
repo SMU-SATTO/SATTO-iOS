@@ -34,7 +34,6 @@
 		AA9E80332B498DB400D51447 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = AA9E80322B498DB400D51447 /* RxMoya */; };
 		AAA9503B2BA5C380004E16C8 /* ChartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950372BA5C380004E16C8 /* ChartModel.swift */; };
 		AAA9503C2BA5C380004E16C8 /* GraduationRequirementsRadarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950382BA5C380004E16C8 /* GraduationRequirementsRadarView.swift */; };
-		AAA9503D2BA5C380004E16C8 /* TotalCreditsPieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950392BA5C380004E16C8 /* TotalCreditsPieChartView.swift */; };
 		AAA9504C2BA5C396004E16C8 /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAA9503E2BA5C396004E16C8 /* Color.xcassets */; };
 		AAA9504D2BA5C396004E16C8 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950402BA5C396004E16C8 /* Font.swift */; };
 		AAA9504E2BA5C396004E16C8 /* Pretendard-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = AAA950412BA5C396004E16C8 /* Pretendard-Black.otf */; };
@@ -102,7 +101,6 @@
 		AA9E219B2BC81FC800F0566A /* MidCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidCheckView.swift; sourceTree = "<group>"; };
 		AAA950372BA5C380004E16C8 /* ChartModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartModel.swift; sourceTree = "<group>"; };
 		AAA950382BA5C380004E16C8 /* GraduationRequirementsRadarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraduationRequirementsRadarView.swift; sourceTree = "<group>"; };
-		AAA950392BA5C380004E16C8 /* TotalCreditsPieChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TotalCreditsPieChartView.swift; sourceTree = "<group>"; };
 		AAA9503E2BA5C396004E16C8 /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
 		AAA950402BA5C396004E16C8 /* Font.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		AAA950412BA5C396004E16C8 /* Pretendard-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Black.otf"; sourceTree = "<group>"; };
@@ -183,13 +181,6 @@
 				3B1270DD2BB147E300E38F86 /* SettingView.swift */,
 			);
 			path = Setting;
-			sourceTree = "<group>";
-		};
-		3B8335C42BEA19A90008EFB5 /* Helper */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Helper;
 			sourceTree = "<group>";
 		};
 		3BD532282BF06AB900152A77 /* Event */ = {
@@ -306,7 +297,6 @@
 			children = (
 				AAA950372BA5C380004E16C8 /* ChartModel.swift */,
 				AAA950382BA5C380004E16C8 /* GraduationRequirementsRadarView.swift */,
-				AAA950392BA5C380004E16C8 /* TotalCreditsPieChartView.swift */,
 			);
 			name = Charts;
 			path = SATTO/Charts;
@@ -368,6 +358,9 @@
 		AAA950652BA5C39B004E16C8 /* Timetable */ = {
 			isa = PBXGroup;
 			children = (
+				AA0DFC9F2C0F6A34002ED3C9 /* Router */,
+				AA0DFCA02C0F6D82002ED3C9 /* Response */,
+				AA0DFCA12C0F6DA7002ED3C9 /* Networking */,
 				AA51CDFD2BE3AD87003799CB /* TimetableView.swift */,
 				AAA950612BA5C39B004E16C8 /* TimetableMainView.swift */,
 				AAA950642BA5C39B004E16C8 /* TimetableMenuView.swift */,
@@ -407,15 +400,11 @@
 		AACB4BCE2B40712D00169C52 /* SATTO */ = {
 			isa = PBXGroup;
 			children = (
-				3B8335C42BEA19A90008EFB5 /* Helper */,
 				AA1018AA2BDE9C80009E6804 /* Info.plist */,
 				AACB4BCF2B40712D00169C52 /* SATTOApp.swift */,
 				AACB4BD12B40712D00169C52 /* LoginView.swift */,
 				AAA9508F2BB5A319004E16C8 /* HomeView.swift */,
 				3B1270D52BB147A200E38F86 /* ContentView.swift */,
-				AA0DFC9F2C0F6A34002ED3C9 /* Router */,
-				AA0DFCA02C0F6D82002ED3C9 /* Response */,
-				AA0DFCA12C0F6DA7002ED3C9 /* Networking */,
 				AA1018A72BDE8810009E6804 /* Model */,
 				AA1018A42BDE878D009E6804 /* ViewModel */,
 				3B0CF0292BB165D800E876B7 /* Setting */,
@@ -561,7 +550,6 @@
 				AAA950682BA5C39B004E16C8 /* CreditPickerView.swift in Sources */,
 				3BD5322B2BF06ADB00152A77 /* Event.swift in Sources */,
 				3B8335BF2BEA18650008EFB5 /* AnnouncementEventView.swift in Sources */,
-				AAA9503D2BA5C380004E16C8 /* TotalCreditsPieChartView.swift in Sources */,
 				AAA9503C2BA5C380004E16C8 /* GraduationRequirementsRadarView.swift in Sources */,
 				3B8335BD2BEA182D0008EFB5 /* ProgressEventView.swift in Sources */,
 				AAA950712BA5C39B004E16C8 /* TimetableMenuView.swift in Sources */,
