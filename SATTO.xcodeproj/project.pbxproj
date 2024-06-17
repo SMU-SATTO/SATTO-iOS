@@ -218,25 +218,6 @@
 			path = Event;
 			sourceTree = "<group>";
 		};
-		AA0B71482BFCB86D00216A32 /* Timetable */ = {
-			isa = PBXGroup;
-			children = (
-				AA1018A52BDE87A1009E6804 /* SubjectViewModel.swift */,
-				AAA950622BA5C39B004E16C8 /* SelectedValues.swift */,
-				AA0DFC7D2C0F0BB5002ED3C9 /* MajorCombViewModel.swift */,
-			);
-			path = Timetable;
-			sourceTree = "<group>";
-		};
-		AA0B714A2BFCB89000216A32 /* Timetable */ = {
-			isa = PBXGroup;
-			children = (
-				AA1018A82BDE882C009E6804 /* SubjectModel.swift */,
-				AA0DFC6C2C0CE660002ED3C9 /* BottomSheetModel.swift */,
-			);
-			path = Timetable;
-			sourceTree = "<group>";
-		};
 		AA0B714B2BFD994100216A32 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
@@ -297,7 +278,6 @@
 			isa = PBXGroup;
 			children = (
 				3BD532292BF06AC400152A77 /* Event */,
-				AA0B71482BFCB86D00216A32 /* Timetable */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -306,9 +286,43 @@
 			isa = PBXGroup;
 			children = (
 				3BD532282BF06AB900152A77 /* Event */,
-				AA0B714A2BFCB89000216A32 /* Timetable */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		AA7752A22C2024D300778870 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				AA51CDFD2BE3AD87003799CB /* TimetableView.swift */,
+				AAFE958C2BF25BCC00B3342A /* TimeSelectorView.swift */,
+				AAA950612BA5C39B004E16C8 /* TimetableMainView.swift */,
+				AAA950642BA5C39B004E16C8 /* TimetableMenuView.swift */,
+				AAA950802BA5E7A5004E16C8 /* TimetableOptionView.swift */,
+				AAA950602BA5C39B004E16C8 /* TimetableAutoViews */,
+				AA1018A02BDE8094009E6804 /* TimetableCustom */,
+				AAA950582BA5C39B004E16C8 /* BottomSheetViews */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		AA7752A32C2024DD00778870 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				AA0DFCA02C0F6D82002ED3C9 /* Response */,
+				AA1018A82BDE882C009E6804 /* SubjectModel.swift */,
+				AA0DFC6C2C0CE660002ED3C9 /* BottomSheetModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		AA7752A42C2024E200778870 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				AA1018A52BDE87A1009E6804 /* SubjectViewModel.swift */,
+				AAA950622BA5C39B004E16C8 /* SelectedValues.swift */,
+				AA0DFC7D2C0F0BB5002ED3C9 /* MajorCombViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		AAA9503A2BA5C380004E16C8 /* Charts */ = {
@@ -318,7 +332,7 @@
 				AAA950382BA5C380004E16C8 /* GraduationRequirementsRadarView.swift */,
 			);
 			name = Charts;
-			path = SATTO/Charts;
+			path = SATTO/Timetable/Charts;
 			sourceTree = SOURCE_ROOT;
 		};
 		AAA9503F2BA5C396004E16C8 /* Color */ = {
@@ -365,29 +379,24 @@
 			path = BottomSheetViews;
 			sourceTree = "<group>";
 		};
-		AAA950602BA5C39B004E16C8 /* TimetableTabViews */ = {
+		AAA950602BA5C39B004E16C8 /* TimetableAutoViews */ = {
 			isa = PBXGroup;
 			children = (
 				AAA950632BA5C39B004E16C8 /* TimetableMakeView.swift */,
 				AA0B714B2BFD994100216A32 /* Tabs */,
 			);
-			path = TimetableTabViews;
+			path = TimetableAutoViews;
 			sourceTree = "<group>";
 		};
 		AAA950652BA5C39B004E16C8 /* Timetable */ = {
 			isa = PBXGroup;
 			children = (
+				AAA9503A2BA5C380004E16C8 /* Charts */,
+				AA7752A22C2024D300778870 /* Views */,
+				AA7752A32C2024DD00778870 /* Models */,
+				AA7752A42C2024E200778870 /* ViewModels */,
 				AA0DFC9F2C0F6A34002ED3C9 /* Router */,
-				AA0DFCA02C0F6D82002ED3C9 /* Response */,
 				AA0DFCA12C0F6DA7002ED3C9 /* Networking */,
-				AA51CDFD2BE3AD87003799CB /* TimetableView.swift */,
-				AAA950612BA5C39B004E16C8 /* TimetableMainView.swift */,
-				AAA950642BA5C39B004E16C8 /* TimetableMenuView.swift */,
-				AAA950802BA5E7A5004E16C8 /* TimetableOptionView.swift */,
-				AAFE958C2BF25BCC00B3342A /* TimeSelectorView.swift */,
-				AA1018A02BDE8094009E6804 /* TimetableCustom */,
-				AAA950602BA5C39B004E16C8 /* TimetableTabViews */,
-				AAA950582BA5C39B004E16C8 /* BottomSheetViews */,
 			);
 			path = Timetable;
 			sourceTree = "<group>";
@@ -430,7 +439,6 @@
 				3B0CF0282BB165CF00E876B7 /* Event */,
 				3B0CF0272BB165C400E876B7 /* Friend */,
 				AAA950652BA5C39B004E16C8 /* Timetable */,
-				AAA9503A2BA5C380004E16C8 /* Charts */,
 				AAA9504B2BA5C396004E16C8 /* Resource */,
 				AACB4BD52B40712F00169C52 /* Preview Content */,
 			);
