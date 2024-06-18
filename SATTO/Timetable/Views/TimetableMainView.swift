@@ -7,13 +7,12 @@
 
 import SwiftUI
 import PopupView
-import DGCharts
 import JHTimeTable
 
 struct TimetableMainView: View {
     @Binding var stackPath: [Route]
     
-    @State private var selectedTab = "시간표"
+    @State private var selectedTab = "이수학점"
     @State private var currSelectedOption = "총 이수학점"
     
     @Namespace private var namespace
@@ -22,7 +21,7 @@ struct TimetableMainView: View {
     @State var currSemester = "2024년 2학기"
     @State var timetableName = "시간표"
     
-    @State private var bottomSheetPresented = true
+    @State private var bottomSheetPresented = false
     
     let majorCreditGoals = 72                  //전공 학점 목표
     @State var majorCredit: Double = 60        //전공 학점
@@ -237,8 +236,16 @@ struct TimetableMainView: View {
                 }
                 .padding(.top, 10)
                 
-                GraduationRequirementsRadarView(entries: ChartTransaction.allTransactions.map { RadarChartDataEntry(value: $0.quantity) })
-                    .frame(width: 300, height: 300)
+                RadarChartView(data: [
+                    (name: "전공선택", value: 60),
+                    (name: "전공심화", value: 70),
+                    (name: "교양", value: 50),
+                    (name: "기초교양", value: 90),
+                    (name: "상명핵심역량교양", value: 85),
+                    (name: "균형교양", value: 75)
+                ])
+                .padding(.horizontal, 60)
+                .padding(.vertical, -20)
                 
                 Text("졸업까지 18학점이 남았어요!")
                     .font(.sb14)
@@ -356,7 +363,5 @@ struct PieChartView: View {
 
 #Preview {
     TimetableMainView(stackPath: .constant([.timetableMake]))
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
 }
-
-

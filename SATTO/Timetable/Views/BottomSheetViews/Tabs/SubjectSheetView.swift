@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Charts
 import PopupView
 
 //MARK: - 할일
@@ -301,45 +300,6 @@ struct SubjectSheetView: View {
             expandedSubjectIndex = nil
         } else {
             expandedSubjectIndex = index
-        }
-    }
-}
-
-struct SubjectChartView: View {
-    let subjectChartData: [ValuePerSubjectCategory]
-    
-    var todayEnrolledData: Int
-    var yesterdayEnrolledData: Int
-    var threeDaysAgoEnrolledData: Int
-    
-    init(todayEnrolledData: Int, yesterdayEnrolledData: Int, threeDaysAgoEnrolledData: Int) {
-        self.todayEnrolledData = todayEnrolledData
-        self.yesterdayEnrolledData = yesterdayEnrolledData
-        self.threeDaysAgoEnrolledData = threeDaysAgoEnrolledData
-        
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM/dd"
-        
-        let currentDate = Date()
-        subjectChartData = [
-            .init(category: "2 days ago", value: threeDaysAgoEnrolledData, date: dateFormatter.string(from: Calendar.current.date(byAdding: .day, value: -2, to: currentDate)!)),
-            .init(category: "Yesterday", value: yesterdayEnrolledData, date: dateFormatter.string(from: Calendar.current.date(byAdding: .day, value: -1, to: currentDate)!)),
-            .init(category: "Today", value: todayEnrolledData, date: dateFormatter.string(from: currentDate))
-        ]
-    }
-    
-    var body: some View {
-        VStack {
-            Chart(subjectChartData, id: \.category) { item in
-                BarMark(
-                    x: .value("Date", item.date),
-                    y: .value("Value", item.value)
-                )
-                .cornerRadius(5)
-            }
-            .foregroundStyle(Color(red: 0.9, green: 0.91, blue: 1))
-            .frame(width: 200, height: 160)
         }
     }
 }
