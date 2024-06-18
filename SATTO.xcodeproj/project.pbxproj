@@ -63,7 +63,6 @@
 		AAA950712BA5C39B004E16C8 /* TimetableMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950642BA5C39B004E16C8 /* TimetableMenuView.swift */; };
 		AAA950742BA5C484004E16C8 /* JHTimeTable in Frameworks */ = {isa = PBXBuildFile; productRef = AAA950732BA5C484004E16C8 /* JHTimeTable */; };
 		AAA950772BA5C48B004E16C8 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = AAA950762BA5C48B004E16C8 /* DGCharts */; };
-		AAA950792BA5C48B004E16C8 /* DGChartsDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = AAA950782BA5C48B004E16C8 /* DGChartsDynamic */; };
 		AAA9507C2BA5C498004E16C8 /* PopupView in Frameworks */ = {isa = PBXBuildFile; productRef = AAA9507B2BA5C498004E16C8 /* PopupView */; };
 		AAA950812BA5E7A5004E16C8 /* TimetableOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950802BA5E7A5004E16C8 /* TimetableOptionView.swift */; };
 		AAA950832BA722EF004E16C8 /* SubjectSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950822BA722EF004E16C8 /* SubjectSheetView.swift */; };
@@ -76,6 +75,19 @@
 		AACB4BD72B40712F00169C52 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AACB4BD62B40712F00169C52 /* Preview Assets.xcassets */; };
 		AAFE958D2BF25BCC00B3342A /* TimeSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAFE958C2BF25BCC00B3342A /* TimeSelectorView.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		3B0654E72C210B3000411871 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		3B1270D52BB147A200E38F86 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -153,7 +165,6 @@
 				AA9E802D2B498DB400D51447 /* CombineMoya in Frameworks */,
 				AA9E80332B498DB400D51447 /* RxMoya in Frameworks */,
 				AAA950772BA5C48B004E16C8 /* DGCharts in Frameworks */,
-				AAA950792BA5C48B004E16C8 /* DGChartsDynamic in Frameworks */,
 				AA9E80312B498DB400D51447 /* ReactiveMoya in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -463,6 +474,7 @@
 				AACB4BC82B40712D00169C52 /* Sources */,
 				AACB4BC92B40712D00169C52 /* Frameworks */,
 				AACB4BCA2B40712D00169C52 /* Resources */,
+				3B0654E72C210B3000411871 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -476,7 +488,6 @@
 				AA9E80322B498DB400D51447 /* RxMoya */,
 				AAA950732BA5C484004E16C8 /* JHTimeTable */,
 				AAA950762BA5C48B004E16C8 /* DGCharts */,
-				AAA950782BA5C48B004E16C8 /* DGChartsDynamic */,
 				AAA9507B2BA5C498004E16C8 /* PopupView */,
 				3B56A3552C09B9F40034B25B /* KeychainSwift */,
 			);
@@ -884,11 +895,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = AAA950752BA5C48B004E16C8 /* XCRemoteSwiftPackageReference "Charts" */;
 			productName = DGCharts;
-		};
-		AAA950782BA5C48B004E16C8 /* DGChartsDynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = AAA950752BA5C48B004E16C8 /* XCRemoteSwiftPackageReference "Charts" */;
-			productName = DGChartsDynamic;
 		};
 		AAA9507B2BA5C498004E16C8 /* PopupView */ = {
 			isa = XCSwiftPackageProductDependency;
