@@ -9,9 +9,9 @@ import SwiftUI
 
 struct MajorCombSelectorView: View {
     @Environment(\.colorScheme) var colorScheme
-    @ObservedObject var viewModel: MajorCombViewModel
-    /// 위로 올려야함 stateobject
-    @StateObject private var selectedMajorComb = SelectedMajorComb()
+    @ObservedObject var viewModel: SelectedValues
+    //TODO: 위로 올려야함 stateobject
+    @StateObject private var selectedValues = SelectedValues()
     
     var body: some View {
         ScrollView {
@@ -19,10 +19,10 @@ struct MajorCombSelectorView: View {
                 HStack {
                     VStack(alignment: .leading, spacing: 5) {
                         HStack(spacing: 0) {
-                            Text("\(viewModel.majorCombinations.count)개의 전공 조합, \(viewModel.majorCombinations.reduce(0) { $0 + $1.combCount })개의 시간표")
+                            Text("\(viewModel.majorCombinations.count)개의 전공 조합")
                                 .font(.sb16)
                                 .foregroundColor(Color.accentText)
-                            Text("가 만들어졌어요!")
+                            Text("이 만들어졌어요!")
                                 .font(.sb16)
                                 .foregroundColor(Color.blackWhite200)
                         }
@@ -44,8 +44,10 @@ struct MajorCombSelectorView: View {
                     .padding(.top, 20)
                     .padding(.bottom, 20)
             }
-            ForEach(viewModel.majorCombinations.indices, id: \.self) { index in
-                majorRectangle(combination: viewModel.majorCombinations[index])
+            ForEach(viewModel.majorCombinations.indices, id: \.self) { outerIndex in
+                ForEach(viewModel.majorCombinations[outerIndex].indices, id: \.self) { innerIndex in
+                    majorRectangle(combination: viewModel.majorCombinations[outerIndex][innerIndex])
+                }
             }
             
             VStack {
@@ -53,7 +55,7 @@ struct MajorCombSelectorView: View {
                     .font(.m14)
                     .foregroundColor(Color.blackWhite200)
                 
-                ForEach(selectedMajorComb.selectedMajorCombs, id: \.self) { combination in
+                ForEach(selectedValues.selectedMajorCombs, id: \.self) { combination in
                     HStack(spacing: 0) {
                         ForEach(combination, id: \.self) { item in
                             Text(item)
@@ -75,35 +77,23 @@ struct MajorCombSelectorView: View {
     @ViewBuilder
     private func majorRectangle(combination: MajorCombModel) -> some View {
         Button(action: {
-            selectedMajorComb.toggleSelection(combination.lec)
+            selectedValues.toggleSelection(combination.lec)
         }) {
-            ZStack {
-                    VStack(spacing: 3) {
-                        ForEach(combination.lec, id: \.self) { course in
-                            Text(course)
-                                .font(.m14)
-                                .foregroundStyle(Color.blackWhite200)
-                                .padding(.leading, 20)
-                        }
-                }
-                VStack {
-                    HStack {
-                        Spacer()
-                        Text("\(combination.combCount)개")
-                            .font(.r14)
-                            .foregroundStyle(.red)
-                            .padding(.trailing, 20)
-                    }
-                    Spacer()
+            VStack(spacing: 3) {
+                ForEach(combination.lec, id: \.self) { course in
+                    Text(course)
+                        .font(.m14)
+                        .foregroundStyle(Color.blackWhite200)
+                        .padding(.leading, 20)
                 }
             }
             .background(
                 RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(selectedMajorComb.isSelected(combination.lec) ? Color.subjectCardSelected : Color.subjectCardBackground)
+                    .foregroundStyle(selectedValues.isSelected(combination.lec) ? Color.subjectCardSelected : Color.subjectCardBackground)
                     .shadow(color: colorScheme == .light ? Color(red: 0.65, green: 0.65, blue: 0.65).opacity(0.65) : Color.clear, radius: 6.23, x: 0, y: 1.22)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(selectedMajorComb.isSelected(combination.lec) ? Color.subjectCardBorder : Color.clear, lineWidth: 1)
+                            .stroke(selectedValues.isSelected(combination.lec) ? Color.subjectCardBorder : Color.clear, lineWidth: 1)
                     )
                     .padding(.vertical, -10)
             )
@@ -114,6 +104,6 @@ struct MajorCombSelectorView: View {
 }
 
 #Preview {
-    MajorCombSelectorView(viewModel: MajorCombViewModel())
+    MajorCombSelectorView(viewModel: SelectedValues())
         .preferredColorScheme(.dark)
 }

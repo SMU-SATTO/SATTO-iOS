@@ -81,7 +81,7 @@ struct FinalSelectPopupView: View {
 }
 
 #Preview {
-//    FinalTimetableSelectorView(showingPopup: .constant(false))
-    FinalSelectPopupView(finalSelectPopup: .constant(true))
+    FinalTimetableSelectorView(showingPopup: .constant(false))
+//    FinalSelectPopupView(finalSelectPopup: .constant(true))
         .preferredColorScheme(.dark)
 }
