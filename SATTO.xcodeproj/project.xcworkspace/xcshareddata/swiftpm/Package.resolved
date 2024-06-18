@@ -1,5 +1,5 @@
 {
-  "originHash" : "0114abfaef1bbee0666a5bf6aceed8ef28c7d68126be933edf2b0bc88d29ecc1",
+  "originHash" : "0b1509cb099c30285facbd492c0a7a48e01541abe4f9ffb320e6eb4cfcc71034",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -8,15 +8,6 @@
       "state" : {
         "revision" : "f455c2975872ccd2d9c81594c658af65716e9b9a",
         "version" : "5.9.1"
-      }
-    },
-    {
-      "identity" : "charts",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/danielgindi/Charts.git",
-      "state" : {
-        "revision" : "dd9c72e3d7e751e769971092a6bd72d39198ae63",
-        "version" : "5.1.0"
       }
     },
     {
