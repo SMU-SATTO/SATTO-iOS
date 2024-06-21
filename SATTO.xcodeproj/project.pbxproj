@@ -38,7 +38,6 @@
 		AA1018A62BDE87A1009E6804 /* SubjectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1018A52BDE87A1009E6804 /* SubjectViewModel.swift */; };
 		AA1018A92BDE882C009E6804 /* SubjectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1018A82BDE882C009E6804 /* SubjectModel.swift */; };
 		AA51CDFE2BE3AD87003799CB /* TimetableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA51CDFD2BE3AD87003799CB /* TimetableView.swift */; };
-		AA66001B2C21CD5C0055557C /* secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA66001A2C21CD5C0055557C /* secret.plist */; };
 		AA66001E2C21D6EB0055557C /* TimetableRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA66001D2C21D6EB0055557C /* TimetableRepository.swift */; };
 		AA7752A62C2151EF00778870 /* ChartViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7752A52C2151EF00778870 /* ChartViews.swift */; };
 		AA9E219C2BC81FC800F0566A /* MidCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E219B2BC81FC800F0566A /* MidCheckView.swift */; };
@@ -128,7 +127,6 @@
 		AA1018A82BDE882C009E6804 /* SubjectModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectModel.swift; sourceTree = "<group>"; };
 		AA1018AA2BDE9C80009E6804 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		AA51CDFD2BE3AD87003799CB /* TimetableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableView.swift; sourceTree = "<group>"; };
-		AA66001A2C21CD5C0055557C /* secret.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = secret.plist; sourceTree = "<group>"; };
 		AA66001D2C21D6EB0055557C /* TimetableRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableRepository.swift; sourceTree = "<group>"; };
 		AA7752A52C2151EF00778870 /* ChartViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViews.swift; sourceTree = "<group>"; };
 		AA9E219B2BC81FC800F0566A /* MidCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidCheckView.swift; sourceTree = "<group>"; };
@@ -477,7 +475,6 @@
 		AACB4BCE2B40712D00169C52 /* SATTO */ = {
 			isa = PBXGroup;
 			children = (
-				AA66001A2C21CD5C0055557C /* secret.plist */,
 				3B56A3412C09B7B70034B25B /* Login */,
 				AA1018AA2BDE9C80009E6804 /* Info.plist */,
 				AACB4BCF2B40712D00169C52 /* SATTOApp.swift */,
@@ -581,7 +578,6 @@
 			files = (
 				AACB4BD72B40712F00169C52 /* Preview Assets.xcassets in Resources */,
 				AAA950502BA5C396004E16C8 /* Pretendard-ExtraBold.otf in Resources */,
-				AA66001B2C21CD5C0055557C /* secret.plist in Resources */,
 				AAA950562BA5C396004E16C8 /* Pretendard-Thin.otf in Resources */,
 				AAA9504C2BA5C396004E16C8 /* Color.xcassets in Resources */,
 				AAA950512BA5C396004E16C8 /* Pretendard-ExtraLight.otf in Resources */,
