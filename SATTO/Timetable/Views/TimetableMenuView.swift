@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TimetableMenuView: View {
     @Environment(\.colorScheme) var colorScheme
-    @Binding var stackPath: [Route]
+    @Binding var stackPath: [TimetableRoute]
     var body: some View {
         ZStack {
             Color.backgroundDefault

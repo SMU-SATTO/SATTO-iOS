@@ -12,10 +12,9 @@ struct TimetableMakeView: View {
         case creditPicker, essentialClasses, invalidTime, midCheck, majorCombination, finalTimetable
     }
 
-    @Binding var stackPath: [Route]
+    @Binding var stackPath: [TimetableRoute]
     
     @StateObject var subjectViewModel = SubjectViewModel()
-    @StateObject var majorCombViewModel = MajorCombViewModel()
     @StateObject var selectedValues = SelectedValues()
     @StateObject var bottomSheetViewModel = BottomSheetViewModel()
     
@@ -27,6 +26,7 @@ struct TimetableMakeView: View {
     @State private var midCheckPopup = false
     @State private var invalidPopup = false
     @State private var finalSelectPopup = false
+    @State private var progressPopup = false
     
     var body: some View {
         ZStack {
@@ -95,7 +95,7 @@ struct TimetableMakeView: View {
                 .backgroundColor(.black.opacity(0.5))
         })
         .popup(isPresented: $midCheckPopup, view: {
-            MidCheckPopupView(midCheckPopup: $midCheckPopup, navigateForward: navigateForward, majorCombViewModel: majorCombViewModel, selectedValues: selectedValues)
+            MidCheckPopupView(midCheckPopup: $midCheckPopup, navigateForward: navigateForward, selectedValues: selectedValues)
         }, customize: {
             $0
                 .position(.center)
@@ -111,6 +111,34 @@ struct TimetableMakeView: View {
                 .closeOnTapOutside(false)
                 .closeOnTap(false)
                 .backgroundColor(.black.opacity(0.5))
+        })
+        .popup(isPresented: $progressPopup, view: {
+            VStack {
+                TimetableProgressView()
+                    .padding(.top, 50)
+                Button(action: {
+                    progressPopup = false
+                }, label: {
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundStyle(Color.buttonBlue)
+                        .frame(width: 150, height: 50)
+                        .overlay(
+                            //TODO: 취소하면 일정 시간 뒤에 다시 서버에 콜 보낼 수 있게 제한
+                            Text("취소하기")
+                                .foregroundStyle(.white)
+                                .font(.sb16))
+                })
+                .padding(.top, 50)
+            }
+
+        }, customize: {
+            $0
+                .position(.center)
+                .appearFrom(.bottom)
+                .closeOnTapOutside(false)
+                .closeOnTap(false)
+                .backgroundColor(.black.opacity(0.9))
+                .dragToDismiss(false)
         })
     }
     
@@ -179,7 +207,7 @@ struct TimetableMakeView: View {
                         Button(action: {
                             navigateForward()
                             midCheckPopup = false
-                            majorCombViewModel.fetchMajorCombinations(GPA: selectedValues.credit, requiredLect: selectedValues.selectedSubjects, majorCount: selectedValues.majorNum, cyberCount: selectedValues.ELearnNum, impossibleTimeZone: selectedValues.selectedTimes)
+                            selectedValues.fetchMajorCombinations(GPA: selectedValues.credit, requiredLect: selectedValues.selectedSubjects, majorCount: selectedValues.majorNum, cyberCount: selectedValues.ELearnNum, impossibleTimeZone: selectedValues.selectedTimes)
                         }) {
                             Text("시간표 생성하러 가기")
                                 .font(.sb14)
@@ -244,7 +272,8 @@ struct TimetableMakeView: View {
         case .midCheck:
             selectedView = .majorCombination
         case .majorCombination:
-            selectedView = .finalTimetable
+            progressPopup = true
+//            selectedView = .finalTimetable
         default:
             break
         }
@@ -267,7 +296,7 @@ struct TimetableMakeView: View {
         case .midCheck:
             return AnyView(MidCheckView(selectedValues: selectedValues))
         case .majorCombination:
-            return AnyView(MajorCombSelectorView(viewModel: majorCombViewModel))
+            return AnyView(MajorCombSelectorView(viewModel: selectedValues))
         case .finalTimetable:
             return AnyView(FinalTimetableSelectorView(showingPopup: $finalSelectPopup))
         }

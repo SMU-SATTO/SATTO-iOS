@@ -46,6 +46,7 @@ struct TimetableProgressView: View {
                 }
             Text("수뭉이 시간표 짜는중...")
                 .font(.sb12)
+                .foregroundStyle(.white)
         }
     }
     
