@@ -19,7 +19,7 @@ struct ContentView: View {
                     Image(selectedTab == Tab.home ? "home.fill" : "home")
                     Text("홈")
                 }.tag(Tab.home)
-                TimetableMainView(stackPath: $stackPath).tabItem {
+                TimetableMainView().tabItem {
                     Image(selectedTab == Tab.timeTable ? "timeTable.fill" : "timeTable")
                     Text("시간표")
                 }.tag(Tab.timeTable)
@@ -51,14 +51,14 @@ struct ContentView: View {
 //                    SearchView(stackPath: $stackPath, TextFieldPlacehold: "팔로잉 목록")
 //                case .friend:
 //                    FriendView(stackPath: $stackPath)
-                case .timetableMake:
-                    TimetableMakeView(stackPath: $stackPath)
-                case .timetableMenu:
-                    TimetableMenuView(stackPath: $stackPath)
-                case .timetableOption:
-                    TimetableOptionView(stackPath: $stackPath)
-                case .timetableCustom:
-                    TimetableCustom(stackPath: $stackPath)
+//                case .timetableMake:
+//                    TimetableMakeView(stackPath: $stackPath)
+//                case .timetableMenu:
+//                    TimetableMenuView(stackPath: $stackPath)
+//                case .timetableOption:
+//                    TimetableOptionView(stackPath: $stackPath)
+//                case .timetableCustom:
+//                    TimetableCustom(stackPath: $stackPath)
 //                case .event:
 //                    EventView(stackPath: $stackPath)
 //                case .progressEvent:
@@ -78,10 +78,10 @@ enum Route: Hashable {
 //    case followerSearch
 //    case followingSearch
 //    case friend
-    case timetableMake
-    case timetableMenu
-    case timetableOption
-    case timetableCustom
+//    case timetableMake
+//    case timetableMenu
+//    case timetableOption
+//    case timetableCustom
 //    case event
 //    case progressEvent
 //    case announcementEvent

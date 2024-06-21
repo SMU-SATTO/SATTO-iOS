@@ -91,7 +91,6 @@ struct MidCheckView: View {
 struct MidCheckPopupView: View {
     @Binding var midCheckPopup: Bool
     let navigateForward: () -> Void
-    let majorCombViewModel: MajorCombViewModel
     let selectedValues: SelectedValues
     
     var body: some View {
@@ -111,7 +110,7 @@ struct MidCheckPopupView: View {
                         Button(action: {
                             navigateForward()
                             midCheckPopup = false
-                            majorCombViewModel.fetchMajorCombinations(GPA: selectedValues.credit, requiredLect: selectedValues.selectedSubjects, majorCount: selectedValues.majorNum, cyberCount: selectedValues.ELearnNum, impossibleTimeZone: selectedValues.selectedTimes)
+                            selectedValues.fetchMajorCombinations(GPA: selectedValues.credit, requiredLect: selectedValues.selectedSubjects, majorCount: selectedValues.majorNum, cyberCount: selectedValues.ELearnNum, impossibleTimeZone: selectedValues.selectedTimes)
                         }) {
                             Text("시간표 생성하러 가기")
                                 .font(.sb14)

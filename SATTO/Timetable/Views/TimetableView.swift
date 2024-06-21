@@ -11,6 +11,9 @@ import JHTimeTable
 struct TimetableView: View {
     let timetableBaseArray: [SubjectModelBase]
     
+    let colors: [Color] = [.lectureRed, .lectureBlue, .lectureMint, .lecturePink, .lectureGreen, .lectureOrange, .lecturePurple, .lectureYellow, .lectureSkyblue]
+    @State private var usedColorIndices: Set<Int> = []
+        
     var body: some View {
         JHLectureTable {
             ForEach(convertToLectureModels(from: timetableBaseArray)) { lecture in
@@ -39,13 +42,29 @@ struct TimetableView: View {
         .frame(maxWidth: 350, maxHeight: 500)
     }
     
-    private func convertToLectureModels(from timetableBaseArray: [SubjectModelBase]) -> [LectureModel] {
-        return timetableBaseArray.flatMap { convertToLectureModels(from: $0) }
+    private func getRandomColor(usedColorIndices: inout Set<Int>) -> Color {
+        if usedColorIndices.count == colors.count {
+            return .black
+        } else {
+            var index: Int
+            repeat {
+                index = Int.random(in: 0..<colors.count)
+            } while usedColorIndices.contains(index)
+            
+            usedColorIndices.insert(index)
+            return colors[index]
+        }
     }
     
-    private func convertToLectureModels(from timetableBase: SubjectModelBase) -> [LectureModel] {
+    private func convertToLectureModels(from timetableBaseArray: [SubjectModelBase]) -> [LectureModel] {
+        var usedColorIndices: Set<Int> = []
+        return timetableBaseArray.flatMap { convertToLectureModels(from: $0, usedColorIndices: &usedColorIndices) }
+    }
+    
+    private func convertToLectureModels(from timetableBase: SubjectModelBase, usedColorIndices: inout Set<Int>) -> [LectureModel] {
         let components = timetableBase.time.components(separatedBy: " ")
-        let color = ColorSelectionManager().randomColor()
+        let color = getRandomColor(usedColorIndices: &usedColorIndices)
+        
         let lectureModels = components.compactMap { component -> LectureModel? in
             guard let week = week(for: component), let startTime = parseTime(from: component) else { return nil }
             let endTime = LectureTableTime(hour: startTime.hour + 1, minute: startTime.minute)

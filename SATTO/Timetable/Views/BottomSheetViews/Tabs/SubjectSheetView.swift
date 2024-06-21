@@ -225,7 +225,7 @@ struct SubjectSheetView: View {
         .frame(height: 60)
         .background(
             RoundedRectangle(cornerRadius: 6)
-                .foregroundStyle(Color.subjectCardBackground)
+                .foregroundStyle(Color.subjectItemBackground)
                 .frame(height: 25)
                 .padding(EdgeInsets(top: 0, leading: -5, bottom: 0, trailing: -5))
         )
@@ -306,5 +306,5 @@ struct SubjectSheetView: View {
 
 #Preview {
     SubjectSheetView(subjectViewModel: SubjectViewModel(), selectedValues: SelectedValues(), showResultAction: {})
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
 }

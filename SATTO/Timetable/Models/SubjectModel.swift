@@ -10,7 +10,6 @@ import JHTimeTable
 
 struct MajorCombModel: Codable {
     let lec: [String]
-    let combCount: Int
 }
 
 protocol SubjectModelBase: Codable {

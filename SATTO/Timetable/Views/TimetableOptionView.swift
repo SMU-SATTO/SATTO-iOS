@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TimetableOptionView: View {
-    @Binding var stackPath: [Route]
+    @Binding var stackPath: [TimetableRoute]
     
     @State private var isAutoSelected = false
     @State private var isCustomSelected = false
@@ -33,10 +33,10 @@ struct TimetableOptionView: View {
                     }
                     Button(action: {
                         if isAutoSelected {
-                            stackPath.append(Route.timetableMake)
+                            stackPath.append(TimetableRoute.timetableMake)
                         }
                         else if isCustomSelected {
-                            stackPath.append(Route.timetableCustom)
+                            stackPath.append(TimetableRoute.timetableCustom)
                         }
                     }) {
                         RoundedRectangle(cornerRadius: 10)
