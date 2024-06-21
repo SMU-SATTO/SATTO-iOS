@@ -16,6 +16,12 @@
 		3B742B5A2BB687D60000399F /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B742B592BB687D60000399F /* SearchView.swift */; };
 		3B742B7C2BBE7C570000399F /* CompareTimeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B742B7B2BBE7C570000399F /* CompareTimeTableView.swift */; };
 		3B79D5E02C1FE0B6002FE98F /* Asset.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B79D5DF2C1FE0B6002FE98F /* Asset.xcassets */; };
+		3B82D8582C211637008E0138 /* AuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B82D8572C211637008E0138 /* AuthAPI.swift */; };
+		3B82D85A2C211641008E0138 /* AuthVieModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B82D8592C211641008E0138 /* AuthVieModel.swift */; };
+		3B82D8872C2264D6008E0138 /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 3B82D8862C2264D6008E0138 /* SwiftKeychainWrapper */; };
+		3B82D88C2C2268A0008E0138 /* KeyChainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B82D88B2C2268A0008E0138 /* KeyChainManager.swift */; };
+		3B82D8902C227474008E0138 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B82D88F2C227474008E0138 /* Onboarding.swift */; };
+		3B82D8922C23E06F008E0138 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B82D8912C23E06F008E0138 /* UserModel.swift */; };
 		3B8335BD2BEA182D0008EFB5 /* ProgressEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8335BC2BEA182D0008EFB5 /* ProgressEventView.swift */; };
 		3B8335BF2BEA18650008EFB5 /* AnnouncementEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8335BE2BEA18650008EFB5 /* AnnouncementEventView.swift */; };
 		3B8335C12BEA19030008EFB5 /* DetailProgressEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8335C02BEA19030008EFB5 /* DetailProgressEventView.swift */; };
@@ -32,7 +38,6 @@
 		AA1018A62BDE87A1009E6804 /* SubjectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1018A52BDE87A1009E6804 /* SubjectViewModel.swift */; };
 		AA1018A92BDE882C009E6804 /* SubjectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1018A82BDE882C009E6804 /* SubjectModel.swift */; };
 		AA51CDFE2BE3AD87003799CB /* TimetableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA51CDFD2BE3AD87003799CB /* TimetableView.swift */; };
-		AA66001B2C21CD5C0055557C /* secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA66001A2C21CD5C0055557C /* secret.plist */; };
 		AA66001E2C21D6EB0055557C /* TimetableRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA66001D2C21D6EB0055557C /* TimetableRepository.swift */; };
 		AA7752A62C2151EF00778870 /* ChartViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7752A52C2151EF00778870 /* ChartViews.swift */; };
 		AA9E219C2BC81FC800F0566A /* MidCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E219B2BC81FC800F0566A /* MidCheckView.swift */; };
@@ -100,6 +105,11 @@
 		3B742B592BB687D60000399F /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		3B742B7B2BBE7C570000399F /* CompareTimeTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareTimeTableView.swift; sourceTree = "<group>"; };
 		3B79D5DF2C1FE0B6002FE98F /* Asset.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Asset.xcassets; sourceTree = "<group>"; };
+		3B82D8572C211637008E0138 /* AuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAPI.swift; sourceTree = "<group>"; };
+		3B82D8592C211641008E0138 /* AuthVieModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthVieModel.swift; sourceTree = "<group>"; };
+		3B82D88B2C2268A0008E0138 /* KeyChainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainManager.swift; sourceTree = "<group>"; };
+		3B82D88F2C227474008E0138 /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
+		3B82D8912C23E06F008E0138 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		3B8335BC2BEA182D0008EFB5 /* ProgressEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressEventView.swift; sourceTree = "<group>"; };
 		3B8335BE2BEA18650008EFB5 /* AnnouncementEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementEventView.swift; sourceTree = "<group>"; };
 		3B8335C02BEA19030008EFB5 /* DetailProgressEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProgressEventView.swift; sourceTree = "<group>"; };
@@ -117,7 +127,6 @@
 		AA1018A82BDE882C009E6804 /* SubjectModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectModel.swift; sourceTree = "<group>"; };
 		AA1018AA2BDE9C80009E6804 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		AA51CDFD2BE3AD87003799CB /* TimetableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableView.swift; sourceTree = "<group>"; };
-		AA66001A2C21CD5C0055557C /* secret.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = secret.plist; sourceTree = "<group>"; };
 		AA66001D2C21D6EB0055557C /* TimetableRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableRepository.swift; sourceTree = "<group>"; };
 		AA7752A52C2151EF00778870 /* ChartViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViews.swift; sourceTree = "<group>"; };
 		AA9E219B2BC81FC800F0566A /* MidCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidCheckView.swift; sourceTree = "<group>"; };
@@ -164,6 +173,7 @@
 				AA9E802D2B498DB400D51447 /* CombineMoya in Frameworks */,
 				AA9E80332B498DB400D51447 /* RxMoya in Frameworks */,
 				AA9E80312B498DB400D51447 /* ReactiveMoya in Frameworks */,
+				3B82D8872C2264D6008E0138 /* SwiftKeychainWrapper in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -203,12 +213,33 @@
 		3B56A3412C09B7B70034B25B /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				3B82D8552C211601008E0138 /* View */,
+				3B82D8562C21160D008E0138 /* Networking */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		3B82D8552C211601008E0138 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3B82D88F2C227474008E0138 /* Onboarding.swift */,
 				3B56A3422C09B7F40034B25B /* LoginView.swift */,
 				3B56A3462C09B8320034B25B /* AgreeView.swift */,
 				3B56A3482C09B83B0034B25B /* EmailAuthView.swift */,
 				3B56A3502C09B8500034B25B /* SignUpView.swift */,
 			);
-			path = Login;
+			path = View;
+			sourceTree = "<group>";
+		};
+		3B82D8562C21160D008E0138 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				3B82D8572C211637008E0138 /* AuthAPI.swift */,
+				3B82D8592C211641008E0138 /* AuthVieModel.swift */,
+				3B82D88B2C2268A0008E0138 /* KeyChainManager.swift */,
+				3B82D8912C23E06F008E0138 /* UserModel.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 		3BD532282BF06AB900152A77 /* Event */ = {
@@ -444,7 +475,6 @@
 		AACB4BCE2B40712D00169C52 /* SATTO */ = {
 			isa = PBXGroup;
 			children = (
-				AA66001A2C21CD5C0055557C /* secret.plist */,
 				3B56A3412C09B7B70034B25B /* Login */,
 				AA1018AA2BDE9C80009E6804 /* Info.plist */,
 				AACB4BCF2B40712D00169C52 /* SATTOApp.swift */,
@@ -495,6 +525,7 @@
 				AAA950732BA5C484004E16C8 /* JHTimeTable */,
 				AAA9507B2BA5C498004E16C8 /* PopupView */,
 				3B56A3552C09B9F40034B25B /* KeychainSwift */,
+				3B82D8862C2264D6008E0138 /* SwiftKeychainWrapper */,
 			);
 			productName = SATTO;
 			productReference = AACB4BCC2B40712D00169C52 /* SATTO.app */;
@@ -529,6 +560,7 @@
 				AAA950722BA5C484004E16C8 /* XCRemoteSwiftPackageReference "JHTimeTable" */,
 				AAA9507A2BA5C498004E16C8 /* XCRemoteSwiftPackageReference "PopupView" */,
 				3B56A3542C09B9F40034B25B /* XCRemoteSwiftPackageReference "keychain-swift" */,
+				3B82D8852C2264D6008E0138 /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */,
 			);
 			productRefGroup = AACB4BCD2B40712D00169C52 /* Products */;
 			projectDirPath = "";
@@ -546,7 +578,6 @@
 			files = (
 				AACB4BD72B40712F00169C52 /* Preview Assets.xcassets in Resources */,
 				AAA950502BA5C396004E16C8 /* Pretendard-ExtraBold.otf in Resources */,
-				AA66001B2C21CD5C0055557C /* secret.plist in Resources */,
 				AAA950562BA5C396004E16C8 /* Pretendard-Thin.otf in Resources */,
 				AAA9504C2BA5C396004E16C8 /* Color.xcassets in Resources */,
 				AAA950512BA5C396004E16C8 /* Pretendard-ExtraLight.otf in Resources */,
@@ -579,10 +610,13 @@
 				AAA9506A2BA5C39B004E16C8 /* EssentialClassesSelectorView.swift in Sources */,
 				AAA9506F2BA5C39B004E16C8 /* SelectedValues.swift in Sources */,
 				AAA950692BA5C39B004E16C8 /* InvalidTimeSelectorView.swift in Sources */,
+				3B82D8582C211637008E0138 /* AuthAPI.swift in Sources */,
 				AAA9506E2BA5C39B004E16C8 /* TimetableMainView.swift in Sources */,
+				3B82D85A2C211641008E0138 /* AuthVieModel.swift in Sources */,
 				3B742B7C2BBE7C570000399F /* CompareTimeTableView.swift in Sources */,
 				AA51CDFE2BE3AD87003799CB /* TimetableView.swift in Sources */,
 				3BD5322D2BF06AEB00152A77 /* EventViewModel.swift in Sources */,
+				3B82D8922C23E06F008E0138 /* UserModel.swift in Sources */,
 				3B742B5A2BB687D60000399F /* SearchView.swift in Sources */,
 				AA0DFC9A2C0F63E6002ED3C9 /* TimetableRouter.swift in Sources */,
 				AAA950662BA5C39B004E16C8 /* BottomSheetTabView.swift in Sources */,
@@ -592,6 +626,7 @@
 				AA1018A92BDE882C009E6804 /* SubjectModel.swift in Sources */,
 				AA1018A62BDE87A1009E6804 /* SubjectViewModel.swift in Sources */,
 				AAA950672BA5C39B004E16C8 /* MajorCombSelectorView.swift in Sources */,
+				3B82D88C2C2268A0008E0138 /* KeyChainManager.swift in Sources */,
 				AAA950682BA5C39B004E16C8 /* CreditPickerView.swift in Sources */,
 				3BD5322B2BF06ADB00152A77 /* Event.swift in Sources */,
 				3B8335BF2BEA18650008EFB5 /* AnnouncementEventView.swift in Sources */,
@@ -602,6 +637,7 @@
 				AA0DFC6F2C0CEAD7002ED3C9 /* OptionSheetView.swift in Sources */,
 				AA0DFC6D2C0CE660002ED3C9 /* BottomSheetModel.swift in Sources */,
 				AAA950812BA5E7A5004E16C8 /* TimetableOptionView.swift in Sources */,
+				3B82D8902C227474008E0138 /* Onboarding.swift in Sources */,
 				AAA9508B2BA723C2004E16C8 /* TimeSheetView.swift in Sources */,
 				AA0DFC9C2C0F6414002ED3C9 /* SATTONetworking.swift in Sources */,
 				3B8335C32BEA197D0008EFB5 /* UploadImageView.swift in Sources */,
@@ -830,6 +866,14 @@
 				minimumVersion = 24.0.0;
 			};
 		};
+		3B82D8852C2264D6008E0138 /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jrendel/SwiftKeychainWrapper";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.1;
+			};
+		};
 		AA9E802B2B498DB300D51447 /* XCRemoteSwiftPackageReference "Moya" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Moya/Moya";
@@ -861,6 +905,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3B56A3542C09B9F40034B25B /* XCRemoteSwiftPackageReference "keychain-swift" */;
 			productName = KeychainSwift;
+		};
+		3B82D8862C2264D6008E0138 /* SwiftKeychainWrapper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B82D8852C2264D6008E0138 /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */;
+			productName = SwiftKeychainWrapper;
 		};
 		AA9E802C2B498DB400D51447 /* CombineMoya */ = {
 			isa = XCSwiftPackageProductDependency;
