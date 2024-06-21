@@ -31,8 +31,10 @@ final class LoginNavigationPathFinder: ObservableObject {
 struct LoginView: View {
     @EnvironmentObject var navPathFinder: LoginNavigationPathFinder
     
-    @State private var username: String = ""
-    @State private var password: String = ""
+    @State private var studentId: String = "201910914"
+    @State private var password: String = "insungmms57!"
+//    @ObservedObject var vm: AuthVieModel
+    @EnvironmentObject var authViewModel: AuthVieModel
     
     var body: some View {
         NavigationStack(path: $navPathFinder.path) {
@@ -45,7 +47,7 @@ struct LoginView: View {
                     .frame(height: 300)
                 
                 
-                TextField("이메일 주소 입력", text: $username)
+                TextField("이메일 주소 입력", text: $studentId)
                     .modifier(MyTextFieldModifier())
                     .padding(.bottom, 8)
                 
@@ -54,7 +56,7 @@ struct LoginView: View {
                     .padding(.bottom, 68)
                 
                 Button(action: {
-                    
+                    authViewModel.logIn(email: "\(studentId)@sangmyung.kr", password: password)
                 }, label: {
                     Text("로그인")
                         .foregroundStyle(.white)
@@ -94,7 +96,6 @@ struct LoginView: View {
                 }
             }
         }
-        .accentColor(.black)
     }
 }
 

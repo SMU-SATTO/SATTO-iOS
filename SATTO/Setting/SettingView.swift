@@ -11,6 +11,8 @@ struct SettingView: View {
     
     @State private var isOn = true
     
+    @EnvironmentObject var authViewModel: AuthVieModel
+    
     var body: some View {
 
         
@@ -29,7 +31,7 @@ struct SettingView: View {
                         .font(.sb18)
                         .foregroundColor(Color.gray800)
                     
-                    Text("\(" 20201499@sungshin.ac.kr ")")
+                    Text(authViewModel.userInfo2.email ?? "asd")
                         .font(.m14)
                         .foregroundColor(Color.gray600)
                         .padding(.bottom, 14)
@@ -63,8 +65,19 @@ struct SettingView: View {
                             
                             SettingOptionCell(settingImageName: "ask", settingName: "문의하기")
                             SettingOptionCell(settingImageName: "logout", settingName: "현재 버전")
-                            SettingOptionCell(settingImageName: "logout", settingName: "로그아웃")
-                            SettingOptionCell(settingImageName: "delete", settingName: "탈퇴하기")
+                            
+                            Button(action: {
+                                authViewModel.logout()
+                            }, label: {
+                                SettingOptionCell(settingImageName: "logout", settingName: "로그아웃")
+                            })
+                            
+                            Button(action: {
+                                authViewModel.signOut()
+                            }, label: {
+                                SettingOptionCell(settingImageName: "delete", settingName: "탈퇴하기")
+                            })
+                            
                             
                         }
                         .padding(.vertical, 5)
