@@ -10,6 +10,7 @@ import PopupView
 import JHTimeTable
 
 struct TimetableMainView: View {
+    @Environment(\.colorScheme) var colorScheme
     @Binding var stackPath: [Route]
     
     @State private var selectedTab = "이수학점"
@@ -94,16 +95,29 @@ struct TimetableMainView: View {
     }
     
     private var headerView: some View {
-        UnevenRoundedRectangle(bottomLeadingRadius: 20, bottomTrailingRadius: 20)
-            .foregroundStyle(Color.banner)
-            .frame(height: 160)
-            .overlay(
-                ZStack {
-                    headerContent
-                    headerImage
-                }
-            )
+        GeometryReader { geometry in
+            let width = geometry.size.width
+            let height = min(width * 1920 / 1080, 180)
+            
+            Image(colorScheme == .light ? .smuBannerDay : .smuBannerNight)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: width, height: height, alignment: .bottomTrailing)
+                .clipShape(UnevenRoundedRectangle(
+                    bottomLeadingRadius: 20,
+                    bottomTrailingRadius: 20)
+                )
+                .foregroundStyle(Color.banner)
+                .overlay(
+                    ZStack {
+                        headerContent
+                    }
+                )
+                .clipped()
+        }
+        .frame(height: 180)
     }
+
     
     private var headerContent: some View {
         VStack(alignment: .leading, spacing: 15) {
@@ -126,6 +140,8 @@ struct TimetableMainView: View {
         VStack(alignment: .leading, spacing: 3) {
             Text("2024년 2학기 시간표가 업로드됐어요!")
                 .font(.b16)
+                .shadow(color: colorScheme == .light ? .white : .black, radius: 1, x: 1, y: 1)
+                .shadow(color: colorScheme == .light ? .white : .black, radius: 1, x: -1, y: -1)
             Text("\(username)님을 위한 시간표를 만들어 드릴게요.")
                 .font(.m12)
                 .foregroundStyle(Color.bannerText)
@@ -146,20 +162,6 @@ struct TimetableMainView: View {
                 )
         }
         .padding(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15))
-    }
-    
-    private var headerImage: some View {
-        GeometryReader { geometry in
-            HStack {
-                Spacer()
-                Image("")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: geometry.size.width * 0.35)
-                    .frame(height: geometry.size.height * 1.0)
-                    .padding(.trailing, 5)
-            }
-        }
     }
     
     private var tabContentView: some View {
@@ -363,5 +365,5 @@ struct PieChartView: View {
 
 #Preview {
     TimetableMainView(stackPath: .constant([.timetableMake]))
-        .preferredColorScheme(.light)
+        .preferredColorScheme(.dark)
 }
