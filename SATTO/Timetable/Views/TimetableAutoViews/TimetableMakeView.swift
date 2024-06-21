@@ -12,7 +12,7 @@ struct TimetableMakeView: View {
         case creditPicker, essentialClasses, invalidTime, midCheck, majorCombination, finalTimetable
     }
 
-    @Binding var stackPath: [Route]
+    @Binding var stackPath: [TimetableRoute]
     
     @StateObject var subjectViewModel = SubjectViewModel()
     @StateObject var selectedValues = SelectedValues()

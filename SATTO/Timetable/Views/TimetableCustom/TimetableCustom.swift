@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TimetableCustom: View {
-    @Binding var stackPath: [Route]
+    @Binding var stackPath: [TimetableRoute]
     
     @StateObject var subjectViewModel = SubjectViewModel()
     @StateObject var selectedValues = SelectedValues()

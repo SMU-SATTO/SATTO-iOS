@@ -9,9 +9,32 @@ import SwiftUI
 import PopupView
 import JHTimeTable
 
+enum TimetableRoute: Hashable {
+    case timetableMake
+    case timetableMenu
+    case timetableOption
+    case timetableCustom
+}
+
+final class TimetablePathFinder: ObservableObject {
+    static let shared = TimetablePathFinder()
+    private init() { }
+    
+    @Published var path: [TimetableRoute] = []
+    
+    func addPath(route: TimetableRoute) {
+        path.append(route)
+    }
+    
+    func popToRoot() {
+        path = .init()
+    }
+}
+
+
 struct TimetableMainView: View {
     @Environment(\.colorScheme) var colorScheme
-    @Binding var stackPath: [Route]
+    @State var stackPath = [TimetableRoute]()
     
     @State private var selectedTab = "이수학점"
     @State private var currSelectedOption = "총 이수학점"
@@ -31,67 +54,82 @@ struct TimetableMainView: View {
     @State var totalCredit: Double = 130       //전체 학점
     
     var body: some View {
-        ZStack {
-            Color.backgroundDefault
-                .ignoresSafeArea(.all)
-            ScrollView {
-                VStack {
-                    headerView
-                    tabContentView
-                    Spacer()
+        NavigationStack(path: $stackPath){
+            ZStack {
+                Color.backgroundDefault
+                    .ignoresSafeArea(.all)
+                ScrollView {
+                    VStack {
+                        headerView
+                        tabContentView
+                        Spacer()
+                    }
+                }
+            }
+            .sheet(isPresented: $bottomSheetPresented, content: {
+                ZStack {
+                    UnevenRoundedRectangle(cornerRadii: .init(topLeading: 20, topTrailing: 20))
+                        .foregroundStyle(Color.popupBackground)
+                    VStack(spacing: 15) {
+                        HStack {
+                            Button(action: {
+                                
+                            }) {
+                                HStack {
+                                    Image(systemName: "pencil")
+                                    Text("이름 변경")
+                                        .font(.sb16)
+                                }
+                            }
+                            .foregroundStyle(.blackWhite200)
+                            Spacer()
+                        }
+                        HStack {
+                            Button(action: {
+                                
+                            }) {
+                                HStack {
+                                    Image(systemName: "lock")
+                                    Text("공개 범위 변경")
+                                        .font(.sb16)
+                                }
+                            }
+                            .foregroundStyle(.blackWhite200)
+                            Spacer()
+                        }
+                        HStack {
+                            Button(action: {
+                                
+                            }) {
+                                HStack {
+                                    Image(systemName: "trash")
+                                    Text("삭제")
+                                        .font(.sb16)
+                                    
+                                }
+                            }
+                            .foregroundStyle(.blackWhite200)
+                            Spacer()
+                        }
+                    }
+                    .padding(.leading, 30)
+                }
+                .presentationDetents([.height(150)])
+            })
+            .navigationDestination(for: TimetableRoute.self) { route in
+                switch route {
+                case .timetableMake:
+                    TimetableMakeView(stackPath: $stackPath)
+                case .timetableMenu:
+                    TimetableMenuView(stackPath: $stackPath)
+                case .timetableOption:
+                    TimetableOptionView(stackPath: $stackPath)
+                case .timetableCustom:
+                    TimetableCustom(stackPath: $stackPath)
                 }
             }
         }
-        .sheet(isPresented: $bottomSheetPresented, content: {
-            ZStack {
-                UnevenRoundedRectangle(cornerRadii: .init(topLeading: 20, topTrailing: 20))
-                    .foregroundStyle(Color.popupBackground)
-                VStack(spacing: 15) {
-                    HStack {
-                        Button(action: {
-                            
-                        }) {
-                            HStack {
-                                Image(systemName: "pencil")
-                                Text("이름 변경")
-                                    .font(.sb16)
-                            }
-                        }
-                        .foregroundStyle(.blackWhite200)
-                        Spacer()
-                    }
-                    HStack {
-                        Button(action: {
-                            
-                        }) {
-                            HStack {
-                                Image(systemName: "lock")
-                                Text("공개 범위 변경")
-                                    .font(.sb16)
-                            }
-                        }
-                        .foregroundStyle(.blackWhite200)
-                        Spacer()
-                    }
-                    HStack {
-                        Button(action: {
-                            
-                        }) {
-                            HStack {
-                                Image(systemName: "trash")
-                                Text("삭제")
-                                    .font(.sb16)
-                             
-                            }
-                        }
-                        .foregroundStyle(.blackWhite200)
-                        Spacer()
-                    }
-                }
-                .padding(.leading, 30)
-            }
-            .presentationDetents([.height(150)])
-        })
+        
     }
     
     private var headerView: some View {
@@ -150,7 +188,7 @@ struct TimetableMainView: View {
     
     private var createTimetableButton: some View {
         Button(action: {
-            stackPath.append(Route.timetableOption)
+            stackPath.append(TimetableRoute.timetableOption)
         }) {
             Text("시간표 만들기 ->")
                 .font(.sb12)
@@ -188,7 +226,7 @@ struct TimetableMainView: View {
                         .foregroundStyle(Color.blackWhite)
                 }
                 Button(action: {
-                    stackPath.append(Route.timetableMenu)
+                    stackPath.append(TimetableRoute.timetableMenu)
                 }) {
                     Image(systemName: "ellipsis")
                         .foregroundStyle(Color.blackWhite)
@@ -364,6 +402,6 @@ struct PieChartView: View {
 }
 
 #Preview {
-    TimetableMainView(stackPath: .constant([.timetableMake]))
+    TimetableMainView(stackPath: [.timetableCustom])
         .preferredColorScheme(.dark)
 }
