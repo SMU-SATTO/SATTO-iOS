@@ -35,3 +35,52 @@ struct FinalTimetableDto: Decodable {
     let category: String
 }
 
+struct TimetableListResponseDto: Decodable {
+    let code: Int
+    let isSuccess: Bool
+    let message: String
+    let result: [TimetableListDto]
+}
+
+//MARK: - Dummy
+extension TimetableListResponseDto {
+    static var dummyData: TimetableListResponseDto {
+        TimetableListResponseDto(
+            code: 200,
+            isSuccess: true,
+            message: "Success",
+            result: [
+                TimetableListDto(id: 1, semesterYear: "2024년 1학기", timetableName: "시간표 1"),
+                TimetableListDto(id: 1, semesterYear: "2024년 1학기", timetableName: "시간표 7"),
+                TimetableListDto(id: 2, semesterYear: "2023년 2학기", timetableName: "시간표 2"),
+                TimetableListDto(id: 3, semesterYear: "2023년 1학기", timetableName: "시간표 3")
+            ]
+        )
+    }
+}
+
+struct TimetableListDto: Decodable {
+    let id: Int
+    let semesterYear: String
+    let timetableName: String
+}
+
+struct UserTimetableResponseDto: Decodable {
+    let code: Int
+    let isSuccess: Bool
+    let message: String
+    let result: UserTimetableDto
+}
+
+struct UserTimetableDto: Decodable {
+    let lects: [LectDto]
+    let semesterYear, timeTableName: String
+    let isPublic, isRepresented: Bool
+}
+
+struct LectDto: Codable {
+    let department, code, lectName, professor: String
+    let lectTime, cmpDiv: String
+    let subjectType: String
+    let credit: Int
+}

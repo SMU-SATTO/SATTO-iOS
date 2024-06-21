@@ -11,6 +11,8 @@ import Moya
 enum TimetableRouter {
     case postMajorComb(GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String)
     case postFinalTimetableList(GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [[String]])
+    case getTimetableList
+    case getUserTimetable(id: Int)
 }
 
 extension TimetableRouter: TargetType {
@@ -38,6 +40,10 @@ extension TimetableRouter: TargetType {
             return "/timetable"
         case .postFinalTimetableList:
             return "/timetable/auto"
+        case .getTimetableList:
+            return "/timetable/list"
+        case .getUserTimetable:
+            return "/timetable/"
         }
     }
     
@@ -47,6 +53,10 @@ extension TimetableRouter: TargetType {
             return .post
         case .postFinalTimetableList:
             return .post
+        case .getTimetableList:
+            return .get
+        case .getUserTimetable:
+            return .get
         }
     }
     var task: Task {
@@ -68,6 +78,12 @@ extension TimetableRouter: TargetType {
                 "impossibleTimeZone": impossibleTimeZone,
                 "majorList": majorList
             ], encoding: JSONEncoding.prettyPrinted)
+        case .getTimetableList:
+            return .requestPlain
+        case .getUserTimetable(let id):
+            return .requestParameters(parameters: [
+                "id": id
+            ], encoding: URLEncoding.queryString)
         }
     }
     

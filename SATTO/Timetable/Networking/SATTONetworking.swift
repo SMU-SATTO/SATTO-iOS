@@ -10,6 +10,10 @@ import Moya
 
 //TODO: async await 공부
 class SATTONetworking {
+    static let shared = SATTONetworking()
+    
+    private init() {}
+    
     let provider = MoyaProvider<TimetableRouter>()
     
     func postMajorComb(GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, completion: @escaping (Result<MajorCombResponseDto, Error>) -> Void) {
@@ -38,7 +42,39 @@ class SATTONetworking {
                 } catch {
                     completion(.failure(error))
                 }
-            case.failure(let error):
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func getTimetableList(completion: @escaping(Result<TimetableListResponseDto, Error>) -> Void) {
+        provider.request(.getTimetableList) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let timetableListResponse = try response.map(TimetableListResponseDto.self)
+                    completion(.success(timetableListResponse))
+                } catch {
+                    completion(.failure(error))
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func getUserTimetable(id: Int, completion: @escaping(Result<UserTimetableResponseDto, Error>) -> Void) {
+        provider.request(.getUserTimetable(id: id)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let userTimetableResponse = try response.map(UserTimetableResponseDto.self)
+                    completion(.success(userTimetableResponse))
+                } catch {
+                    completion(.failure(error))
+                }
+            case .failure(let error):
                 completion(.failure(error))
             }
         }

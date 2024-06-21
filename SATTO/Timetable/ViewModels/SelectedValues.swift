@@ -96,11 +96,11 @@ class SelectedValues: TimeSelectorViewModelProtocol {
     }
     
     func fetchMajorCombinations(GPA: Int, requiredLect: [SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String) {
-        repository.postMajorComb(GPA: GPA, requiredLect: requiredLect.map { $0.sbjDivcls }, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: impossibleTimeZone) { result in
+        repository.postMajorComb(GPA: GPA, requiredLect: requiredLect.map { $0.sbjDivcls }, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: impossibleTimeZone) { [weak self] result in
             switch result {
             case .success(let majorCombModels):
                 DispatchQueue.main.async {
-                    self.majorCombinations = [majorCombModels]
+                    self?.majorCombinations = [majorCombModels]
                 }
             case .failure(let error):
                 //TODO: 에러 이유 출력 분기 나눠서 해보기
@@ -110,11 +110,11 @@ class SelectedValues: TimeSelectorViewModelProtocol {
     }
     
     func fetchFinalTimetableList(GPA: Int, requiredLect: [SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [[String]]) {
-        repository.postFinalTimetableList(GPA: GPA, requiredLect: requiredLect.map { $0.sbjDivcls }, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: impossibleTimeZone, majorList: majorList) { result in
+        repository.postFinalTimetableList(GPA: GPA, requiredLect: requiredLect.map { $0.sbjDivcls }, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: impossibleTimeZone, majorList: majorList) { [weak self] result in
             switch result {
             case .success(let finalTimetableList):
                 DispatchQueue.main.async {
-                    self.timetableList = [finalTimetableList]
+                    self?.timetableList = [finalTimetableList]
                 }
             case .failure(let error):
                 print("SATTO ERROR!: \(error)")

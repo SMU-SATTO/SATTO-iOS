@@ -1,5 +1,5 @@
 //
-//  TimetableMenuView.swift
+//  TimetableListView.swift
 //  SATTO
 //
 //  Created by 김영준 on 3/15/24.
@@ -7,18 +7,25 @@
 
 import SwiftUI
 
-struct TimetableMenuView: View {
+struct TimetableListView: View {
     @Environment(\.colorScheme) var colorScheme
     @Binding var stackPath: [TimetableRoute]
+    
+    @StateObject private var viewModel = TimetableListViewModel()
+    
+    @Binding var selectedId: Int
+    
     var body: some View {
         ZStack {
             Color.backgroundDefault
                 .ignoresSafeArea(.all)
             ScrollView {
                 VStack(spacing: 10) {
-                    timetableBlock(headerText: "2024년 1학기", timetableList: ["시간표", "2"])
-                    timetableBlock(headerText: "2023년 2학기", timetableList: ["3", "9", "10"])
-                    timetableBlock(headerText: "2023년 1학기", timetableList: ["4", "6"])
+                    ForEach(viewModel.timetables.keys.sorted(by: >), id: \.self) { semesterYear in
+                        if let timetableList = viewModel.timetables[semesterYear] {
+                            timetableBlock(headerText: semesterYear, timetableList: timetableList)
+                        }
+                    }
                 }
                 .padding(.horizontal, 20)
             }
@@ -35,9 +42,13 @@ struct TimetableMenuView: View {
                 }
             }
         }
+        .onAppear() {
+            //MARK: - Dummy
+            viewModel.fetchTimetableListDummy()
+        }
     }
     
-    private func timetableBlock(headerText: String, timetableList: [String]) -> some View {
+    private func timetableBlock(headerText: String, timetableList: [(id: Int, name: String)]) -> some View {
         VStack {
             headerView(headerText: headerText)
             contentView(timetableList: timetableList)
@@ -59,15 +70,17 @@ struct TimetableMenuView: View {
         }
     }
     
-    private func contentView(timetableList: [String]) -> some View {
-        VStack(alignment: .leading, spacing: 0) {
-            ForEach(timetableList.indices, id: \.self) { index in
-                let timetableName = timetableList[index]
+    private func contentView(timetableList: [(id: Int, name: String)]) -> some View {
+            VStack(alignment: .leading, spacing: 0) {
+                ForEach(timetableList.indices, id: \.self) { index in
+                    let timetable = timetableList[index]
                 Button(action: {
+                    //TODO: id를 업데이트 main에서 id로 호출만 하고 맨처음은 기본호출일거고, 그 후는 id로 onappear 호출.
+                    selectedId = timetable.id
                     stackPath.removeLast()
                 }) {
                     HStack {
-                        Text(timetableName)
+                        Text(timetable.name)
                             .font(.m18)
                             .foregroundStyle(Color.blackWhite)
                         Spacer()
@@ -86,6 +99,6 @@ struct TimetableMenuView: View {
 }
 
 #Preview {
-    TimetableMenuView(stackPath: .constant([]))
+    TimetableListView(stackPath: .constant([]), selectedId: .constant(0))
         .preferredColorScheme(.light)
 }
