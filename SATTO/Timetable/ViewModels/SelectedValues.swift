@@ -12,13 +12,19 @@ protocol TimeSelectorViewModelProtocol: ObservableObject {
 }
 
 class SelectedValues: TimeSelectorViewModelProtocol {
-    @Published var credit: Int = 6
-    @Published var majorNum: Int = 0
-    @Published var ELearnNum: Int = 0
-//    @Published var essentialSubjects: [SubjectModelBase] = []
-    @Published var selectedSubjects: [SubjectModelBase] = []
-    ///"월1 월2 월3"
-    @Published var selectedTimes: String = ""
+    let repository = TimetableRepository()
+    
+    @Published var credit: Int = 6                           //GPA
+    @Published var majorNum: Int = 0                         //majorcount
+    @Published var ELearnNum: Int = 0                        //cybercount
+    @Published var selectedSubjects: [SubjectModelBase] = [] //requiredLect
+    @Published var selectedTimes: String = ""                //impossibleTimeZone
+    
+    @Published var selectedMajorCombs: [[String]] = []       //majorList
+    
+    @Published var majorCombinations: [[MajorCombModel]] = [] //서버에서 준 과목 조합 이중 배열 리스트
+    
+    @Published var timetableList: [[SubjectModelBase]] = []
     
     func isSelectedSubjectsEmpty() -> Bool {
         return selectedSubjects.isEmpty
@@ -75,10 +81,49 @@ class SelectedValues: TimeSelectorViewModelProtocol {
     private func parseTimes(for subject: SubjectModelBase) -> [String] {
         return subject.time.components(separatedBy: " ")
     }
-    //MARK: - Post 요청
+    
+    func toggleSelection(_ combination: [String]) {
+        if selectedMajorCombs.contains(combination) {
+            selectedMajorCombs.removeAll(where: { $0 == combination })
+        }
+        else {
+            selectedMajorCombs.append(combination)
+        }
+    }
+        
+    func isSelected(_ combination: [String]) -> Bool {
+        return selectedMajorCombs.contains(combination)
+    }
+    
+    func fetchMajorCombinations(GPA: Int, requiredLect: [SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String) {
+        repository.postMajorComb(GPA: GPA, requiredLect: requiredLect.map { $0.sbjDivcls }, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: impossibleTimeZone) { result in
+            switch result {
+            case .success(let majorCombModels):
+                DispatchQueue.main.async {
+                    self.majorCombinations = [majorCombModels]
+                }
+            case .failure(let error):
+                //TODO: 에러 이유 출력 분기 나눠서 해보기
+                print("Error fetching major combinations: \(error)")
+            }
+        }
+    }
+    
+    func fetchFinalTimetableList(GPA: Int, requiredLect: [SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [[String]]) {
+        repository.postFinalTimetableList(GPA: GPA, requiredLect: requiredLect.map { $0.sbjDivcls }, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: impossibleTimeZone, majorList: majorList) { result in
+            switch result {
+            case .success(let finalTimetableList):
+                DispatchQueue.main.async {
+                    self.timetableList = [finalTimetableList]
+                }
+            case .failure(let error):
+                print("SATTO ERROR!: \(error)")
+            }
+        }
+    }
 }
 
-//MARK: - BottomSheetModel로 파싱 필요 및 파싱 과정에서 균형교양 미포함시 resetBGE()
+//TODO: - BottomSheetModel로 파싱 필요 및 파싱 과정에서 균형교양 미포함시 resetBGE()
 final class BottomSheetViewModel: TimeSelectorViewModelProtocol {
     @Published var bottomSheetFilter: BottomSheetModel = BottomSheetModel(
         grade: [1, 2],

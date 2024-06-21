@@ -9,7 +9,8 @@ import Foundation
 import Moya
 
 enum TimetableRouter {
-    case getMajorComb(GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String)
+    case postMajorComb(GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String)
+    case postFinalTimetableList(GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [[String]])
 }
 
 extension TimetableRouter: TargetType {
@@ -33,27 +34,40 @@ extension TimetableRouter: TargetType {
     
     var path: String {
         switch self {
-        case .getMajorComb:
+        case .postMajorComb:
+            return "/timetable"
+        case .postFinalTimetableList:
             return "/timetable/auto"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .getMajorComb:
-            return .get
+        case .postMajorComb:
+            return .post
+        case .postFinalTimetableList:
+            return .post
         }
     }
     var task: Task {
         switch self {
-        case .getMajorComb(let GPA, let requiredLect, let majorCount, let cyberCount, let impossibleTimeZone):
+        case .postMajorComb(let GPA, let requiredLect, let majorCount, let cyberCount, let impossibleTimeZone):
             return .requestParameters(parameters: [
                 "GPA": GPA,
                 "requiredLect": requiredLect,
                 "majorCount": majorCount,
                 "cyberCount": cyberCount,
                 "impossibleTimeZone": impossibleTimeZone
-            ], encoding: URLEncoding.queryString)
+            ], encoding: JSONEncoding.prettyPrinted)
+        case .postFinalTimetableList(let GPA, let requiredLect, let majorCount, let cyberCount, let impossibleTimeZone, let majorList):
+            return .requestParameters(parameters: [
+                "GPA": GPA,
+                "requiredLect": requiredLect,
+                "majorCount": majorCount,
+                "cyberCount": cyberCount,
+                "impossibleTimeZone": impossibleTimeZone,
+                "majorList": majorList
+            ], encoding: JSONEncoding.prettyPrinted)
         }
     }
     

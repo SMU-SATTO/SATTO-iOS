@@ -7,13 +7,36 @@
 
 import SwiftUI
 import PopupView
-import DGCharts
 import JHTimeTable
 
-struct TimetableMainView: View {
-    @Binding var stackPath: [Route]
+enum TimetableRoute: Hashable {
+    case timetableMake
+    case timetableMenu
+    case timetableOption
+    case timetableCustom
+}
+
+final class TimetablePathFinder: ObservableObject {
+    static let shared = TimetablePathFinder()
+    private init() { }
     
-    @State private var selectedTab = "시간표"
+    @Published var path: [TimetableRoute] = []
+    
+    func addPath(route: TimetableRoute) {
+        path.append(route)
+    }
+    
+    func popToRoot() {
+        path = .init()
+    }
+}
+
+
+struct TimetableMainView: View {
+    @Environment(\.colorScheme) var colorScheme
+    @State var stackPath = [TimetableRoute]()
+    
+    @State private var selectedTab = "이수학점"
     @State private var currSelectedOption = "총 이수학점"
     
     @Namespace private var namespace
@@ -22,7 +45,7 @@ struct TimetableMainView: View {
     @State var currSemester = "2024년 2학기"
     @State var timetableName = "시간표"
     
-    @State private var bottomSheetPresented = true
+    @State private var bottomSheetPresented = false
     
     let majorCreditGoals = 72                  //전공 학점 목표
     @State var majorCredit: Double = 60        //전공 학점
@@ -31,80 +54,108 @@ struct TimetableMainView: View {
     @State var totalCredit: Double = 130       //전체 학점
     
     var body: some View {
-        ZStack {
-            Color.backgroundDefault
-                .ignoresSafeArea(.all)
-            ScrollView {
-                VStack {
-                    headerView
-                    tabContentView
-                    Spacer()
+        NavigationStack(path: $stackPath){
+            ZStack {
+                Color.backgroundDefault
+                    .ignoresSafeArea(.all)
+                ScrollView {
+                    VStack {
+                        headerView
+                        tabContentView
+                        Spacer()
+                    }
+                }
+            }
+            .sheet(isPresented: $bottomSheetPresented, content: {
+                ZStack {
+                    UnevenRoundedRectangle(cornerRadii: .init(topLeading: 20, topTrailing: 20))
+                        .foregroundStyle(Color.popupBackground)
+                    VStack(spacing: 15) {
+                        HStack {
+                            Button(action: {
+                                
+                            }) {
+                                HStack {
+                                    Image(systemName: "pencil")
+                                    Text("이름 변경")
+                                        .font(.sb16)
+                                }
+                            }
+                            .foregroundStyle(.blackWhite200)
+                            Spacer()
+                        }
+                        HStack {
+                            Button(action: {
+                                
+                            }) {
+                                HStack {
+                                    Image(systemName: "lock")
+                                    Text("공개 범위 변경")
+                                        .font(.sb16)
+                                }
+                            }
+                            .foregroundStyle(.blackWhite200)
+                            Spacer()
+                        }
+                        HStack {
+                            Button(action: {
+                                
+                            }) {
+                                HStack {
+                                    Image(systemName: "trash")
+                                    Text("삭제")
+                                        .font(.sb16)
+                                    
+                                }
+                            }
+                            .foregroundStyle(.blackWhite200)
+                            Spacer()
+                        }
+                    }
+                    .padding(.leading, 30)
+                }
+                .presentationDetents([.height(150)])
+            })
+            .navigationDestination(for: TimetableRoute.self) { route in
+                switch route {
+                case .timetableMake:
+                    TimetableMakeView(stackPath: $stackPath)
+                case .timetableMenu:
+                    TimetableMenuView(stackPath: $stackPath)
+                case .timetableOption:
+                    TimetableOptionView(stackPath: $stackPath)
+                case .timetableCustom:
+                    TimetableCustom(stackPath: $stackPath)
                 }
             }
         }
-        .sheet(isPresented: $bottomSheetPresented, content: {
-            ZStack {
-                UnevenRoundedRectangle(cornerRadii: .init(topLeading: 20, topTrailing: 20))
-                    .foregroundStyle(Color.popupBackground)
-                VStack(spacing: 15) {
-                    HStack {
-                        Button(action: {
-                            
-                        }) {
-                            HStack {
-                                Image(systemName: "pencil")
-                                Text("이름 변경")
-                                    .font(.sb16)
-                            }
-                        }
-                        .foregroundStyle(.blackWhite200)
-                        Spacer()
-                    }
-                    HStack {
-                        Button(action: {
-                            
-                        }) {
-                            HStack {
-                                Image(systemName: "lock")
-                                Text("공개 범위 변경")
-                                    .font(.sb16)
-                            }
-                        }
-                        .foregroundStyle(.blackWhite200)
-                        Spacer()
-                    }
-                    HStack {
-                        Button(action: {
-                            
-                        }) {
-                            HStack {
-                                Image(systemName: "trash")
-                                Text("삭제")
-                                    .font(.sb16)
-                             
-                            }
-                        }
-                        .foregroundStyle(.blackWhite200)
-                        Spacer()
-                    }
-                }
-                .padding(.leading, 30)
-            }
-            .presentationDetents([.height(150)])
-        })
+        
     }
     
     private var headerView: some View {
-        UnevenRoundedRectangle(bottomLeadingRadius: 20, bottomTrailingRadius: 20)
-            .foregroundStyle(Color.banner)
-            .frame(height: 160)
-            .overlay(
-                ZStack {
-                    headerContent
-                    headerImage
-                }
-            )
+        GeometryReader { geometry in
+            let width = geometry.size.width
+            let height = min(width * 1920 / 1080, 180)
+            
+            Image(colorScheme == .light ? .smuBannerDay : .smuBannerNight)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: width, height: height, alignment: .bottomTrailing)
+                .clipShape(UnevenRoundedRectangle(
+                    bottomLeadingRadius: 20,
+                    bottomTrailingRadius: 20)
+                )
+                .foregroundStyle(Color.banner)
+                .overlay(
+                    ZStack {
+                        headerContent
+                    }
+                )
+                .clipped()
+        }
+        .frame(height: 180)
     }
+
     
     private var headerContent: some View {
         VStack(alignment: .leading, spacing: 15) {
@@ -127,6 +178,8 @@ struct TimetableMainView: View {
         VStack(alignment: .leading, spacing: 3) {
             Text("2024년 2학기 시간표가 업로드됐어요!")
                 .font(.b16)
+                .shadow(color: colorScheme == .light ? .white : .black, radius: 1, x: 1, y: 1)
+                .shadow(color: colorScheme == .light ? .white : .black, radius: 1, x: -1, y: -1)
             Text("\(username)님을 위한 시간표를 만들어 드릴게요.")
                 .font(.m12)
                 .foregroundStyle(Color.bannerText)
@@ -135,7 +188,7 @@ struct TimetableMainView: View {
     
     private var createTimetableButton: some View {
         Button(action: {
-            stackPath.append(Route.timetableOption)
+            stackPath.append(TimetableRoute.timetableOption)
         }) {
             Text("시간표 만들기 ->")
                 .font(.sb12)
@@ -147,20 +200,6 @@ struct TimetableMainView: View {
                 )
         }
         .padding(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15))
-    }
-    
-    private var headerImage: some View {
-        GeometryReader { geometry in
-            HStack {
-                Spacer()
-                Image("")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: geometry.size.width * 0.35)
-                    .frame(height: geometry.size.height * 1.0)
-                    .padding(.trailing, 5)
-            }
-        }
     }
     
     private var tabContentView: some View {
@@ -187,7 +226,7 @@ struct TimetableMainView: View {
                         .foregroundStyle(Color.blackWhite)
                 }
                 Button(action: {
-                    stackPath.append(Route.timetableMenu)
+                    stackPath.append(TimetableRoute.timetableMenu)
                 }) {
                     Image(systemName: "ellipsis")
                         .foregroundStyle(Color.blackWhite)
@@ -237,8 +276,16 @@ struct TimetableMainView: View {
                 }
                 .padding(.top, 10)
                 
-                GraduationRequirementsRadarView(entries: ChartTransaction.allTransactions.map { RadarChartDataEntry(value: $0.quantity) })
-                    .frame(width: 300, height: 300)
+                RadarChartView(data: [
+                    (name: "전공선택", value: 60),
+                    (name: "전공심화", value: 70),
+                    (name: "교양", value: 50),
+                    (name: "기초교양", value: 90),
+                    (name: "상명핵심역량교양", value: 85),
+                    (name: "균형교양", value: 75)
+                ])
+                .padding(.horizontal, 60)
+                .padding(.vertical, -20)
                 
                 Text("졸업까지 18학점이 남았어요!")
                     .font(.sb14)
@@ -355,8 +402,6 @@ struct PieChartView: View {
 }
 
 #Preview {
-    TimetableMainView(stackPath: .constant([.timetableMake]))
+    TimetableMainView(stackPath: [.timetableCustom])
         .preferredColorScheme(.dark)
 }
-
-
