@@ -11,8 +11,8 @@ import SwiftUI
 struct SATTOApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(NavigationPathFinder.shared)
+            Onboarding()
+                .environmentObject(AuthVieModel())
         }
     }
 }
