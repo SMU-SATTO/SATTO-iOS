@@ -114,27 +114,30 @@ struct SignUpView: View {
                 Text("계정 공개 / 비공개")
                 
                 HStack(spacing: 10) {
-                    Text("공개")
-                        .padding(.vertical, 16)
-                        .padding(.horizontal, 20)
-                        .background(Color(red: 0.98, green: 0.98, blue: 0.98))
-                        .cornerRadius(20)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 20)
-                                .stroke(Color(red: 0.91, green: 0.92, blue: 0.93), lineWidth: 1)
-                            
-                        )
                     
-                    Text("비공개")
-                        .padding(.vertical, 16)
-                        .padding(.horizontal, 20)
-                        .background(Color(red: 0.98, green: 0.98, blue: 0.98))
-                        .cornerRadius(20)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 20)
-                                .stroke(Color(red: 0.91, green: 0.92, blue: 0.93), lineWidth: 1)
-                            
-                        )
+                    Button(action: {
+                        isPublic = true
+                    }, label: {
+                        Text("공개")
+                            .modifier(MyTextFieldModifier())
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 20)
+                                    .stroke(isPublic ? Color.blue : Color(red: 0.91, green: 0.92, blue: 0.93), lineWidth: 1)
+                                
+                            )
+                    })
+                    
+                    Button(action: {
+                        isPublic = false
+                    }, label: {
+                        Text("비공개")
+                            .modifier(MyTextFieldModifier())
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 20)
+                                    .stroke(!isPublic ? Color.blue : Color(red: 0.91, green: 0.92, blue: 0.93), lineWidth: 1)
+                                
+                            )
+                    })
                 }
                 
                 Button(action: {
@@ -164,7 +167,7 @@ struct SignUpView: View {
                         .font(.headline)
                         .frame(width: 365, height: 50)
                         .background(Color.gray)
-                        .cornerRadius(10)
+                        .cornerRadius(20)
                 }
                 .padding(.bottom, 10)
             }

@@ -32,7 +32,7 @@ class AuthVieModel: ObservableObject {
         self.user = User(studentId: "asd", password: "asd", name: "asd", nickname: "asd", department: "asd", grade: 3, isPublic: true)
     }
     
-    func checkEemailDuplicate(studentId: String) {
+    func checkEmailDuplicate(studentId: String) {
             provider.request(.checkEemailDuplicate(studentId: studentId)) { result in
                 switch result {
                 case .success(let response):
