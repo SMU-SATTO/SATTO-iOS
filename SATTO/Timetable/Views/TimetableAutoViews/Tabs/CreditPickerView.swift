@@ -34,7 +34,7 @@ struct CreditPickerView: View {
                     Text("이번 학기에 들을 ")
                     Text(title)
                         .foregroundStyle(Color.accentText)
-                    Text("을 선택해 주세요.")
+                    Text(title == "학점" ? "을 선택해 주세요." : "를 선택해 주세요.")
                     Spacer()
                 }
                 .font(.sb16)

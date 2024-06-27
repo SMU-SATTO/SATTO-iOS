@@ -8,8 +8,8 @@
 import SwiftUI
 import JHTimeTable
 
-struct MajorCombModel: Codable {
-    let lec: [String]
+struct MajorCombModel {
+    let combinations: [(lec: String, code: String)]
 }
 
 protocol SubjectModelBase: Codable {

@@ -14,29 +14,37 @@ struct MajorCombResponseDto: Decodable {
 }
 
 struct MajorCombDto: Decodable {
-    let combination: [String]
+    let combination: [Combination]
 }
 
+struct Combination: Decodable {
+    let lectName, code: String
+}
+
+//MARK: - TimetableAutoResponse
 struct FinalTimetableListResponseDto: Decodable {
-    let code: Int
-    let result: String
-    let message: String
-    let data: [FinalTimetableListDto]
+    let isSuccess: Bool
+    let code, message: String
+    let result: [FinalTimetableListDto]
 }
 
 struct FinalTimetableListDto: Decodable {
     let timetable: [FinalTimetableDto]
+    let totalTime: String
 }
 
 struct FinalTimetableDto: Decodable {
-    let sbjNo, sbjDivcls: String
-    let sbjName: String
-    let time: String
-    let category: String
+    let department: String
+    let code, codeSection, lectName, professor: String
+    let lectTime: String
+    let cmpDiv: String
+    let subjectType: String?
+    let credit: Int
 }
 
+//MARK: - TimetableListResponse
 struct TimetableListResponseDto: Decodable {
-    let code: Int
+    let code: String
     let isSuccess: Bool
     let message: String
     let result: [TimetableListDto]
@@ -46,7 +54,7 @@ struct TimetableListResponseDto: Decodable {
 extension TimetableListResponseDto {
     static var dummyData: TimetableListResponseDto {
         TimetableListResponseDto(
-            code: 200,
+            code: "COMMON200",
             isSuccess: true,
             message: "Success",
             result: [
@@ -83,4 +91,29 @@ struct LectDto: Codable {
     let lectTime, cmpDiv: String
     let subjectType: String
     let credit: Int
+}
+
+class JSONNull: Codable, Hashable {
+
+    public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
+            return true
+    }
+
+    public var hashValue: Int {
+            return 0
+    }
+
+    public init() {}
+
+    public required init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            if !container.decodeNil() {
+                    throw DecodingError.typeMismatch(JSONNull.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
+            }
+    }
+
+    public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+            try container.encodeNil()
+    }
 }

@@ -14,8 +14,8 @@ protocol TimeSelectorViewModelProtocol: ObservableObject {
 class SelectedValues: TimeSelectorViewModelProtocol {
     let repository = TimetableRepository()
     
-    @Published var credit: Int = 6                           //GPA
-    @Published var majorNum: Int = 0                         //majorcount
+    @Published var credit: Int = 18                           //GPA
+    @Published var majorNum: Int = 3                         //majorcount
     @Published var ELearnNum: Int = 0                        //cybercount
     @Published var selectedSubjects: [SubjectModelBase] = [] //requiredLect
     @Published var selectedTimes: String = ""                //impossibleTimeZone
@@ -35,7 +35,7 @@ class SelectedValues: TimeSelectorViewModelProtocol {
             selectedSubjects.append(subject)
         }
     }
-        
+    
     func removeSubject(_ subject: SubjectModelBase) {
         if let index = selectedSubjects.firstIndex(where: { $0.sbjDivcls == subject.sbjDivcls }) {
             selectedSubjects.remove(at: index)
@@ -52,7 +52,7 @@ class SelectedValues: TimeSelectorViewModelProtocol {
         }
         return false
     }
-
+    
     func isSelected(subject: SubjectModelBase) -> Bool {
         return selectedSubjects.contains(where: { $0.sbjDivcls == subject.sbjDivcls })
     }
@@ -90,35 +90,40 @@ class SelectedValues: TimeSelectorViewModelProtocol {
             selectedMajorCombs.append(combination)
         }
     }
-        
+    
     func isSelected(_ combination: [String]) -> Bool {
         return selectedMajorCombs.contains(combination)
     }
     
     func fetchMajorCombinations(GPA: Int, requiredLect: [SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String) {
-        repository.postMajorComb(GPA: GPA, requiredLect: requiredLect.map { $0.sbjDivcls }, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: impossibleTimeZone) { [weak self] result in
+        let requiredLectStrings = requiredLect.map { $0.sbjDivcls }
+        let adjustedRequiredLect = requiredLectStrings.isEmpty ? [""] : requiredLectStrings
+        repository.postMajorComb(GPA: GPA, requiredLect: adjustedRequiredLect, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: impossibleTimeZone) { [weak self] result in
             switch result {
             case .success(let majorCombModels):
                 DispatchQueue.main.async {
                     self?.majorCombinations = [majorCombModels]
                 }
             case .failure(let error):
-                //TODO: 에러 이유 출력 분기 나눠서 해보기
                 print("Error fetching major combinations: \(error)")
             }
         }
     }
     
-    func fetchFinalTimetableList(GPA: Int, requiredLect: [SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [[String]]) {
-        repository.postFinalTimetableList(GPA: GPA, requiredLect: requiredLect.map { $0.sbjDivcls }, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: impossibleTimeZone, majorList: majorList) { [weak self] result in
+    func fetchFinalTimetableList(GPA: Int, requiredLect: [SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [[String]], completion: @escaping () -> Void) {
+        let requiredLectStrings = requiredLect.map { $0.sbjDivcls }
+        let adjustedRequiredLect = requiredLectStrings.isEmpty ? [""] : requiredLectStrings
+        let adjustedImpossibleTimeZone = impossibleTimeZone.isEmpty ? "" : impossibleTimeZone
+        repository.postFinalTimetableList(GPA: GPA, requiredLect: adjustedRequiredLect, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: adjustedImpossibleTimeZone, majorList: majorList) { [weak self] result in
             switch result {
             case .success(let finalTimetableList):
                 DispatchQueue.main.async {
                     self?.timetableList = [finalTimetableList]
                 }
             case .failure(let error):
-                print("SATTO ERROR!: \(error)")
+                print("SATTO ERROR!: \(error) \(adjustedImpossibleTimeZone)")
             }
+            completion()
         }
     }
 }

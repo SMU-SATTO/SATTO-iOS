@@ -43,8 +43,9 @@ struct TimetableListView: View {
             }
         }
         .onAppear() {
-            //MARK: - Dummy
-            viewModel.fetchTimetableListDummy()
+            //MARK: API
+            viewModel.fetchTimetableList()
+//            viewModel.fetchTimetableListDummy()
         }
     }
     
@@ -71,9 +72,9 @@ struct TimetableListView: View {
     }
     
     private func contentView(timetableList: [(id: Int, name: String)]) -> some View {
-            VStack(alignment: .leading, spacing: 0) {
-                ForEach(timetableList.indices, id: \.self) { index in
-                    let timetable = timetableList[index]
+        VStack(alignment: .leading, spacing: 0) {
+            ForEach(timetableList.indices, id: \.self) { index in
+                let timetable = timetableList[index]
                 Button(action: {
                     //TODO: id를 업데이트 main에서 id로 호출만 하고 맨처음은 기본호출일거고, 그 후는 id로 onappear 호출.
                     selectedId = timetable.id

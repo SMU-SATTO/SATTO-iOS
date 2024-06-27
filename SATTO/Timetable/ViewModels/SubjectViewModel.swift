@@ -24,8 +24,8 @@ final class SubjectViewModel: ObservableObject {
     
     //    @Published var subjectDetailDataList: [TimetableDetailModel] = []
     @Published var subjectDetailDataList: [SubjectDetailModel] = [
-        SubjectDetailModel(major: "전공", sbjDivcls: "ABC-03", sbjNo: "ABC", sbjName: "과목명", prof: "홍길동", time: "화2 화3 화4", credit: 3, enrollmentCapacity: 100, enrolledStudents: 115, yesterdayEnrolledData: 100, threeDaysAgoEnrolledData: 80),
-        SubjectDetailModel(major: "전공", sbjDivcls: "DEF-05", sbjNo: "DEF", sbjName: "데이터베이스", prof: "춘향이", time: "월4 월5 월6", credit: 3, enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),
+        SubjectDetailModel(major: "1전심", sbjDivcls: "HAEA9239-3", sbjNo: "HAEA9239", sbjName: "GPU프로그래밍", prof: "나재호", time: "화5 화6 수8", credit: 3, enrollmentCapacity: 100, enrolledStudents: 115, yesterdayEnrolledData: 100, threeDaysAgoEnrolledData: 80),
+        SubjectDetailModel(major: "1전심", sbjDivcls: "HAEA0005-1", sbjNo: "HAEA0005", sbjName: "디지털신호처리", prof: "강상욱", time: "수1 수2 수3", credit: 3, enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),
         SubjectDetailModel(major: "교양", sbjDivcls: "FAS-05", sbjNo: "DEF", sbjName: "운영체제", prof: "가나다", time: "월4 월5 월6", credit: 3, enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),
         SubjectDetailModel(major: "전공", sbjDivcls: "QWE-01", sbjNo: "DEF", sbjName: "English Enrichment(English through Cultural Understanding)", prof: "프란시스 브래넌", time: "월1 월2 월3", credit: 3, enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),
         SubjectDetailModel(major: "교양", sbjDivcls: "ASD-02", sbjNo: "DEF", sbjName: "데이터마이닝", prof: "아자차카", time: "토4 월5 월6", credit: 3, enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),

@@ -13,7 +13,10 @@ class TimetableRepository {
         SATTONetworking.shared.postMajorComb(GPA: GPA, requiredLect: requiredLect, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: impossibleTimeZone) { result in
             switch result {
             case .success(let majorCombResponseDto):
-                let majorCombModels = majorCombResponseDto.result.map { MajorCombModel(lec: $0.combination) }
+                let majorCombModels = majorCombResponseDto.result.map { majorCombDto in
+                    let combinations = majorCombDto.combination.map { ($0.lectName, $0.code) }
+                    return MajorCombModel(combinations: combinations)
+                }
                 completion(.success(majorCombModels))
             case .failure(let error):
                 completion(.failure(error))
@@ -25,7 +28,7 @@ class TimetableRepository {
         SATTONetworking.shared.postFinalTimetableList(GPA: GPA, requiredLect: requiredLect, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: impossibleTimeZone, majorList: majorList) { result in
             switch result {
             case .success(let finalTimetableListDto):
-                let subjectModels = finalTimetableListDto.data.flatMap { $0.timetable.map { SubjectModel(sbjDivcls: $0.sbjDivcls, sbjNo: $0.sbjNo, sbjName: $0.sbjName, time: $0.time) } }
+                let subjectModels = finalTimetableListDto.result.flatMap { $0.timetable.map { SubjectModel(sbjDivcls: $0.codeSection, sbjNo: $0.code, sbjName: $0.lectName, time: $0.lectTime) } }
                 completion(.success(subjectModels))
             case .failure(let error):
                 completion(.failure(error))

@@ -11,7 +11,7 @@ import JHTimeTable
 
 enum TimetableRoute: Hashable {
     case timetableMake
-    case timetableMenu
+    case timetableList
     case timetableOption
     case timetableCustom
     case timetableModify
@@ -117,14 +117,14 @@ struct TimetableMainView: View {
                 HStack {
                     Button("취소", role: .cancel, action: {})
                     Button("확인") {
-                        
+                        //TODO: timetable 수정 - 이름 변경 API
                     }
                 }
             }
             .alert("시간표 공개 범위 변경", isPresented: $timetableAlert) {
                 HStack {
                     Button("공개") {
-                        
+                        //TODO: 공개 비공개 설정 API
                     }
                     Button("비공개") {
                         
@@ -136,7 +136,7 @@ struct TimetableMainView: View {
                 HStack {
                     Button("아니요", role: .cancel, action: {})
                     Button("네") {
-                        
+                        //TODO: 삭제 API
                     }
                 }
             }
@@ -144,7 +144,7 @@ struct TimetableMainView: View {
                 switch route {
                 case .timetableMake:
                     TimetableMakeView(stackPath: $stackPath)
-                case .timetableMenu:
+                case .timetableList:
                     TimetableListView(stackPath: $stackPath, selectedId: $selectedId)
                 case .timetableOption:
                     TimetableOptionView(stackPath: $stackPath)
@@ -257,7 +257,7 @@ struct TimetableMainView: View {
                         .foregroundStyle(Color.blackWhite)
                 }
                 Button(action: {
-                    stackPath.append(TimetableRoute.timetableMenu)
+                    stackPath.append(TimetableRoute.timetableList)
                 }) {
                     Image(systemName: "ellipsis")
                         .foregroundStyle(Color.blackWhite)
@@ -269,9 +269,10 @@ struct TimetableMainView: View {
             TimetableView(timetableBaseArray: timetableMainViewModel.timetableInfo)
                 .onAppear {
                     if selectedId == 0 {
-                        
+                        //TODO: 기본 default 시간표 호출 API
                     }
                     else {
+                        //MARK: API
                         timetableMainViewModel.fetchUserTimetable(id: selectedId)
                     }
                 }
@@ -305,6 +306,7 @@ struct TimetableMainView: View {
                 .padding(.horizontal, 20)
             
             if currSelectedOption == "총 이수학점" {
+                //TODO: API - onappear 추가 필요
                 pieChart
                     .padding(.top, 5)
                 HStack {

@@ -43,16 +43,20 @@ struct FinalSelectPopupView: View {
                             .multilineTextAlignment(.center)
                             .padding(.top, -40)
                         
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(Color.buttonBlue)
-                            .frame(height: 40)
-                            .padding(.horizontal, 30)
-                            .overlay(
-                                Text("네, 결정했어요")
-                                    .font(.sb14)
-                                    .foregroundStyle(.white)
-                            )
-                            .padding(.top, 10)
+                        Button(action: {
+                            //TODO: - API
+                        }) {
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundStyle(Color.buttonBlue)
+                                .frame(height: 40)
+                                .padding(.horizontal, 30)
+                                .overlay(
+                                    Text("네, 결정했어요")
+                                        .font(.sb14)
+                                        .foregroundStyle(.white)
+                                )
+                                .padding(.top, 10)
+                        }
                         
                         Button(action: {
                             finalSelectPopup = false

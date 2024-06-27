@@ -13,6 +13,7 @@ enum TimetableRouter {
     case postFinalTimetableList(GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [[String]])
     case getTimetableList
     case getUserTimetable(id: Int)
+    case postTimetableSelect
 }
 
 extension TimetableRouter: TargetType {
@@ -44,6 +45,8 @@ extension TimetableRouter: TargetType {
             return "/timetable/list"
         case .getUserTimetable:
             return "/timetable/"
+        case .postTimetableSelect:
+            return "/timetable/select"
         }
     }
     
@@ -57,8 +60,11 @@ extension TimetableRouter: TargetType {
             return .get
         case .getUserTimetable:
             return .get
+        case .postTimetableSelect:
+            return .post
         }
     }
+    
     var task: Task {
         switch self {
         case .postMajorComb(let GPA, let requiredLect, let majorCount, let cyberCount, let impossibleTimeZone):
@@ -68,7 +74,7 @@ extension TimetableRouter: TargetType {
                 "majorCount": majorCount,
                 "cyberCount": cyberCount,
                 "impossibleTimeZone": impossibleTimeZone
-            ], encoding: JSONEncoding.prettyPrinted)
+            ], encoding: URLEncoding.queryString)
         case .postFinalTimetableList(let GPA, let requiredLect, let majorCount, let cyberCount, let impossibleTimeZone, let majorList):
             return .requestParameters(parameters: [
                 "GPA": GPA,
@@ -84,11 +90,16 @@ extension TimetableRouter: TargetType {
             return .requestParameters(parameters: [
                 "id": id
             ], encoding: URLEncoding.queryString)
+        case .postTimetableSelect:
+            return .requestPlain
         }
     }
     
     var headers: [String: String]? {
-        return ["Content-type": "application/json"]
+        return [
+            "Content-type": "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyMDE4MTAwMEBzYW5nbXl1bmcua3IiLCJpYXQiOjE3MTk0NzE5MjMsImV4cCI6MTcxOTU1ODMyM30.y7PRFAPvwN-941Fq3PP7cY9b_EDg4W6VNwBU_nLYmBA"
+        ]
     }
     
     var sampleData: Data {
