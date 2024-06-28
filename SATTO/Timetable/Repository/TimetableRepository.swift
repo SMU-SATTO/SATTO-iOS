@@ -49,4 +49,29 @@ class TimetableRepository {
             }
         }
     }
+    
+    //TODO: - SubjectDetailModel에 이전 수강 인원 누락되어있음 + 담은인원 + 옵셔널 처리 체크
+    func getCurrentLectureList(completion: @escaping(Result<[SubjectDetailModel], Error>) -> Void) {
+        SATTONetworking.shared.getCurrentLectureList() { result in
+            switch result {
+            case .success(let dto):
+                let subjectDetailModels = dto.result?.currentLectureResponseDTOList.map {
+                    SubjectDetailModel(major: $0.cmpDiv ?? "Error",
+                                       sbjDivcls: $0.codeSection ?? "Error",
+                                       sbjNo: $0.code ?? "Error",
+                                       sbjName: $0.lectName ?? "Error",
+                                       prof: $0.professor ?? "Error",
+                                       time: $0.lectTime ?? "일10 ",
+                                       credit: $0.credit ?? 0,
+                                       enrollmentCapacity: 0,
+                                       enrolledStudents: 0,
+                                       yesterdayEnrolledData: 0,
+                                       threeDaysAgoEnrolledData: 0)
+                }
+                completion(.success(subjectDetailModels ?? []))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
 }

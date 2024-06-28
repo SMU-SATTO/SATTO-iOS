@@ -10,6 +10,7 @@ import JHTimeTable
 
 ///서버에서 받아온 뷰모델
 final class SubjectViewModel: ObservableObject {
+    let repository = TimetableRepository()
     let colorSelectionManager = ColorSelectionManager()
     
     //MARK: - 배열 객체로 바꾸기
@@ -24,15 +25,22 @@ final class SubjectViewModel: ObservableObject {
     
     //    @Published var subjectDetailDataList: [TimetableDetailModel] = []
     @Published var subjectDetailDataList: [SubjectDetailModel] = [
-        SubjectDetailModel(major: "1전심", sbjDivcls: "HAEA9239-3", sbjNo: "HAEA9239", sbjName: "GPU프로그래밍", prof: "나재호", time: "화5 화6 수8", credit: 3, enrollmentCapacity: 100, enrolledStudents: 115, yesterdayEnrolledData: 100, threeDaysAgoEnrolledData: 80),
-        SubjectDetailModel(major: "1전심", sbjDivcls: "HAEA0005-1", sbjNo: "HAEA0005", sbjName: "디지털신호처리", prof: "강상욱", time: "수1 수2 수3", credit: 3, enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),
-        SubjectDetailModel(major: "교양", sbjDivcls: "FAS-05", sbjNo: "DEF", sbjName: "운영체제", prof: "가나다", time: "월4 월5 월6", credit: 3, enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),
-        SubjectDetailModel(major: "전공", sbjDivcls: "QWE-01", sbjNo: "DEF", sbjName: "English Enrichment(English through Cultural Understanding)", prof: "프란시스 브래넌", time: "월1 월2 월3", credit: 3, enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),
-        SubjectDetailModel(major: "교양", sbjDivcls: "ASD-02", sbjNo: "DEF", sbjName: "데이터마이닝", prof: "아자차카", time: "토4 월5 월6", credit: 3, enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),
-        SubjectDetailModel(major: "전공", sbjDivcls: "ZXC-08", sbjNo: "DEF", sbjName: "컴퓨터수학", prof: "타파하", time: "월4 월5 월6", credit: 3, enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),
-        SubjectDetailModel(major: "전공", sbjDivcls: "ZXC-09", sbjNo: "DEF", sbjName: "이산수학", prof: "교수명", time: "월2 월3 월4", credit: 5, enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),
-        SubjectDetailModel(major: "전공", sbjDivcls: "ZXC-10", sbjNo: "DEF", sbjName: "소프트웨어공학", prof: "교수명2", time: "월4 월5 월6", credit: 7, enrollmentCapacity: 150, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30)
+        SubjectDetailModel(major: "1전심", sbjDivcls: "HAEA9239-3", sbjNo: "HAEA9239", sbjName: "GPU프로그래밍", prof: "나재호", time: "화5 화6 수8", credit: 3, enrolledStudents: 115, yesterdayEnrolledData: 100, threeDaysAgoEnrolledData: 80),
+        SubjectDetailModel(major: "1전심", sbjDivcls: "HAEA0005-1", sbjNo: "HAEA0005", sbjName: "디지털신호처리", prof: "강상욱", time: "수1 수2 수3", credit: 3, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),
     ]
+    
+    func fetchCurrentLectureList() {
+        repository.getCurrentLectureList() { [weak self] result in
+            switch result {
+            case .success(let subjectDetailModels):
+                DispatchQueue.main.async {
+                    self?.subjectDetailDataList = subjectDetailModels
+                }
+            case .failure(let error):
+                print("Error fetching currentLectureList: \(error)")
+            }
+        }
+    }
 }
 
 class ColorSelectionManager {

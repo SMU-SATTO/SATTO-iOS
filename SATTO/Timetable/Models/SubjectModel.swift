@@ -34,7 +34,7 @@ struct SubjectDetailModel: SubjectModelBase {
     let yesterdayEnrolledData, threeDaysAgoEnrolledData: Int
     
     
-    init(major: String, sbjDivcls: String, sbjNo: String, sbjName: String, prof: String, time: String, credit: Int, enrollmentCapacity: Int, enrolledStudents: Int, yesterdayEnrolledData: Int, threeDaysAgoEnrolledData: Int) {
+    init(major: String = "Unknown", sbjDivcls: String = "Unknown", sbjNo: String = "Unknown", sbjName: String = "Unknown", prof: String = "Unknown", time: String = "Unknown", credit: Int = 0, enrollmentCapacity: Int = 0, enrolledStudents: Int = 0, yesterdayEnrolledData: Int = 0, threeDaysAgoEnrolledData: Int = 0) {
         self.major = major
         self.sbjDivcls = sbjDivcls
         self.sbjNo = sbjNo

@@ -14,6 +14,7 @@ enum TimetableRouter {
     case getTimetableList
     case getUserTimetable(id: Int)
     case postTimetableSelect
+    case getCurrentLectureList
 }
 
 extension TimetableRouter: TargetType {
@@ -47,6 +48,8 @@ extension TimetableRouter: TargetType {
             return "/timetable/"
         case .postTimetableSelect:
             return "/timetable/select"
+        case .getCurrentLectureList:
+            return "/current-lecture"
         }
     }
     
@@ -62,6 +65,8 @@ extension TimetableRouter: TargetType {
             return .get
         case .postTimetableSelect:
             return .post
+        case .getCurrentLectureList:
+            return .get
         }
     }
     
@@ -74,7 +79,7 @@ extension TimetableRouter: TargetType {
                 "majorCount": majorCount,
                 "cyberCount": cyberCount,
                 "impossibleTimeZone": impossibleTimeZone
-            ], encoding: URLEncoding.queryString)
+            ], encoding: JSONEncoding.prettyPrinted)
         case .postFinalTimetableList(let GPA, let requiredLect, let majorCount, let cyberCount, let impossibleTimeZone, let majorList):
             return .requestParameters(parameters: [
                 "GPA": GPA,
@@ -91,6 +96,8 @@ extension TimetableRouter: TargetType {
                 "id": id
             ], encoding: URLEncoding.queryString)
         case .postTimetableSelect:
+            return .requestPlain
+        case .getCurrentLectureList:
             return .requestPlain
         }
     }

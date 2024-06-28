@@ -53,6 +53,9 @@ struct BottomSheetTabView: View {
                 }
             }
         }
+        .onAppear {
+            subjectViewModel.fetchCurrentLectureList()
+        }
     }
     
     private var categoryView: some View {

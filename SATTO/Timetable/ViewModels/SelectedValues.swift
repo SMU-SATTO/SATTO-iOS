@@ -22,9 +22,43 @@ class SelectedValues: TimeSelectorViewModelProtocol {
     
     @Published var selectedMajorCombs: [[String]] = []       //majorList
     
-    @Published var majorCombinations: [[MajorCombModel]] = [] //서버에서 준 과목 조합 이중 배열 리스트
+    @Published var majorCombinations: [MajorCombModel] =
+        [
+//            MajorCombModel(combinations: [
+//                ("Computer Science", "CS101"),
+//                ("Mathematics", "MATH201"),
+//                ("Physics", "PHYS101")
+//            ]),
+//            MajorCombModel(combinations: [
+//                ("Business Administrationddddddddddddddddddddddddddddd", "BA101"),
+//                ("Economics", "ECON201"),
+//                ("Statistics", "STAT301")
+//            ]),
+//            MajorCombModel(combinations: [
+//                ("Biology", "BIO101"),
+//                ("Chemistry", "CHEM201"),
+//                ("Psychology", "PSYC301")
+//            ])
+        ]
+     //서버에서 준 과목 조합 이중 배열 리스트
     
-    @Published var timetableList: [[SubjectModelBase]] = []
+    @Published var timetableList: [[SubjectModelBase]] = [
+        [
+            SubjectModel(sbjDivcls: "CS", sbjNo: "CS101", sbjName: "Introduction to Computer Science", time: "월1 월2 월3"),
+            SubjectModel(sbjDivcls: "MATH", sbjNo: "MATH201", sbjName: "Calculus I", time: "화1 화2 화3"),
+            SubjectModel(sbjDivcls: "PHYS", sbjNo: "PHYS101", sbjName: "General Physics I", time: "수1 수2 수3")
+        ],
+        [
+            SubjectModel(sbjDivcls: "BA", sbjNo: "BA101", sbjName: "Principles of Management", time: "월4 월5 월6"),
+            SubjectModel(sbjDivcls: "ECON", sbjNo: "ECON201", sbjName: "Microeconomics", time: "화4 화5 화6"),
+            SubjectModel(sbjDivcls: "STAT", sbjNo: "STAT301", sbjName: "Statistics for Business", time: "수4 수5 수6")
+        ],
+        [
+            SubjectModel(sbjDivcls: "BIO", sbjNo: "BIO101", sbjName: "General Biology I", time: "월2 월3 월4"),
+            SubjectModel(sbjDivcls: "CHEM", sbjNo: "CHEM201", sbjName: "General Chemistry I", time: "화2 화4 화5"),
+            SubjectModel(sbjDivcls: "PSYC", sbjNo: "PSYC301", sbjName: "Introductory Psychology", time: "금1 토2 일3")
+        ]
+    ]
     
     func isSelectedSubjectsEmpty() -> Bool {
         return selectedSubjects.isEmpty
@@ -96,13 +130,13 @@ class SelectedValues: TimeSelectorViewModelProtocol {
     }
     
     func fetchMajorCombinations(GPA: Int, requiredLect: [SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String) {
-        let requiredLectStrings = requiredLect.map { $0.sbjDivcls }
+        let requiredLectStrings = requiredLect.map { $0.sbjNo }
         let adjustedRequiredLect = requiredLectStrings.isEmpty ? [""] : requiredLectStrings
         repository.postMajorComb(GPA: GPA, requiredLect: adjustedRequiredLect, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: impossibleTimeZone) { [weak self] result in
             switch result {
             case .success(let majorCombModels):
                 DispatchQueue.main.async {
-                    self?.majorCombinations = [majorCombModels]
+                    self?.majorCombinations = majorCombModels
                 }
             case .failure(let error):
                 print("Error fetching major combinations: \(error)")
@@ -110,20 +144,22 @@ class SelectedValues: TimeSelectorViewModelProtocol {
         }
     }
     
-    func fetchFinalTimetableList(GPA: Int, requiredLect: [SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [[String]], completion: @escaping () -> Void) {
+    func fetchFinalTimetableList(GPA: Int, requiredLect: [SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [[String]], completion: @escaping (Result<Void, Error>) -> Void) {
         let requiredLectStrings = requiredLect.map { $0.sbjDivcls }
         let adjustedRequiredLect = requiredLectStrings.isEmpty ? [""] : requiredLectStrings
         let adjustedImpossibleTimeZone = impossibleTimeZone.isEmpty ? "" : impossibleTimeZone
+        
         repository.postFinalTimetableList(GPA: GPA, requiredLect: adjustedRequiredLect, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: adjustedImpossibleTimeZone, majorList: majorList) { [weak self] result in
             switch result {
             case .success(let finalTimetableList):
                 DispatchQueue.main.async {
                     self?.timetableList = [finalTimetableList]
+                    completion(.success(()))
                 }
             case .failure(let error):
-                print("SATTO ERROR!: \(error) \(adjustedImpossibleTimeZone)")
+                print("Error fetching finalTimetableList: \(error)")
+                completion(.failure(error))
             }
-            completion()
         }
     }
 }

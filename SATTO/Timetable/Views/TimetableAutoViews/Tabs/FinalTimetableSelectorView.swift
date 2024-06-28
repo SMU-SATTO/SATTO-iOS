@@ -9,24 +9,39 @@ import SwiftUI
 import PopupView
 
 struct FinalTimetableSelectorView: View {
+    @ObservedObject var selectedValues: SelectedValues
+    
     @Binding var showingPopup: Bool
+    @Binding var timetableIndex: Int
 
     var body: some View {
         ZStack {
-            VStack(alignment: .leading) {
+            VStack {
                 Text("좌우로 스크롤해 \n원하는 시간표를 골라보세요!")
                     .font(.sb16)
-                TimetableView(timetableBaseArray: [])
-                    .onTapGesture {
-                        showingPopup.toggle()
+                TabView {
+                    ForEach(selectedValues.timetableList.indices, id: \.self) { index in
+                        TimetableView(timetableBaseArray: selectedValues.timetableList[index])
+                            .onTapGesture {
+                                timetableIndex = index
+                                showingPopup.toggle()
+                            }
                     }
+                }
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
+                .onAppear {
+                    UIScrollView.appearance().isScrollEnabled = true //드래그제스처로 탭뷰 넘기는거 여기 TabView에서만 허용
+                }
             }
         }
     }
 }
 
 struct FinalSelectPopupView: View {
+    @ObservedObject var selectedValues: SelectedValues
+    
     @Binding var finalSelectPopup: Bool
+    @Binding var timetableIndex: Int
     
     var body: some View {
         VStack {
@@ -35,7 +50,7 @@ struct FinalSelectPopupView: View {
                 .foregroundStyle(Color.popupBackground)
                 .overlay(
                     VStack(spacing: 0) {
-                        TimetableView(timetableBaseArray: [])
+                        TimetableView(timetableBaseArray: selectedValues.timetableList[timetableIndex])
                             .padding(EdgeInsets(top: -45, leading: 15, bottom: 0, trailing: 15))
                         Text("이 시간표를 이번 학기 시간표로\n결정하시겠어요?")
                             .font(.sb16)
@@ -85,7 +100,7 @@ struct FinalSelectPopupView: View {
 }
 
 #Preview {
-    FinalTimetableSelectorView(showingPopup: .constant(false))
+    FinalTimetableSelectorView(selectedValues: SelectedValues(), showingPopup: .constant(false), timetableIndex: .constant(1))
 //    FinalSelectPopupView(finalSelectPopup: .constant(true))
         .preferredColorScheme(.dark)
 }

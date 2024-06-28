@@ -38,7 +38,6 @@ struct FinalTimetableDto: Decodable {
     let code, codeSection, lectName, professor: String
     let lectTime: String
     let cmpDiv: String
-    let subjectType: String?
     let credit: Int
 }
 
@@ -86,34 +85,29 @@ struct UserTimetableDto: Decodable {
     let isPublic, isRepresented: Bool
 }
 
-struct LectDto: Codable {
+struct LectDto: Decodable {
     let department, code, lectName, professor: String
     let lectTime, cmpDiv: String
     let subjectType: String
     let credit: Int
 }
 
-class JSONNull: Codable, Hashable {
+//MARK: - CurrentLectureListResponse
+struct CurrentLectureResponseDto: Decodable {
+    let isSuccess: Bool?
+    let code, message: String?
+    let result: CurrentLectureResponseDTOList?
+}
 
-    public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
-            return true
-    }
+struct CurrentLectureResponseDTOList: Decodable {
+    let currentLectureResponseDTOList: [CurrentLectureDTO]
+}
 
-    public var hashValue: Int {
-            return 0
-    }
-
-    public init() {}
-
-    public required init(from decoder: Decoder) throws {
-            let container = try decoder.singleValueContainer()
-            if !container.decodeNil() {
-                    throw DecodingError.typeMismatch(JSONNull.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
-            }
-    }
-
-    public func encode(to encoder: Encoder) throws {
-            var container = encoder.singleValueContainer()
-            try container.encodeNil()
-    }
+struct CurrentLectureDTO: Decodable {
+    let department, code, codeSection, lectName: String?
+    let professor: String?
+    let lectTime: String?
+    let cmpDiv: String?
+    let subjectType: String?
+    let credit: Int?
 }

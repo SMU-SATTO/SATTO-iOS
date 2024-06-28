@@ -64,11 +64,12 @@ struct SubjectSheetView: View {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundStyle(selectedValues.isSelected(subject: subjectDetail) ? Color.subjectCardSelected : Color.subjectCardBackground)
                 .shadow(color: colorScheme == .light ? Color(red: 0.65, green: 0.65, blue: 0.65).opacity(0.65) : Color.clear, radius: 6.23, x: 0, y: 1.22)
-                .onTapGesture {
-                    withAnimation {
-                        toggleExpansion(at: index)
-                    }
-                }
+            //TODO: - ToggleExpansion 백엔드 이슈로 빼기로 결정
+//                .onTapGesture {
+//                    withAnimation {
+//                        toggleExpansion(at: index)
+//                    }
+//                }
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: -10, trailing: 0))
         )
         .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
@@ -78,7 +79,8 @@ struct SubjectSheetView: View {
         VStack(alignment: .leading) {
             subjectMajorView(subjectDetail)
             subjectInfoView(subjectDetail)
-            subjectEnrollmentView(subjectDetail)
+            //MARK: - 담은 인원 백엔드 이슈로 빼기로 결정
+//            subjectEnrollmentView(subjectDetail)
             if isExpanded(at: index) {
                 subjectChartView(subjectDetail, containerSize: containerSize)
             }
@@ -88,7 +90,7 @@ struct SubjectSheetView: View {
     private func subjectMajorView(_ subjectDetail: SubjectDetailModel) -> some View {
         RoundedRectangle(cornerRadius: 20)
             .foregroundStyle(Color.subjectMajorBackground)
-            .frame(width: 50, height: 23)
+            .frame(width: 50, height: 20)
             .overlay(
                 Text(subjectDetail.major)
                     .foregroundStyle(Color.subjectMajorText)

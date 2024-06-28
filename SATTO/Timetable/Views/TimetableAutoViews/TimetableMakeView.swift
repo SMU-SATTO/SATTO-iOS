@@ -27,6 +27,9 @@ struct TimetableMakeView: View {
     @State private var invalidPopup = false
     @State private var finalSelectPopup = false
     @State private var progressPopup = false
+    @State private var errorPopup = false
+    
+    @State private var timetableIndex = 0
     
     @State private var isButtonDisabled = false
     
@@ -102,16 +105,20 @@ struct TimetableMakeView: View {
             $0
                 .position(.center)
                 .appearFrom(.bottom)
+                .closeOnTapOutside(false)
+                .closeOnTap(false)
+                .dragToDismiss(false)
                 .backgroundColor(.black.opacity(0.5))
         })
         .popup(isPresented: $finalSelectPopup, view: {
-            FinalSelectPopupView(finalSelectPopup: $finalSelectPopup)
+            FinalSelectPopupView(selectedValues: selectedValues, finalSelectPopup: $finalSelectPopup, timetableIndex: $timetableIndex)
         }, customize: {
             $0
                 .position(.center)
                 .appearFrom(.bottom)
                 .closeOnTapOutside(false)
                 .closeOnTap(false)
+                .dragToDismiss(false)
                 .backgroundColor(.black.opacity(0.5))
         })
         .popup(isPresented: $progressPopup, view: {
@@ -139,6 +146,26 @@ struct TimetableMakeView: View {
                 .closeOnTap(false)
                 .backgroundColor(.black.opacity(0.9))
                 .dragToDismiss(false)
+        })
+        .popup(isPresented: $errorPopup, view: {
+            VStack {
+                RoundedRectangle(cornerRadius: 10)
+                    .foregroundStyle(.white)
+                    .frame(width: 300, height: 300)
+                    .overlay(
+                        Text("시간표 생성에 실패했어요. 전공 조합을 다시 선택해보거나 개발자에게 문의해주세요!")
+                            .font(.sb14)
+                            .foregroundStyle(.black)
+                    )
+            }
+        }, customize: {
+            $0
+                .position(.center)
+                .appearFrom(.bottom)
+                .closeOnTapOutside(false)
+                .closeOnTap(false)
+                .backgroundColor(.black.opacity(0.9))
+                .autohideIn(3)
         })
     }
     
@@ -222,18 +249,27 @@ struct TimetableMakeView: View {
             progressPopup = true
             isButtonDisabled = true
             //TODO: - API majorList 서버에서 오면 여기에 다시 넣어줘야함
-            selectedValues.fetchFinalTimetableList(GPA: selectedValues.credit, requiredLect: selectedValues.selectedSubjects, majorCount: selectedValues.majorNum, cyberCount: selectedValues.ELearnNum, impossibleTimeZone: selectedValues.selectedTimes, majorList: [
-                ["HAEA0004","HAEA0008","HAEA9239","HAEA0005"]
-            ]) {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    self.progressPopup = false
-                    selectedView = .finalTimetable
+            selectedValues.fetchFinalTimetableList(GPA: selectedValues.credit, requiredLect: selectedValues.selectedSubjects, majorCount: selectedValues.majorNum, cyberCount: selectedValues.ELearnNum, impossibleTimeZone: selectedValues.selectedTimes, majorList: selectedValues.selectedMajorCombs) { result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success:
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            self.progressPopup = false
+                            selectedView = .finalTimetable
+                        }
+                    case .failure(let error):
+                        print("Error: \(error)")
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            self.progressPopup = false
+                            self.errorPopup = true
+                            selectedView = .finalTimetable
+                        }
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                        self.isButtonDisabled = false
+                    }
                 }
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                self.isButtonDisabled = false
-            }
-            
         default:
             break
         }
@@ -258,7 +294,7 @@ struct TimetableMakeView: View {
         case .majorCombination:
             return AnyView(MajorCombSelectorView(selectedValues: selectedValues))
         case .finalTimetable:
-            return AnyView(FinalTimetableSelectorView(showingPopup: $finalSelectPopup))
+            return AnyView(FinalTimetableSelectorView(selectedValues: selectedValues, showingPopup: $finalSelectPopup, timetableIndex: $timetableIndex))
         }
     }
 
