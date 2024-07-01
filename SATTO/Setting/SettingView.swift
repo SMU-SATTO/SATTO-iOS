@@ -11,7 +11,7 @@ struct SettingView: View {
     
     @State private var isOn = true
     
-    @EnvironmentObject var authViewModel: AuthVieModel
+    @EnvironmentObject var authViewModel: AuthViewModel
     
     var body: some View {
 

@@ -33,8 +33,7 @@ struct LoginView: View {
     
     @State private var studentId: String = "201910914"
     @State private var password: String = "insungmms57!"
-//    @ObservedObject var vm: AuthVieModel
-    @EnvironmentObject var authViewModel: AuthVieModel
+    @EnvironmentObject var authViewModel: AuthViewModel
     
     @State var isDisabled = false
     
@@ -118,7 +117,6 @@ struct MyTextFieldModifier: ViewModifier {
         content
             .padding(.vertical, 16)
             .padding(.horizontal, 20)
-//            .frame(maxWidth: .infinity)
             .background(Color(red: 0.98, green: 0.98, blue: 0.98))
             .cornerRadius(20)
             .overlay(

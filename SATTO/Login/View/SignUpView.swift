@@ -21,7 +21,7 @@ struct SignUpView: View {
     @State private var isPublic = true
     
     @EnvironmentObject var navPathFinder: LoginNavigationPathFinder
-    @EnvironmentObject var authViewModel: AuthVieModel
+    @EnvironmentObject var authViewModel: AuthViewModel
     
     @State private var isPasswordValid: Bool = false
     @State private var errorMessage: String?
@@ -29,7 +29,7 @@ struct SignUpView: View {
     
 //    @ObservedObject var vm: AuthVieModel
     
-    let user = User(studentId: "201910914", password: "insungmms57!", name: "황인성", nickname: "insung", department: "컴퓨터과학과", grade: 3, isPublic: true)
+//    let user = User(studentId: "201910914", password: "insungmms57!", name: "황인성", nickname: "insung", department: "컴퓨터과학과", grade: 3, isPublic: true)
     
     var body: some View {
         ScrollView {
@@ -142,7 +142,7 @@ struct SignUpView: View {
                 
                 Button(action: {
                     print(authViewModel.user?.studentId)
-                    authViewModel.user?.password = password
+//                    authViewModel.user?.password = password
                     authViewModel.user?.name = name
                     authViewModel.user?.nickname = nickname
                     authViewModel.user?.department = department
@@ -159,6 +159,14 @@ struct SignUpView: View {
                 
                 Button(action: {
                     validatePasswords()
+                    
+                    print(authViewModel.user?.studentId)
+//                    authViewModel.user?.password = password
+                    authViewModel.user?.name = name
+                    authViewModel.user?.nickname = nickname
+                    authViewModel.user?.department = department
+                    authViewModel.user?.grade = grade
+                    authViewModel.user?.isPublic = isPublic
                     
                     authViewModel.signUp(user: authViewModel.user!)
                 }) {

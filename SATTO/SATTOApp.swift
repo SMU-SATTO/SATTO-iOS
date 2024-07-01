@@ -12,7 +12,7 @@ struct SATTOApp: App {
     var body: some Scene {
         WindowGroup {
             Onboarding()
-                .environmentObject(AuthVieModel())
+                .environmentObject(AuthViewModel())
         }
     }
 }

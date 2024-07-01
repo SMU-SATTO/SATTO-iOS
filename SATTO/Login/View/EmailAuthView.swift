@@ -12,7 +12,7 @@ struct EmailAuthView: View {
     @State private var authNumber = ""
     @State private var isEmailEnabled = false
     //    @ObservedObject var vm: AuthVieModel
-    @EnvironmentObject var authViewModel: AuthVieModel
+    @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var navPathFinder: LoginNavigationPathFinder
     
     

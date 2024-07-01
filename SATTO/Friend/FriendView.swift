@@ -133,6 +133,12 @@ struct FriendView: View {
                             GraduationRequirementsView(namespace: namespace, show: $show)
                         }
                         
+                        Button(action: {
+                            
+                        }, label: {
+                            Text("버튼")
+                        })
+                        
                     }
                     .navigationBarBackButtonHidden()
                     .navigationDestination(for: FriendRoute.self) { route in
@@ -506,7 +512,6 @@ struct ClearButtonTextField2: View {
                     text = ""
                 }) {
                     Image("Icon")
-//                        .foregroundColor(.gray)
                         .padding(.trailing, 10)
                 }
             }

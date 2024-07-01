@@ -26,7 +26,7 @@ enum AuthAPI {
 
 extension AuthAPI: TargetType {
     var baseURL: URL {
-        return URL(string: "http://3.37.93.59:8080")!
+        return URL(string: "http://15.164.64.42:8080")!
     }
     
     var path: String {
@@ -44,7 +44,7 @@ extension AuthAPI: TargetType {
         case .signOut:
             return "/api/v1/users/account/withdrawal"
         case .userInfoInquiry:
-            return "/api/v1/users"
+            return "/api/v1/users/inform"
         case .checkEemailDuplicate(let studentId):
             return "/api/v1/users/id/\(studentId)@sangmyung.kr"
         }

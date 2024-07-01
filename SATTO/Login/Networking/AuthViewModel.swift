@@ -10,7 +10,7 @@ import Moya
 import Combine
 
 
-class AuthVieModel: ObservableObject {
+class AuthViewModel: ObservableObject {
     private let provider = MoyaProvider<AuthAPI>()
     
     @Published var user: User?
