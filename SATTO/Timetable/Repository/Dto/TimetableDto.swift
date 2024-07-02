@@ -91,23 +91,3 @@ struct LectDto: Decodable {
     let subjectType: String
     let credit: Int
 }
-
-//MARK: - CurrentLectureListResponse
-struct CurrentLectureResponseDto: Decodable {
-    let isSuccess: Bool?
-    let code, message: String?
-    let result: CurrentLectureResponseDTOList?
-}
-
-struct CurrentLectureResponseDTOList: Decodable {
-    let currentLectureResponseDTOList: [CurrentLectureDTO]
-}
-
-struct CurrentLectureDTO: Decodable {
-    let department, code, codeSection, lectName: String?
-    let professor: String?
-    let lectTime: String?
-    let cmpDiv: String?
-    let subjectType: String?
-    let credit: Int?
-}

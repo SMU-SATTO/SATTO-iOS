@@ -22,6 +22,7 @@ class SelectedValues: TimeSelectorViewModelProtocol {
     
     @Published var selectedMajorCombs: [[String]] = []       //majorList
     
+    //서버에서 준 과목 조합 이중 배열 리스트
     @Published var majorCombinations: [MajorCombModel] =
         [
 //            MajorCombModel(combinations: [
@@ -40,7 +41,6 @@ class SelectedValues: TimeSelectorViewModelProtocol {
 //                ("Psychology", "PSYC301")
 //            ])
         ]
-     //서버에서 준 과목 조합 이중 배열 리스트
     
     @Published var timetableList: [[SubjectModelBase]] = [
         [
@@ -161,62 +161,6 @@ class SelectedValues: TimeSelectorViewModelProtocol {
                 completion(.failure(error))
             }
         }
-    }
-}
-
-//TODO: - BottomSheetModel로 파싱 필요 및 파싱 과정에서 균형교양 미포함시 resetBGE()
-final class BottomSheetViewModel: TimeSelectorViewModelProtocol {
-    @Published var bottomSheetFilter: BottomSheetModel = BottomSheetModel(
-        grade: [1, 2],
-        GEOption: ["균형교양"],
-        BGEOption: "인문영역",
-        eLearn: 1,
-        time: "월1 월2 월3"
-    )
-    
-    @Published var selectedGrades: [String] = ["전체"]
-    @Published var selectedGE: [String] = ["전체"]
-    @Published var selectedBGE: [String] = []
-    @Published var selectedELOption: [String] = ["전체"]
-    @Published var selectedTimes: String = ""
-    
-    func resetBGE() {
-        selectedBGE = []
-    }
-    
-    func isGradeSelected() -> Bool {
-        if selectedGrades.isEmpty || selectedGrades.contains("전체") {
-            return false
-        }
-        return true
-    }
-    
-    func isGESelected() -> Bool {
-        if selectedGE.isEmpty || selectedGE.contains("전체") {
-            return false
-        }
-        return true
-    }
-    
-    func isBGESelected() -> Bool {
-        if selectedBGE.isEmpty {
-            return false
-        }
-        return true
-    }
-    
-    func isELOptionSelected() -> Bool {
-        if selectedELOption.isEmpty || selectedELOption.contains("전체") {
-            return false
-        }
-        return true
-    }
-    
-    func isTimeSelected() -> Bool {
-        if selectedTimes == "" {
-            return false
-        }
-        return true
     }
 }
 

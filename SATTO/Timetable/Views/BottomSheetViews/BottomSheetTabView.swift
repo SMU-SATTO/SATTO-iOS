@@ -7,9 +7,7 @@
 
 import SwiftUI
 
-/// 균형교양 빼면 세부정보도 전부 빠지게 수정 - 파싱과정에서
 struct BottomSheetTabView: View {
-    @ObservedObject var subjectViewModel: SubjectViewModel
     @ObservedObject var selectedValues: SelectedValues
     @ObservedObject var bottomSheetViewModel: BottomSheetViewModel
     
@@ -18,13 +16,12 @@ struct BottomSheetTabView: View {
     
     @State private var selectedTab = ""
     @State private var selectedCategories: [String] = []
-    @State private var searchText = ""
     
     private let categories = ["학년", "교양", "e-러닝", "시간"]
     
     private let gradeOptions = ["전체", "1학년", "2학년", "3학년", "4학년"]
     private let GEOptions = ["전체", "일반교양", "균형교양", "교양필수"]
-    private let BGEOptions = ["인문영역", "사회영역", "자연영역", "예술영역"]
+    private let BGEOptions = ["전체", "인문", "사회", "자연", "공학", "예술"]
     private let eLearnOptions = ["전체", "E러닝만 보기", "E러닝 빼고 보기"]
     
     var showResultAction: () -> Void
@@ -54,7 +51,7 @@ struct BottomSheetTabView: View {
             }
         }
         .onAppear {
-            subjectViewModel.fetchCurrentLectureList()
+//            bottomSheetViewModel.fetchCurrentLectureList()
         }
     }
     
@@ -112,12 +109,16 @@ struct BottomSheetTabView: View {
                             .frame(width: 19, height: 19)
                             .foregroundStyle(Color.searchbarText)
                             .padding(.leading, 15)
-                        TextField("듣고 싶은 과목을 입력해 주세요", text: $searchText)
+                        TextField("듣고 싶은 과목을 입력해 주세요", text: $bottomSheetViewModel.searchText)
                             .font(.sb14)
                             .foregroundStyle(Color.searchbarText)
                             .padding(.leading, 5)
+                            .submitLabel(.search)
+                            .onSubmit {
+                                bottomSheetViewModel.fetchCurrentLectureList()
+                            }
                         Button(action: {
-                            searchText.removeAll()
+                            bottomSheetViewModel.searchText.removeAll()
                         }) {
                             Image(systemName: "xmark.circle.fill")
                                 .foregroundStyle(Color.searchbarText)
@@ -133,17 +134,28 @@ struct BottomSheetTabView: View {
     private var selectedTabView: some View {
         switch selectedTab {
         case "학년":
-            OptionSheetView(options: gradeOptions, selectedOptions: $bottomSheetViewModel.selectedGrades, allowsDuplicates: true)
+            OptionSheetView(options: gradeOptions, selectedOptions: $bottomSheetViewModel.selectedGrades, allowsDuplicates: true) {
+                bottomSheetViewModel.fetchCurrentLectureList()
+            }
         case "교양":
-            OptionSheetView(options: GEOptions, selectedOptions: $bottomSheetViewModel.selectedGE, allowsDuplicates: true)
+            OptionSheetView(options: GEOptions, selectedOptions: $bottomSheetViewModel.selectedGE, allowsDuplicates: true) {
+                bottomSheetViewModel.fetchCurrentLectureList()
+            }
             if bottomSheetViewModel.selectedGE.contains("균형교양") {
-                OptionSheetView(options: BGEOptions, selectedOptions: $bottomSheetViewModel.selectedBGE, allowsDuplicates: false)
+                OptionSheetView(options: BGEOptions, selectedOptions: $bottomSheetViewModel.selectedBGE, allowsDuplicates: true) {
+                    bottomSheetViewModel.fetchCurrentLectureList()
+                }
             }
         case "e-러닝":
-            OptionSheetView(options: eLearnOptions, selectedOptions: $bottomSheetViewModel.selectedELOption, allowsDuplicates: false)
+            OptionSheetView(options: eLearnOptions, selectedOptions: $bottomSheetViewModel.selectedELOption, allowsDuplicates: false) {
+                bottomSheetViewModel.fetchCurrentLectureList()
+            }
         case "시간":
-            TimeSheetView(bottomSheetViewModel: bottomSheetViewModel, selectedSubviews: $selectedSubviews, alreadySelectedSubviews: $alreadySelectedSubviews)
+            TimeSheetView(bottomSheetViewModel: bottomSheetViewModel, selectedSubviews: $selectedSubviews, alreadySelectedSubviews: $alreadySelectedSubviews) 
                 .padding(.top, 10)
+                .onDisappear {
+                    bottomSheetViewModel.fetchCurrentLectureList()
+                }
         default:
             EmptyView()
         }
@@ -152,13 +164,13 @@ struct BottomSheetTabView: View {
     // MARK: - Subject Sheet View
     private var subjectSheetView: some View {
         VStack {
-            SubjectSheetView(subjectViewModel: subjectViewModel, selectedValues: selectedValues, showResultAction: showResultAction)
+            SubjectSheetView(bottomSheetViewModel: bottomSheetViewModel, selectedValues: selectedValues, showResultAction: showResultAction)
                 .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
         }
     }
 }
 
 #Preview {
-    BottomSheetTabView(subjectViewModel: SubjectViewModel(), selectedValues: SelectedValues(), bottomSheetViewModel: BottomSheetViewModel(), selectedSubviews: .constant([]), alreadySelectedSubviews: .constant([]), showResultAction: {})
+    BottomSheetTabView(selectedValues: SelectedValues(), bottomSheetViewModel: BottomSheetViewModel(), selectedSubviews: .constant([]), alreadySelectedSubviews: .constant([]), showResultAction: {})
         .preferredColorScheme(.dark)
 }

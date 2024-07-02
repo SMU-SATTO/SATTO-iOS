@@ -14,7 +14,7 @@ enum TimetableRouter {
     case getTimetableList
     case getUserTimetable(id: Int)
     case postTimetableSelect
-    case getCurrentLectureList
+    case getCurrentLectureList(request: CurrentLectureListRequest)
 }
 
 extension TimetableRouter: TargetType {
@@ -49,7 +49,7 @@ extension TimetableRouter: TargetType {
         case .postTimetableSelect:
             return "/timetable/select"
         case .getCurrentLectureList:
-            return "/current-lecture"
+            return "/current-lecture/search"
         }
     }
     
@@ -97,8 +97,22 @@ extension TimetableRouter: TargetType {
             ], encoding: URLEncoding.queryString)
         case .postTimetableSelect:
             return .requestPlain
-        case .getCurrentLectureList:
-            return .requestPlain
+        //MARK: - get요청인데 body로 보내야함 주의
+        case .getCurrentLectureList(let request):
+            return .requestParameters(parameters: [
+                "lectName": request.searchText,
+                "grade": request.grade,
+                "elective": request.elective,
+                "normal": request.normal,
+                "essential": request.essential,
+                "humanity": request.humanity,
+                "society": request.society,
+                "nature": request.nature,
+                "engineering": request.engineering,
+                "art": request.art,
+                "isCyber": request.isCyber,
+                "timeZone": request.timeZone
+            ], encoding: JSONEncoding.prettyPrinted)
         }
     }
     

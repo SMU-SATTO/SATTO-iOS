@@ -14,7 +14,6 @@ struct TimetableMakeView: View {
 
     @Binding var stackPath: [TimetableRoute]
     
-    @StateObject var subjectViewModel = SubjectViewModel()
     @StateObject var selectedValues = SelectedValues()
     @StateObject var bottomSheetViewModel = BottomSheetViewModel()
     
@@ -248,7 +247,6 @@ struct TimetableMakeView: View {
         case .majorCombination:
             progressPopup = true
             isButtonDisabled = true
-            //TODO: - API majorList 서버에서 오면 여기에 다시 넣어줘야함
             selectedValues.fetchFinalTimetableList(GPA: selectedValues.credit, requiredLect: selectedValues.selectedSubjects, majorCount: selectedValues.majorNum, cyberCount: selectedValues.ELearnNum, impossibleTimeZone: selectedValues.selectedTimes, majorList: selectedValues.selectedMajorCombs) { result in
                 DispatchQueue.main.async {
                     switch result {
@@ -286,7 +284,7 @@ struct TimetableMakeView: View {
         case .creditPicker:
             return AnyView(CreditPickerView(selectedValues: selectedValues))
         case .essentialClasses:
-            return AnyView(EssentialClassesSelectorView(subjectViewModel: subjectViewModel, selectedValues: selectedValues, bottomSheetViewModel: bottomSheetViewModel))
+            return AnyView(EssentialClassesSelectorView(selectedValues: selectedValues, bottomSheetViewModel: bottomSheetViewModel))
         case .invalidTime:
             return AnyView(InvalidTimeSelectorView(selectedValues: selectedValues, selectedSubviews: $selectedSubviews, alreadySelectedSubviews: $alreadySelectedSubviews, invalidPopup: $invalidPopup))
         case .midCheck:

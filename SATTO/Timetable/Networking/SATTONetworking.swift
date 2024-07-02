@@ -86,8 +86,8 @@ class SATTONetworking {
         }
     }
     
-    func getCurrentLectureList(completion: @escaping(Result<CurrentLectureResponseDto, Error>) -> Void) {
-        provider.request(.getCurrentLectureList) { result in
+    func getCurrentLectureList(request: CurrentLectureListRequest, completion: @escaping(Result<CurrentLectureResponseDto, Error>) -> Void) {
+        provider.request(.getCurrentLectureList(request: request)) { result in
             switch result {
             case .success(let response):
                 if response.statusCode == 403 {

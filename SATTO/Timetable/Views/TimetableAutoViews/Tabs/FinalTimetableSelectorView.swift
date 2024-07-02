@@ -101,6 +101,5 @@ struct FinalSelectPopupView: View {
 
 #Preview {
     FinalTimetableSelectorView(selectedValues: SelectedValues(), showingPopup: .constant(false), timetableIndex: .constant(1))
-//    FinalSelectPopupView(finalSelectPopup: .constant(true))
         .preferredColorScheme(.dark)
 }

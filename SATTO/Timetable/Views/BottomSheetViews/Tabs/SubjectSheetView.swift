@@ -13,8 +13,8 @@ import PopupView
 
 struct SubjectSheetView: View {
     @Environment(\.colorScheme) var colorScheme
-    ///서버에서 받아온 subjectViewModel
-    @ObservedObject var subjectViewModel: SubjectViewModel
+    ///서버에서 받아온 bottomSheetViewModel
+    @ObservedObject var bottomSheetViewModel: BottomSheetViewModel
     @ObservedObject var selectedValues: SelectedValues
     
     @State private var expandedSubjectIndex: Int?
@@ -43,8 +43,8 @@ struct SubjectSheetView: View {
     private func subjectListView(containerSize: CGSize) -> some View {
         ScrollView {
             VStack {
-                ForEach(subjectViewModel.subjectDetailDataList.indices, id: \.self) { index in
-                    let subjectDetail = subjectViewModel.subjectDetailDataList[index]
+                ForEach(bottomSheetViewModel.subjectDetailDataList.indices, id: \.self) { index in
+                    let subjectDetail = bottomSheetViewModel.subjectDetailDataList[index]
                     subjectCardView(subjectDetail, at: index, containerSize: containerSize)
                         .padding(.horizontal, 10)
                 }
@@ -338,6 +338,6 @@ struct SubjectSheetView: View {
 }
 
 #Preview {
-    SubjectSheetView(subjectViewModel: SubjectViewModel(), selectedValues: SelectedValues(), showResultAction: {})
+    SubjectSheetView(bottomSheetViewModel: BottomSheetViewModel(), selectedValues: SelectedValues(), showResultAction: {})
         .preferredColorScheme(.light)
 }
