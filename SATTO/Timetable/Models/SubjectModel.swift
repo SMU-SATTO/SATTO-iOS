@@ -8,9 +8,23 @@
 import SwiftUI
 import JHTimeTable
 
-struct MajorCombModel {
-    let combinations: [(lec: String, code: String)]
+struct MajorComb: Equatable, Identifiable {
+    let id = UUID()
+    let combination: [Combination]
+    
+    static func == (lhs: MajorComb, rhs: MajorComb) -> Bool {
+        return lhs.combination == rhs.combination
+    }
 }
+
+struct Combination: Equatable {
+    let lectName, code: String
+    
+    static func == (lhs: Combination, rhs: Combination) -> Bool {
+        return lhs.lectName == rhs.lectName && lhs.code == rhs.code
+    }
+}
+
 
 protocol SubjectModelBase: Codable {
     var sbjDivcls: String { get }
@@ -49,14 +63,14 @@ struct SubjectDetailModel: SubjectModelBase {
     }
 }
 
-struct SubjectDetailList: Codable {
-    let subject: [SubjectDetailModel]
-    
-    init(subject: [SubjectDetailModel]) {
-        self.subject = subject
-    }
+//MARK: - TimetableListModel
+struct TimetableListModel {
+    let id: Int
+    let timetableName: String
+    let semesterYear: String
+    let isPublic: Bool
+    let isRepresent: Bool
 }
-
 
 struct LectureModel: Identifiable {
     var id = UUID()

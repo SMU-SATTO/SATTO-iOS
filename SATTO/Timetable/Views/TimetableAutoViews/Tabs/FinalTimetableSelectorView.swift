@@ -43,6 +43,9 @@ struct FinalSelectPopupView: View {
     @Binding var finalSelectPopup: Bool
     @Binding var timetableIndex: Int
     
+    @State private var showingAlert = false
+    @State private var timeTableName = "시간표"
+    
     var body: some View {
         VStack {
             RoundedRectangle(cornerRadius: 20)
@@ -59,7 +62,7 @@ struct FinalSelectPopupView: View {
                             .padding(.top, -40)
                         
                         Button(action: {
-                            //TODO: - API
+                            showingAlert = true
                         }) {
                             RoundedRectangle(cornerRadius: 10)
                                 .foregroundStyle(Color.buttonBlue)
@@ -95,6 +98,17 @@ struct FinalSelectPopupView: View {
                         }
                     }
                 )
+                .alert("시간표 이름을 입력해주세요", isPresented: $showingAlert) {
+                    TextField(timeTableName, text: $timeTableName)
+                    HStack {
+                        Button("취소", role: .cancel, action: {})
+                        Button("확인") {
+                            //TODO: - API - 정적인 값 존재
+                            selectedValues.postSelectedTimetable(timetableIndex: timetableIndex, semesterYear: "2024학년도 2학기", timeTableName: timeTableName, isPublic: true, isRepresented: false)
+                            finalSelectPopup = false
+                        }
+                    }
+                }
         }
     }
 }

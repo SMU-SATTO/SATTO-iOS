@@ -14,10 +14,10 @@ struct MajorCombResponseDto: Decodable {
 }
 
 struct MajorCombDto: Decodable {
-    let combination: [Combination]
+    let combination: [CombinationDto]
 }
 
-struct Combination: Decodable {
+struct CombinationDto: Decodable {
     let lectName, code: String
 }
 
@@ -29,12 +29,11 @@ struct FinalTimetableListResponseDto: Decodable {
 }
 
 struct FinalTimetableListDto: Decodable {
-    let timetable: [FinalTimetableDto]
+    let timeTable: [FinalTimetableDto]
     let totalTime: String
 }
 
 struct FinalTimetableDto: Decodable {
-    let department: String
     let code, codeSection, lectName, professor: String
     let lectTime: String
     let cmpDiv: String
@@ -49,45 +48,54 @@ struct TimetableListResponseDto: Decodable {
     let result: [TimetableListDto]
 }
 
-//MARK: - Dummy
-extension TimetableListResponseDto {
-    static var dummyData: TimetableListResponseDto {
-        TimetableListResponseDto(
-            code: "COMMON200",
-            isSuccess: true,
-            message: "Success",
-            result: [
-                TimetableListDto(id: 1, semesterYear: "2024년 1학기", timetableName: "시간표 1"),
-                TimetableListDto(id: 1, semesterYear: "2024년 1학기", timetableName: "시간표 7"),
-                TimetableListDto(id: 2, semesterYear: "2023년 2학기", timetableName: "시간표 2"),
-                TimetableListDto(id: 3, semesterYear: "2023년 1학기", timetableName: "시간표 3")
-            ]
-        )
-    }
-}
-
 struct TimetableListDto: Decodable {
-    let id: Int
+    let timeTableId: Int
     let semesterYear: String
-    let timetableName: String
+    let timeTableName: String
+    let isPublic: Bool
+    let isRepresent: Bool
 }
 
+//MARK: - /api/v1/timetable - get
 struct UserTimetableResponseDto: Decodable {
-    let code: Int
-    let isSuccess: Bool
-    let message: String
-    let result: UserTimetableDto
+    let isSuccess: Bool?
+    let code, message: String?
+    let result: UserTimetableDto?
 }
 
 struct UserTimetableDto: Decodable {
-    let lects: [LectDto]
-    let semesterYear, timeTableName: String
-    let isPublic, isRepresented: Bool
+    let timeTableID: Int?
+    let lects: [LectDto]?
+    let semesterYear, timeTableName: String?
+    let isPublic, isRepresented: Bool?
 }
 
 struct LectDto: Decodable {
-    let department, code, lectName, professor: String
-    let lectTime, cmpDiv: String
-    let subjectType: String
-    let credit: Int
+    let code, codeSection, lectName, professor: String?
+    let lectTime, cmpDiv: String?
+    let credit: Int?
+}
+
+//MARK: - TimetableSelectDto
+struct TimetableSelectResponseDto: Decodable {
+    let isSuccess: Bool
+    let code, message, result: String
+}
+
+//MARK: - PatchTimetablePrivateResponseDto
+struct PatchTimetablePrivateResponseDto: Decodable {
+    let isSuccess: Bool
+    let code, message, result: String
+}
+
+//MARK: - PatchTimetableNameResponseDto
+struct PatchTimetableNameResponseDto: Decodable {
+    let isSuccess: Bool
+    let code, message, result: String
+}
+
+//MARK: - DeleteTimetableResponseDto
+struct DeleteTimetableResponseDto: Decodable {
+    let isSuccess: Bool
+    let code, message, result: String
 }

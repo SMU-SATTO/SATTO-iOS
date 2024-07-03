@@ -9,26 +9,36 @@ import Foundation
 import Moya
 
 class TimetableRepository {
-    func postMajorComb(GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, completion: @escaping(Result<[MajorCombModel], Error>) -> Void) {
+    func postMajorComb(GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, completion: @escaping(Result<[MajorComb], Error>) -> Void) {
         SATTONetworking.shared.postMajorComb(GPA: GPA, requiredLect: requiredLect, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: impossibleTimeZone) { result in
             switch result {
             case .success(let majorCombResponseDto):
-                let majorCombModels = majorCombResponseDto.result.map { majorCombDto in
-                    let combinations = majorCombDto.combination.map { ($0.lectName, $0.code) }
-                    return MajorCombModel(combinations: combinations)
+                let majorCombModel = majorCombResponseDto.result.map { dto in
+                    MajorComb(combination: dto.combination.map { combinationDto in
+                        Combination(lectName: combinationDto.lectName, code: combinationDto.code)
+                    })
                 }
-                completion(.success(majorCombModels))
+                completion(.success(majorCombModel))
             case .failure(let error):
                 completion(.failure(error))
             }
         }
     }
     
-    func postFinalTimetableList(GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [[String]], completion: @escaping(Result<[SubjectModel], Error>) -> Void) {
+    func postFinalTimetableList(GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [[String]], completion: @escaping(Result<[[SubjectModel]], Error>) -> Void) {
         SATTONetworking.shared.postFinalTimetableList(GPA: GPA, requiredLect: requiredLect, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: impossibleTimeZone, majorList: majorList) { result in
             switch result {
-            case .success(let finalTimetableListDto):
-                let subjectModels = finalTimetableListDto.result.flatMap { $0.timetable.map { SubjectModel(sbjDivcls: $0.codeSection, sbjNo: $0.code, sbjName: $0.lectName, time: $0.lectTime) } }
+            case .success(let finalTimetableListResponseDto):
+                let subjectModels: [[SubjectModel]] = finalTimetableListResponseDto.result.map { finalTimetableListDto in
+                    finalTimetableListDto.timeTable.map { finalTimetableDto in
+                        SubjectModel(
+                            sbjDivcls: finalTimetableDto.codeSection,
+                            sbjNo: finalTimetableDto.code,
+                            sbjName: finalTimetableDto.lectName,
+                            time: finalTimetableDto.lectTime
+                        )
+                    }
+                }
                 completion(.success(subjectModels))
             case .failure(let error):
                 completion(.failure(error))
@@ -36,14 +46,24 @@ class TimetableRepository {
         }
     }
     
-    func getUserTimetable(id: Int, completion: @escaping(Result<[SubjectModel], Error>) -> Void) {
+    func getUserTimetable(id: Int, completion: @escaping (Result<[SubjectModel], Error>) -> Void) {
         SATTONetworking.shared.getUserTimetable(id: id) { result in
             switch result {
             case .success(let userTimetableDto):
-                let subjectModels = userTimetableDto.result.lects.map {
-                    SubjectModel(sbjDivcls: $0.code, sbjNo: $0.code, sbjName: $0.lectName, time: $0.lectTime)
+                if let lects = userTimetableDto.result?.lects {
+                    let subjectModels = lects.compactMap { lect -> SubjectModel? in
+                        guard let sbjDivcls = lect.codeSection,
+                              let sbjNo = lect.code,
+                              let sbjName = lect.lectName,
+                              let time = lect.lectTime else {
+                            return nil
+                        }
+                        return SubjectModel(sbjDivcls: sbjDivcls, sbjNo: sbjNo, sbjName: sbjName, time: time)
+                    }
+                    completion(.success(subjectModels))
+                } else {
+                    completion(.success([]))
                 }
-                completion(.success(subjectModels))
             case .failure(let error):
                 completion(.failure(error))
             }

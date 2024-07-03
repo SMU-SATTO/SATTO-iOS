@@ -86,6 +86,31 @@ class SATTONetworking {
         }
     }
     
+    func postTimetableSelect(
+        codeSectionList: [String],
+        semesterYear: String,
+        timeTableName: String,
+        isPublic: Bool,
+        isRepresented: Bool,
+        completion: @escaping(Result<TimetableSelectResponseDto, Error>) -> Void
+    ) {
+        provider.request(.postTimetableSelect(codeSectionList: codeSectionList, semesterYear: semesterYear, timeTableName: timeTableName, isPublic: isPublic, isRepresented: isRepresented)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let timetableSelectResponse = try response.map(TimetableSelectResponseDto.self)
+                    completion(.success(timetableSelectResponse))
+                } catch {
+                    print("Error mapping response: \(error)")
+                    completion(.failure(error))
+                }
+            case .failure(let error):
+                print("Request failed with error: \(error)")
+                completion(.failure(error))
+            }
+        }
+    }
+    
     func getCurrentLectureList(request: CurrentLectureListRequest, completion: @escaping(Result<CurrentLectureResponseDto, Error>) -> Void) {
         provider.request(.getCurrentLectureList(request: request)) { result in
             switch result {
@@ -104,6 +129,60 @@ class SATTONetworking {
                         print("Error mapping response: \(error)")
                         completion(.failure(error))
                     }
+                }
+            case .failure(let error):
+                print("Request failed with error: \(error)")
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func patchTimetablePrivate(timetableId: Int, state: Bool, completion: @escaping(Result<PatchTimetablePrivateResponseDto, Error>) -> Void) {
+        provider.request(.patchTimetablePrivate(timetableId: timetableId, state: state)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let patchTimetablePrivateResponse = try response.map(PatchTimetablePrivateResponseDto.self)
+                    completion(.success(patchTimetablePrivateResponse))
+                } catch {
+                    print("Error mapping response: \(error)")
+                    completion(.failure(error))
+                }
+            case .failure(let error):
+                print("Request failed with error: \(error)")
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func patchTimetableName(timetableId: Int, timetableName: String, completion: @escaping(Result<PatchTimetableNameResponseDto, Error>) -> Void) {
+        provider.request(.patchTimetableName(timetableId: timetableId, timetableName: timetableName)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let patchTimetableNameResponseDto = try response.map(PatchTimetableNameResponseDto.self)
+                    completion(.success(patchTimetableNameResponseDto))
+                } catch {
+                    print("Error mapping response: \(error)")
+                    completion(.failure(error))
+                }
+            case .failure(let error):
+                print("Request failed with error: \(error)")
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func deleteTimetable(timetableId: Int, completion: @escaping(Result<DeleteTimetableResponseDto, Error>) -> Void) {
+        provider.request(.deleteTimetable(timetableId: timetableId)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let deleteTimetableResponse = try response.map(DeleteTimetableResponseDto.self)
+                    completion(.success(deleteTimetableResponse))
+                } catch {
+                    print("Error mapping response: \(error)")
+                    completion(.failure(error))
                 }
             case .failure(let error):
                 print("Request failed with error: \(error)")

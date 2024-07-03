@@ -43,32 +43,9 @@ struct MajorCombSelectorView: View {
                     .padding(.bottom, 20)
             }
             ForEach(selectedValues.majorCombinations.indices, id: \.self) { index in
-                
                 majorRectangle(combination: selectedValues.majorCombinations[index])
             }
             .padding(.horizontal, 20)
-            
-            VStack {
-                Text("선택된 전공 조합 출력:")
-                    .font(.m14)
-                    .foregroundStyle(Color.blackWhite200)
-                
-                ForEach(selectedValues.selectedMajorCombs, id: \.self) { combination in
-                    HStack(spacing: 0) {
-                        ForEach(combination, id: \.self) { item in
-                            Text(item)
-                                .font(.m14)
-                                .foregroundStyle(Color.blackWhite200)
-                            if item != combination.last {
-                                Text(", ")
-                                    .font(.m14)
-                                    .foregroundStyle(Color.blackWhite200)
-                            }
-                        }
-                    }
-                }
-            }
-            .padding(.top, 20)
         }
         .onAppear {
             //MARK: API
@@ -77,13 +54,13 @@ struct MajorCombSelectorView: View {
     }
     
     @ViewBuilder
-    private func majorRectangle(combination: MajorCombModel) -> some View {
+    private func majorRectangle(combination: MajorComb) -> some View {
         Button(action: {
-            selectedValues.toggleSelection(combination.combinations.map { $0.lec })
+            selectedValues.toggleSelection(combination)
         }) {
             VStack(spacing: 3) {
-                ForEach(combination.combinations.indices, id: \.self) { index in
-                    Text(combination.combinations[index].lec)
+                ForEach(combination.combination.indices, id: \.self) { index in
+                    Text(combination.combination[index].lectName)
                         .font(.m14)
                         .foregroundStyle(Color.blackWhite200)
                         .padding(.horizontal, 10)
@@ -91,11 +68,11 @@ struct MajorCombSelectorView: View {
             }
             .background(
                 RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(selectedValues.isSelected(combination.combinations.map { $0.lec }) ? Color.subjectCardSelected : Color.subjectCardBackground)
+                    .foregroundStyle(selectedValues.isSelected(combination) ? Color.subjectCardSelected : Color.subjectCardBackground)
                     .shadow(color: colorScheme == .light ? Color(red: 0.65, green: 0.65, blue: 0.65).opacity(0.65) : Color.clear, radius: 6.23, x: 0, y: 1.22)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(selectedValues.isSelected(combination.combinations.map { $0.lec }) ? Color.subjectCardBorder : Color.clear, lineWidth: 1)
+                            .stroke(selectedValues.isSelected(combination) ? Color.subjectCardBorder : Color.clear, lineWidth: 1)
                     )
                     .frame(width: 300)
                     .padding(.vertical, -10)

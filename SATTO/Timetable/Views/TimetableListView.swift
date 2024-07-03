@@ -21,10 +21,8 @@ struct TimetableListView: View {
                 .ignoresSafeArea(.all)
             ScrollView {
                 VStack(spacing: 10) {
-                    ForEach(viewModel.timetables.keys.sorted(by: >), id: \.self) { semesterYear in
-                        if let timetableList = viewModel.timetables[semesterYear] {
-                            timetableBlock(headerText: semesterYear, timetableList: timetableList)
-                        }
+                    ForEach(viewModel.timetables, id: \.id) { timetable in
+                        timetableBlock(headerText: timetable.semesterYear, timetableList: [(id: timetable.id, name: timetable.timetableName)])
                     }
                 }
                 .padding(.horizontal, 20)
@@ -45,7 +43,6 @@ struct TimetableListView: View {
         .onAppear() {
             //MARK: API
             viewModel.fetchTimetableList()
-//            viewModel.fetchTimetableListDummy()
         }
     }
     

@@ -13,8 +13,17 @@ enum TimetableRouter {
     case postFinalTimetableList(GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [[String]])
     case getTimetableList
     case getUserTimetable(id: Int)
-    case postTimetableSelect
+    case postTimetableSelect(
+        codeSectionList: [String],
+        semesterYear: String,
+        timeTableName: String,
+        isPublic: Bool,
+        isRepresented: Bool
+    )
     case getCurrentLectureList(request: CurrentLectureListRequest)
+    case patchTimetablePrivate(timetableId: Int, state: Bool)
+    case patchTimetableName(timetableId: Int, timetableName: String)
+    case deleteTimetable(timetableId: Int)
 }
 
 extension TimetableRouter: TargetType {
@@ -45,11 +54,17 @@ extension TimetableRouter: TargetType {
         case .getTimetableList:
             return "/timetable/list"
         case .getUserTimetable:
-            return "/timetable/"
+            return "/timetable"
         case .postTimetableSelect:
             return "/timetable/select"
         case .getCurrentLectureList:
             return "/current-lecture/search"
+        case .patchTimetablePrivate(let timetableId, _):
+            return "/timetable/\(timetableId)/private"
+        case .patchTimetableName(let timetableId, _):
+            return "/timetable/\(timetableId)/name"
+        case .deleteTimetable(let timetableId):
+            return "/timetable/\(timetableId)"
         }
     }
     
@@ -67,6 +82,12 @@ extension TimetableRouter: TargetType {
             return .post
         case .getCurrentLectureList:
             return .get
+        case .patchTimetablePrivate:
+            return .patch
+        case .patchTimetableName:
+            return .patch
+        case .deleteTimetable:
+            return .delete
         }
     }
     
@@ -95,8 +116,18 @@ extension TimetableRouter: TargetType {
             return .requestParameters(parameters: [
                 "id": id
             ], encoding: URLEncoding.queryString)
-        case .postTimetableSelect:
-            return .requestPlain
+        case .postTimetableSelect(let codeSectionList,
+                                  let semesterYear,
+                                  let timeTableName,
+                                  let isPublic,
+                                  let isRepresented):
+            return .requestParameters(parameters: [
+                "codeSectionList": codeSectionList,
+                "semesterYear": semesterYear,
+                "timeTableName": timeTableName,
+                "isPublic": isPublic,
+                "isRepresented": isRepresented
+            ], encoding: JSONEncoding.prettyPrinted)
         //MARK: - get요청인데 body로 보내야함 주의
         case .getCurrentLectureList(let request):
             return .requestParameters(parameters: [
@@ -113,6 +144,19 @@ extension TimetableRouter: TargetType {
                 "isCyber": request.isCyber,
                 "timeZone": request.timeZone
             ], encoding: JSONEncoding.prettyPrinted)
+        case .patchTimetablePrivate(_, let state):
+            return .requestParameters(parameters: [
+                "isPrivate": state
+            ], encoding: JSONEncoding.prettyPrinted)
+        case .patchTimetableName(timetableId: let timetableId, timetableName: let timetableName):
+            return .requestParameters(parameters: [
+                "id": timetableId,
+            ], encoding: JSONEncoding.prettyPrinted)
+        case .deleteTimetable(let timetableId):
+            return .requestParameters(parameters: [
+                "timetableId": timetableId
+            ], encoding: JSONEncoding.prettyPrinted)
+        
         }
     }
     

@@ -233,7 +233,6 @@ struct TimetableMakeView: View {
         }
     }
 
-    // 다음 뷰로 이동하는 함수
     func navigateForward() {
         switch selectedView {
         case .creditPicker:
@@ -247,7 +246,14 @@ struct TimetableMakeView: View {
         case .majorCombination:
             progressPopup = true
             isButtonDisabled = true
-            selectedValues.fetchFinalTimetableList(GPA: selectedValues.credit, requiredLect: selectedValues.selectedSubjects, majorCount: selectedValues.majorNum, cyberCount: selectedValues.ELearnNum, impossibleTimeZone: selectedValues.selectedTimes, majorList: selectedValues.selectedMajorCombs) { result in
+            selectedValues.fetchFinalTimetableList(
+                GPA: selectedValues.credit,
+                requiredLect: selectedValues.selectedSubjects,
+                majorCount: selectedValues.majorNum,
+                cyberCount: selectedValues.ELearnNum,
+                impossibleTimeZone: selectedValues.selectedTimes,
+                majorList: selectedValues.selectedMajorCombs
+            ) { result in
                 DispatchQueue.main.async {
                     switch result {
                     case .success:
@@ -260,7 +266,6 @@ struct TimetableMakeView: View {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                             self.progressPopup = false
                             self.errorPopup = true
-                            selectedView = .finalTimetable
                         }
                     }
                     DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
@@ -318,7 +323,6 @@ struct CustomPageControl: View {
     
     var body: some View {
         HStack {
-            //MARK: - 개수 수정 필요
             ForEach(0..<totalIndex, id: \.self) { index in
                 if selectedIndex > index {
                     // 지나온 페이지

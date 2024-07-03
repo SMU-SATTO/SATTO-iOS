@@ -20,10 +20,11 @@ class SelectedValues: TimeSelectorViewModelProtocol {
     @Published var selectedSubjects: [SubjectModelBase] = [] //requiredLect
     @Published var selectedTimes: String = ""                //impossibleTimeZone
     
-    @Published var selectedMajorCombs: [[String]] = []       //majorList
+    //request할 때 보낼 과목 조합 리스트
+    @Published var selectedMajorCombs: [MajorComb] = []      //majorList
     
-    //서버에서 준 과목 조합 이중 배열 리스트
-    @Published var majorCombinations: [MajorCombModel] =
+    //서버에서 준 과목 조합 리스트
+    @Published var majorCombinations: [MajorComb] =
         [
 //            MajorCombModel(combinations: [
 //                ("Computer Science", "CS101"),
@@ -116,21 +117,21 @@ class SelectedValues: TimeSelectorViewModelProtocol {
         return subject.time.components(separatedBy: " ")
     }
     
-    func toggleSelection(_ combination: [String]) {
-        if selectedMajorCombs.contains(combination) {
-            selectedMajorCombs.removeAll(where: { $0 == combination })
-        }
-        else {
+    func toggleSelection(_ combination: MajorComb) {
+        if selectedMajorCombs.contains(where: { $0.combination == combination.combination }) {
+            selectedMajorCombs.removeAll(where: { $0.combination == combination.combination })
+        } else {
             selectedMajorCombs.append(combination)
         }
     }
-    
-    func isSelected(_ combination: [String]) -> Bool {
-        return selectedMajorCombs.contains(combination)
+
+    func isSelected(_ combination: MajorComb) -> Bool {
+        return selectedMajorCombs.contains(where: { $0.combination == combination.combination })
     }
+
     
     func fetchMajorCombinations(GPA: Int, requiredLect: [SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String) {
-        let requiredLectStrings = requiredLect.map { $0.sbjNo }
+        let requiredLectStrings = requiredLect.map { $0.sbjDivcls }
         let adjustedRequiredLect = requiredLectStrings.isEmpty ? [""] : requiredLectStrings
         repository.postMajorComb(GPA: GPA, requiredLect: adjustedRequiredLect, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: impossibleTimeZone) { [weak self] result in
             switch result {
@@ -144,21 +145,39 @@ class SelectedValues: TimeSelectorViewModelProtocol {
         }
     }
     
-    func fetchFinalTimetableList(GPA: Int, requiredLect: [SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [[String]], completion: @escaping (Result<Void, Error>) -> Void) {
+    func fetchFinalTimetableList(GPA: Int, requiredLect: [SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [MajorComb], completion: @escaping (Result<Void, Error>) -> Void) {
         let requiredLectStrings = requiredLect.map { $0.sbjDivcls }
         let adjustedRequiredLect = requiredLectStrings.isEmpty ? [""] : requiredLectStrings
         let adjustedImpossibleTimeZone = impossibleTimeZone.isEmpty ? "" : impossibleTimeZone
-        
-        repository.postFinalTimetableList(GPA: GPA, requiredLect: adjustedRequiredLect, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: adjustedImpossibleTimeZone, majorList: majorList) { [weak self] result in
+        let adjustedMajorList = majorList.map { majorComb in
+            majorComb.combination.map { combination in
+                combination.code
+            }
+        }
+        repository.postFinalTimetableList(GPA: GPA, requiredLect: adjustedRequiredLect, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: adjustedImpossibleTimeZone, majorList: adjustedMajorList) { [weak self] result in
             switch result {
             case .success(let finalTimetableList):
                 DispatchQueue.main.async {
-                    self?.timetableList = [finalTimetableList]
+                    self?.timetableList = finalTimetableList
                     completion(.success(()))
                 }
             case .failure(let error):
                 print("Error fetching finalTimetableList: \(error)")
                 completion(.failure(error))
+            }
+        }
+    }
+    
+    func postSelectedTimetable(timetableIndex: Int, semesterYear: String, timeTableName: String, isPublic: Bool, isRepresented: Bool) {
+        let codeSectionList = timetableList[timetableIndex].map { $0.sbjDivcls }
+        SATTONetworking.shared.postTimetableSelect(codeSectionList: codeSectionList, semesterYear: semesterYear, timeTableName: timeTableName, isPublic: isPublic, isRepresented: isRepresented) { result in
+            switch result {
+            case .success:
+                DispatchQueue.main.async {
+                    print("시간표 저장 성공!")
+                }
+            case .failure(let error):
+                print("Error post SelectedTimetable: \(error)")
             }
         }
     }

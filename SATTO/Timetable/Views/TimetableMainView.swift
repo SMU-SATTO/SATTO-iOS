@@ -30,7 +30,6 @@ struct TimetableMainView: View {
     
     @State var username = "홍길동"
     @State var currSemester = "2024년 2학기"
-    @State var timetableName = "시간표"
     
     @State private var bottomSheetPresented = false
     
@@ -41,7 +40,7 @@ struct TimetableMainView: View {
     @State var totalCredit: Double = 130       //전체 학점
     
     @State private var nameModifyAlert = false
-    @State private var name = "시간표"
+    @State private var timetableName = "시간표"
     
     @State private var timetableAlert = false
     
@@ -113,11 +112,12 @@ struct TimetableMainView: View {
                 .presentationDetents([.height(150)])
             })
             .alert("수정할 이름을 입력해주세요", isPresented: $nameModifyAlert) {
-                TextField(name, text: $name)
+                TextField(timetableName, text: $timetableName)
                 HStack {
                     Button("취소", role: .cancel, action: {})
                     Button("확인") {
                         //TODO: timetable 수정 - 이름 변경 API
+                        timetableMainViewModel.patchTimetableName(timetableId: timetableMainViewModel.timetableId, timetableName: timetableName)
                     }
                 }
             }
@@ -125,9 +125,10 @@ struct TimetableMainView: View {
                 HStack {
                     Button("공개") {
                         //TODO: 공개 비공개 설정 API
+                        timetableMainViewModel.patchTimetablePrivate(timeTableId: timetableMainViewModel.timetableId, state: true)
                     }
                     Button("비공개") {
-                        
+                        timetableMainViewModel.patchTimetablePrivate(timeTableId: timetableMainViewModel.timetableId, state: false)
                     }
                     Button("취소", action: {})
                 }
@@ -137,6 +138,7 @@ struct TimetableMainView: View {
                     Button("아니요", role: .cancel, action: {})
                     Button("네") {
                         //TODO: 삭제 API
+                        timetableMainViewModel.deleteTimetable(timetableID: timetableMainViewModel.timetableId)
                     }
                 }
             }

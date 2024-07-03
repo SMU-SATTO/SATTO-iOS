@@ -35,7 +35,7 @@ struct TimetableView: View {
             // Add background
         }
         .lectureTableWeekdays(getWeeks(from: timetableBaseArray))
-        .lectureTableTimes(startAt: .init(hour: 9, minute: 0), endAt: .init(hour: 21, minute: 0)) // 시작, 끝 시간 설정
+        .lectureTableTimes(startAt: .init(hour: getFirstTime(from: timetableBaseArray), minute: 0), endAt: .init(hour: getEndTime(from: timetableBaseArray), minute: 0)) // 시작, 끝 시간 설정
         .lectureTableBorder(width: 0.5, radius: 0, color: "#979797") // table 그리드 선 색 변경
         .lectureTableBar(time: .init(height: 0, width: 35), week: .init(height: 30, width: 10)) //날짜, 시간 위치 변경 가능, 시간, 주 크기 변경
         .aspectRatio(7/10, contentMode: .fit)
@@ -107,6 +107,15 @@ struct TimetableView: View {
         }
         
         return weeks
+    }
+    
+    private func getFirstTime(from timetableBaseArray: [SubjectModelBase]) -> Int {
+        for firstTime in timetableBaseArray {
+            if firstTime.time.contains("월0") || firstTime.time.contains("화0") || firstTime.time.contains("수0") || firstTime.time.contains("목0") || firstTime.time.contains("금0") || firstTime.time.contains("토0") || firstTime.time.contains("일0") {
+                return 8
+            }
+        }
+        return 9
     }
     
     private func getEndTime(from timetableBaseArray: [SubjectModelBase]) -> Int {
