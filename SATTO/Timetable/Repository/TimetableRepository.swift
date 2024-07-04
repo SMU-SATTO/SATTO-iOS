@@ -66,30 +66,36 @@ class TimetableRepository {
         }
     }
     
-    func getUserTimetable(id: Int?, completion: @escaping (Result<[SubjectModel], Error>) -> Void) {
+    func getUserTimetable(id: Int?, completion: @escaping (Result<TimetableMainInfoModel, Error>) -> Void) {
         SATTONetworking.shared.getUserTimetable(id: id) { result in
             switch result {
             case .success(let userTimetableDto):
-                if let lects = userTimetableDto.result?.lects {
-                    let subjectModels = lects.compactMap { lect -> SubjectModel? in
-                        guard let sbjDivcls = lect.codeSection,
-                              let sbjNo = lect.code,
-                              let sbjName = lect.lectName,
-                              let time = lect.lectTime else {
-                            return nil
-                        }
-                        return SubjectModel(sbjDivcls: sbjDivcls, sbjNo: sbjNo, sbjName: sbjName, time: time)
-                    }
-                    completion(.success(subjectModels))
-                } else {
-                    completion(.success([]))
+                guard let lects = userTimetableDto.result?.lects else {
+                    completion(.success(TimetableMainInfoModel(subjectModels: [], semesterYear: nil, timeTableName: nil)))
+                    return
                 }
+                
+                let subjectModels = lects.compactMap { lect -> SubjectModel? in
+                    guard let sbjDivcls = lect.codeSection,
+                          let sbjNo = lect.code,
+                          let sbjName = lect.lectName,
+                          let time = lect.lectTime else {
+                        return nil
+                    }
+                    return SubjectModel(sbjDivcls: sbjDivcls, sbjNo: sbjNo, sbjName: sbjName, time: time)
+                }
+                
+                let result = TimetableMainInfoModel(subjectModels: subjectModels,
+                                                 semesterYear: userTimetableDto.result?.semesterYear,
+                                                 timeTableName: userTimetableDto.result?.timeTableName)
+                completion(.success(result))
+                
             case .failure(let error):
                 completion(.failure(error))
             }
         }
     }
-    
+
     //TODO: - SubjectDetailModel에 이전 수강 인원 누락되어있음 + 담은인원 + 옵셔널 처리 체크
     func postCurrentLectureList(request: CurrentLectureListRequest, page: Int, completion: @escaping(Result<([SubjectDetailModel], Int?), Error>) -> Void) {
         SATTONetworking.shared.postCurrentLectureList(request: request, page: page) { result in

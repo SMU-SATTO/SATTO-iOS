@@ -29,7 +29,6 @@ struct TimetableMainView: View {
     @Namespace private var namespace
     
     @State var username = "홍길동"
-    @State var currSemester = "2024년 2학기"
     
     @State private var bottomSheetPresented = false
     
@@ -40,7 +39,6 @@ struct TimetableMainView: View {
     @State var totalCredit: Double = 130       //전체 학점
     
     @State private var nameModifyAlert = false
-    @State private var timetableName = "시간표"
     @State private var timetableIsPrivateAlert = false
     @State private var deleteTableAlert = false
     @State private var representAlert = false
@@ -134,12 +132,12 @@ struct TimetableMainView: View {
                 .presentationDetents([.height(150)])
             })
             .alert("수정할 이름을 입력해주세요", isPresented: $nameModifyAlert) {
-                TextField(timetableName, text: $timetableName)
+                TextField(timetableMainViewModel.timetalbeName, text: $timetableMainViewModel.timetalbeName)
                 HStack {
                     Button("취소", role: .cancel, action: {})
                     Button("확인") {
                         //MARK: timetable 수정 - 이름 변경 API
-                        timetableMainViewModel.patchTimetableName(timetableId: timetableMainViewModel.timetableId, timetableName: timetableName)
+                        timetableMainViewModel.patchTimetableName(timetableId: timetableMainViewModel.timetableId, timetableName: timetableMainViewModel.timetalbeName)
                     }
                 }
             }
@@ -276,7 +274,7 @@ struct TimetableMainView: View {
     private var timetableView: some View {
         VStack {
             HStack {
-                Text("\(currSemester) \(timetableName)")
+                Text("\(timetableMainViewModel.semesterYear) \(timetableMainViewModel.timetalbeName)")
                     .font(.b14)
                     .padding(.leading, 30)
                 Spacer()

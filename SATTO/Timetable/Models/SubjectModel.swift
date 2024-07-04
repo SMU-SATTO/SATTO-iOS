@@ -25,7 +25,6 @@ struct Combination: Equatable {
     }
 }
 
-
 protocol SubjectModelBase: Codable {
     var sbjDivcls: String { get }
     var sbjNo: String { get }
@@ -61,6 +60,13 @@ struct SubjectDetailModel: SubjectModelBase {
         self.yesterdayEnrolledData = yesterdayEnrolledData
         self.threeDaysAgoEnrolledData = threeDaysAgoEnrolledData
     }
+}
+
+//MARK: - TimetableMain에서 사용하는 구조체
+struct TimetableMainInfoModel {
+    let subjectModels: [SubjectModel]
+    let semesterYear: String?
+    let timeTableName: String?
 }
 
 //MARK: - TimetableListModel

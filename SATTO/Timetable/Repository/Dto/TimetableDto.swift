@@ -56,7 +56,7 @@ struct TimetableListDto: Decodable {
     let isRepresent: Bool
 }
 
-//MARK: - /api/v1/timetable - get
+//MARK: - TimetableInfo - get
 struct UserTimetableResponseDto: Decodable {
     let isSuccess: Bool?
     let code, message: String?

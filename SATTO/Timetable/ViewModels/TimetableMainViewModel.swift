@@ -11,14 +11,18 @@ final class TimetableMainViewModel: ObservableObject {
     let repository = TimetableRepository()
     
     @Published var timetableId: Int = 0 //MainView에 띄워지는 시간표의 id
+    @Published var semesterYear: String = "2024년 2학기"
+    @Published var timetalbeName: String = "시간표"
     @Published var timetableInfo: [SubjectModelBase] = []
     
     func fetchUserTimetable(id: Int?) {
         repository.getUserTimetable(id: id) { [weak self] result in
             switch result {
-            case .success(let userTimetable):
+            case .success(let timetableInfoModel):
                 DispatchQueue.main.async {
-                    self?.timetableInfo = userTimetable
+                    self?.semesterYear = timetableInfoModel.semesterYear ?? "2024년 2학기"
+                    self?.timetalbeName = timetableInfoModel.timeTableName ?? "시간표"
+                    self?.timetableInfo = timetableInfoModel.subjectModels
                 }
             case .failure(let error):
                 print("Error fetching UserTimetable!: \(error)")
