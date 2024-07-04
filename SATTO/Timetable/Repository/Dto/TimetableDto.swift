@@ -88,6 +88,12 @@ struct PatchTimetablePrivateResponseDto: Decodable {
     let code, message, result: String
 }
 
+//MARK: - PatchTimetableRepresentResponseDto
+struct PatchTimetableRepresentResponseDto: Decodable {
+    let isSuccess: Bool
+    let code, message, result: String
+}
+
 //MARK: - PatchTimetableNameResponseDto
 struct PatchTimetableNameResponseDto: Decodable {
     let isSuccess: Bool

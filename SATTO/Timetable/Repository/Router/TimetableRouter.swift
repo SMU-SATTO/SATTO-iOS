@@ -23,6 +23,7 @@ enum TimetableRouter {
     )
     case postCurrentLectureList(request: CurrentLectureListRequest, page: Int)
     case patchTimetablePrivate(timetableId: Int, isPublic: Bool)
+    case patchTimetableRepresent(timetableId: Int, isRepresent: Bool)
     case patchTimetableName(timetableId: Int, timetableName: String)
     case deleteTimetable(timetableId: Int)
 }
@@ -68,6 +69,8 @@ extension TimetableRouter: TargetType {
             return "/current-lecture/search"
         case .patchTimetablePrivate(let timetableId, _):
             return "/timetable/\(timetableId)/private"
+        case .patchTimetableRepresent(let timetableId, _):
+            return "/timetable/\(timetableId)/represent"
         case .patchTimetableName(let timetableId, _):
             return "/timetable/\(timetableId)/name"
         case .deleteTimetable(let timetableId):
@@ -92,6 +95,8 @@ extension TimetableRouter: TargetType {
         case .postCurrentLectureList:
             return .post
         case .patchTimetablePrivate:
+            return .patch
+        case .patchTimetableRepresent:
             return .patch
         case .patchTimetableName:
             return .patch
@@ -163,6 +168,10 @@ extension TimetableRouter: TargetType {
         case .patchTimetablePrivate(_, let isPublic):
             return .requestParameters(parameters: [
                 "state": isPublic
+            ], encoding: JSONEncoding.prettyPrinted)
+        case .patchTimetableRepresent(_, let isRepresent):
+            return .requestParameters(parameters: [
+                "state": isRepresent
             ], encoding: JSONEncoding.prettyPrinted)
         case .patchTimetableName(let timetableId, let timetableName):
             return .requestParameters(parameters: [

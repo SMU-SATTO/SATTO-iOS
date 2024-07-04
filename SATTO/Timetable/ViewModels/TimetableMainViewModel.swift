@@ -39,6 +39,19 @@ final class TimetableMainViewModel: ObservableObject {
         }
     }
     
+    func patchTimetableRepresent(timeTableId: Int, isRepresent: Bool) {
+        SATTONetworking.shared.patchTimetableRepresent(timetableId: timetableId, isRepresent: isRepresent) { result in
+            switch result {
+            case .success:
+                DispatchQueue.main.async {
+                    print("대표시간표 변경 성공!")
+                }
+            case .failure(let error):
+                print("Error patching timetablePrivate: \(error)")
+            }
+        }
+    }
+    
     func patchTimetableName(timetableId: Int, timetableName: String) {
         SATTONetworking.shared.patchTimetableName(timetableId: timetableId, timetableName: timetableName) { result in
             switch result {

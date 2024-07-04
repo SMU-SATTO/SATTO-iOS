@@ -136,11 +136,33 @@ class SATTONetworking {
             case .success(let response):
                 do {
                     let patchTimetablePrivateResponse = try response.map(PatchTimetablePrivateResponseDto.self)
-                    print("\(patchTimetablePrivateResponse)")
                     if patchTimetablePrivateResponse.isSuccess {
                         completion(.success(patchTimetablePrivateResponse))
                     } else {
                         let error = NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: patchTimetablePrivateResponse.message])
+                        completion(.failure(error))
+                    }
+                } catch {
+                    print("Error mapping response: \(error)")
+                    completion(.failure(error))
+                }
+            case .failure(let error):
+                print("Request failed with error: \(error)")
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func patchTimetableRepresent(timetableId: Int, isRepresent: Bool, completion: @escaping(Result<PatchTimetableRepresentResponseDto, Error>) -> Void) {
+        provider.request(.patchTimetableRepresent(timetableId: timetableId, isRepresent: isRepresent)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let patchTimetableRepresentResponseDto = try response.map(PatchTimetableRepresentResponseDto.self)
+                    if patchTimetableRepresentResponseDto.isSuccess {
+                        completion(.success(patchTimetableRepresentResponseDto))
+                    } else {
+                        let error = NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: patchTimetableRepresentResponseDto.message])
                         completion(.failure(error))
                     }
                 } catch {

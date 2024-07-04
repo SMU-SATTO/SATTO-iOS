@@ -41,10 +41,9 @@ struct TimetableMainView: View {
     
     @State private var nameModifyAlert = false
     @State private var timetableName = "시간표"
-    
-    @State private var timetableAlert = false
-    
+    @State private var timetableIsPrivateAlert = false
     @State private var deleteTableAlert = false
+    @State private var representAlert = false
     
     var body: some View {
         NavigationStack(path: $stackPath){
@@ -71,6 +70,9 @@ struct TimetableMainView: View {
                             }) {
                                 HStack {
                                     Image(systemName: "pencil")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 20, height: 16)
                                     Text("이름 변경")
                                         .font(.sb16)
                                 }
@@ -80,10 +82,29 @@ struct TimetableMainView: View {
                         }
                         HStack {
                             Button(action: {
-                                timetableAlert = true
+                                representAlert = true
+                            }) {
+                                HStack {
+                                    Image(systemName: "crown")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 20, height: 16)
+                                    Text("대표시간표 변경")
+                                        .font(.sb16)
+                                }
+                            }
+                            .foregroundStyle(.blackWhite200)
+                            Spacer()
+                        }
+                        HStack {
+                            Button(action: {
+                                timetableIsPrivateAlert = true
                             }) {
                                 HStack {
                                     Image(systemName: "lock")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 20, height: 16)
                                     Text("공개 범위 변경")
                                         .font(.sb16)
                                 }
@@ -97,6 +118,9 @@ struct TimetableMainView: View {
                             }) {
                                 HStack {
                                     Image(systemName: "trash")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 20, height: 16)
                                     Text("삭제")
                                         .font(.sb16)
                                 }
@@ -114,21 +138,33 @@ struct TimetableMainView: View {
                 HStack {
                     Button("취소", role: .cancel, action: {})
                     Button("확인") {
-                        //TODO: timetable 수정 - 이름 변경 API
+                        //MARK: timetable 수정 - 이름 변경 API
                         timetableMainViewModel.patchTimetableName(timetableId: timetableMainViewModel.timetableId, timetableName: timetableName)
                     }
                 }
             }
-            .alert("시간표 공개 범위 변경", isPresented: $timetableAlert) {
+            .alert("정말로 삭제하시겠어요?", isPresented: $representAlert) {
+                HStack {
+                    Button("대표시간표로 설정") {
+                        //MARK: 대표 시간표 변경 API
+                        timetableMainViewModel.patchTimetableRepresent(timeTableId: timetableMainViewModel.timetableId, isRepresent: true)
+                    }
+                    Button("대표시간표 취소") {
+                        timetableMainViewModel.patchTimetableRepresent(timeTableId: timetableMainViewModel.timetableId, isRepresent: false)
+                    }
+                    Button("취소", role: .cancel, action: {})
+                }
+            }
+            .alert("시간표 공개 범위 변경", isPresented: $timetableIsPrivateAlert) {
                 HStack {
                     Button("공개") {
-                        //TODO: 공개 비공개 설정 API
+                        //MARK: 공개 비공개 설정 API
                         timetableMainViewModel.patchTimetablePrivate(timeTableId: timetableMainViewModel.timetableId, isPublic: true)
                     }
                     Button("비공개") {
                         timetableMainViewModel.patchTimetablePrivate(timeTableId: timetableMainViewModel.timetableId, isPublic: false)
                     }
-                    Button("취소", action: {})
+                    Button("취소", role: .cancel, action: {})
                 }
             }
             .alert("정말로 삭제하시겠어요?", isPresented: $deleteTableAlert) {
