@@ -7,7 +7,7 @@
 
 import Foundation
 
-//CurrentLectureListRequest
+//MARK: - CurrentLectureListRequest
 struct CurrentLectureListRequest: Codable {
     let searchText: String
     let grade: [Int]
@@ -28,6 +28,9 @@ struct CurrentLectureResponseDto: Decodable {
 
 struct CurrentLectureResponseDTOList: Decodable {
     let currentLectureResponseDTOList: [CurrentLectureDTO]
+    let listSize, totalPage: Int?
+    let totalElements: String?
+    let isFirst, isLast: Bool?
 }
 
 struct CurrentLectureDTO: Decodable {

@@ -21,11 +21,12 @@ final class BottomSheetViewModel: TimeSelectorViewModelProtocol {
     @Published var selectedELOption: [String] = ["전체"]
     @Published var selectedTimes: String = ""
     
-    //    @Published var subjectDetailDataList: [TimetableDetailModel] = []
-    @Published var subjectDetailDataList: [SubjectDetailModel] = [
-        SubjectDetailModel(major: "1전심", sbjDivcls: "HAEA9239-3", sbjNo: "HAEA9239", sbjName: "GPU프로그래밍", prof: "나재호", time: "화5 화3 수8", credit: 3, enrolledStudents: 115, yesterdayEnrolledData: 100, threeDaysAgoEnrolledData: 80),
-        SubjectDetailModel(major: "1전심", sbjDivcls: "HAEA0005-1", sbjNo: "HAEA0005", sbjName: "디지털신호처리", prof: "강상욱", time: "수1 수2 수3", credit: 3, enrolledStudents: 120, yesterdayEnrolledData: 20, threeDaysAgoEnrolledData: 30),
-    ]
+    @Published var subjectDetailDataList: [SubjectDetailModel] = []
+    
+    @Published var currentPage: Int = 0
+    @Published var totalPage: Int? = 0
+    @Published var isLoading: Bool = false
+    @Published var hasMorePages: Bool = true
     
     func isGradeSelected() -> Bool {
         if selectedGrades.isEmpty || selectedGrades.contains("전체") {
@@ -62,7 +63,10 @@ final class BottomSheetViewModel: TimeSelectorViewModelProtocol {
         return true
     }
     
-    func fetchCurrentLectureList() {
+    func fetchCurrentLectureList(page: Int, completion: @escaping (Bool) -> Void = { _ in }) {
+        guard !isLoading else { return }
+        isLoading = true
+        
         let grades: [Int] = selectedGrades.contains("전체") ? [] : selectedGrades.compactMap { grade in
             switch grade {
             case "1학년":
@@ -88,33 +92,47 @@ final class BottomSheetViewModel: TimeSelectorViewModelProtocol {
         let engineering = selectedBGE.contains("공학") ? 1 : 0
         let art = selectedBGE.contains("예술") ? 1 : 0
         
-        let isCyber = selectedELOption.contains("E러닝 빼고 보기") ? 0 : 1
+        var isCyber: Int {
+            if selectedELOption.contains("전체") {
+                return 0
+            } else if selectedELOption.contains("E러닝만 보기") {
+                return 1
+            } else if selectedELOption.contains("E러닝 빼고 보기") {
+                return 2
+            } else {
+                return 0
+            }
+        }
         
-        repository.getCurrentLectureList(
-            request:
-                CurrentLectureListRequest(
-                    searchText: searchText,
-                    grade: grades,
-                    elective: elective,
-                    normal: normal,
-                    essential: essential,
-                    humanity: humanity,
-                    society: society,
-                    nature: nature,
-                    engineering: engineering,
-                    art: art,
-                    isCyber: isCyber,
-                    timeZone: selectedTimes
-                )) { [weak self] result in
-                    switch result {
-                    case .success(let subjectDetailModels):
-                        DispatchQueue.main.async {
-                            self?.subjectDetailDataList = subjectDetailModels
-                        }
-                    case .failure(let error):
-                        print("Error fetching currentLectureList: \(error)")
+        repository.postCurrentLectureList(request: CurrentLectureListRequest(searchText: searchText, grade: grades, elective: elective, normal: normal, essential: essential, humanity: humanity, society: society, nature: nature, engineering: engineering, art: art, isCyber: isCyber, timeZone: selectedTimes), page: page) { [weak self] result in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let subjectDetailModels):
+                    if page == 0 {
+                        self?.subjectDetailDataList = subjectDetailModels.0
+                    } else {
+                        self?.subjectDetailDataList.append(contentsOf: subjectDetailModels.0)
                     }
+                    self?.totalPage = subjectDetailModels.1
+                    self?.hasMorePages = self?.currentPage ?? 0 < (self?.totalPage ?? 0) - 1
+                    completion(true)
+                case .failure(let error):
+                    print("Error fetching currentLectureList: \(error)")
+                    completion(false)
                 }
+            }
+        }
+    }
+    
+    func loadMoreSubjects() {
+        guard hasMorePages && !isLoading else { return }
+        currentPage += 1
+        fetchCurrentLectureList(page: currentPage)
+    }
+    
+    func resetCurrPage() {
+        currentPage = 0
     }
 }
 

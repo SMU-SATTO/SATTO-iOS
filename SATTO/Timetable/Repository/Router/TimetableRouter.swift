@@ -21,7 +21,7 @@ enum TimetableRouter {
         isPublic: Bool,
         isRepresented: Bool
     )
-    case getCurrentLectureList(request: CurrentLectureListRequest)
+    case postCurrentLectureList(request: CurrentLectureListRequest, page: Int)
     case patchTimetablePrivate(timetableId: Int, isPublic: Bool)
     case patchTimetableName(timetableId: Int, timetableName: String)
     case deleteTimetable(timetableId: Int)
@@ -64,7 +64,7 @@ extension TimetableRouter: TargetType {
             }
         case .postTimetableSelect:
             return "/timetable/select"
-        case .getCurrentLectureList:
+        case .postCurrentLectureList:
             return "/current-lecture/search"
         case .patchTimetablePrivate(let timetableId, _):
             return "/timetable/\(timetableId)/private"
@@ -89,8 +89,8 @@ extension TimetableRouter: TargetType {
             return .get
         case .postTimetableSelect:
             return .post
-        case .getCurrentLectureList:
-            return .get
+        case .postCurrentLectureList:
+            return .post
         case .patchTimetablePrivate:
             return .patch
         case .patchTimetableName:
@@ -121,7 +121,6 @@ extension TimetableRouter: TargetType {
             ], encoding: JSONEncoding.prettyPrinted)
         case .getTimetableList:
             return .requestPlain
-            //TODO: 대표 시간표 로직 손보기 - id와 공유
         case .getMainTimetable:
             return .requestPlain
         case .getUserTimetable(let id):
@@ -142,9 +141,8 @@ extension TimetableRouter: TargetType {
                 "isPublic": isPublic,
                 "isRepresented": isRepresented
             ], encoding: JSONEncoding.prettyPrinted)
-        //MARK: - get요청인데 body로 보내야함 주의
-        case .getCurrentLectureList(let request):
-            return .requestParameters(parameters: [
+        case .postCurrentLectureList(let request, let page):
+            let parameters: [String: Any] = [
                 "lectName": request.searchText,
                 "grade": request.grade,
                 "elective": request.elective,
@@ -157,7 +155,11 @@ extension TimetableRouter: TargetType {
                 "art": request.art,
                 "isCyber": request.isCyber,
                 "timeZone": request.timeZone
-            ], encoding: JSONEncoding.prettyPrinted)
+            ]
+            let queryStringParameters: [String: Any] = [
+                "page": page
+            ]
+            return .requestCompositeParameters(bodyParameters: parameters, bodyEncoding: JSONEncoding.prettyPrinted, urlParameters: queryStringParameters)
         case .patchTimetablePrivate(_, let isPublic):
             return .requestParameters(parameters: [
                 "state": isPublic
@@ -170,14 +172,13 @@ extension TimetableRouter: TargetType {
             return .requestParameters(parameters: [
                 "timetableId": timetableId
             ], encoding: JSONEncoding.prettyPrinted)
-        
         }
     }
     
     var headers: [String: String]? {
         return [
             "Content-type": "application/json",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyMDE4MTAwMEBzYW5nbXl1bmcua3IiLCJpYXQiOjE3MTk0NzE5MjMsImV4cCI6MTcxOTU1ODMyM30.y7PRFAPvwN-941Fq3PP7cY9b_EDg4W6VNwBU_nLYmBA"
+            "Authorization": "Bearer "
         ]
     }
     

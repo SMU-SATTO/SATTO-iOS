@@ -8,9 +8,6 @@
 import SwiftUI
 import PopupView
 
-//MARK: - 할일
-/// 학점 넘치는 선택은 어떻게 처리?
-
 struct SubjectSheetView: View {
     @Environment(\.colorScheme) var colorScheme
     ///서버에서 받아온 bottomSheetViewModel
@@ -21,6 +18,10 @@ struct SubjectSheetView: View {
     @State private var showFloater: Bool = false
     
     var showResultAction: () -> Void
+    
+    @State private var isLoading: Bool = false
+    
+    @State private var scrollOffset: CGFloat = 0
     
     var body: some View {
         GeometryReader { geometry in
@@ -39,16 +40,32 @@ struct SubjectSheetView: View {
             }
         }
     }
-    
+
     private func subjectListView(containerSize: CGSize) -> some View {
-        ScrollView {
-            VStack {
-                ForEach(bottomSheetViewModel.subjectDetailDataList.indices, id: \.self) { index in
-                    let subjectDetail = bottomSheetViewModel.subjectDetailDataList[index]
-                    subjectCardView(subjectDetail, at: index, containerSize: containerSize)
-                        .padding(.horizontal, 10)
+        ScrollViewReader { proxy in
+            ScrollView {
+                LazyVStack {
+                    ForEach(bottomSheetViewModel.subjectDetailDataList.indices, id: \.self) { index in
+                        let subjectDetail = bottomSheetViewModel.subjectDetailDataList[index]
+                        subjectCardView(subjectDetail, at: index, containerSize: containerSize)
+                            .padding(.horizontal, 10)
+                            .onAppear {
+                                if index == bottomSheetViewModel.subjectDetailDataList.count - 1 {
+                                    bottomSheetViewModel.loadMoreSubjects()
+                                }
+                            }
+                    }
+                    .padding(EdgeInsets(top: 10, leading: 10, bottom: 20, trailing: 10))
+                    if bottomSheetViewModel.isLoading {
+                        ProgressView()
+                            .padding()
+                    }
                 }
-                .padding(EdgeInsets(top: 10, leading: 10, bottom: 20, trailing: 10))
+            }
+            .onAppear {
+                if bottomSheetViewModel.subjectDetailDataList.isEmpty {
+                    bottomSheetViewModel.fetchCurrentLectureList(page: 0)
+                }
             }
         }
     }
@@ -316,7 +333,7 @@ struct SubjectSheetView: View {
             .frame(width: 200, height: 50)
             .shadow(radius: 10)
             .overlay(
-                Text("시간대가 겹쳐요!")
+                Text("시간대나 과목이 겹쳐요!")
                     .font(.sb16)
             )
     }

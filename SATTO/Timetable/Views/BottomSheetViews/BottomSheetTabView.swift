@@ -50,9 +50,6 @@ struct BottomSheetTabView: View {
                 }
             }
         }
-        .onAppear {
-//            bottomSheetViewModel.fetchCurrentLectureList()
-        }
     }
     
     private var categoryView: some View {
@@ -115,10 +112,13 @@ struct BottomSheetTabView: View {
                             .padding(.leading, 5)
                             .submitLabel(.search)
                             .onSubmit {
-                                bottomSheetViewModel.fetchCurrentLectureList()
+                                bottomSheetViewModel.resetCurrPage()
+                                bottomSheetViewModel.fetchCurrentLectureList(page: bottomSheetViewModel.currentPage)
                             }
                         Button(action: {
                             bottomSheetViewModel.searchText.removeAll()
+                            bottomSheetViewModel.resetCurrPage()
+                            bottomSheetViewModel.fetchCurrentLectureList(page: bottomSheetViewModel.currentPage)
                         }) {
                             Image(systemName: "xmark.circle.fill")
                                 .foregroundStyle(Color.searchbarText)
@@ -135,26 +135,31 @@ struct BottomSheetTabView: View {
         switch selectedTab {
         case "학년":
             OptionSheetView(options: gradeOptions, selectedOptions: $bottomSheetViewModel.selectedGrades, allowsDuplicates: true) {
-                bottomSheetViewModel.fetchCurrentLectureList()
+                bottomSheetViewModel.resetCurrPage()
+                bottomSheetViewModel.fetchCurrentLectureList(page: bottomSheetViewModel.currentPage)
             }
         case "교양":
             OptionSheetView(options: GEOptions, selectedOptions: $bottomSheetViewModel.selectedGE, allowsDuplicates: true) {
-                bottomSheetViewModel.fetchCurrentLectureList()
+                bottomSheetViewModel.resetCurrPage()
+                bottomSheetViewModel.fetchCurrentLectureList(page: bottomSheetViewModel.currentPage)
             }
             if bottomSheetViewModel.selectedGE.contains("균형교양") {
                 OptionSheetView(options: BGEOptions, selectedOptions: $bottomSheetViewModel.selectedBGE, allowsDuplicates: true) {
-                    bottomSheetViewModel.fetchCurrentLectureList()
+                    bottomSheetViewModel.resetCurrPage()
+                    bottomSheetViewModel.fetchCurrentLectureList(page: bottomSheetViewModel.currentPage)
                 }
             }
         case "e-러닝":
             OptionSheetView(options: eLearnOptions, selectedOptions: $bottomSheetViewModel.selectedELOption, allowsDuplicates: false) {
-                bottomSheetViewModel.fetchCurrentLectureList()
+                bottomSheetViewModel.resetCurrPage()
+                bottomSheetViewModel.fetchCurrentLectureList(page: bottomSheetViewModel.currentPage)
             }
         case "시간":
             TimeSheetView(bottomSheetViewModel: bottomSheetViewModel, selectedSubviews: $selectedSubviews, alreadySelectedSubviews: $alreadySelectedSubviews) 
                 .padding(.top, 10)
                 .onDisappear {
-                    bottomSheetViewModel.fetchCurrentLectureList()
+                    bottomSheetViewModel.resetCurrPage()
+                    bottomSheetViewModel.fetchCurrentLectureList(page: bottomSheetViewModel.currentPage)
                 }
         default:
             EmptyView()

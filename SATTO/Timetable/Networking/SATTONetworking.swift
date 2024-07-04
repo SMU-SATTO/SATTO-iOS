@@ -111,24 +111,17 @@ class SATTONetworking {
         }
     }
     
-    func getCurrentLectureList(request: CurrentLectureListRequest, completion: @escaping(Result<CurrentLectureResponseDto, Error>) -> Void) {
-        provider.request(.getCurrentLectureList(request: request)) { result in
+    func postCurrentLectureList(request: CurrentLectureListRequest, page: Int, completion: @escaping(Result<CurrentLectureResponseDto, Error>) -> Void) {
+        print("request: \(request) \n page: \(page)")
+        provider.request(.postCurrentLectureList(request: request, page: page)) { result in
             switch result {
             case .success(let response):
-                if response.statusCode == 403 {
-                    print("Access forbidden: \(response)")
-                    if let responseString = String(data: response.data, encoding: .utf8) {
-                        print("Response Body: \(responseString)")
-                    }
-                }
-                else {
-                    do {
-                        let currentLectureResponse = try response.map(CurrentLectureResponseDto.self)
-                        completion(.success(currentLectureResponse))
-                    } catch {
-                        print("Error mapping response: \(error)")
-                        completion(.failure(error))
-                    }
+                do {
+                    let currentLectureResponse = try response.map(CurrentLectureResponseDto.self)
+                    completion(.success(currentLectureResponse))
+                } catch {
+                    print("Error mapping response: \(error)")
+                    completion(.failure(error))
                 }
             case .failure(let error):
                 print("Request failed with error: \(error)")

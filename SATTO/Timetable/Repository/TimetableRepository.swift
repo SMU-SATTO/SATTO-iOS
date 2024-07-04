@@ -91,8 +91,8 @@ class TimetableRepository {
     }
     
     //TODO: - SubjectDetailModel에 이전 수강 인원 누락되어있음 + 담은인원 + 옵셔널 처리 체크
-    func getCurrentLectureList(request: CurrentLectureListRequest, completion: @escaping(Result<[SubjectDetailModel], Error>) -> Void) {
-        SATTONetworking.shared.getCurrentLectureList(request: request) { result in
+    func postCurrentLectureList(request: CurrentLectureListRequest, page: Int, completion: @escaping(Result<([SubjectDetailModel], Int?), Error>) -> Void) {
+        SATTONetworking.shared.postCurrentLectureList(request: request, page: page) { result in
             switch result {
             case .success(let dto):
                 let subjectDetailModels = dto.result?.currentLectureResponseDTOList.map {
@@ -108,7 +108,8 @@ class TimetableRepository {
                                        yesterdayEnrolledData: 0,
                                        threeDaysAgoEnrolledData: 0)
                 }
-                completion(.success(subjectDetailModels ?? []))
+                let totalPage = dto.result?.totalPage
+                completion(.success((subjectDetailModels ?? [], totalPage)))
             case .failure(let error):
                 completion(.failure(error))
             }
