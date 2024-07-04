@@ -112,7 +112,6 @@ class SATTONetworking {
     }
     
     func postCurrentLectureList(request: CurrentLectureListRequest, page: Int, completion: @escaping(Result<CurrentLectureResponseDto, Error>) -> Void) {
-        print("request: \(request) \n page: \(page)")
         provider.request(.postCurrentLectureList(request: request, page: page)) { result in
             switch result {
             case .success(let response):

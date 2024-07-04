@@ -101,7 +101,7 @@ class TimetableRepository {
                                        sbjNo: $0.code ?? "Error",
                                        sbjName: $0.lectName ?? "Error",
                                        prof: $0.professor ?? "Error",
-                                       time: $0.lectTime ?? "일10 ",
+                                       time: $0.lectTime?.trimmingCharacters(in: .whitespaces) ?? "일10",
                                        credit: $0.credit ?? 0,
                                        enrollmentCapacity: 0,
                                        enrolledStudents: 0,
