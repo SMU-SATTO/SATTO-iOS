@@ -11,9 +11,8 @@ struct TimetableListView: View {
     @Environment(\.colorScheme) var colorScheme
     @Binding var stackPath: [TimetableRoute]
     
-    @StateObject private var viewModel = TimetableListViewModel()
-    
-    @Binding var selectedId: Int
+    @StateObject var timetableListViewModel = TimetableListViewModel()
+    @ObservedObject var timetableMainViewModel: TimetableMainViewModel
     
     var body: some View {
         ZStack {
@@ -21,8 +20,10 @@ struct TimetableListView: View {
                 .ignoresSafeArea(.all)
             ScrollView {
                 VStack(spacing: 10) {
-                    ForEach(viewModel.timetables, id: \.id) { timetable in
-                        timetableBlock(headerText: timetable.semesterYear, timetableList: [(id: timetable.id, name: timetable.timetableName)])
+                    ForEach(groupedTimetables.keys.sorted(by: >), id: \.self) { semesterYear in
+                        if let timetables = groupedTimetables[semesterYear] {
+                            TimetableListRec(headerText: semesterYear, timetableList: timetables, timetableMainViewModel: timetableMainViewModel, stackPath: $stackPath)
+                        }
                     }
                 }
                 .padding(.horizontal, 20)
@@ -40,13 +41,25 @@ struct TimetableListView: View {
                 }
             }
         }
-        .onAppear() {
-            //MARK: API
-            viewModel.fetchTimetableList()
+        .onAppear {
+            timetableListViewModel.fetchTimetableList()
         }
     }
     
-    private func timetableBlock(headerText: String, timetableList: [(id: Int, name: String)]) -> some View {
+    private var groupedTimetables: [String: [TimetableListModel]] {
+        Dictionary(grouping: timetableListViewModel.timetables, by: { $0.semesterYear })
+    }
+}
+
+struct TimetableListRec: View {
+    let headerText: String
+    let timetableList: [TimetableListModel]
+    @ObservedObject var timetableMainViewModel: TimetableMainViewModel
+    @Binding var stackPath: [TimetableRoute]
+
+    @Environment(\.colorScheme) var colorScheme
+
+    var body: some View {
         VStack {
             headerView(headerText: headerText)
             contentView(timetableList: timetableList)
@@ -57,7 +70,7 @@ struct TimetableListView: View {
                 .shadow(color: colorScheme == .light ? Color(red: 0.65, green: 0.65, blue: 0.65).opacity(0.65) : Color.clear, radius: 6.23, x: 0, y: 1.22)
         )
     }
-    
+
     private func headerView(headerText: String) -> some View {
         HStack {
             Text(headerText)
@@ -67,36 +80,39 @@ struct TimetableListView: View {
             Spacer()
         }
     }
-    
-    private func contentView(timetableList: [(id: Int, name: String)]) -> some View {
+
+    private func contentView(timetableList: [TimetableListModel]) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             ForEach(timetableList.indices, id: \.self) { index in
                 let timetable = timetableList[index]
                 Button(action: {
-                    //TODO: id를 업데이트 main에서 id로 호출만 하고 맨처음은 기본호출일거고, 그 후는 id로 onappear 호출.
-                    selectedId = timetable.id
+                    timetableMainViewModel.timetableId = timetable.id
                     stackPath.removeLast()
                 }) {
                     HStack {
-                        Text(timetable.name)
-                            .font(.m18)
-                            .foregroundStyle(Color.blackWhite)
+                        Image(systemName: timetable.isPublic ? "lock.open" : "lock")
+                        Text(timetable.timetableName)
+                        if timetable.isRepresent {
+                            Text("대표 시간표")
+                                .font(.caption)
+                                .foregroundColor(.red)
+                        }
                         Spacer()
                     }
+                    .font(.m18)
+                    .foregroundStyle(Color.blackWhite)
                 }
-                .padding(.horizontal, 5)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 10)
                 if index < timetableList.count - 1 {
                     Divider()
                 }
             }
-            .padding(.horizontal, 20)
-            .padding(.bottom, 10)
         }
-        .padding(.top, 10)
     }
 }
 
 #Preview {
-    TimetableListView(stackPath: .constant([]), selectedId: .constant(0))
+    TimetableListView(stackPath: .constant([]), timetableMainViewModel: TimetableMainViewModel())
         .preferredColorScheme(.light)
 }

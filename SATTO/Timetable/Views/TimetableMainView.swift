@@ -46,8 +46,6 @@ struct TimetableMainView: View {
     
     @State private var deleteTableAlert = false
     
-    @State var selectedId = 0
-    
     var body: some View {
         NavigationStack(path: $stackPath){
             ZStack {
@@ -125,10 +123,10 @@ struct TimetableMainView: View {
                 HStack {
                     Button("공개") {
                         //TODO: 공개 비공개 설정 API
-                        timetableMainViewModel.patchTimetablePrivate(timeTableId: timetableMainViewModel.timetableId, state: true)
+                        timetableMainViewModel.patchTimetablePrivate(timeTableId: timetableMainViewModel.timetableId, isPublic: true)
                     }
                     Button("비공개") {
-                        timetableMainViewModel.patchTimetablePrivate(timeTableId: timetableMainViewModel.timetableId, state: false)
+                        timetableMainViewModel.patchTimetablePrivate(timeTableId: timetableMainViewModel.timetableId, isPublic: false)
                     }
                     Button("취소", action: {})
                 }
@@ -147,7 +145,7 @@ struct TimetableMainView: View {
                 case .timetableMake:
                     TimetableMakeView(stackPath: $stackPath)
                 case .timetableList:
-                    TimetableListView(stackPath: $stackPath, selectedId: $selectedId)
+                    TimetableListView(stackPath: $stackPath, timetableMainViewModel: timetableMainViewModel)
                 case .timetableOption:
                     TimetableOptionView(stackPath: $stackPath)
                 case .timetableCustom:
@@ -270,12 +268,13 @@ struct TimetableMainView: View {
             
             TimetableView(timetableBaseArray: timetableMainViewModel.timetableInfo)
                 .onAppear {
-                    if selectedId == 0 {
-                        //TODO: 기본 default 시간표 호출 API
+                    if timetableMainViewModel.timetableId == 0 {
+                        //MARK: 기본 default 시간표 호출 API
+                        timetableMainViewModel.fetchUserTimetable(id: nil)
                     }
                     else {
                         //MARK: API
-                        timetableMainViewModel.fetchUserTimetable(id: selectedId)
+                        timetableMainViewModel.fetchUserTimetable(id: timetableMainViewModel.timetableId)
                     }
                 }
             .padding(.horizontal, 15)

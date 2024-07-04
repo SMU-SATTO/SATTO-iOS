@@ -46,7 +46,27 @@ class TimetableRepository {
         }
     }
     
-    func getUserTimetable(id: Int, completion: @escaping (Result<[SubjectModel], Error>) -> Void) {
+    func getTimetableList(completion: @escaping (Result<[TimetableListModel], Error>) -> Void) {
+        SATTONetworking.shared.getTimetableList() { result in
+            switch result {
+            case .success(let dto):
+                let timetableListModels: [TimetableListModel] = dto.result.map { timetable in
+                    TimetableListModel(
+                        id: timetable.timeTableId,
+                        timetableName: timetable.timeTableName,
+                        semesterYear: timetable.semesterYear,
+                        isPublic: timetable.isPublic,
+                        isRepresent: timetable.isRepresent
+                    )
+                }
+                completion(.success(timetableListModels))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func getUserTimetable(id: Int?, completion: @escaping (Result<[SubjectModel], Error>) -> Void) {
         SATTONetworking.shared.getUserTimetable(id: id) { result in
             switch result {
             case .success(let userTimetableDto):

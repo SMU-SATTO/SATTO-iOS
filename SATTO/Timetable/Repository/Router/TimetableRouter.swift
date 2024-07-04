@@ -12,7 +12,8 @@ enum TimetableRouter {
     case postMajorComb(GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String)
     case postFinalTimetableList(GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [[String]])
     case getTimetableList
-    case getUserTimetable(id: Int)
+    case getMainTimetable
+    case getUserTimetable(id: Int?)
     case postTimetableSelect(
         codeSectionList: [String],
         semesterYear: String,
@@ -21,7 +22,7 @@ enum TimetableRouter {
         isRepresented: Bool
     )
     case getCurrentLectureList(request: CurrentLectureListRequest)
-    case patchTimetablePrivate(timetableId: Int, state: Bool)
+    case patchTimetablePrivate(timetableId: Int, isPublic: Bool)
     case patchTimetableName(timetableId: Int, timetableName: String)
     case deleteTimetable(timetableId: Int)
 }
@@ -53,8 +54,14 @@ extension TimetableRouter: TargetType {
             return "/timetable/auto"
         case .getTimetableList:
             return "/timetable/list"
-        case .getUserTimetable:
+        case .getMainTimetable:
             return "/timetable"
+        case .getUserTimetable(let id):
+            if let id = id {
+                return "/timetable/\(id)"
+            } else {
+                return "/timetable" // id가 없으면 대표시간표를 불러옴
+            }
         case .postTimetableSelect:
             return "/timetable/select"
         case .getCurrentLectureList:
@@ -75,6 +82,8 @@ extension TimetableRouter: TargetType {
         case .postFinalTimetableList:
             return .post
         case .getTimetableList:
+            return .get
+        case .getMainTimetable:
             return .get
         case .getUserTimetable:
             return .get
@@ -112,10 +121,15 @@ extension TimetableRouter: TargetType {
             ], encoding: JSONEncoding.prettyPrinted)
         case .getTimetableList:
             return .requestPlain
+            //TODO: 대표 시간표 로직 손보기 - id와 공유
+        case .getMainTimetable:
+            return .requestPlain
         case .getUserTimetable(let id):
-            return .requestParameters(parameters: [
-                "id": id
-            ], encoding: URLEncoding.queryString)
+            if let id = id {
+                return .requestParameters(parameters: ["id": id], encoding: URLEncoding.queryString)
+            } else {
+                return .requestPlain // id가 nil이면 파라미터를 보내지 않음
+            }
         case .postTimetableSelect(let codeSectionList,
                                   let semesterYear,
                                   let timeTableName,
@@ -144,13 +158,13 @@ extension TimetableRouter: TargetType {
                 "isCyber": request.isCyber,
                 "timeZone": request.timeZone
             ], encoding: JSONEncoding.prettyPrinted)
-        case .patchTimetablePrivate(_, let state):
+        case .patchTimetablePrivate(_, let isPublic):
             return .requestParameters(parameters: [
-                "isPrivate": state
+                "state": isPublic
             ], encoding: JSONEncoding.prettyPrinted)
-        case .patchTimetableName(timetableId: let timetableId, timetableName: let timetableName):
+        case .patchTimetableName(let timetableId, let timetableName):
             return .requestParameters(parameters: [
-                "id": timetableId,
+                "timeTableName": timetableName,
             ], encoding: JSONEncoding.prettyPrinted)
         case .deleteTimetable(let timetableId):
             return .requestParameters(parameters: [

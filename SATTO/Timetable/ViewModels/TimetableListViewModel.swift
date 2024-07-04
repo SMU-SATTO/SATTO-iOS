@@ -8,25 +8,16 @@
 import Foundation
 
 final class TimetableListViewModel: ObservableObject {
+    let repository = TimetableRepository()
+    
     @Published var timetables: [TimetableListModel] = []
     
     func fetchTimetableList() {
-        SATTONetworking.shared.getTimetableList() { [weak self] result in
+        repository.getTimetableList() { [weak self] result in
             switch result {
             case .success(let response):
                 DispatchQueue.main.async {
-                    var timetableList: [TimetableListModel] = []
-                    
-                    for timetable in response.result {
-                        let timetableItem = TimetableListModel(id: timetable.timeTableId,
-                                                          timetableName: timetable.timeTableName,
-                                                          semesterYear: timetable.semesterYear,
-                                                          isPublic: timetable.isPublic,
-                                                          isRepresent: timetable.isRepresent)
-                        timetableList.append(timetableItem)
-                    }
-                    self?.timetables = timetableList
-                    print("시간표 불러오기 성공!")
+                    self?.timetables = response
                 }
             case .failure(let error):
                 print("Error fetching timetable list: \(error)")

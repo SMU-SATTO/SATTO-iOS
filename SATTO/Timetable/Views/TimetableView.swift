@@ -23,7 +23,8 @@ struct TimetableView: View {
                                   endAt: lecture.endAt)
             }
         } timebar: { time in
-            Text(formatTime(time))
+//            Text(formatTime(time)) //am pm 보이는 설정
+            Text("\(time.hour)")
                 .font(.r12)
                 .padding(.trailing, 3)
             

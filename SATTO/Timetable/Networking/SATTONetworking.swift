@@ -70,7 +70,7 @@ class SATTONetworking {
         }
     }
     
-    func getUserTimetable(id: Int, completion: @escaping(Result<UserTimetableResponseDto, Error>) -> Void) {
+    func getUserTimetable(id: Int?, completion: @escaping(Result<UserTimetableResponseDto, Error>) -> Void) {
         provider.request(.getUserTimetable(id: id)) { result in
             switch result {
             case .success(let response):
@@ -137,13 +137,20 @@ class SATTONetworking {
         }
     }
     
-    func patchTimetablePrivate(timetableId: Int, state: Bool, completion: @escaping(Result<PatchTimetablePrivateResponseDto, Error>) -> Void) {
-        provider.request(.patchTimetablePrivate(timetableId: timetableId, state: state)) { result in
+    func patchTimetablePrivate(timetableId: Int, isPublic: Bool, completion: @escaping(Result<PatchTimetablePrivateResponseDto, Error>) -> Void) {
+        print("\(timetableId) , \(isPublic)")
+        provider.request(.patchTimetablePrivate(timetableId: timetableId, isPublic: isPublic)) { result in
             switch result {
             case .success(let response):
                 do {
                     let patchTimetablePrivateResponse = try response.map(PatchTimetablePrivateResponseDto.self)
-                    completion(.success(patchTimetablePrivateResponse))
+                    print("\(patchTimetablePrivateResponse)")
+                    if patchTimetablePrivateResponse.isSuccess {
+                        completion(.success(patchTimetablePrivateResponse))
+                    } else {
+                        let error = NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: patchTimetablePrivateResponse.message])
+                        completion(.failure(error))
+                    }
                 } catch {
                     print("Error mapping response: \(error)")
                     completion(.failure(error))

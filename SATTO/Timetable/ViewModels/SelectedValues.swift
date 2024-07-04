@@ -24,24 +24,7 @@ class SelectedValues: TimeSelectorViewModelProtocol {
     @Published var selectedMajorCombs: [MajorComb] = []      //majorList
     
     //서버에서 준 과목 조합 리스트
-    @Published var majorCombinations: [MajorComb] =
-        [
-//            MajorCombModel(combinations: [
-//                ("Computer Science", "CS101"),
-//                ("Mathematics", "MATH201"),
-//                ("Physics", "PHYS101")
-//            ]),
-//            MajorCombModel(combinations: [
-//                ("Business Administrationddddddddddddddddddddddddddddd", "BA101"),
-//                ("Economics", "ECON201"),
-//                ("Statistics", "STAT301")
-//            ]),
-//            MajorCombModel(combinations: [
-//                ("Biology", "BIO101"),
-//                ("Chemistry", "CHEM201"),
-//                ("Psychology", "PSYC301")
-//            ])
-        ]
+    @Published var majorCombinations: [MajorComb] = []
     
     @Published var timetableList: [[SubjectModelBase]] = [
         [

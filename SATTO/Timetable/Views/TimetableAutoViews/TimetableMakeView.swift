@@ -123,19 +123,6 @@ struct TimetableMakeView: View {
         .popup(isPresented: $progressPopup, view: {
             VStack {
                 TimetableProgressView()
-                    .padding(.top, 50)
-                Button(action: {
-                    progressPopup = false
-                }, label: {
-                    RoundedRectangle(cornerRadius: 10)
-                        .foregroundStyle(Color.buttonBlue)
-                        .frame(width: 150, height: 50)
-                        .overlay(
-                            Text("취소하기")
-                                .foregroundStyle(.white)
-                                .font(.sb16))
-                })
-                .padding(.top, 50)
             }
         }, customize: {
             $0
@@ -208,10 +195,11 @@ struct TimetableMakeView: View {
             }
             .background(
                 RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(isButtonDisabled ? Color.gray : Color.buttonBlue)
+                    .foregroundStyle(isButtonDisabled || selectedView == .majorCombination && selectedValues.selectedMajorCombs.isEmpty ? Color.gray : Color.buttonBlue)
             )
             .frame(width: geometry.size.width, height: geometry.size.height)
             .disabled(isButtonDisabled)
+            .disabled(selectedView == .majorCombination && selectedValues.selectedMajorCombs.isEmpty)
         }
         .frame(height: 45)
     }
