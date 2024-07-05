@@ -26,7 +26,7 @@ enum AuthAPI {
 
 extension AuthAPI: TargetType {
     var baseURL: URL {
-        return URL(string: "http://3.37.93.59:8080")!
+        return URL(string: "https://www.satto1.shop")!
     }
     
     var path: String {
@@ -44,7 +44,7 @@ extension AuthAPI: TargetType {
         case .signOut:
             return "/api/v1/users/account/withdrawal"
         case .userInfoInquiry:
-            return "/api/v1/users"
+            return "/api/v1/users/inform"
         case .checkEemailDuplicate(let studentId):
             return "/api/v1/users/id/\(studentId)@sangmyung.kr"
         }
@@ -80,7 +80,7 @@ extension AuthAPI: TargetType {
             let parameters: [String: Any] = ["certificationNum": certificationNum]
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case .signUp(let user):
-            let parameters: [String: Any] = ["studentId": user.studentId, "email": "\(user.studentId)@sangmyung.kr", "password": user.password, "name": user.name, "nickname": user.nickname, "department": user.department, "isPublic": user.isPublic]
+            let parameters: [String: Any] = ["studentId": user.studentId, "email": "\(user.studentId)@sangmyung.kr", "password": user.password, "name": user.name, "nickname": user.nickname, "department": user.department, "isPublic": user.isPublic, "grade": user.grade]
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case .logIn(let email, let password):
             let parameters: [String: Any] = ["email": email, "password": password]

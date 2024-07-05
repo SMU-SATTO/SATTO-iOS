@@ -7,11 +7,36 @@
 
 import Foundation
 
-struct User {
+struct User: Codable {
     
     var studentId: String
-//    var email: String?
+    var email: String
     var password: String
+    var name: String
+    var nickname: String
+    var department: String
+    var grade: Int
+    var isPublic: Bool
+    
+//    enum CodingKeys: String, CodingKey {
+//        case studentId
+//        case email
+//        case password
+//        case name
+//        case nickname
+//        case department
+//        case grade
+//        case isPublic = "public"
+//    }
+    
+}
+
+
+struct User2: Codable {
+    
+    var studentId: String
+//    var email: String
+//    var password: String
     var name: String
     var nickname: String
     var department: String
@@ -20,29 +45,17 @@ struct User {
     
 }
 
-struct Model: Encodable, Decodable {
+
+struct Model: Codable {
     let isSuccess: Bool
     let code, message: String
     let result: UserInfo2
+//    let result: User
+    
 }
 
 // MARK: - Result
 struct UserInfo2: Codable {
-//    let createdAt, updatedAt: String?
-//    let userID: Int?
-//    let profileImg: JSONNull?
-//    let name, nickname, department: String?
-//    let studentID: Int?
-//    let email, password, role: String?
-//    let grade: Int?
-//    let photoContest: JSONNull?
-//    let likeList, dislikeList, courseList: [JSONAny]
-//    let resultPublic, enabled: Bool?
-//    let username: String?
-//    let authorities: [Authority]
-//    let accountNonExpired, accountNonLocked, credentialsNonExpired: Bool?
-    
-    
     var userID: String?
     var email: String?
     var password: String?
