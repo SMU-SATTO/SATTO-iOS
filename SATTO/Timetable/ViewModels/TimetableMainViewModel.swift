@@ -25,6 +25,11 @@ final class TimetableMainViewModel: ObservableObject {
                     self?.timetableInfo = timetableInfoModel.subjectModels
                 }
             case .failure(let error):
+                DispatchQueue.main.async {
+                    self?.semesterYear = "2024년 2학기"
+                    self?.timetalbeName = "시간표"
+                    self?.timetableInfo = []
+                }
                 print("Error fetching UserTimetable!: \(error)")
             }
         }

@@ -221,44 +221,13 @@ struct SubjectSheetView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 15) {
                 ForEach(selectedValues.selectedSubjects, id: \.sbjDivcls) { subject in
-                    if let detailedSubject = subject as? SubjectDetailModel {
-                        selectedSubjectDetailItemView(detailedSubject)
-                    } else if let basicSubject = subject as? SubjectModel {
-                        selectedSubjectItemView(basicSubject)
-                    } else {
-                        Text("Invalid subject data")
-                            .foregroundStyle(.red)
-                    }
+                    selectedSubjectItemView(subject)
                 }
             }
         }
     }
     
-    private func selectedSubjectItemView(_ subject: SubjectModel) -> some View {
-        HStack {
-            Text(subject.sbjName)
-                .font(.m14)
-            Button(action: {
-                selectedValues.removeSubject(subject)
-            }) {
-                Image(systemName: "xmark.circle")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 12)
-            }
-        }
-        .foregroundStyle(Color.blackWhite200)
-        .frame(height: 60)
-        .background(
-            RoundedRectangle(cornerRadius: 6)
-                .foregroundStyle(Color.subjectItemBackground)
-                .frame(height: 25)
-                .padding(EdgeInsets(top: 0, leading: -5, bottom: 0, trailing: -5))
-        )
-        .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5))
-    }
-    
-    private func selectedSubjectDetailItemView(_ subject: SubjectDetailModel) -> some View {
+    private func selectedSubjectItemView(_ subject: SubjectModelBase) -> some View {
         HStack {
             Text(subject.sbjName)
                 .font(.m14)

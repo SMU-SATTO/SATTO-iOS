@@ -141,14 +141,11 @@ struct TimetableMainView: View {
                     }
                 }
             }
-            .alert("정말로 삭제하시겠어요?", isPresented: $representAlert) {
+            .alert("대표시간표로 설정", isPresented: $representAlert) {
                 HStack {
                     Button("대표시간표로 설정") {
                         //MARK: 대표 시간표 변경 API
                         timetableMainViewModel.patchTimetableRepresent(timeTableId: timetableMainViewModel.timetableId, isRepresent: true)
-                    }
-                    Button("대표시간표 취소") {
-                        timetableMainViewModel.patchTimetableRepresent(timeTableId: timetableMainViewModel.timetableId, isRepresent: false)
                     }
                     Button("취소", role: .cancel, action: {})
                 }
@@ -169,7 +166,7 @@ struct TimetableMainView: View {
                 HStack {
                     Button("아니요", role: .cancel, action: {})
                     Button("네") {
-                        //TODO: 삭제 API
+                        //MARK: 삭제 API
                         timetableMainViewModel.deleteTimetable(timetableID: timetableMainViewModel.timetableId)
                     }
                 }

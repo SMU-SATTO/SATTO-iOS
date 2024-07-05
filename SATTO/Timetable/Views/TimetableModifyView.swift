@@ -67,7 +67,7 @@ struct TimetableModifyView: View {
             }
         }
         .onAppear {
-            //TODO: MainView에 있는 Timetableinfo. 그 뷰모델을 selectedValues의 selectedSubjects 로 변환하면 바텀시트도 업데이트 될 것 같다.
+            //TODO: 시간표 변경 API
             selectedValues.selectedSubjects = timetableMainViewModel.timetableInfo
         }
         .navigationBarBackButtonHidden(true)
