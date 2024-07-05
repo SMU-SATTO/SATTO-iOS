@@ -33,13 +33,13 @@ struct LoginView: View {
     
     @State private var studentId: String = "201910914"
     @State private var password: String = "insungmms57!"
-//    @ObservedObject var vm: AuthVieModel
-    @EnvironmentObject var authViewModel: AuthVieModel
+    @EnvironmentObject var authViewModel: AuthViewModel
+    
+    @State var isDisabled = false
     
     var body: some View {
         NavigationStack(path: $navPathFinder.path) {
             VStack(spacing: 0) {
-                
                 
                 Image("SATTO")
                     .resizable()
@@ -59,14 +59,10 @@ struct LoginView: View {
                     authViewModel.logIn(email: "\(studentId)@sangmyung.kr", password: password)
                 }, label: {
                     Text("로그인")
-                        .foregroundStyle(.white)
-                        .padding(.vertical, 16)
-                        .frame(maxWidth: .infinity)
-                        .background(Color.blue)
-                        .cornerRadius(20)
-                        .padding(.bottom, 12)
+                        .modifier(MyButtonModifier(isDisabled: isDisabled))
                     
                 })
+                .padding(.bottom, 12)
                 
                 Button(action: {
                     navPathFinder.path.append(.AgreeView)
@@ -76,7 +72,17 @@ struct LoginView: View {
                         .padding(.vertical, 16)
                         .frame(maxWidth: .infinity)
                         .cornerRadius(20)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(Color(red: 0.3, green: 0.32, blue: 0.34), lineWidth: 1)
+                        )
                     
+                })
+                
+                Button(action: {
+                    isDisabled.toggle()
+                }, label: {
+                    Text("활성 비활성")
                 })
                 
                 Spacer()
@@ -118,5 +124,19 @@ struct MyTextFieldModifier: ViewModifier {
                     .stroke(Color(red: 0.91, green: 0.92, blue: 0.93), lineWidth: 1)
                 
             )
+    }
+}
+
+struct MyButtonModifier: ViewModifier {
+    
+    var isDisabled: Bool
+    
+    func body(content: Content) -> some View{
+        content
+            .foregroundStyle(Color.white)
+            .padding(.vertical, 16)
+            .frame(maxWidth: .infinity)
+            .background(isDisabled ? Color.gray : Color.blue)
+            .cornerRadius(20)
     }
 }

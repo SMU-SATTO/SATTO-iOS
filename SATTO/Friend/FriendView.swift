@@ -36,6 +36,8 @@ struct FriendView: View {
     @State var show = false
     @Namespace var namespace
     @EnvironmentObject var navPathFinder: FriendNavigationPathFinder
+    @EnvironmentObject var authViewModel: AuthViewModel
+    @StateObject var friendViewModel = FriendViewModel()
     
     var body: some View {
         NavigationStack(path: $navPathFinder.path) {
@@ -109,13 +111,13 @@ struct FriendView: View {
                                     .padding(.horizontal, 51)
                                     
                                     
-                                    Text("한민재 20201499")
+                                    Text("\(authViewModel.user?.name ?? "name") \(authViewModel.user?.studentId ?? "studentId")")
                                         .font(.sb16)
                                         .foregroundColor(Color.gray800)
                                         .matchedGeometryEffect(id: "name", in: namespace)
                                         .padding(.bottom, 5)
                                     
-                                    Text("컴퓨터과학과")
+                                    Text("\(authViewModel.user?.department ?? "department")")
                                         .font(.m14)
                                         .foregroundColor(Color.gray600)
                                         .padding(.bottom, 23)
@@ -132,6 +134,12 @@ struct FriendView: View {
                         else {
                             GraduationRequirementsView(namespace: namespace, show: $show)
                         }
+                        
+                        Button(action: {
+                            
+                        }, label: {
+                            Text("버튼")
+                        })
                         
                     }
                     .navigationBarBackButtonHidden()
@@ -506,7 +514,6 @@ struct ClearButtonTextField2: View {
                     text = ""
                 }) {
                     Image("Icon")
-//                        .foregroundColor(.gray)
                         .padding(.trailing, 10)
                 }
             }

@@ -17,11 +17,13 @@
 		3B742B7C2BBE7C570000399F /* CompareTimeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B742B7B2BBE7C570000399F /* CompareTimeTableView.swift */; };
 		3B79D5E02C1FE0B6002FE98F /* Asset.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B79D5DF2C1FE0B6002FE98F /* Asset.xcassets */; };
 		3B82D8582C211637008E0138 /* AuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B82D8572C211637008E0138 /* AuthAPI.swift */; };
-		3B82D85A2C211641008E0138 /* AuthVieModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B82D8592C211641008E0138 /* AuthVieModel.swift */; };
+		3B82D85A2C211641008E0138 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B82D8592C211641008E0138 /* AuthViewModel.swift */; };
 		3B82D8872C2264D6008E0138 /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 3B82D8862C2264D6008E0138 /* SwiftKeychainWrapper */; };
 		3B82D88C2C2268A0008E0138 /* KeyChainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B82D88B2C2268A0008E0138 /* KeyChainManager.swift */; };
 		3B82D8902C227474008E0138 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B82D88F2C227474008E0138 /* Onboarding.swift */; };
 		3B82D8922C23E06F008E0138 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B82D8912C23E06F008E0138 /* UserModel.swift */; };
+		3B82D8A42C2BB513008E0138 /* FriendAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B82D8A32C2BB513008E0138 /* FriendAPI.swift */; };
+		3B82D8A62C2BB700008E0138 /* FriendViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B82D8A52C2BB700008E0138 /* FriendViewModel.swift */; };
 		3B8335BD2BEA182D0008EFB5 /* ProgressEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8335BC2BEA182D0008EFB5 /* ProgressEventView.swift */; };
 		3B8335BF2BEA18650008EFB5 /* AnnouncementEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8335BE2BEA18650008EFB5 /* AnnouncementEventView.swift */; };
 		3B8335C12BEA19030008EFB5 /* DetailProgressEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8335C02BEA19030008EFB5 /* DetailProgressEventView.swift */; };
@@ -106,10 +108,12 @@
 		3B742B7B2BBE7C570000399F /* CompareTimeTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareTimeTableView.swift; sourceTree = "<group>"; };
 		3B79D5DF2C1FE0B6002FE98F /* Asset.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Asset.xcassets; sourceTree = "<group>"; };
 		3B82D8572C211637008E0138 /* AuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAPI.swift; sourceTree = "<group>"; };
-		3B82D8592C211641008E0138 /* AuthVieModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthVieModel.swift; sourceTree = "<group>"; };
+		3B82D8592C211641008E0138 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		3B82D88B2C2268A0008E0138 /* KeyChainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainManager.swift; sourceTree = "<group>"; };
 		3B82D88F2C227474008E0138 /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
 		3B82D8912C23E06F008E0138 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
+		3B82D8A32C2BB513008E0138 /* FriendAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendAPI.swift; sourceTree = "<group>"; };
+		3B82D8A52C2BB700008E0138 /* FriendViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendViewModel.swift; sourceTree = "<group>"; };
 		3B8335BC2BEA182D0008EFB5 /* ProgressEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressEventView.swift; sourceTree = "<group>"; };
 		3B8335BE2BEA18650008EFB5 /* AnnouncementEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementEventView.swift; sourceTree = "<group>"; };
 		3B8335C02BEA19030008EFB5 /* DetailProgressEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProgressEventView.swift; sourceTree = "<group>"; };
@@ -186,6 +190,7 @@
 				3B1270D92BB147D500E38F86 /* FriendView.swift */,
 				3B742B592BB687D60000399F /* SearchView.swift */,
 				3B742B7B2BBE7C570000399F /* CompareTimeTableView.swift */,
+				3B82D8A22C2BB497008E0138 /* Networking */,
 			);
 			path = Friend;
 			sourceTree = "<group>";
@@ -235,9 +240,18 @@
 			isa = PBXGroup;
 			children = (
 				3B82D8572C211637008E0138 /* AuthAPI.swift */,
-				3B82D8592C211641008E0138 /* AuthVieModel.swift */,
+				3B82D8592C211641008E0138 /* AuthViewModel.swift */,
 				3B82D88B2C2268A0008E0138 /* KeyChainManager.swift */,
 				3B82D8912C23E06F008E0138 /* UserModel.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		3B82D8A22C2BB497008E0138 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				3B82D8A32C2BB513008E0138 /* FriendAPI.swift */,
+				3B82D8A52C2BB700008E0138 /* FriendViewModel.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -612,8 +626,9 @@
 				AAA950692BA5C39B004E16C8 /* InvalidTimeSelectorView.swift in Sources */,
 				3B82D8582C211637008E0138 /* AuthAPI.swift in Sources */,
 				AAA9506E2BA5C39B004E16C8 /* TimetableMainView.swift in Sources */,
-				3B82D85A2C211641008E0138 /* AuthVieModel.swift in Sources */,
+				3B82D85A2C211641008E0138 /* AuthViewModel.swift in Sources */,
 				3B742B7C2BBE7C570000399F /* CompareTimeTableView.swift in Sources */,
+				3B82D8A42C2BB513008E0138 /* FriendAPI.swift in Sources */,
 				AA51CDFE2BE3AD87003799CB /* TimetableView.swift in Sources */,
 				3BD5322D2BF06AEB00152A77 /* EventViewModel.swift in Sources */,
 				3B82D8922C23E06F008E0138 /* UserModel.swift in Sources */,
@@ -643,6 +658,7 @@
 				3B8335C32BEA197D0008EFB5 /* UploadImageView.swift in Sources */,
 				AAA950702BA5C39B004E16C8 /* TimetableMakeView.swift in Sources */,
 				AAA950832BA722EF004E16C8 /* SubjectSheetView.swift in Sources */,
+				3B82D8A62C2BB700008E0138 /* FriendViewModel.swift in Sources */,
 				AAA9504D2BA5C396004E16C8 /* Font.swift in Sources */,
 				AA0DFC982C0F63B4002ED3C9 /* TimetableDto.swift in Sources */,
 				3B1270DC2BB147DC00E38F86 /* EventView.swift in Sources */,
