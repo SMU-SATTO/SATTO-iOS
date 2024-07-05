@@ -10,7 +10,7 @@ import Foundation
 struct User: Codable {
     
     var studentId: String
-//    var email: String?
+    var email: String
     var password: String
     var name: String
     var nickname: String
@@ -18,15 +18,32 @@ struct User: Codable {
     var grade: Int
     var isPublic: Bool
     
+//    enum CodingKeys: String, CodingKey {
+//        case studentId
+//        case email
+//        case password
+//        case name
+//        case nickname
+//        case department
+//        case grade
+//        case isPublic = "public"
+//    }
+    
 }
 
-//"studentId": "201910914",
-// "name": "황인성",
-// "nickname": "insung",
-// "department": "컴퓨터과학과",
-// "grade": 0,
-// "public": false
 
+struct User2: Codable {
+    
+    var studentId: String
+//    var email: String
+//    var password: String
+    var name: String
+    var nickname: String
+    var department: String
+    var grade: Int
+    var isPublic: Bool
+    
+}
 
 
 struct Model: Codable {

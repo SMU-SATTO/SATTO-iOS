@@ -26,7 +26,7 @@ enum AuthAPI {
 
 extension AuthAPI: TargetType {
     var baseURL: URL {
-        return URL(string: "http://15.164.64.42:8080")!
+        return URL(string: "https://www.satto1.shop")!
     }
     
     var path: String {
@@ -80,7 +80,7 @@ extension AuthAPI: TargetType {
             let parameters: [String: Any] = ["certificationNum": certificationNum]
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case .signUp(let user):
-            let parameters: [String: Any] = ["studentId": user.studentId, "email": "\(user.studentId)@sangmyung.kr", "password": user.password, "name": user.name, "nickname": user.nickname, "department": user.department, "isPublic": user.isPublic]
+            let parameters: [String: Any] = ["studentId": user.studentId, "email": "\(user.studentId)@sangmyung.kr", "password": user.password, "name": user.name, "nickname": user.nickname, "department": user.department, "isPublic": user.isPublic, "grade": user.grade]
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case .logIn(let email, let password):
             let parameters: [String: Any] = ["email": email, "password": password]

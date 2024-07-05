@@ -21,7 +21,7 @@ enum FriendAPI {
 
 extension FriendAPI: TargetType {
     var baseURL: URL {
-        return URL(string: "http://15.164.64.42:8080")!
+        return URL(string: "https://www.satto1.shop")!
     }
     
     var path: String {

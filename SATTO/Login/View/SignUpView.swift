@@ -141,13 +141,16 @@ struct SignUpView: View {
                 }
                 
                 Button(action: {
+                    print(authViewModel.user ?? "ㅁㄴㅇ")
                     print(authViewModel.user?.studentId)
-//                    authViewModel.user?.password = password
+                    
+                    authViewModel.user?.grade = grade
+                    authViewModel.user?.isPublic = isPublic
+                    authViewModel.user?.email = "\(authViewModel.user?.studentId ?? "asd")@sangmyung.kr"
+                    authViewModel.user?.password = password
                     authViewModel.user?.name = name
                     authViewModel.user?.nickname = nickname
                     authViewModel.user?.department = department
-                    authViewModel.user?.grade = grade
-                    authViewModel.user?.isPublic = isPublic
                     
                     
                     authViewModel.signUp(user: authViewModel.user!)
@@ -160,13 +163,14 @@ struct SignUpView: View {
                 Button(action: {
                     validatePasswords()
                     
-                    print(authViewModel.user?.studentId)
-//                    authViewModel.user?.password = password
+                    print(authViewModel.user ?? "ㅁㄴㅇ")
+                    authViewModel.user?.password = password
                     authViewModel.user?.name = name
                     authViewModel.user?.nickname = nickname
                     authViewModel.user?.department = department
                     authViewModel.user?.grade = grade
                     authViewModel.user?.isPublic = isPublic
+
                     
                     authViewModel.signUp(user: authViewModel.user!)
                 }) {
