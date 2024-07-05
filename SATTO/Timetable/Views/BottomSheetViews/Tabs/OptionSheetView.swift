@@ -11,6 +11,7 @@ struct OptionSheetView: View {
     let options: [String]
     @Binding var selectedOptions: [String]
     let allowsDuplicates: Bool
+    let onOptionSelect: () -> Void
     
     @State private var isFirstTimeAccess = true
     
@@ -26,6 +27,7 @@ struct OptionSheetView: View {
     private func optionButton(for option: String) -> some View {
         Button(action: {
             handleOptionSelection(for: option)
+            onOptionSelect()
         }) {
             Text(option)
                 .foregroundStyle(selectedOptions.contains(option) ? Color.buttonBlue : Color.blackWhite)
@@ -48,7 +50,7 @@ struct OptionSheetView: View {
         if allowsDuplicates {
             if option == options.first {
                 selectedOptions = [option]
-            } 
+            }
             else {
                 if selectedOptions.contains(option) {
                     selectedOptions.remove(at: selectedOptions.firstIndex(of: option)!)
@@ -78,6 +80,6 @@ struct OptionSheetView: View {
 }
 
 #Preview {
-    OptionSheetView(options: ["전체", "1학년", "2학년", "3학년", "4학년"], selectedOptions: .constant(["전체"]), allowsDuplicates: false)
+    OptionSheetView(options: ["전체", "1학년", "2학년", "3학년", "4학년"], selectedOptions: .constant(["전체"]), allowsDuplicates: false, onOptionSelect: {})
         .preferredColorScheme(.dark)
 }

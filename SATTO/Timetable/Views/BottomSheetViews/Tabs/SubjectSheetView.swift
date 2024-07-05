@@ -8,19 +8,20 @@
 import SwiftUI
 import PopupView
 
-//MARK: - 할일
-/// 학점 넘치는 선택은 어떻게 처리?
-
 struct SubjectSheetView: View {
     @Environment(\.colorScheme) var colorScheme
-    ///서버에서 받아온 subjectViewModel
-    @ObservedObject var subjectViewModel: SubjectViewModel
+    ///서버에서 받아온 bottomSheetViewModel
+    @ObservedObject var bottomSheetViewModel: BottomSheetViewModel
     @ObservedObject var selectedValues: SelectedValues
     
     @State private var expandedSubjectIndex: Int?
     @State private var showFloater: Bool = false
     
     var showResultAction: () -> Void
+    
+    @State private var isLoading: Bool = false
+    
+    @State private var scrollOffset: CGFloat = 0
     
     var body: some View {
         GeometryReader { geometry in
@@ -39,16 +40,32 @@ struct SubjectSheetView: View {
             }
         }
     }
-    
+
     private func subjectListView(containerSize: CGSize) -> some View {
-        ScrollView {
-            VStack {
-                ForEach(subjectViewModel.subjectDetailDataList.indices, id: \.self) { index in
-                    let subjectDetail = subjectViewModel.subjectDetailDataList[index]
-                    subjectCardView(subjectDetail, at: index, containerSize: containerSize)
-                        .padding(.horizontal, 10)
+        ScrollViewReader { proxy in
+            ScrollView {
+                LazyVStack {
+                    ForEach(bottomSheetViewModel.subjectDetailDataList.indices, id: \.self) { index in
+                        let subjectDetail = bottomSheetViewModel.subjectDetailDataList[index]
+                        subjectCardView(subjectDetail, at: index, containerSize: containerSize)
+                            .padding(.horizontal, 10)
+                            .onAppear {
+                                if index == bottomSheetViewModel.subjectDetailDataList.count - 1 {
+                                    bottomSheetViewModel.loadMoreSubjects()
+                                }
+                            }
+                    }
+                    .padding(EdgeInsets(top: 10, leading: 10, bottom: 20, trailing: 10))
+                    if bottomSheetViewModel.isLoading {
+                        ProgressView()
+                            .padding()
+                    }
                 }
-                .padding(EdgeInsets(top: 10, leading: 10, bottom: 20, trailing: 10))
+            }
+            .onAppear {
+                if bottomSheetViewModel.subjectDetailDataList.isEmpty {
+                    bottomSheetViewModel.fetchCurrentLectureList(page: 0)
+                }
             }
         }
     }
@@ -64,11 +81,12 @@ struct SubjectSheetView: View {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundStyle(selectedValues.isSelected(subject: subjectDetail) ? Color.subjectCardSelected : Color.subjectCardBackground)
                 .shadow(color: colorScheme == .light ? Color(red: 0.65, green: 0.65, blue: 0.65).opacity(0.65) : Color.clear, radius: 6.23, x: 0, y: 1.22)
-                .onTapGesture {
-                    withAnimation {
-                        toggleExpansion(at: index)
-                    }
-                }
+            //TODO: - ToggleExpansion 백엔드 이슈로 빼기로 결정
+//                .onTapGesture {
+//                    withAnimation {
+//                        toggleExpansion(at: index)
+//                    }
+//                }
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: -10, trailing: 0))
         )
         .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
@@ -78,7 +96,8 @@ struct SubjectSheetView: View {
         VStack(alignment: .leading) {
             subjectMajorView(subjectDetail)
             subjectInfoView(subjectDetail)
-            subjectEnrollmentView(subjectDetail)
+            //MARK: - 담은 인원 백엔드 이슈로 빼기로 결정
+//            subjectEnrollmentView(subjectDetail)
             if isExpanded(at: index) {
                 subjectChartView(subjectDetail, containerSize: containerSize)
             }
@@ -88,7 +107,7 @@ struct SubjectSheetView: View {
     private func subjectMajorView(_ subjectDetail: SubjectDetailModel) -> some View {
         RoundedRectangle(cornerRadius: 20)
             .foregroundStyle(Color.subjectMajorBackground)
-            .frame(width: 50, height: 23)
+            .frame(width: 50, height: 20)
             .overlay(
                 Text(subjectDetail.major)
                     .foregroundStyle(Color.subjectMajorText)
@@ -202,13 +221,13 @@ struct SubjectSheetView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 15) {
                 ForEach(selectedValues.selectedSubjects, id: \.sbjDivcls) { subject in
-                    selectedSubjectItemView(subject as! SubjectDetailModel)
+                    selectedSubjectItemView(subject)
                 }
             }
         }
     }
     
-    private func selectedSubjectItemView(_ subject: SubjectDetailModel) -> some View {
+    private func selectedSubjectItemView(_ subject: SubjectModelBase) -> some View {
         HStack {
             Text(subject.sbjName)
                 .font(.m14)
@@ -283,7 +302,7 @@ struct SubjectSheetView: View {
             .frame(width: 200, height: 50)
             .shadow(radius: 10)
             .overlay(
-                Text("시간대가 겹쳐요!")
+                Text("시간대나 과목이 겹쳐요!")
                     .font(.sb16)
             )
     }
@@ -305,6 +324,6 @@ struct SubjectSheetView: View {
 }
 
 #Preview {
-    SubjectSheetView(subjectViewModel: SubjectViewModel(), selectedValues: SelectedValues(), showResultAction: {})
+    SubjectSheetView(bottomSheetViewModel: BottomSheetViewModel(), selectedValues: SelectedValues(), showResultAction: {})
         .preferredColorScheme(.light)
 }

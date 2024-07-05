@@ -15,7 +15,7 @@ struct CreditPickerView: View {
         VStack {
             SectionView(title: "학점", pickerRange: 6...22, selection: $selectedValues.credit)
             
-            SectionView(title: "전공 개수", pickerRange: 0...7, selection: $selectedValues.majorNum)
+            SectionView(title: "전공 개수", pickerRange: 0...(selectedValues.credit / 3), selection: $selectedValues.majorNum)
                 .padding(.top, 20)
             
             SectionView(title: "E-러닝 개수", pickerRange: 0...2, selection: $selectedValues.ELearnNum)
@@ -34,7 +34,7 @@ struct CreditPickerView: View {
                     Text("이번 학기에 들을 ")
                     Text(title)
                         .foregroundStyle(Color.accentText)
-                    Text("을 선택해 주세요.")
+                    Text(title == "학점" ? "을 선택해 주세요." : "를 선택해 주세요.")
                     Spacer()
                 }
                 .font(.sb16)

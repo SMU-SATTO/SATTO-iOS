@@ -8,8 +8,21 @@
 import SwiftUI
 import JHTimeTable
 
-struct MajorCombModel: Codable {
-    let lec: [String]
+struct MajorComb: Equatable, Identifiable {
+    let id = UUID()
+    let combination: [Combination]
+    
+    static func == (lhs: MajorComb, rhs: MajorComb) -> Bool {
+        return lhs.combination == rhs.combination
+    }
+}
+
+struct Combination: Equatable {
+    let lectName, code: String
+    
+    static func == (lhs: Combination, rhs: Combination) -> Bool {
+        return lhs.lectName == rhs.lectName && lhs.code == rhs.code
+    }
 }
 
 protocol SubjectModelBase: Codable {
@@ -34,7 +47,7 @@ struct SubjectDetailModel: SubjectModelBase {
     let yesterdayEnrolledData, threeDaysAgoEnrolledData: Int
     
     
-    init(major: String, sbjDivcls: String, sbjNo: String, sbjName: String, prof: String, time: String, credit: Int, enrollmentCapacity: Int, enrolledStudents: Int, yesterdayEnrolledData: Int, threeDaysAgoEnrolledData: Int) {
+    init(major: String = "Unknown", sbjDivcls: String = "Unknown", sbjNo: String = "Unknown", sbjName: String = "Unknown", prof: String = "Unknown", time: String = "Unknown", credit: Int = 0, enrollmentCapacity: Int = 0, enrolledStudents: Int = 0, yesterdayEnrolledData: Int = 0, threeDaysAgoEnrolledData: Int = 0) {
         self.major = major
         self.sbjDivcls = sbjDivcls
         self.sbjNo = sbjNo
@@ -49,14 +62,21 @@ struct SubjectDetailModel: SubjectModelBase {
     }
 }
 
-struct SubjectDetailList: Codable {
-    let subject: [SubjectDetailModel]
-    
-    init(subject: [SubjectDetailModel]) {
-        self.subject = subject
-    }
+//MARK: - TimetableMain에서 사용하는 구조체
+struct TimetableMainInfoModel {
+    let subjectModels: [SubjectModel]
+    let semesterYear: String?
+    let timeTableName: String?
 }
 
+//MARK: - TimetableListModel
+struct TimetableListModel {
+    let id: Int
+    let timetableName: String
+    let semesterYear: String
+    let isPublic: Bool
+    let isRepresent: Bool
+}
 
 struct LectureModel: Identifiable {
     var id = UUID()

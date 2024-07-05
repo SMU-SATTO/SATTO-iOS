@@ -1,5 +1,5 @@
 //
-//  TimetableMenuView.swift
+//  TimetableListView.swift
 //  SATTO
 //
 //  Created by 김영준 on 3/15/24.
@@ -7,18 +7,24 @@
 
 import SwiftUI
 
-struct TimetableMenuView: View {
+struct TimetableListView: View {
     @Environment(\.colorScheme) var colorScheme
     @Binding var stackPath: [TimetableRoute]
+    
+    @StateObject var timetableListViewModel = TimetableListViewModel()
+    @ObservedObject var timetableMainViewModel: TimetableMainViewModel
+    
     var body: some View {
         ZStack {
             Color.backgroundDefault
                 .ignoresSafeArea(.all)
             ScrollView {
                 VStack(spacing: 10) {
-                    timetableBlock(headerText: "2024년 1학기", timetableList: ["시간표", "2"])
-                    timetableBlock(headerText: "2023년 2학기", timetableList: ["3", "9", "10"])
-                    timetableBlock(headerText: "2023년 1학기", timetableList: ["4", "6"])
+                    ForEach(groupedTimetables.keys.sorted(by: >), id: \.self) { semesterYear in
+                        if let timetables = groupedTimetables[semesterYear] {
+                            TimetableListRec(headerText: semesterYear, timetableList: timetables, timetableMainViewModel: timetableMainViewModel, stackPath: $stackPath)
+                        }
+                    }
                 }
                 .padding(.horizontal, 20)
             }
@@ -35,9 +41,25 @@ struct TimetableMenuView: View {
                 }
             }
         }
+        .onAppear {
+            timetableListViewModel.fetchTimetableList()
+        }
     }
     
-    private func timetableBlock(headerText: String, timetableList: [String]) -> some View {
+    private var groupedTimetables: [String: [TimetableListModel]] {
+        Dictionary(grouping: timetableListViewModel.timetables, by: { $0.semesterYear })
+    }
+}
+
+struct TimetableListRec: View {
+    let headerText: String
+    let timetableList: [TimetableListModel]
+    @ObservedObject var timetableMainViewModel: TimetableMainViewModel
+    @Binding var stackPath: [TimetableRoute]
+
+    @Environment(\.colorScheme) var colorScheme
+
+    var body: some View {
         VStack {
             headerView(headerText: headerText)
             contentView(timetableList: timetableList)
@@ -48,7 +70,7 @@ struct TimetableMenuView: View {
                 .shadow(color: colorScheme == .light ? Color(red: 0.65, green: 0.65, blue: 0.65).opacity(0.65) : Color.clear, radius: 6.23, x: 0, y: 1.22)
         )
     }
-    
+
     private func headerView(headerText: String) -> some View {
         HStack {
             Text(headerText)
@@ -58,34 +80,39 @@ struct TimetableMenuView: View {
             Spacer()
         }
     }
-    
-    private func contentView(timetableList: [String]) -> some View {
+
+    private func contentView(timetableList: [TimetableListModel]) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             ForEach(timetableList.indices, id: \.self) { index in
-                let timetableName = timetableList[index]
+                let timetable = timetableList[index]
                 Button(action: {
+                    timetableMainViewModel.timetableId = timetable.id
                     stackPath.removeLast()
                 }) {
                     HStack {
-                        Text(timetableName)
-                            .font(.m18)
-                            .foregroundStyle(Color.blackWhite)
+                        Image(systemName: timetable.isPublic ? "lock.open" : "lock")
+                        Text(timetable.timetableName)
+                        if timetable.isRepresent {
+                            Text("대표 시간표")
+                                .font(.caption)
+                                .foregroundColor(.red)
+                        }
                         Spacer()
                     }
+                    .font(.m18)
+                    .foregroundStyle(Color.blackWhite)
                 }
-                .padding(.horizontal, 5)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 10)
                 if index < timetableList.count - 1 {
                     Divider()
                 }
             }
-            .padding(.horizontal, 20)
-            .padding(.bottom, 10)
         }
-        .padding(.top, 10)
     }
 }
 
 #Preview {
-    TimetableMenuView(stackPath: .constant([]))
+    TimetableListView(stackPath: .constant([]), timetableMainViewModel: TimetableMainViewModel())
         .preferredColorScheme(.light)
 }

@@ -14,7 +14,6 @@ struct TimetableMakeView: View {
 
     @Binding var stackPath: [TimetableRoute]
     
-    @StateObject var subjectViewModel = SubjectViewModel()
     @StateObject var selectedValues = SelectedValues()
     @StateObject var bottomSheetViewModel = BottomSheetViewModel()
     
@@ -27,6 +26,11 @@ struct TimetableMakeView: View {
     @State private var invalidPopup = false
     @State private var finalSelectPopup = false
     @State private var progressPopup = false
+    @State private var errorPopup = false
+    
+    @State private var timetableIndex = 0
+    
+    @State private var isButtonDisabled = false
     
     var body: some View {
         ZStack {
@@ -100,37 +104,26 @@ struct TimetableMakeView: View {
             $0
                 .position(.center)
                 .appearFrom(.bottom)
+                .closeOnTapOutside(false)
+                .closeOnTap(false)
+                .dragToDismiss(false)
                 .backgroundColor(.black.opacity(0.5))
         })
         .popup(isPresented: $finalSelectPopup, view: {
-            FinalSelectPopupView(finalSelectPopup: $finalSelectPopup)
+            FinalSelectPopupView(selectedValues: selectedValues, finalSelectPopup: $finalSelectPopup, timetableIndex: $timetableIndex)
         }, customize: {
             $0
                 .position(.center)
                 .appearFrom(.bottom)
                 .closeOnTapOutside(false)
                 .closeOnTap(false)
+                .dragToDismiss(false)
                 .backgroundColor(.black.opacity(0.5))
         })
         .popup(isPresented: $progressPopup, view: {
             VStack {
                 TimetableProgressView()
-                    .padding(.top, 50)
-                Button(action: {
-                    progressPopup = false
-                }, label: {
-                    RoundedRectangle(cornerRadius: 10)
-                        .foregroundStyle(Color.buttonBlue)
-                        .frame(width: 150, height: 50)
-                        .overlay(
-                            //TODO: 취소하면 일정 시간 뒤에 다시 서버에 콜 보낼 수 있게 제한
-                            Text("취소하기")
-                                .foregroundStyle(.white)
-                                .font(.sb16))
-                })
-                .padding(.top, 50)
             }
-
         }, customize: {
             $0
                 .position(.center)
@@ -139,6 +132,26 @@ struct TimetableMakeView: View {
                 .closeOnTap(false)
                 .backgroundColor(.black.opacity(0.9))
                 .dragToDismiss(false)
+        })
+        .popup(isPresented: $errorPopup, view: {
+            VStack {
+                RoundedRectangle(cornerRadius: 10)
+                    .foregroundStyle(.white)
+                    .frame(width: 300, height: 300)
+                    .overlay(
+                        Text("시간표 생성에 실패했어요. 전공 조합을 다시 선택해보거나 개발자에게 문의해주세요!")
+                            .font(.sb14)
+                            .foregroundStyle(.black)
+                    )
+            }
+        }, customize: {
+            $0
+                .position(.center)
+                .appearFrom(.bottom)
+                .closeOnTapOutside(false)
+                .closeOnTap(false)
+                .backgroundColor(.black.opacity(0.9))
+                .autohideIn(3)
         })
     }
     
@@ -182,67 +195,15 @@ struct TimetableMakeView: View {
             }
             .background(
                 RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(Color.buttonBlue)
+                    .foregroundStyle(isButtonDisabled || selectedView == .majorCombination && selectedValues.selectedMajorCombs.isEmpty ? Color.gray : Color.buttonBlue)
             )
             .frame(width: geometry.size.width, height: geometry.size.height)
+            .disabled(isButtonDisabled)
+            .disabled(selectedView == .majorCombination && selectedValues.selectedMajorCombs.isEmpty)
         }
         .frame(height: 45)
     }
     
-    //MARK: - server 연동 테스트 후 삭제 예정
-    private var midCheckPopupView: some View {
-        RoundedRectangle(cornerRadius: 20)
-            .foregroundStyle(.popupBackground)
-            .frame(width: 300, height: 360)
-            .overlay(
-                VStack(spacing: 30) {
-                    Image(systemName: "exclamationmark.warninglight")
-                        .resizable()
-                        .frame(width: 100, height: 100)
-                    Text("시간표를 생성하면\n현재 설정은 수정할 수 없어요!!")
-                        .font(.sb16)
-                        .lineSpacing(5)
-                        .multilineTextAlignment(.center)
-                    VStack {
-                        Button(action: {
-                            navigateForward()
-                            midCheckPopup = false
-                            selectedValues.fetchMajorCombinations(GPA: selectedValues.credit, requiredLect: selectedValues.selectedSubjects, majorCount: selectedValues.majorNum, cyberCount: selectedValues.ELearnNum, impossibleTimeZone: selectedValues.selectedTimes)
-                        }) {
-                            Text("시간표 생성하러 가기")
-                                .font(.sb14)
-                                .foregroundStyle(.white)
-                                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        }
-                        .background(
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(Color.buttonBlue)
-                        )
-                        .frame(height: 40)
-                        Button(action: {
-                            midCheckPopup = false
-                        }) {
-                            Text("조금 더 고민해보기")
-                                .font(.sb14)
-                                .foregroundStyle(Color.buttonBlue)
-                                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        }
-                        .background(
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(.clear)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .inset(by: 2)
-                                        .stroke(Color.buttonBlue, lineWidth: 1.5)
-                                )
-                        )
-                        .frame(height: 40)
-                    }
-                    .padding(.horizontal, 15)
-                }
-            )
-    }
-
     func navigateBack() {
         switch selectedView {
         case .essentialClasses:
@@ -260,7 +221,6 @@ struct TimetableMakeView: View {
         }
     }
 
-    // 다음 뷰로 이동하는 함수
     func navigateForward() {
         switch selectedView {
         case .creditPicker:
@@ -273,7 +233,34 @@ struct TimetableMakeView: View {
             selectedView = .majorCombination
         case .majorCombination:
             progressPopup = true
-//            selectedView = .finalTimetable
+            isButtonDisabled = true
+            selectedValues.fetchFinalTimetableList(
+                GPA: selectedValues.credit,
+                requiredLect: selectedValues.selectedSubjects,
+                majorCount: selectedValues.majorNum,
+                cyberCount: selectedValues.ELearnNum,
+                impossibleTimeZone: selectedValues.selectedTimes,
+                majorList: selectedValues.selectedMajorCombs
+            ) { result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success:
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            self.progressPopup = false
+                            selectedView = .finalTimetable
+                        }
+                    case .failure(let error):
+                        print("Error: \(error)")
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            self.progressPopup = false
+                            self.errorPopup = true
+                        }
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                        self.isButtonDisabled = false
+                    }
+                }
+            }
         default:
             break
         }
@@ -290,15 +277,15 @@ struct TimetableMakeView: View {
         case .creditPicker:
             return AnyView(CreditPickerView(selectedValues: selectedValues))
         case .essentialClasses:
-            return AnyView(EssentialClassesSelectorView(subjectViewModel: subjectViewModel, selectedValues: selectedValues, bottomSheetViewModel: bottomSheetViewModel))
+            return AnyView(EssentialClassesSelectorView(selectedValues: selectedValues, bottomSheetViewModel: bottomSheetViewModel))
         case .invalidTime:
             return AnyView(InvalidTimeSelectorView(selectedValues: selectedValues, selectedSubviews: $selectedSubviews, alreadySelectedSubviews: $alreadySelectedSubviews, invalidPopup: $invalidPopup))
         case .midCheck:
             return AnyView(MidCheckView(selectedValues: selectedValues))
         case .majorCombination:
-            return AnyView(MajorCombSelectorView(viewModel: selectedValues))
+            return AnyView(MajorCombSelectorView(selectedValues: selectedValues))
         case .finalTimetable:
-            return AnyView(FinalTimetableSelectorView(showingPopup: $finalSelectPopup))
+            return AnyView(FinalTimetableSelectorView(selectedValues: selectedValues, showingPopup: $finalSelectPopup, timetableIndex: $timetableIndex))
         }
     }
 
@@ -324,7 +311,6 @@ struct CustomPageControl: View {
     
     var body: some View {
         HStack {
-            //MARK: - 개수 수정 필요
             ForEach(0..<totalIndex, id: \.self) { index in
                 if selectedIndex > index {
                     // 지나온 페이지
