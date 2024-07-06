@@ -64,7 +64,7 @@ struct TimetableModifyView: View {
                         .padding(EdgeInsets(top: 10, leading: 30, bottom: 10, trailing: 30))
                     
                 }
-                .padding(.top, 30)
+                .padding()
             }
         }
         .onAppear {
@@ -77,12 +77,14 @@ struct TimetableModifyView: View {
                     Button(action: {
                         showingAlert = true
                     }) {
-                        Image(systemName: "chevron.left")
-                            .foregroundStyle(Color.blackWhite)
+                        HStack {
+                            Image(systemName: "chevron.left")
+                            Text("시간표 수정 취소하기")
+                                .font(.sb16)
+                        }
+                        .foregroundStyle(Color.blackWhite)
                     }
-                    Text("시간표 수정 취소하기")
-                        .font(.b18)
-                        .foregroundStyle(Color.blackWhite200)
+                    
                 }
             }
         }

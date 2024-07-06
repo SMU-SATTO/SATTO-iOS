@@ -29,15 +29,25 @@ struct TimetableListView: View {
                 .padding(.horizontal, 20)
             }
             .navigationBarBackButtonHidden(true)
-            .navigationTitle("시간표 목록")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button(action: {
-                        stackPath.removeLast()
-                    }) {
-                        Image(systemName: "chevron.left")
+                    HStack(spacing: 0) {
+                        Button(action: {
+                            stackPath.removeLast()
+                        }) {
+                            HStack {
+                                Image(systemName: "chevron.left")
+                                Text("돌아가기")
+                                    .font(.sb16)
+                            }
                             .foregroundStyle(Color.blackWhite)
+                        }
                     }
+                }
+                ToolbarItem(placement: .principal) {
+                    Text("시간표 목록")
+                        .font(.sb16)
+                        .foregroundStyle(Color.blackWhite200)
                 }
             }
         }

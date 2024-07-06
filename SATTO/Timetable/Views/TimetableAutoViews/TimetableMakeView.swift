@@ -136,12 +136,14 @@ struct TimetableMakeView: View {
             Button(action: {
                 showingAlert = true
             }) {
-                Image(systemName: "chevron.left")
-                    .foregroundStyle(Color.blackWhite)
+                HStack {
+                    Image(systemName: "chevron.left")
+                    Text("시간표 생성 취소하기")
+                        .font(.sb16)
+                }
+                .foregroundStyle(Color.blackWhite)
             }
-            Text("시간표 생성 취소하기")
-                .font(.b18)
-                .foregroundStyle(Color.blackWhite200)
+            
         }
     }
     
@@ -169,7 +171,7 @@ struct TimetableMakeView: View {
     private var tabViewNavigationButtons: some View {
         HStack(spacing: 20) {
             //majorCombination 생성에 실패하면 뒤로가기 가능
-            if (selectedView != .creditPicker && selectedView != .majorCombination) || selectedValues.majorCombinations.count == 0 {
+            if selectedView != .creditPicker && (selectedView != .majorCombination || selectedValues.majorCombinations.count == 0) {
                 backButton
             }
             if selectedView == .majorCombination {

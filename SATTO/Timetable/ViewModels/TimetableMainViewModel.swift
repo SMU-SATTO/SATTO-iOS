@@ -11,7 +11,7 @@ final class TimetableMainViewModel: ObservableObject {
     let repository = TimetableRepository()
     
     @Published var timetableId: Int = 0 //MainView에 띄워지는 시간표의 id
-    @Published var semesterYear: String = "2024년 2학기"
+    @Published var semesterYear: String = "2024학년도 2학기"
     @Published var timetalbeName: String = "시간표"
     @Published var timetableInfo: [SubjectModelBase] = []
     
@@ -20,17 +20,18 @@ final class TimetableMainViewModel: ObservableObject {
             switch result {
             case .success(let timetableInfoModel):
                 DispatchQueue.main.async {
-                    self?.semesterYear = timetableInfoModel.semesterYear ?? "2024년 2학기"
+                    self?.semesterYear = timetableInfoModel.semesterYear ?? "2024학년도 2학기"
                     self?.timetalbeName = timetableInfoModel.timeTableName ?? "시간표"
                     self?.timetableInfo = timetableInfoModel.subjectModels
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
-                    self?.semesterYear = "2024년 2학기"
+                    self?.semesterYear = "2024학년도 2학기"
                     self?.timetalbeName = "시간표"
                     self?.timetableInfo = []
                 }
-                print("Error fetching UserTimetable!: \(error)")
+//                print("Error fetching UserTimetable!: \(error)")
+                print("시간표 불러오기에 실패했어요. 대표시간표가 있는지 확인해주세요!")
             }
         }
     }
@@ -94,7 +95,8 @@ final class TimetableMainViewModel: ObservableObject {
             switch result {
             case .success:
                 DispatchQueue.main.async {
-                    
+                    print("시간표 삭제 성공!")
+                    self.fetchUserTimetable(id: nil)
                 }
             case .failure(let error):
                 print("Error patching deleteTimetable: \(error)")

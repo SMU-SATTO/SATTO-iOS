@@ -96,7 +96,7 @@ class TimetableRepository {
         }
     }
 
-    //TODO: - SubjectDetailModel에 이전 수강 인원 누락되어있음 + 담은인원 + 옵셔널 처리 체크
+    //MARK: - SubjectDetailModel에 이전 수강 인원 누락되어있음 + 담은인원 + 옵셔널 처리 체크
     func postCurrentLectureList(request: CurrentLectureListRequest, page: Int, completion: @escaping(Result<([SubjectDetailModel], Int?), Error>) -> Void) {
         SATTONetworking.shared.postCurrentLectureList(request: request, page: page) { result in
             switch result {

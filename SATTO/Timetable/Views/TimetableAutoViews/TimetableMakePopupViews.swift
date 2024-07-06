@@ -18,6 +18,7 @@ struct InvalidPopup: View {
                 VStack(spacing: 30) {
                     Image(systemName: "exclamationmark.triangle.fill")
                         .resizable()
+                        .aspectRatio(contentMode: .fit)
                         .frame(width: 100, height: 100)
                         .foregroundStyle(.yellow)
                     
@@ -25,6 +26,7 @@ struct InvalidPopup: View {
                         .font(.sb16)
                         .lineSpacing(5)
                         .multilineTextAlignment(.center)
+                    
                     Button(action: {
                         invalidPopup = false
                     }) {
@@ -57,6 +59,7 @@ struct MidCheckPopup: View {
                 VStack(spacing: 30) {
                     Image(systemName: "light.beacon.max")
                         .resizable()
+                        .aspectRatio(contentMode: .fit)
                         .frame(width: 100, height: 100)
                     Text("시간표를 생성하면\n현재 설정은 수정할 수 없어요!!")
                         .font(.sb16)

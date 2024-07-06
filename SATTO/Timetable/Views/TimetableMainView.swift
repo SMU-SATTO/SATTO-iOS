@@ -32,11 +32,11 @@ struct TimetableMainView: View {
     
     @State private var bottomSheetPresented = false
     
-    let majorCreditGoals = 72                  //전공 학점 목표
-    @State var majorCredit: Double = 60        //전공 학점
-    let GECreditGoals = 60                     //교양 학점 목표
-    @State var GECredit: Double = 33           //교양 학점
-    @State var totalCredit: Double = 130       //전체 학점
+    let majorCreditGoals = 72                  /// 전공 학점 목표
+    @State var majorCredit: Double = 60        /// 전공 학점
+    let GECreditGoals = 60                     /// 교양 학점 목표
+    @State var GECredit: Double = 33           /// 교양 학점
+    @State var totalCredit: Double = 130       /// 전체 학점
     
     @State private var nameModifyAlert = false
     @State private var timetableIsPrivateAlert = false
@@ -55,6 +55,8 @@ struct TimetableMainView: View {
                         Spacer()
                     }
                 }
+                .scrollIndicators(.hidden)
+                .frame(maxHeight: .infinity)
             }
             .sheet(isPresented: $bottomSheetPresented, content: {
                 ZStack {
@@ -136,7 +138,7 @@ struct TimetableMainView: View {
                 HStack {
                     Button("취소", role: .cancel, action: {})
                     Button("확인") {
-                        //MARK: timetable 수정 - 이름 변경 API
+                        /// timetable 수정 - 이름 변경 API
                         timetableMainViewModel.patchTimetableName(timetableId: timetableMainViewModel.timetableId, timetableName: timetableMainViewModel.timetalbeName)
                     }
                 }
@@ -144,7 +146,7 @@ struct TimetableMainView: View {
             .alert("대표시간표로 설정", isPresented: $representAlert) {
                 HStack {
                     Button("대표시간표로 설정") {
-                        //MARK: 대표 시간표 변경 API
+                        /// 대표 시간표 변경 API
                         timetableMainViewModel.patchTimetableRepresent(timeTableId: timetableMainViewModel.timetableId, isRepresent: true)
                     }
                     Button("취소", role: .cancel, action: {})
@@ -153,7 +155,7 @@ struct TimetableMainView: View {
             .alert("시간표 공개 범위 변경", isPresented: $timetableIsPrivateAlert) {
                 HStack {
                     Button("공개") {
-                        //MARK: 공개 비공개 설정 API
+                        /// 공개 비공개 설정 API
                         timetableMainViewModel.patchTimetablePrivate(timeTableId: timetableMainViewModel.timetableId, isPublic: true)
                     }
                     Button("비공개") {
@@ -166,7 +168,8 @@ struct TimetableMainView: View {
                 HStack {
                     Button("아니요", role: .cancel, action: {})
                     Button("네") {
-                        //MARK: 삭제 API
+                        /// 삭제 API - 삭제하면 대표 시간표를 메인화면에 보여줌
+                        /// 대표시간표를 삭제하거나, 대표시간표가 없을 시 빈 시간표를 메인화면에 보여줌
                         timetableMainViewModel.deleteTimetable(timetableID: timetableMainViewModel.timetableId)
                     }
                 }
@@ -197,6 +200,7 @@ struct TimetableMainView: View {
                 tabbarIsHidden ? .hidden : .visible,
                 for: .tabBar
             )
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
     
@@ -312,11 +316,11 @@ struct TimetableMainView: View {
             TimetableView(timetableBaseArray: timetableMainViewModel.timetableInfo)
                 .onAppear {
                     if timetableMainViewModel.timetableId == 0 {
-                        //MARK: 기본 default 시간표 호출 API
+                        /// 기본 default 시간표 호출 API
                         timetableMainViewModel.fetchUserTimetable(id: nil)
                     }
                     else {
-                        //MARK: API
+                        /// 특정 시간표 호출 API
                         timetableMainViewModel.fetchUserTimetable(id: timetableMainViewModel.timetableId)
                     }
                 }

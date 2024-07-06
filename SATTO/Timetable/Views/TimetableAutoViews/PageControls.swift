@@ -47,7 +47,6 @@ struct CustomPageControl: View {
                         .frame(height: rectangleHeight)
                         .clipShape(RoundedRectangle(cornerRadius: rectangleRadius))
                 }
-                
             }
         }
     }

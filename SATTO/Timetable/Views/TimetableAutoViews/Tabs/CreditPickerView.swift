@@ -66,8 +66,6 @@ struct CreditPickerView: View {
     }
 }
 
-
-
 #Preview {
     CreditPickerView(selectedValues: SelectedValues())
         .preferredColorScheme(.light)

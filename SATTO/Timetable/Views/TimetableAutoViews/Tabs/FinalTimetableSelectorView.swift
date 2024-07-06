@@ -11,16 +11,20 @@ import PopupView
 struct FinalTimetableSelectorView: View {
     @ObservedObject var selectedValues: SelectedValues
     
+    @Environment(\.colorScheme) var colorScheme
+    
     @State private var isProgressing = false
     @State private var errorPopup = false
     @State private var isRawChecked = false
     
     @Binding var showingPopup: Bool
     @Binding var timetableIndex: Int
+    
+    @State private var currIndex: Int = 0
 
     var body: some View {
-        ZStack {
-            VStack {
+        ScrollView {
+            LazyVStack {
                 if selectedValues.timetableList.count == 0 {
                     if isRawChecked {
                         Text("해당 전공 조합의 남는 시간에 맞는 교양 과목이 없어요..\n불가능한 시간대와 같은 제약조건을 완화해보세요.")
@@ -64,7 +68,13 @@ struct FinalTimetableSelectorView: View {
                             }
                             .font(.sb16)
                             .foregroundStyle(.blackWhite)
-                            .padding(.top)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundStyle(Color.menuCardBackground)
+                                    .shadow(color: colorScheme == .light ? Color(red: 0.65, green: 0.65, blue: 0.65).opacity(0.65) : Color.clear, radius: 6.23, x: 0, y: 1.22)
+                                    .padding(EdgeInsets(top: -10, leading: -10, bottom: -10, trailing: -10))
+                            )
+                            .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
                         }
                     }
                 }
@@ -75,7 +85,7 @@ struct FinalTimetableSelectorView: View {
                     Text("좌우로 스크롤하고 시간표를 클릭해 \n 원하는 시간표를 등록해요.")
                         .font(.sb16)
                         .multilineTextAlignment(.center)
-                    TabView {
+                    TabView(selection: $currIndex) {
                         ForEach(selectedValues.timetableList.indices, id: \.self) { index in
                             TimetableView(timetableBaseArray: selectedValues.timetableList[index])
                                 .onTapGesture {
@@ -86,11 +96,15 @@ struct FinalTimetableSelectorView: View {
                     }
                     .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
                     .onAppear {
+                        currIndex = 0
                         UIScrollView.appearance().isScrollEnabled = true //드래그제스처로 탭뷰 넘기는거 여기 TabView에서만 허용
                     }
                     .frame(height: 500)
                 }
             }
+        }
+        .onAppear {
+            isRawChecked = false
         }
         .popup(isPresented: $isProgressing, view: {
             TimetableProgressView()
@@ -119,5 +133,5 @@ struct FinalTimetableSelectorView: View {
 
 #Preview {
     FinalTimetableSelectorView(selectedValues: SelectedValues(), showingPopup: .constant(false), timetableIndex: .constant(1))
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
 }
