@@ -55,7 +55,7 @@ struct MidCheckPopup: View {
             .frame(width: 300, height: 360)
             .overlay(
                 VStack(spacing: 30) {
-                    Image(systemName: "exclamationmark.warninglight")
+                    Image(systemName: "light.beacon.max")
                         .resizable()
                         .frame(width: 100, height: 100)
                     Text("시간표를 생성하면\n현재 설정은 수정할 수 없어요!!")
