@@ -26,7 +26,7 @@ class SelectedValues: TimeSelectorViewModelProtocol {
     //서버에서 준 과목 조합 리스트
     @Published var majorCombinations: [MajorComb] = []
     
-    @Published var timetableList: [[SubjectModelBase]] = [[]]
+    @Published var timetableList: [[SubjectModelBase]] = []
     
     func isSelectedSubjectsEmpty() -> Bool {
         return selectedSubjects.isEmpty
@@ -106,7 +106,7 @@ class SelectedValues: TimeSelectorViewModelProtocol {
         }
     }
     
-    func fetchFinalTimetableList(GPA: Int, requiredLect: [SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [MajorComb], completion: @escaping (Result<Void, Error>) -> Void) {
+    func fetchFinalTimetableList(isRaw: Bool, GPA: Int, requiredLect: [SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [MajorComb], completion: @escaping (Result<Void, Error>) -> Void) {
         let requiredLectStrings = requiredLect.map { $0.sbjDivcls }
         let adjustedRequiredLect = requiredLectStrings.isEmpty ? [""] : requiredLectStrings
         let adjustedImpossibleTimeZone = impossibleTimeZone.isEmpty ? "" : impossibleTimeZone
@@ -115,7 +115,7 @@ class SelectedValues: TimeSelectorViewModelProtocol {
                 combination.code
             }
         }
-        repository.postFinalTimetableList(GPA: GPA, requiredLect: adjustedRequiredLect, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: adjustedImpossibleTimeZone, majorList: adjustedMajorList) { [weak self] result in
+        repository.postFinalTimetableList(isRaw: isRaw, GPA: GPA, requiredLect: adjustedRequiredLect, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: adjustedImpossibleTimeZone, majorList: adjustedMajorList) { [weak self] result in
             switch result {
             case .success(let finalTimetableList):
                 DispatchQueue.main.async {

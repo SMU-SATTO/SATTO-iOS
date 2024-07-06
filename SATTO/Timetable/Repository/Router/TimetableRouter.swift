@@ -10,7 +10,7 @@ import Moya
 
 enum TimetableRouter {
     case postMajorComb(GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String)
-    case postFinalTimetableList(GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [[String]])
+    case postFinalTimetableList(isRaw: Bool, GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [[String]])
     case getTimetableList
     case getMainTimetable
     case getUserTimetable(id: Int?)
@@ -51,8 +51,12 @@ extension TimetableRouter: TargetType {
         switch self {
         case .postMajorComb:
             return "/timetable"
-        case .postFinalTimetableList:
-            return "/timetable/auto"
+        case .postFinalTimetableList(let isRaw, _, _, _, _, _, _):
+            if isRaw {
+                return "/timetable/auto/raw"
+            } else {
+                return "/timetable/auto"
+            }
         case .getTimetableList:
             return "/timetable/list"
         case .getMainTimetable:
@@ -115,7 +119,7 @@ extension TimetableRouter: TargetType {
                 "cyberCount": cyberCount,
                 "impossibleTimeZone": impossibleTimeZone
             ], encoding: JSONEncoding.prettyPrinted)
-        case .postFinalTimetableList(let GPA, let requiredLect, let majorCount, let cyberCount, let impossibleTimeZone, let majorList):
+        case .postFinalTimetableList(_, let GPA, let requiredLect, let majorCount, let cyberCount, let impossibleTimeZone, let majorList):
             return .requestParameters(parameters: [
                 "GPA": GPA,
                 "requiredLect": requiredLect,

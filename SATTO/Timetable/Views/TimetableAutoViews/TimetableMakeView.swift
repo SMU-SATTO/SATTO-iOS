@@ -168,10 +168,24 @@ struct TimetableMakeView: View {
     
     private var tabViewNavigationButtons: some View {
         HStack(spacing: 20) {
-            if selectedView != .creditPicker && selectedView != .majorCombination {
+            //majorCombination 생성에 실패하면 뒤로가기 가능
+            if (selectedView != .creditPicker && selectedView != .majorCombination) || selectedValues.majorCombinations.count == 0 {
                 backButton
             }
-            nextButton
+            if selectedView == .majorCombination {
+                if selectedValues.majorCombinations.count > 0 {
+                    VStack(spacing: 0) {
+                        nextButton
+                        Text("시간표 생성은 5초에 한 번씩 가능해요.")
+                            .font(.m12)
+                            .foregroundStyle(.blackWhite200)
+                            .padding(.top, 5)
+                    }
+                }
+            }
+            else {
+                nextButton
+            }
         }
     }
     
@@ -284,6 +298,7 @@ struct TimetableMakeView: View {
             isProgressing = true
             isButtonDisabled = true
             selectedValues.fetchFinalTimetableList(
+                isRaw: false,
                 GPA: selectedValues.credit,
                 requiredLect: selectedValues.selectedSubjects,
                 majorCount: selectedValues.majorNum,
