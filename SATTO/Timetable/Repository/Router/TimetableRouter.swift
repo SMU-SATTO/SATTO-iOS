@@ -173,7 +173,7 @@ extension TimetableRouter: TargetType {
             return .requestParameters(parameters: [
                 "state": isRepresent
             ], encoding: JSONEncoding.prettyPrinted)
-        case .patchTimetableName(let timetableId, let timetableName):
+        case .patchTimetableName(_, let timetableName):
             return .requestParameters(parameters: [
                 "timeTableName": timetableName,
             ], encoding: JSONEncoding.prettyPrinted)

@@ -177,7 +177,7 @@ struct TimeSelectorView<VM>: View where VM: TimeSelectorViewModelProtocol{
     
     private var selectedIndexesView: some View {
         VStack {
-            Text("선택된 불가능한 시간대: \(selectedIndexesText)")
+//            Text("선택된 불가능한 시간대: \(selectedIndexesText)")
         }
     }
     

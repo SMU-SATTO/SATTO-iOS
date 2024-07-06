@@ -225,7 +225,8 @@ struct TimetableMainView: View {
     private var headerTabs: some View {
         HStack(spacing: 20) {
             tabButton(title: "시간표", tab: "시간표")
-            tabButton(title: "이수학점", tab: "이수학점")
+            //MARK: - 추후 개발 예정
+//            tabButton(title: "이수학점", tab: "이수학점")
             Spacer()
         }
     }
@@ -338,7 +339,6 @@ struct TimetableMainView: View {
                 .padding(.horizontal, 20)
             
             if currSelectedOption == "총 이수학점" {
-                //TODO: API - onappear 추가 필요
                 pieChart
                     .padding(.top, 5)
                 HStack {
@@ -476,5 +476,5 @@ struct PieChartView: View {
 
 #Preview {
     TimetableMainView()
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
 }

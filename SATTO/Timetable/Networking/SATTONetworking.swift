@@ -8,7 +8,6 @@
 import Foundation
 import Moya
 
-//TODO: async await 공부
 class SATTONetworking {
     static let shared = SATTONetworking()
     

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TimetableMakeView: View {
     enum SelectedView: CaseIterable {
-        case creditPicker, essentialClasses, invalidTime, midCheck, majorCombination, finalTimetable
+        case creditPicker, essentialClasses, invalidTime, midCheck, majorCombination, finalTimetable, completionTimetable
     }
 
     @Binding var stackPath: [TimetableRoute]
@@ -22,13 +22,19 @@ struct TimetableMakeView: View {
     @State private var selectedSubviews = Set<Int>()
     @State private var alreadySelectedSubviews = Set<Int>()
     
+    @State private var isProgressing = false
+    
     @State private var midCheckPopup = false
     @State private var invalidPopup = false
     @State private var finalSelectPopup = false
-    @State private var progressPopup = false
     @State private var errorPopup = false
+    @State private var completionPopup = false
+    @State private var showingAlert = false
+    
+    @State private var isRegisterSuccess = false
     
     @State private var timetableIndex = 0
+    @State private var registeredTimetableList: Set<Int> = []
     
     @State private var isButtonDisabled = false
     
@@ -37,59 +43,28 @@ struct TimetableMakeView: View {
             Color.backgroundDefault
                 .ignoresSafeArea(.all)
             VStack {
-                GeometryReader { geometry in
-                    VStack {
-                        CustomPageControl(
-                            totalIndex: SelectedView.allCases.count,
-                            selectedIndex: selectedViewIndex()
-                        )
-                        .animation(.spring(), value: UUID())
-                        .padding(.horizontal)
-                        
-                        TabView(selection: $selectedView) {
-                            ForEach(SelectedView.allCases, id: \.self) { view in
-                                tabViewContent(for: view)
-                                    .tag(view)
-                            }
-                        }
-                        .onAppear {
-                            UIScrollView.appearance().isScrollEnabled = false //드래그제스처로 탭뷰 넘기는거 방지
-                        }
-                        .tabViewStyle(.page(indexDisplayMode: .never))
-                        .padding(.top, 20)
-                    }
-                    .padding(.top, 0)
-                }
-                HStack(spacing: 20) {
-                    if selectedView != .creditPicker && selectedView != .majorCombination {
-                        backButton
-                    }
-                    if selectedView != .finalTimetable {
-                        nextButton
-                    }
-                }
-                .padding(EdgeInsets(top: 0, leading: 15, bottom: 10, trailing: 15))
+                pageControl
+                tabView
+                    .padding(.top)
+                tabViewNavigationButtons
+                    .padding(EdgeInsets(top: 0, leading: 15, bottom: 10, trailing: 15))
             }
             .animation(.easeInOut, value: UUID())
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                HStack {
-                    Button(action: {
-                        stackPath.removeLast()
-                    }) {
-                        Image(systemName: "chevron.left")
-                            .foregroundStyle(Color.blackWhite)
-                    }
-                    Text("시간표 생성하기")
-                        .font(.b18)
-                        .foregroundStyle(Color.blackWhite200)
-                }
+                customToolBar
+            }
+        }
+        .alert("지금 뒤로 가면 진행상항이 사라져요!", isPresented: $showingAlert) {
+            Button("취소", role: .cancel, action: {})
+            Button("확인") {
+                stackPath.removeLast()
             }
         }
         .popup(isPresented: $invalidPopup, view: {
-            InvalidPopupView(invalidPopup: $invalidPopup)
+            InvalidPopup(invalidPopup: $invalidPopup)
         }, customize: {
             $0
                 .position(.center)
@@ -99,7 +74,7 @@ struct TimetableMakeView: View {
                 .backgroundColor(.black.opacity(0.5))
         })
         .popup(isPresented: $midCheckPopup, view: {
-            MidCheckPopupView(midCheckPopup: $midCheckPopup, navigateForward: navigateForward, selectedValues: selectedValues)
+            MidCheckPopup(midCheckPopup: $midCheckPopup, navigateForward: navigateForward, selectedValues: selectedValues)
         }, customize: {
             $0
                 .position(.center)
@@ -110,7 +85,7 @@ struct TimetableMakeView: View {
                 .backgroundColor(.black.opacity(0.5))
         })
         .popup(isPresented: $finalSelectPopup, view: {
-            FinalSelectPopupView(selectedValues: selectedValues, finalSelectPopup: $finalSelectPopup, timetableIndex: $timetableIndex)
+            FinalSelectPopup(selectedValues: selectedValues, finalSelectPopup: $finalSelectPopup, completionPopup: $completionPopup, isRegisterSuccess: $isRegisterSuccess, timetableIndex: $timetableIndex, registeredTimetableList: $registeredTimetableList)
         }, customize: {
             $0
                 .position(.center)
@@ -120,10 +95,8 @@ struct TimetableMakeView: View {
                 .dragToDismiss(false)
                 .backgroundColor(.black.opacity(0.5))
         })
-        .popup(isPresented: $progressPopup, view: {
-            VStack {
-                TimetableProgressView()
-            }
+        .popup(isPresented: $isProgressing, view: {
+            TimetableProgressView()
         }, customize: {
             $0
                 .position(.center)
@@ -134,16 +107,7 @@ struct TimetableMakeView: View {
                 .dragToDismiss(false)
         })
         .popup(isPresented: $errorPopup, view: {
-            VStack {
-                RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(.white)
-                    .frame(width: 300, height: 300)
-                    .overlay(
-                        Text("시간표 생성에 실패했어요. 전공 조합을 다시 선택해보거나 개발자에게 문의해주세요!")
-                            .font(.sb14)
-                            .foregroundStyle(.black)
-                    )
-            }
+            ErrorPopup()
         }, customize: {
             $0
                 .position(.center)
@@ -153,6 +117,62 @@ struct TimetableMakeView: View {
                 .backgroundColor(.black.opacity(0.9))
                 .autohideIn(3)
         })
+        .popup(isPresented: $completionPopup) {
+            TimetableSelectCompletionPopup(completionPupop: $completionPopup, isRegisterSuccess: $isRegisterSuccess)
+        } customize: {
+            $0.type(.floater())
+                .position(.center)
+                .appearFrom(.bottom)
+                .closeOnTapOutside(true)
+                .closeOnTap(false)
+                .dragToDismiss(false)
+                .backgroundColor(.black.opacity(0.5))
+                .autohideIn(5)
+        }
+    }
+    
+    private var customToolBar: some View {
+        HStack {
+            Button(action: {
+                showingAlert = true
+            }) {
+                Image(systemName: "chevron.left")
+                    .foregroundStyle(Color.blackWhite)
+            }
+            Text("시간표 생성 취소하기")
+                .font(.b18)
+                .foregroundStyle(Color.blackWhite200)
+        }
+    }
+    
+    private var pageControl: some View {
+        VStack {
+            CustomPageControl(totalIndex: SelectedView.allCases.count, selectedIndex: selectedViewIndex())
+                .animation(.spring(), value: UUID())
+                .padding(.horizontal)
+        }
+    }
+    
+    private var tabView: some View {
+        TabView(selection: $selectedView) {
+            ForEach(SelectedView.allCases, id: \.self) { view in
+                tabViewContent(for: view)
+                    .tag(view)
+            }
+        }
+        .onAppear {
+            UIScrollView.appearance().isScrollEnabled = false //드래그제스처로 탭뷰 넘기는거 방지
+        }
+        .tabViewStyle(.page(indexDisplayMode: .never))
+    }
+    
+    private var tabViewNavigationButtons: some View {
+        HStack(spacing: 20) {
+            if selectedView != .creditPicker && selectedView != .majorCombination {
+                backButton
+            }
+            nextButton
+        }
     }
     
     private var backButton: some View {
@@ -160,7 +180,7 @@ struct TimetableMakeView: View {
             Button(action: {
                 navigateBack()
             }) {
-                Text("이전으로")
+                Text(backButtonText())
                     .font(.sb16)
                     .foregroundStyle(Color.buttonBlue)
                     .frame(maxWidth: 150, maxHeight: .infinity)
@@ -179,6 +199,17 @@ struct TimetableMakeView: View {
         .frame(height: 45)
     }
     
+    func backButtonText() -> String {
+        switch selectedView {
+        case .finalTimetable:
+            return "전공조합 선택하기"
+        case .completionTimetable:
+            return "시간표 더 고르기"
+        default:
+            return "이전으로"
+        }
+    }
+    
     private var nextButton: some View {
         GeometryReader { geometry in
             Button(action: {
@@ -188,7 +219,7 @@ struct TimetableMakeView: View {
                     navigateForward()
                 }
             }) {
-                Text(selectedView == .midCheck ? "시간표 생성하기" : "다음으로")
+                Text(nextButtonText())
                     .font(.sb16)
                     .foregroundStyle(.white)
                     .frame(maxWidth: 150, maxHeight: .infinity)
@@ -204,6 +235,22 @@ struct TimetableMakeView: View {
         .frame(height: 45)
     }
     
+    // 다음으로 버튼의 텍스트를 반환하는 함수
+    func nextButtonText() -> String {
+        switch selectedView {
+        case .midCheck:
+            return "시간표 생성하기"
+        case .majorCombination:
+            return "시간표 생성하기"
+        case .finalTimetable:
+            return "시간표 등록 끝내기"
+        case .completionTimetable:
+            return "시간표 목록 보기"
+        default:
+            return "다음으로"
+        }
+    }
+    
     func navigateBack() {
         switch selectedView {
         case .essentialClasses:
@@ -216,6 +263,8 @@ struct TimetableMakeView: View {
             selectedView = .midCheck
         case .finalTimetable:
             selectedView = .majorCombination
+        case .completionTimetable:
+            selectedView = .finalTimetable
         default:
             break
         }
@@ -232,7 +281,7 @@ struct TimetableMakeView: View {
         case .midCheck:
             selectedView = .majorCombination
         case .majorCombination:
-            progressPopup = true
+            isProgressing = true
             isButtonDisabled = true
             selectedValues.fetchFinalTimetableList(
                 GPA: selectedValues.credit,
@@ -246,13 +295,13 @@ struct TimetableMakeView: View {
                     switch result {
                     case .success:
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            self.progressPopup = false
+                            self.isProgressing = false
                             selectedView = .finalTimetable
                         }
                     case .failure(let error):
                         print("Error: \(error)")
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            self.progressPopup = false
+                            self.isProgressing = false
                             self.errorPopup = true
                         }
                     }
@@ -261,8 +310,11 @@ struct TimetableMakeView: View {
                     }
                 }
             }
-        default:
-            break
+        case .finalTimetable:
+            selectedView = .completionTimetable
+        case .completionTimetable:
+            stackPath.removeAll()
+            stackPath.append(.timetableList)
         }
     }
 
@@ -286,67 +338,13 @@ struct TimetableMakeView: View {
             return AnyView(MajorCombSelectorView(selectedValues: selectedValues))
         case .finalTimetable:
             return AnyView(FinalTimetableSelectorView(selectedValues: selectedValues, showingPopup: $finalSelectPopup, timetableIndex: $timetableIndex))
-        }
-    }
-
-    // 다음으로 버튼의 텍스트를 반환하는 함수
-    func nextButtonText() -> String {
-        switch selectedView {
-        case .midCheck:
-            return "확인하기"
-        default:
-            return "다음으로"
-        }
-    }
-}
-
-struct CustomPageControl: View {
-    let totalIndex: Int
-    let selectedIndex: Int
-    
-    @Namespace private var animation
-    
-    let rectangleHeight: CGFloat = 7
-    let rectangleRadius: CGFloat = 5
-    
-    var body: some View {
-        HStack {
-            ForEach(0..<totalIndex, id: \.self) { index in
-                if selectedIndex > index {
-                    // 지나온 페이지
-                    Rectangle()
-                        .foregroundStyle(Color.pagecontrolPrevious)
-                        .frame(height: rectangleHeight)
-                        .clipShape(RoundedRectangle(cornerRadius: rectangleRadius))
-                } else if selectedIndex == index {
-                    // 선택된 페이지
-                    Rectangle()
-                        .fill(.gray.opacity(0.3))
-                        .frame(height: rectangleHeight)
-                        .clipShape(RoundedRectangle(cornerRadius: rectangleRadius))
-                        .overlay {
-                            Rectangle()
-                                .foregroundStyle(Color.pagecontrolCurrent)
-                                .frame(height: rectangleHeight)
-                                .clipShape(
-                                    RoundedRectangle(cornerRadius: rectangleRadius)
-                                )
-                                .matchedGeometryEffect(id: "IndicatorAnimationId", in: animation)
-                        }
-                } else {
-                    // 나머지 페이지
-                    Rectangle()
-                        .fill(.gray.opacity(0.3))
-                        .frame(height: rectangleHeight)
-                        .clipShape(RoundedRectangle(cornerRadius: rectangleRadius))
-                }
-                
-            }
+        case .completionTimetable:
+            return AnyView(TimetableCompletionView(stackPath: $stackPath))
         }
     }
 }
 
 #Preview {
     TimetableMakeView(stackPath: .constant([.timetableMake]))
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
 }

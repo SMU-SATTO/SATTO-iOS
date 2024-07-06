@@ -129,16 +129,18 @@ class SelectedValues: TimeSelectorViewModelProtocol {
         }
     }
     
-    func postSelectedTimetable(timetableIndex: Int, semesterYear: String, timeTableName: String, isPublic: Bool, isRepresented: Bool) {
+    func postSelectedTimetable(timetableIndex: Int, semesterYear: String, timeTableName: String, isPublic: Bool, isRepresented: Bool, completion: @escaping (Bool) -> Void) {
         let codeSectionList = timetableList[timetableIndex].map { $0.sbjDivcls }
         SATTONetworking.shared.postTimetableSelect(codeSectionList: codeSectionList, semesterYear: semesterYear, timeTableName: timeTableName, isPublic: isPublic, isRepresented: isRepresented) { result in
             switch result {
             case .success:
                 DispatchQueue.main.async {
                     print("시간표 저장 성공!")
+                    completion(true)
                 }
             case .failure(let error):
                 print("Error post SelectedTimetable: \(error)")
+                completion(false)
             }
         }
     }

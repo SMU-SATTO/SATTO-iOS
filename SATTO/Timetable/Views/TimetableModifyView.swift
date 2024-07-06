@@ -80,7 +80,7 @@ struct TimetableModifyView: View {
                         Image(systemName: "chevron.left")
                             .foregroundStyle(Color.blackWhite)
                     }
-                    Text("시간표 수정하기")
+                    Text("시간표 수정 취소하기")
                         .font(.b18)
                         .foregroundStyle(Color.blackWhite200)
                 }
