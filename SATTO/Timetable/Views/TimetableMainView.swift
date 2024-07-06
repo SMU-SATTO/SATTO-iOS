@@ -18,6 +18,8 @@ enum TimetableRoute: Hashable {
 }
 
 struct TimetableMainView: View {
+    @State var tabbarIsHidden: Bool = false
+    
     @Environment(\.colorScheme) private var colorScheme
     @State var stackPath = [TimetableRoute]()
     
@@ -185,6 +187,18 @@ struct TimetableMainView: View {
                     TimetableModifyView(stackPath: $stackPath, timetableMainViewModel: timetableMainViewModel, timetableId: $timetableMainViewModel.timetableId)
                 }
             }
+            .onChange(of: stackPath) { _ in
+                if stackPath.isEmpty {
+                    tabbarIsHidden = false
+                }
+                else {
+                    tabbarIsHidden = true
+                }
+            }
+            .toolbar(
+                tabbarIsHidden ? .hidden : .visible,
+                for: .tabBar
+            )
         }
     }
     
@@ -211,7 +225,6 @@ struct TimetableMainView: View {
         }
         .frame(height: 180)
     }
-
     
     private var headerContent: some View {
         VStack(alignment: .leading, spacing: 15) {
