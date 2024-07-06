@@ -30,8 +30,6 @@ struct TimetableMainView: View {
     
     @Namespace private var namespace
     
-    @State var username = "홍길동"
-    
     @State private var bottomSheetPresented = false
     
     let majorCreditGoals = 72                  //전공 학점 목표
@@ -250,7 +248,7 @@ struct TimetableMainView: View {
                 .font(.b16)
                 .shadow(color: colorScheme == .light ? .white : .black, radius: 1, x: 1, y: 1)
                 .shadow(color: colorScheme == .light ? .white : .black, radius: 1, x: -1, y: -1)
-            Text("\(username)님을 위한 시간표를 만들어 드릴게요.")
+            Text("지금 시간표를 만들어보세요!")
                 .font(.m12)
                 .foregroundStyle(Color.bannerText)
         }
@@ -329,7 +327,7 @@ struct TimetableMainView: View {
     private var creditsView: some View {
         VStack {
             HStack {
-                Text("\(username)님의 이수 학점")
+                Text("이수 학점")
                     .font(.b14)
                     .padding(.leading, 30)
                 Spacer()

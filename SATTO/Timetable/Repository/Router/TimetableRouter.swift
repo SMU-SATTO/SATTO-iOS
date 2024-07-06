@@ -25,6 +25,7 @@ enum TimetableRouter {
     case patchTimetablePrivate(timetableId: Int, isPublic: Bool)
     case patchTimetableRepresent(timetableId: Int, isRepresent: Bool)
     case patchTimetableName(timetableId: Int, timetableName: String)
+    case patchTimetableInfo(timetableId: Int, codeSectionList: [String])
     case deleteTimetable(timetableId: Int)
 }
 
@@ -52,11 +53,7 @@ extension TimetableRouter: TargetType {
         case .postMajorComb:
             return "/timetable"
         case .postFinalTimetableList(let isRaw, _, _, _, _, _, _):
-            if isRaw {
-                return "/timetable/auto/raw"
-            } else {
-                return "/timetable/auto"
-            }
+            return isRaw ? "/timetable/auto/raw" : "/timetable/auto"
         case .getTimetableList:
             return "/timetable/list"
         case .getMainTimetable:
@@ -77,6 +74,8 @@ extension TimetableRouter: TargetType {
             return "/timetable/\(timetableId)/represent"
         case .patchTimetableName(let timetableId, _):
             return "/timetable/\(timetableId)/name"
+        case .patchTimetableInfo(let timetableId, _):
+            return "/timetable/\(timetableId)"
         case .deleteTimetable(let timetableId):
             return "/timetable/\(timetableId)"
         }
@@ -84,25 +83,11 @@ extension TimetableRouter: TargetType {
     
     var method: Moya.Method {
         switch self {
-        case .postMajorComb:
+        case .postMajorComb, .postFinalTimetableList, .postTimetableSelect, .postCurrentLectureList:
             return .post
-        case .postFinalTimetableList:
-            return .post
-        case .getTimetableList:
+        case .getTimetableList, .getMainTimetable, .getUserTimetable:
             return .get
-        case .getMainTimetable:
-            return .get
-        case .getUserTimetable:
-            return .get
-        case .postTimetableSelect:
-            return .post
-        case .postCurrentLectureList:
-            return .post
-        case .patchTimetablePrivate:
-            return .patch
-        case .patchTimetableRepresent:
-            return .patch
-        case .patchTimetableName:
+        case .patchTimetablePrivate, .patchTimetableRepresent, .patchTimetableName, .patchTimetableInfo:
             return .patch
         case .deleteTimetable:
             return .delete
@@ -180,6 +165,10 @@ extension TimetableRouter: TargetType {
         case .patchTimetableName(_, let timetableName):
             return .requestParameters(parameters: [
                 "timeTableName": timetableName,
+            ], encoding: JSONEncoding.prettyPrinted)
+        case .patchTimetableInfo(_, let codeSectionList):
+            return .requestParameters(parameters: [
+                "codeSectionList": codeSectionList
             ], encoding: JSONEncoding.prettyPrinted)
         case .deleteTimetable(let timetableId):
             return .requestParameters(parameters: [

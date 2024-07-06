@@ -74,6 +74,21 @@ final class TimetableMainViewModel: ObservableObject {
         }
     }
     
+    func patchTimetableInfo(timetableId: Int, codeSectionList: [SubjectModelBase]) {
+        let adjustedCodeSectionList = codeSectionList.map { $0.sbjDivcls }
+        print("\(adjustedCodeSectionList)")
+        SATTONetworking.shared.patchTimetableInfo(timetableId: timetableId, codeSectionList: adjustedCodeSectionList) { result in
+            switch result {
+            case .success:
+                DispatchQueue.main.async {
+                    print("시간표 수정 성공!")
+                }
+            case .failure(let error):
+                print("Error patching timetableInfo: \(error)")
+            }
+        }
+    }
+    
     func deleteTimetable(timetableID: Int) {
         SATTONetworking.shared.deleteTimetable(timetableId: timetableId) { result in
             switch result {

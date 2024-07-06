@@ -50,7 +50,8 @@ struct TimetableModifyView: View {
                         .presentationDetents([.medium, .large])
                     })
                 Button(action: {
-                    //TODO: id랑 변경된 시간표 patch
+                    timetableMainViewModel.patchTimetableInfo(timetableId: timetableMainViewModel.timetableId, codeSectionList: selectedValues.selectedSubjects)
+                    stackPath.removeLast()
                 }) {
                     Text("시간표 저장하기")
                         .font(.sb16)
@@ -67,7 +68,6 @@ struct TimetableModifyView: View {
             }
         }
         .onAppear {
-            //TODO: 시간표 변경 API
             selectedValues.selectedSubjects = timetableMainViewModel.timetableInfo
         }
         .navigationBarBackButtonHidden(true)

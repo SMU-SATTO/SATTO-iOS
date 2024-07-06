@@ -193,6 +193,24 @@ class SATTONetworking {
         }
     }
     
+    func patchTimetableInfo(timetableId: Int, codeSectionList: [String], completion: @escaping(Result<PatchTimetableInfoResponseDto, Error>) -> Void) {
+        provider.request(.patchTimetableInfo(timetableId: timetableId, codeSectionList: codeSectionList)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let patchTimetableInfoResponseDto = try response.map(PatchTimetableInfoResponseDto.self)
+                    completion(.success(patchTimetableInfoResponseDto))
+                } catch {
+                    print("Error mapping response: \(error)")
+                    completion(.failure(error))
+                }
+            case .failure(let error):
+                print("Request failed with error: \(error)")
+                completion(.failure(error))
+            }
+        }
+    }
+    
     func deleteTimetable(timetableId: Int, completion: @escaping(Result<DeleteTimetableResponseDto, Error>) -> Void) {
         provider.request(.deleteTimetable(timetableId: timetableId)) { result in
             switch result {
