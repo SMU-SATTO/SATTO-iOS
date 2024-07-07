@@ -121,17 +121,17 @@ struct FinalSelectPopup: View {
     var body: some View {
         VStack {
             RoundedRectangle(cornerRadius: 20)
-                .frame(width: 300, height: 600)
+                .frame(width: 350, height: 600)
                 .foregroundStyle(Color.popupBackground)
+                .foregroundStyle(Color.red)
                 .overlay(
                     VStack(spacing: 0) {
                         TimetableView(timetableBaseArray: selectedValues.timetableList[timetableIndex])
-                            .padding(EdgeInsets(top: -45, leading: 15, bottom: 0, trailing: 15))
+                            .padding()
                         Text("이 시간표를 이번 학기 시간표로\n결정하시겠어요?")
                             .font(.sb16)
                             .foregroundStyle(Color.blackWhite200)
                             .multilineTextAlignment(.center)
-                            .padding(.top, -40)
                         acceptButton
                         declineButton
                     }
@@ -148,39 +148,39 @@ struct FinalSelectPopup: View {
         }) {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundStyle(Color.buttonBlue)
-                .frame(height: 40)
                 .padding(.horizontal, 30)
                 .overlay(
                     Text("네, 결정했어요")
                         .font(.sb14)
                         .foregroundStyle(.white)
                 )
+                .frame(maxHeight: 40)
                 .padding(.top, 10)
         }
     }
     
     private var declineButton: some View {
-            Button(action: {
-                finalSelectPopup = false
-            }) {
-                RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(Color.clear)
-                    .frame(height: 40)
-                    .padding(.horizontal, 30)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.buttonBlue, lineWidth: 1.5)
-                            .padding(.horizontal, 30)
-                            .overlay(
-                                Text("아니요, 더 둘러볼래요")
-                                    .font(.sb14)
-                                    .foregroundStyle(Color.buttonBlue)
-                            )
-                    )
-                    .padding(.top, 10)
-                    .padding(.bottom, 20)
-            }
+        Button(action: {
+            finalSelectPopup = false
+        }) {
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundStyle(Color.clear)
+                .padding(.horizontal, 30)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.buttonBlue, lineWidth: 1.5)
+                        .padding(.horizontal, 30)
+                        .overlay(
+                            Text("아니요, 더 둘러볼래요")
+                                .font(.sb14)
+                                .foregroundStyle(Color.buttonBlue)
+                        )
+                )
+                .frame(maxHeight: 40)
+                .padding(.top, 10)
+                .padding(.bottom, 20)
         }
+    }
     
     private var alertContent: some View {
         VStack {
@@ -240,13 +240,6 @@ struct TimetableSelectCompletionPopup: View {
                 .font(.sb16)
                 .foregroundStyle(.blackWhite)
                 .multilineTextAlignment(.center)
-            Button(action: {
-                completionPupop = false
-            }) {
-                Text("확인")
-                    .font(.m16)
-                    .foregroundStyle(.blackWhite)
-            }
         }
         .background(
             RoundedRectangle(cornerRadius: 10)
@@ -256,4 +249,15 @@ struct TimetableSelectCompletionPopup: View {
         )
         .padding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20))
     }
+}
+
+#Preview {
+    FinalSelectPopup(
+        selectedValues: SelectedValues(),
+        finalSelectPopup: .constant(true),
+        completionPopup: .constant(false),
+        isRegisterSuccess: .constant(false),
+        timetableIndex: .constant(1),
+        registeredTimetableList: .constant(Set<Int>())
+    )
 }

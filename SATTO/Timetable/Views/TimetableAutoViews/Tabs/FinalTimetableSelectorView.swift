@@ -20,7 +20,7 @@ struct FinalTimetableSelectorView: View {
     
     @Binding var showingPopup: Bool
     @Binding var timetableIndex: Int
-
+    
     var body: some View {
         ScrollView {
             LazyVStack {
@@ -29,6 +29,7 @@ struct FinalTimetableSelectorView: View {
                 }
                 else {
                     timetableTabView
+                    CustomPageIndicator(currIndex: $currIndex, totalIndex: selectedValues.timetableList.count)
                 }
             }
         }
@@ -108,7 +109,7 @@ struct FinalTimetableSelectorView: View {
                         }
                 }
             }
-            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             .onAppear {
                 currIndex = 0
                 UIScrollView.appearance().isScrollEnabled = true //드래그제스처로 탭뷰 넘기는거 여기 TabView에서만 허용
@@ -144,26 +145,64 @@ struct FinalTimetableSelectorView: View {
     }
 }
 
-
-#Preview {
-//    FinalTimetableSelectorView(selectedValues: SelectedValues(), showingPopup: .constant(false), timetableIndex: .constant(1))
-//        .preferredColorScheme(.light)
-    LazyVStack {
-        Text("1개의 시간표가 만들어졌어요!")
-            .font(.sb14)
-            .multilineTextAlignment(.center)
-        Text("좌우로 스크롤하고 시간표를 클릭해 \n 원하는 시간표를 등록해요.")
-            .font(.sb16)
-            .multilineTextAlignment(.center)
-        TabView {
-            ForEach(0...3, id: \.self) { index in
-                TimetableView(timetableBaseArray: [])
+struct CustomPageIndicator: View {
+    @Binding var currIndex: Int
+    @State var totalIndex: Int
+    
+    var body: some View {
+        VStack {
+            pageIndicator
+        }
+    }
+    
+    private var pageIndicator: some View {
+        GeometryReader { geometry in
+            HStack(spacing: 8) { // 간격을 좁게 조정
+                ForEach(pageIndicatorIndices(), id: \.self) { index in
+                    Circle()
+                        .fill(index == currIndex ? Color.blue : Color.gray)
+                        .frame(width: 10, height: 10)
+                        .scaleEffect(circleScaleEffect(index: index))
+                        .animation(.easeInOut, value: currIndex)
+                        .onTapGesture {
+                            withAnimation {
+                                currIndex = index
+                            }
+                        }
+                }
             }
+            .frame(width: geometry.size.width, alignment: .center)
         }
-        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
-        .onAppear {
-            UIScrollView.appearance().isScrollEnabled = true //드래그제스처로 탭뷰 넘기는거 여기 TabView에서만 허용
+        .frame(height: 20)
+    }
+    
+    private func circleScaleEffect(index: Int) -> CGFloat {
+        let maxIndicators = 9
+        let halfMax = maxIndicators / 2
+        
+        if index == currIndex {
+            return 1.0
+        } else if (currIndex > halfMax && currIndex < totalIndex - halfMax && index == currIndex - halfMax) || (currIndex > halfMax && currIndex < totalIndex - halfMax - 1 && index == currIndex + halfMax) {
+            return 0.6
+        } else if (currIndex == halfMax && index == currIndex + halfMax) || (currIndex == totalIndex - halfMax - 1 && index == currIndex - halfMax) {
+            return 0.6
+        } else {
+            return 0.8
         }
-        .frame(height: 500)
+    }
+
+    private func pageIndicatorIndices() -> [Int] {
+        let maxIndicators = 9
+        let halfMax = maxIndicators / 2
+        
+        if totalIndex <= maxIndicators {
+            return Array(0..<totalIndex)
+        } else if currIndex <= halfMax {
+            return Array(0..<maxIndicators)
+        } else if currIndex >= totalIndex - halfMax - 1 {
+            return Array((totalIndex - maxIndicators)..<totalIndex)
+        } else {
+            return Array((currIndex - halfMax)..<(currIndex + halfMax + 1))
+        }
     }
 }

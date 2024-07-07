@@ -121,13 +121,13 @@ struct TimetableMakeView: View {
             TimetableSelectCompletionPopup(completionPupop: $completionPopup, isRegisterSuccess: $isRegisterSuccess)
         } customize: {
             $0.type(.floater())
-                .position(.center)
+                .position(.bottom)
                 .appearFrom(.bottom)
                 .closeOnTapOutside(true)
                 .closeOnTap(false)
                 .dragToDismiss(false)
                 .backgroundColor(.black.opacity(0.5))
-                .autohideIn(5)
+                .autohideIn(3)
         }
     }
     
