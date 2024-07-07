@@ -18,13 +18,16 @@ struct TimetableCustom: View {
     
     @State private var isShowBottomSheet = false
     @State private var isUsingSelectedSubjects = true
+    @State private var showingAlert = false
+    @State private var timetableName = ""
+    
     var body: some View {
         ZStack {
             Color.backgroundDefault
                 .ignoresSafeArea(.all)
             VStack {
                 HStack {
-                    Text("이번 학기에 들을 과목을 선택해 주세요.")
+                    Text("시간표를 눌러서 이번 학기에 들을 과목을 선택해 보세요!")
                         .font(.sb18)
                     Spacer()
                 }
@@ -43,6 +46,33 @@ struct TimetableCustom: View {
                         )
                         .presentationDetents([.medium, .large])
                     })
+                Button(action: {
+                    showingAlert = true
+                }) {
+                    Text("시간표 저장하기")
+                        .font(.sb16)
+                        .foregroundStyle(.white)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundStyle(.buttonBlue)
+                                .padding(EdgeInsets(top: -10, leading: -30, bottom: -10, trailing: -30))
+                        )
+                        .padding(EdgeInsets(top: 10, leading: 30, bottom: 10, trailing: 30))
+                    
+                }
+                .padding()
+            }
+        }
+        .alert("시간표 이름을 입력해주세요", isPresented: $showingAlert) {
+            VStack {
+                TextField("시간표 이름", text: $timetableName)
+                    .autocorrectionDisabled()
+                HStack {
+                    Button("취소", role: .cancel, action: {})
+                    Button("확인") {
+                        saveTimetable()
+                    }
+                }
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -59,6 +89,14 @@ struct TimetableCustom: View {
                         .font(.b18)
                         .foregroundStyle(Color.blackWhite200)
                 }
+            }
+        }
+    }
+    
+    private func saveTimetable() {
+        selectedValues.postCustomTimetable(codeSectionList: selectedValues.selectedSubjects.map { $0.sbjDivcls }, semesterYear: "2024학년도 2학기", timeTableName: timetableName, isPublic: true, isRepresented: false) { success in
+            DispatchQueue.main.async {
+                stackPath.removeLast()
             }
         }
     }
