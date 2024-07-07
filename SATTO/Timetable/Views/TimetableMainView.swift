@@ -27,6 +27,7 @@ struct TimetableMainView: View {
     
     @State private var selectedTab = "시간표"
     @State private var currSelectedOption = "총 이수학점"
+    @State private var tempTimetableName = ""
     
     @Namespace private var namespace
     
@@ -67,6 +68,7 @@ struct TimetableMainView: View {
                         HStack {
                             Button(action: {
                                 nameModifyAlert = true
+                                tempTimetableName = timetableMainViewModel.timetableName
                             }) {
                                 HStack {
                                     Image(systemName: "pencil")
@@ -134,12 +136,15 @@ struct TimetableMainView: View {
                 .presentationDetents([.height(150)])
             })
             .alert("수정할 이름을 입력해주세요", isPresented: $nameModifyAlert) {
-                TextField(timetableMainViewModel.timetalbeName, text: $timetableMainViewModel.timetalbeName)
+                TextField(timetableMainViewModel.timetableName, text: $timetableMainViewModel.timetableName)
+                    .autocorrectionDisabled()
                 HStack {
-                    Button("취소", role: .cancel, action: {})
+                    Button("취소", role: .cancel) {
+                        timetableMainViewModel.timetableName = tempTimetableName
+                    }
                     Button("확인") {
                         /// timetable 수정 - 이름 변경 API
-                        timetableMainViewModel.patchTimetableName(timetableId: timetableMainViewModel.timetableId, timetableName: timetableMainViewModel.timetalbeName)
+                        timetableMainViewModel.patchTimetableName(timetableId: timetableMainViewModel.timetableId, timetableName: timetableMainViewModel.timetableName)
                     }
                 }
             }
@@ -287,22 +292,25 @@ struct TimetableMainView: View {
     private var timetableView: some View {
         VStack {
             HStack {
-                Text("\(timetableMainViewModel.semesterYear) \(timetableMainViewModel.timetalbeName)")
+                Text("\(timetableMainViewModel.semesterYear) \(timetableMainViewModel.timetableName)")
                     .font(.b14)
                     .padding(.leading, 30)
                 Spacer()
-                Button(action: {
-                    stackPath.append(TimetableRoute.timetableModify)
-                }) {
-                    Image(systemName: "pencil")
-                        .foregroundStyle(Color.blackWhite)
+                Group {
+                    Button(action: {
+                        stackPath.append(TimetableRoute.timetableModify)
+                    }) {
+                        Image(systemName: "pencil")
+                            .foregroundStyle(Color.blackWhite)
+                    }
+                    Button(action: {
+                        bottomSheetPresented.toggle()
+                    }) {
+                        Image(systemName: "gearshape")
+                            .foregroundStyle(Color.blackWhite)
+                    }
                 }
-                Button(action: {
-                    bottomSheetPresented.toggle()
-                }) {
-                    Image(systemName: "gearshape")
-                        .foregroundStyle(Color.blackWhite)
-                }
+                .disabled(timetableMainViewModel.timetableId == -1)
                 Button(action: {
                     stackPath.append(TimetableRoute.timetableList)
                 }) {
@@ -315,7 +323,7 @@ struct TimetableMainView: View {
             
             TimetableView(timetableBaseArray: timetableMainViewModel.timetableInfo)
                 .onAppear {
-                    if timetableMainViewModel.timetableId == 0 {
+                    if timetableMainViewModel.timetableId == -1 {
                         /// 기본 default 시간표 호출 API
                         timetableMainViewModel.fetchUserTimetable(id: nil)
                     }

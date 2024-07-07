@@ -185,6 +185,7 @@ struct FinalSelectPopup: View {
     private var alertContent: some View {
         VStack {
             TextField("시간표 이름", text: $timeTableName)
+                .autocorrectionDisabled()
             HStack {
                 Button("취소", role: .cancel, action: {})
                 Button("확인") {

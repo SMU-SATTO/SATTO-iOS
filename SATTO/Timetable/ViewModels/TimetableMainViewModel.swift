@@ -10,9 +10,9 @@ import Foundation
 final class TimetableMainViewModel: ObservableObject {
     let repository = TimetableRepository()
     
-    @Published var timetableId: Int = 0 //MainView에 띄워지는 시간표의 id
+    @Published var timetableId: Int = -1 //MainView에 띄워지는 시간표의 id
     @Published var semesterYear: String = "2024학년도 2학기"
-    @Published var timetalbeName: String = "시간표"
+    @Published var timetableName: String = "시간표"
     @Published var timetableInfo: [SubjectModelBase] = []
     
     func fetchUserTimetable(id: Int?) {
@@ -21,13 +21,14 @@ final class TimetableMainViewModel: ObservableObject {
             case .success(let timetableInfoModel):
                 DispatchQueue.main.async {
                     self?.semesterYear = timetableInfoModel.semesterYear ?? "2024학년도 2학기"
-                    self?.timetalbeName = timetableInfoModel.timeTableName ?? "시간표"
+                    self?.timetableName = timetableInfoModel.timeTableName ?? "시간표"
                     self?.timetableInfo = timetableInfoModel.subjectModels
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
+                    self?.timetableId = -1
                     self?.semesterYear = "2024학년도 2학기"
-                    self?.timetalbeName = "시간표"
+                    self?.timetableName = "시간표"
                     self?.timetableInfo = []
                 }
 //                print("Error fetching UserTimetable!: \(error)")
@@ -77,7 +78,6 @@ final class TimetableMainViewModel: ObservableObject {
     
     func patchTimetableInfo(timetableId: Int, codeSectionList: [SubjectModelBase]) {
         let adjustedCodeSectionList = codeSectionList.map { $0.sbjDivcls }
-        print("\(adjustedCodeSectionList)")
         SATTONetworking.shared.patchTimetableInfo(timetableId: timetableId, codeSectionList: adjustedCodeSectionList) { result in
             switch result {
             case .success:
