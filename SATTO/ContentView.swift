@@ -8,14 +8,16 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var selectedTab = Tab.setting
+    @State private var selectedTab = Tab.home
     @State private var stackPath: [Route] = []
     
     var body: some View {
 
 //        NavigationStack(path: $stackPath){
             TabView(selection: $selectedTab) {
-                HomeView().tabItem {
+                HomeView()
+                    .environmentObject(HomeNavigationPathFinder.shared)
+                    .tabItem {
                     Image(selectedTab == Tab.home ? "home.fill" : "home")
                     Text("홈")
                 }.tag(Tab.home)
@@ -23,7 +25,7 @@ struct ContentView: View {
                     Image(selectedTab == Tab.timeTable ? "timeTable.fill" : "timeTable")
                     Text("시간표")
                 }.tag(Tab.timeTable)
-                FriendView()
+                MyPageView()
                     .environmentObject(FriendNavigationPathFinder.shared)
                     .tabItem {
                     Image(selectedTab == Tab.friend ? "friend.fill" : "friend")

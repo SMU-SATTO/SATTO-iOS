@@ -31,12 +31,13 @@ final class FriendNavigationPathFinder: ObservableObject {
 
 
 
-struct FriendView: View {
+struct MyPageView: View {
     
     @State var show = false
     @Namespace var namespace
     @EnvironmentObject var navPathFinder: FriendNavigationPathFinder
     @EnvironmentObject var authViewModel: AuthViewModel
+    
     @StateObject var friendViewModel = FriendViewModel()
     
     var body: some View {
@@ -74,7 +75,7 @@ struct FriendView: View {
                                             navPathFinder.addPath(route: .followerSearch)
                                         }, label: {
                                             VStack(spacing: 0) {
-                                                Text("12")
+                                                Text("\(friendViewModel.follower.count)")
                                                     .foregroundColor(Color.gray800)
                                                 
                                                 Text("팔로워")
@@ -97,7 +98,7 @@ struct FriendView: View {
                                             navPathFinder.addPath(route: .followingSearch)
                                         }, label: {
                                             VStack(spacing: 0) {
-                                                Text("12")
+                                                Text("\(friendViewModel.following.count)")
                                                     .foregroundColor(Color.gray800)
                                                 
                                                 Text("팔로잉")
@@ -136,11 +137,32 @@ struct FriendView: View {
                         }
                         
                         Button(action: {
-                            
+                            friendViewModel.fetchFollowerList(studentId: authViewModel.user?.studentId ?? "asd")
                         }, label: {
-                            Text("버튼")
+                            Text("팔로워 조회")
+                        })
+                        Button(action: {
+                            friendViewModel.fetchFollowingList(studentId: authViewModel.user?.studentId ?? "asd")
+                        }, label: {
+                            Text("팔로잉 조회")
+                        })
+                        Button(action: {
+                            friendViewModel.timetableList(studentId: "201910914")
+                        }, label: {
+                            Text("시간표 조회")
+                        })
+                        Button(action: {
+                            friendViewModel.myTimetableList()
+                        }, label: {
+                            Text("내시간표 조회")
                         })
                         
+                        TimetableView(timetableBaseArray: friendViewModel.timetableInfo)
+                        
+                    }
+                    .onAppear {
+                        friendViewModel.fetchFollowerList(studentId: authViewModel.user?.studentId ?? "asd")
+                        friendViewModel.fetchFollowingList(studentId: authViewModel.user?.studentId ?? "asd")
                     }
                     .navigationBarBackButtonHidden()
                     .navigationDestination(for: FriendRoute.self) { route in
@@ -148,15 +170,16 @@ struct FriendView: View {
                         case .search:
                             SearchView(TextFieldPlacehold: "친구의 학번을 입력해 주세요")
                         case .followerSearch:
-                            SearchView(TextFieldPlacehold: "팔로워 목록")
+                            FollwerSearchView(friendViewModel: friendViewModel, TextFieldPlacehold: "팔로워 목록")
                         case .followingSearch:
-                            SearchView(TextFieldPlacehold: "팔로잉 목록")
+                            FollwingSearchView(friendViewModel: friendViewModel, TextFieldPlacehold: "팔로잉 목록")
                         case .friend:
-                            FriendView()
+                            FriendView(friendViewModel: friendViewModel)
                         }
                     }
                 }
             }
+            
         }
     }
     
@@ -221,6 +244,202 @@ struct FriendView: View {
     }
 }
 
+
+struct FriendView: View {
+    
+    @State var show = false
+    @Namespace var namespace
+    @EnvironmentObject var navPathFinder: FriendNavigationPathFinder
+    @EnvironmentObject var authViewModel: AuthViewModel
+    
+    @ObservedObject var friendViewModel: FriendViewModel
+    
+    var body: some View {
+            ZStack {
+            
+                    Color(red: 0.92, green: 0.93, blue: 0.94)
+                        .ignoresSafeArea(.all)
+                    
+                ScrollView {
+                    VStack(spacing: 0) {
+                        
+                        navigationBar
+                        .padding(.bottom, 53)
+                        
+                        
+                        if !show {
+
+                            ZStack(alignment: .top) {
+                                Rectangle()
+                                    .fill(Color.white)
+                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                    .clipShape(
+                                        .rect(
+                                            topLeadingRadius: 60,
+                                            topTrailingRadius: 60
+                                        )
+                                    )
+                                
+                                
+                                VStack(spacing: 0) {
+                                    HStack(spacing: 0) {
+                                        
+                                        Button(action: {
+                                            navPathFinder.addPath(route: .followerSearch)
+                                        }, label: {
+                                            VStack(spacing: 0) {
+                                                Text("\(friendViewModel.follower.count)")
+                                                    .foregroundColor(Color.gray800)
+                                                
+                                                Text("팔로워")
+                                                    .foregroundColor(Color.gray500)
+                                            }
+                                            .font(.sb16)
+                                        })
+                                        
+                                        Spacer()
+                                        
+                                        ProfileImageCell(inCircleSize: 100, outCircleSize: 105)
+                                            .shadow(radius: 15, x: 0, y: 10)
+                                            .padding(.top, -72)
+                                            .zIndex(1)
+                                            .matchedGeometryEffect(id: "profile", in: namespace)
+                                        
+                                        Spacer()
+                                        
+                                        Button(action: {
+                                            navPathFinder.addPath(route: .followingSearch)
+                                        }, label: {
+                                            VStack(spacing: 0) {
+                                                Text("\(friendViewModel.following.count)")
+                                                    .foregroundColor(Color.gray800)
+                                                
+                                                Text("팔로잉")
+                                                    .foregroundColor(Color.gray500)
+                                            }
+                                            .font(.sb16)
+                                        })
+                                    }
+                                    .padding(.top, 22)
+                                    .padding(.bottom, 14)
+                                    .padding(.horizontal, 51)
+                                    
+                                    
+                                    Text("\(friendViewModel.friend?.name ?? "name") \(friendViewModel.friend?.studentId ?? "studentId")")
+                                        .font(.sb16)
+                                        .foregroundColor(Color.gray800)
+                                        .matchedGeometryEffect(id: "name", in: namespace)
+                                        .padding(.bottom, 5)
+                                    
+                                    Text("\(friendViewModel.friend?.department ?? "department")")
+                                        .font(.m14)
+                                        .foregroundColor(Color.gray600)
+                                        .padding(.bottom, 23)
+                                        .matchedGeometryEffect(id: "major", in: namespace)
+                                    
+                                    HStack(spacing: 0) {
+                                            checkGraduation
+                                            
+                                            modifyTimetable
+                                    }
+                                }
+                            }
+                        }
+                        else {
+                            GraduationRequirementsView(namespace: namespace, show: $show)
+                        }
+                        
+                        Button(action: {
+                            friendViewModel.fetchFollowerList(studentId: friendViewModel.friend?.studentId ?? "asd")
+                        }, label: {
+                            Text("팔로워 조회")
+                        })
+                        Button(action: {
+                            friendViewModel.fetchFollowingList(studentId: friendViewModel.friend?.studentId ?? "asd")
+                        }, label: {
+                            Text("팔로잉 조회")
+                        })
+                        Button(action: {
+                            friendViewModel.timetableList(studentId: "201910914")
+                        }, label: {
+                            Text("시간표 조회")
+                        })
+                        Button(action: {
+                            friendViewModel.myTimetableList()
+                        }, label: {
+                            Text("내시간표 조회")
+                        })
+                        
+                    }
+                    .navigationBarBackButtonHidden()
+            }
+        }
+            .onAppear {
+                friendViewModel.fetchFollowerList(studentId: friendViewModel.friend?.studentId ?? "asd")
+                friendViewModel.fetchFollowingList(studentId: friendViewModel.friend?.studentId ?? "asd")
+            }
+    }
+    
+    var checkGraduation: some View {
+        Text("졸업요건 확인")
+            .font(.m12)
+            .foregroundColor(Color.white)
+            .padding(.horizontal, 9)
+            .padding(.vertical, 7)
+            .background(
+                Rectangle()
+                    .fill(Color(red: 0.4, green: 0.31, blue: 1.0))
+                    .cornerRadius(10)
+            )
+            .padding(.trailing, 32)
+            .onTapGesture {
+                withAnimation(.spring()){
+                    show.toggle()
+                }
+            }
+    }
+    
+    var modifyTimetable: some View {
+        Text("시간표 과목수정")
+            .font(.m12)
+            .foregroundColor(Color(red: 0.4, green: 0.31, blue: 1.0))
+            .padding(.horizontal, 14)
+            .padding(.vertical, 7)
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color(red: 0.4, green: 0.31, blue: 1.0), lineWidth: 1)
+                
+            )
+    }
+    
+    var navigationBar: some View {
+        HStack(spacing: 0) {
+            if !navPathFinder.path.isEmpty {
+                Button(action: {
+                    navPathFinder.path.popLast()
+                }, label: {
+                    Image("Classic")
+                })
+                .padding(.trailing, 10)
+            }
+            
+            Text("친구관리")
+                .font(.b20)
+                .foregroundColor(Color.gray900)
+            
+            Spacer()
+            
+            if navPathFinder.path.isEmpty {
+                Button(action: {
+                    navPathFinder.addPath(route: .search)
+                }, label: {
+                    Image("searchIcon")
+                })
+            }
+        }
+        .padding(.horizontal, 20)
+    }
+}
 
 struct GraduationRequirementsView: View {
     
@@ -307,54 +526,7 @@ struct ProfileImageCell: View {
     }
 }
 
-struct CircularProgressView: View {
-    
-    let progress_1: Int = 60
-    let progress_2: Int = 33
-    let total: Int = 130
-    
-    var body: some View {
-        ZStack {
-            Circle()
-                .stroke(
-                    Color(red: 0.96, green: 0.96, blue: 0.96),
-                    lineWidth: 10
-                )
-            
-            Circle()
-                .trim(from: 0, to: Double(progress_1 + progress_2) / Double(total))
-                .stroke(
-                    Color(red: 0.39, green: 0.52, blue: 0),
-                    style: StrokeStyle(
-                        lineWidth: 10,
-                        lineCap: .square
-                    )
-                )
-                .rotationEffect(.degrees(-90))
-//                .animation(.easeOut, value: progress)
-            
-            Circle()
-                .trim(from: 0, to: Double(progress_1) / Double(total))
-                .stroke(
-                    Color(red: 0.39, green: 0.52, blue: 1),
-                    style: StrokeStyle(
-                        lineWidth: 10,
-                        lineCap: .square
-                    )
-                )
-                .rotationEffect(.degrees(-90))
-//                .animation(.easeOut, value: progress)
-            VStack(spacing: 0) {
-                Text("Uncompleted")
-                    .font(.m10)
-                    .foregroundColor(Color.gray800)
-                
-                Text("\(progress_1 + progress_2) / \(total)")
-            }
 
-        }
-    }
-}
 
 struct GraduationRequirementsView2: View {
     
@@ -530,7 +702,7 @@ struct ClearButtonTextField2: View {
 
 
 #Preview {
-    FriendView()
+    MyPageView()
         .environmentObject(FriendNavigationPathFinder.shared)
 }
 
