@@ -35,8 +35,10 @@ struct Timetable: Codable {
 struct DetailTimetable: Codable {
     let timeTableId: Int
     let lects: [Lecture]
-    let semesterYear, timeTableName: String
-    let isPublic, isRepresented: Bool
+    let semesterYear: String
+    let timeTableName: String
+    let isPublic: Bool
+    let isRepresented: Bool
 }
 
 

@@ -18,6 +18,8 @@ enum FriendAPI {
     case unfollow(studentId: String)
     case timetableList(studentId: String)
     case myTimeTableList
+    
+    case showDetailTimeTable(timeTableId: Int)
 }
 
 
@@ -44,6 +46,8 @@ extension FriendAPI: TargetType {
             return "/api/v1/timetable/\(studentId)/timetable"
         case .myTimeTableList:
             return "/api/v1/timetable/list"
+        case .showDetailTimeTable(timeTableId: let timeTableId):
+            return "/api/v1/timetable/\(timeTableId)"
         }
     }
     
@@ -64,6 +68,8 @@ extension FriendAPI: TargetType {
         case .timetableList:
             return .get
         case .myTimeTableList:
+            return .get
+        case .showDetailTimeTable:
             return .get
         }
     }
@@ -86,6 +92,8 @@ extension FriendAPI: TargetType {
             return .requestPlain
         case .myTimeTableList:
             return .requestPlain
+        case .showDetailTimeTable:
+            return .requestPlain
         }
     }
     
@@ -107,6 +115,8 @@ extension FriendAPI: TargetType {
         case .timetableList:
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]
         case .myTimeTableList:
+            return ["Authorization": "Bearer \(getToken() ?? "asd")"]
+        case .showDetailTimeTable(timeTableId: let timeTableId):
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]
         }
     }

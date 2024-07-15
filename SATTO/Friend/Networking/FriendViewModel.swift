@@ -23,7 +23,7 @@ class FriendViewModel: ObservableObject {
     
     @Published var timetable: [Timetable] = []
     
-    @Published var timetableInfo: [SubjectModelBase] = []
+    @Published var detailTimetable: DetailTimetable?
     
     
     func followRequest(studentId: String) {
@@ -275,6 +275,60 @@ class FriendViewModel: ObservableObject {
             }
         }
     }
+    
+    func showDetailTimeTable(timeTableId: Int) {
+            provider.request(.showDetailTimeTable(timeTableId: timeTableId)) { result in
+                switch result {
+                case .success(let response):
+                    do {
+                        // JSON 데이터를 파싱
+                        let json = try JSONSerialization.jsonObject(with: response.data, options: [])
+
+                        // JSON 데이터 구조 확인
+                        guard let jsonDictionary = json as? [String: Any] else {
+                            DispatchQueue.main.async {
+                                self.errorMessage = "Failed to parse JSON: Invalid format"
+                                print("JSON 파싱 실패: JSON이 딕셔너리 형식이 아님")
+                            }
+                            return
+                        }
+
+                        // "result" 키가 있는지 확인
+                        guard let resultObject = jsonDictionary["result"] as? [String: Any] else {
+                            DispatchQueue.main.async {
+                                self.errorMessage = "Failed to parse JSON: 'result' key not found or invalid format"
+                                print("result 데이터 파싱 실패: 'result' 키를 찾을 수 없거나 형식이 잘못됨")
+                            }
+                            return
+                        }
+
+                        // JSON 데이터를 DetailTimetable 객체로 디코딩
+                        let jsonData = try JSONSerialization.data(withJSONObject: resultObject, options: [])
+                        let decoder = JSONDecoder()
+                        decoder.keyDecodingStrategy = .convertFromSnakeCase // JSON의 snake_case를 camelCase로 변환
+                        let timetableInfo = try decoder.decode(DetailTimetable.self, from: jsonData)
+
+                        DispatchQueue.main.async {
+                            self.detailTimetable = timetableInfo
+                            print("성공")
+                            print(timetableInfo)
+                        }
+
+                    } catch let error {
+                        DispatchQueue.main.async {
+                            self.errorMessage = "Failed to parse JSON: \(error)"
+                            print("JSON 파싱 중 오류: \(error)")
+                        }
+                    }
+
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        self.errorMessage = "Error: \(error)"
+                        print("요청 실패: \(error)")
+                    }
+                }
+            }
+        }
 
     
 }
