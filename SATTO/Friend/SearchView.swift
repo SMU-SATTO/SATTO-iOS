@@ -132,40 +132,7 @@ struct SearchView: View {
 
 
 
-struct ClearButtonTextField: View {
-    
-    var placehold: String
-    @Binding var text: String
-    
-    var body: some View {
-        HStack(spacing: 0) {
-            
-            Image(systemName: "magnifyingglass")
-//            Image("seachIcon.gray")
-                .padding(.horizontal, 12)
-            
-            TextField(placehold, text: $text)
-            
-            Spacer()
-            if !text.isEmpty {
-                Button(action: {
-                    text = ""
-                }) {
-                    Image("Icon")
-//                        .foregroundColor(.gray)
-                        .padding(.trailing, 10)
-                }
-            }
-            
-        }
-        .padding(.vertical, 10)
-        .background(
-            Rectangle()
-                .fill(Color(red: 0.91, green: 0.92, blue: 0.93))
-                .cornerRadius(30)
-        )
-    }
-}
+
 
 
 

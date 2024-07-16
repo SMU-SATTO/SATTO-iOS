@@ -26,6 +26,16 @@ class FriendViewModel: ObservableObject {
     @Published var detailTimetable: DetailTimetable?
     
     
+    @Published var semesterYears: [String] = []
+    
+    @Published var timeTableNamesForSelectedYear: [String] = []
+    
+    @Published var selectedSemesterYear: String = ""
+    @Published var selectedTimeTableName: String = ""
+    
+    @Published var selectedTimeTableId: Int?
+
+    
     func followRequest(studentId: String) {
         provider.request(.followRequest(studentId: studentId)) { result in
             switch result {
@@ -248,6 +258,16 @@ class FriendViewModel: ObservableObject {
                                 self.timetable = timetableInfo
                                 print("성공")
                                 print(timetableInfo)
+                                
+                                self.semesterYears = Array(Set(self.timetable.map { $0.semesterYear }))
+                                    .sorted(by: >)
+                                print(self.semesterYears)
+                                
+                                self.selectedSemesterYear = self.semesterYears.first ?? "학기 없음"
+                                print(self.selectedSemesterYear ?? "학기 없음")
+                                
+                                self.fetchYimeTableNamesForSelectedYear()
+
                             }
                         } else {
                             DispatchQueue.main.async {
@@ -275,6 +295,21 @@ class FriendViewModel: ObservableObject {
             }
         }
     }
+    
+    func fetchYimeTableNamesForSelectedYear() {
+        
+        self.timeTableNamesForSelectedYear = self.timetable
+            .filter { $0.semesterYear == self.selectedSemesterYear }
+            .map { $0.timeTableName }
+        print(self.timeTableNamesForSelectedYear)
+        
+        self.selectedTimeTableName = self.timeTableNamesForSelectedYear.first ?? "시간표 이름 없음"
+        print(self.selectedTimeTableName ?? "시간표 이름 없음")
+    }
+    
+    func findTimetableId() {
+            selectedTimeTableId = timetable.first { $0.semesterYear == selectedSemesterYear && $0.timeTableName == selectedTimeTableName }?.timeTableId
+        }
     
     func showDetailTimeTable(timeTableId: Int) {
             provider.request(.showDetailTimeTable(timeTableId: timeTableId)) { result in
