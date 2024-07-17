@@ -41,18 +41,18 @@ struct MyPageView: View {
     var body: some View {
         NavigationStack(path: $navPathFinder.path) {
             ZStack {
-                
                 VStack(spacing: 0) {
                     Color(red: 0.92, green: 0.93, blue: 0.94)
                         .ignoresSafeArea(.all)
                     
                     Color.white
+                        .ignoresSafeArea(.all)
                 }
                 
                 ScrollView {
                     VStack(spacing: 0) {
-                        
-                        Spacer().frame(height: 60)
+                        Spacer()
+                            .frame(height: 60)
                         
                         ZStack(alignment: .top) {
                             Rectangle()
@@ -67,7 +67,6 @@ struct MyPageView: View {
                             
                             VStack(spacing: 0) {
                                 HStack(spacing: 0) {
-                                    
                                     Button(action: {
                                         navPathFinder.addPath(route: .followerSearch)
                                     }, label: {
@@ -107,7 +106,6 @@ struct MyPageView: View {
                                 .padding(.bottom, 14)
                                 .padding(.horizontal, 51)
                                 
-                                
                                 Text("\(authViewModel.user?.name ?? "name") \(authViewModel.user?.studentId ?? "studentId")")
                                     .font(.sb16)
                                     .foregroundColor(Color.gray800)
@@ -119,96 +117,59 @@ struct MyPageView: View {
                                     .padding(.bottom, 23)
                                 
                                 HStack(spacing: 0) {
-                                    
                                     checkGraduation
                                         .padding(.trailing, 53)
   
                                     modifyTimetable
-                                    
                                 }
                                 .padding(.bottom, 37)
                                 
-                                Button(action: {
-                                    print(friendViewModel.detailTimetable)
-                                }, label: {
-                                    Text("디테일 시간표 조회")
-                                })
-                                Button(action: {
-                                    print(friendViewModel.selectedTimeTableId)
-                                }, label: {
-                                    Text("디테일 시간표 아이디 조회")
-                                })
+                                Text("selectedSemesterYear: \(friendViewModel.selectedSemesterYear)")
+                                Text("selectedTimeTableName: \(friendViewModel.selectedTimeTableName)")
+                                Text("필터링된 시간표id: \(friendViewModel.findTimetableId())")
                                 
                                 if friendViewModel.timetable.isEmpty {
                                     Text("시간표가 없습니다")
                                 }
                                 else {
-                                    
-                                    HStack {
+                                    HStack(spacing: 0) {
                                         Picker("Select Semester Year", selection: $friendViewModel.selectedSemesterYear) {
                                             
-                                            ForEach(friendViewModel.semesterYears, id: \.self) { year in
-                                                Text(year).tag(year)
+                                            ForEach(friendViewModel.시간표에서학기만추출(timeTables: friendViewModel.timetable), id: \.self) { semester in
+                                                Text(friendViewModel.학기텍스트추가(semester: semester))
+                                                    .tag(semester)
                                             }
                                         }
                                         
                                         Picker("Select Time Table", selection: $friendViewModel.selectedTimeTableName) {
-                                            ForEach(friendViewModel.timeTableNamesForSelectedYear, id: \.self) { name in
+                                            ForEach(friendViewModel.시간표에서특정학기시간표이름추출(timeTables: friendViewModel.timetable, semester: friendViewModel.selectedSemesterYear), id: \.self) { name in
                                                 Text(name).tag(name)
                                             }
                                         }
+                                        Spacer()
                                     }
+                                    .padding(.horizontal, 20)
+                                    .tint(Color.black)
                                 }
-                                
-                                Text("selectedSemesterYear: \(friendViewModel.selectedSemesterYear)")
-                                Text("selectedTimeTableName: \(friendViewModel.selectedTimeTableName)")
-                                
-                                
+
                                 TimeTableTutorial(friendViewModel: friendViewModel)
                                 
                             }
                         }
-                        
-                        Button(action: {
-                            friendViewModel.fetchFollowerList(studentId: authViewModel.user?.studentId ?? "asd")
-                        }, label: {
-                            Text("팔로워 조회")
-                        })
-                        Button(action: {
-                            friendViewModel.fetchFollowingList(studentId: authViewModel.user?.studentId ?? "asd")
-                        }, label: {
-                            Text("팔로잉 조회")
-                        })
-                        Button(action: {
-                            friendViewModel.timetableList(studentId: "201910914")
-                        }, label: {
-                            Text("시간표 조회")
-                        })
-                        Button(action: {
-                            friendViewModel.myTimetableList()
-                        }, label: {
-                            Text("내시간표 조회")
-                        })
-                        Button(action: {
-                            friendViewModel.showDetailTimeTable(timeTableId: 68)
-                        }, label: {
-                            Text("디테일 시간표 조회")
-                        })
-                        
                     }
                     .onAppear {
+                        print("마이페이지뷰 생성")
+                        print(authViewModel.user)
                         friendViewModel.myTimetableList()
                         friendViewModel.fetchFollowerList(studentId: authViewModel.user?.studentId ?? "asd")
                         friendViewModel.fetchFollowingList(studentId: authViewModel.user?.studentId ?? "asd")
-                        
-                        
+                        print("선택학기 추가")
                     }
                     .onChange(of: friendViewModel.selectedSemesterYear) { _ in
-                        friendViewModel.fetchYimeTableNamesForSelectedYear()
+                        friendViewModel.selectedTimeTableName = friendViewModel.시간표에서특정학기시간표이름추출(timeTables: friendViewModel.timetable, semester: friendViewModel.selectedSemesterYear).first ?? "이름없음"
                     }
                     .onChange(of: friendViewModel.selectedTimeTableName) { _ in
-                        friendViewModel.findTimetableId()
-                        friendViewModel.showDetailTimeTable(timeTableId: friendViewModel.selectedTimeTableId ?? 99)
+                        friendViewModel.showDetailTimeTable(timeTableId: friendViewModel.findTimetableId())
                     }
                     .navigationBarBackButtonHidden()
                     .navigationDestination(for: FriendRoute.self) { route in
@@ -273,6 +234,7 @@ struct MyPageView: View {
                 
             )
     }
+
 }
 
 
@@ -400,7 +362,7 @@ struct FriendView: View {
             }
         }
         .onAppear {
-            print("내 시간표")
+            print("프랜드뷰 생성")
             friendViewModel.myTimetableList()
             friendViewModel.fetchFollowerList(studentId: friendViewModel.friend?.studentId ?? "asd")
             friendViewModel.fetchFollowingList(studentId: friendViewModel.friend?.studentId ?? "asd")
@@ -566,72 +528,6 @@ struct TimeTableTutorial: View {
     
     @ObservedObject var friendViewModel: FriendViewModel
     
-    // 강의 데이터
-    let lectures: [Lecture] = [
-        Lecture(
-            code: "HAEA9239",
-            codeSection: "HAEA9239-1",
-            lectName: "GPU프로그래밍",
-            professor: "나재호",
-            lectTime: "화5 화6 수8 ",
-            cmpDiv: "1전심",
-            credit: 3
-        ),
-        Lecture(
-            code: "HAEZ0003",
-            codeSection: "HAEZ0003-1",
-            lectName: "운영체제",
-            professor: "손성훈",
-            lectTime: "수5 수6 월6 ",
-            cmpDiv: "1전심",
-            credit: 3
-        ),
-        Lecture(
-            code: "HAEA0004",
-            codeSection: "HAEA0004-1",
-            lectName: "컴퓨터네트워크",
-            professor: "신경섭",
-            lectTime: "목4 목5 목6 ",
-            cmpDiv: "1전심",
-            credit: 3
-        ),
-        Lecture(
-            code: "HAEA0008",
-            codeSection: "HAEA0008-1",
-            lectName: "소프트웨어공학",
-            professor: "한혁수",
-            lectTime: "화1 화2 목2 ",
-            cmpDiv: "1전심",
-            credit: 3
-        ),
-        Lecture(
-            code: "HALF9067",
-            codeSection: "HALF9067-1",
-            lectName: "생활과재테크",
-            professor: "권세훈",
-            lectTime: "월3 월4 월0 ",
-            cmpDiv: "교선",
-            credit: 3
-        ),
-        Lecture(
-            code: "HALF9448",
-            codeSection: "HALF9448-1",
-            lectName: "디지털시대의영어습득",
-            professor: "심예지",
-            lectTime: "수1 수2 월5 ",
-            cmpDiv: "교선",
-            credit: 3
-        )
-    ]
-    
-    // 색상 배열
-    let colors: [Color] = [
-        .blue, .green, .orange, .purple, .pink, .yellow, .red, .gray, .cyan, .indigo
-    ]
-    
-    // 색상 매핑 딕셔너리
-    @State private var colorMapping: [String: Color] = [:]
-    
     var body: some View {
         //        ScrollView {
         HStack(spacing: 0) {
@@ -675,6 +571,7 @@ struct TimeTableTutorial: View {
                 if friendViewModel.detailTimetable?.lects.count == 0 {
                     VStack {
                         Text("시간표 비어있음")
+                            .position(x: geo.size.width / 2, y: geo.size.height / 2)
                         
                         Button(action: {
                             print(friendViewModel.detailTimetable?.lects.count)
@@ -686,25 +583,36 @@ struct TimeTableTutorial: View {
                 }
                 else{
                     if let lectures = friendViewModel.detailTimetable?.lects {
+                        
                         ForEach(lectures, id: \.codeSection) { lecture in
                             ForEach(makeTimeBlock(lectures: [lecture]), id: \.0.codeSection) { lecture, periods, firstTimes in
                                 ForEach(0..<periods.count, id: \.self) { index in
                                     let dayIndex = getDayIndex(day: String(firstTimes[index].prefix(1)))
                                     let periodIndex = getPeriodIndex(period: String(firstTimes[index].suffix(1)))
-                                    let backgroundColor = getColorForCodeSection(codeSection: lecture.codeSection)
+                                    let backgroundColor = friendViewModel.getColorForCodeSection(codeSection: lecture.codeSection)
                                     
-                                    VStack {
+                                    VStack(spacing: 0) {
+                                        Spacer()
+                                            .frame(height: 5)
                                         Text(lecture.lectName)
-                                            .font(.system(size: 10))
+                                            .font(.m11)
                                             .foregroundColor(.white)
-                                        Text("\(lecture.professor)")
-                                            .font(.system(size: 8))
-                                            .foregroundColor(.white)
+//                                        Text("\(lecture.professor)")
+//                                            .font(.system(size: 8))
+//                                            .foregroundColor(.white)
+                                        
+                                        Spacer()
                                     }
                                     .frame(width: geo.size.width/6, height: CGFloat(periods[index]) * 40)
+                                    .overlay(
+                                        Rectangle()
+                                            .stroke(Color(red: 0.25, green: 0.25, blue: 0.24), lineWidth: 0.5)
+                                    )
                                     .background(backgroundColor)
+//                                    .background(Color.blue)
                                     .position(x: CGFloat(dayIndex) * geo.size.width/6 + geo.size.width / 12,
                                               y: CGFloat(periodIndex) * 40 + CGFloat(periods[index]) * 20 + 40)
+                                    
                                 }
                             }
                         }
@@ -717,24 +625,27 @@ struct TimeTableTutorial: View {
         }
         .padding(.horizontal, 20)
         //        }
-        .onAppear {
-            assignColors()
-        }
+//        .onAppear {
+//            assignColors()
+//        }
     }
     
-    func assignColors() {
-        var assignedColors: [String: Color] = [:]
-        var colorIndex = 0
-        
-        for lecture in lectures {
-            if assignedColors[lecture.codeSection] == nil {
-                assignedColors[lecture.codeSection] = colors[colorIndex % colors.count]
-                colorIndex += 1
-            }
-        }
-        
-        colorMapping = assignedColors
-    }
+//    func assignColors() {
+//        var assignedColors: [String: Color] = [:]
+//        var colorIndex = 0
+//        
+//        if let lectures = friendViewModel.detailTimetable?.lects {
+//            
+//            for lecture in lectures {
+//                if assignedColors[lecture.codeSection] == nil {
+//                    assignedColors[lecture.codeSection] = friendViewModel.colors[colorIndex % friendViewModel.colors.count]
+//                    colorIndex += 1
+//                }
+//            }
+//        }
+////        print(assignedColors)
+//        friendViewModel.colorMapping = assignedColors
+//    }
     
     func makeTimeBlock(lectures: [Lecture]) -> [(Lecture, [Int], [String])] {
         var result: [(Lecture, [Int], [String])] = []
@@ -750,17 +661,22 @@ struct TimeTableTutorial: View {
                     count += 1
                 } else {
                     period.append(count)
-                    firstTimes.append(lectTimes[i - count + 1])
+                    firstTimes.append(lectTimes[i - count + 1])  // 연속 시간의 첫 번째 시간을 추가
                     count = 1
                 }
             }
+            
+            // 마지막 강의 시간 블록 처리
             period.append(count)
-            firstTimes.append(lectTimes.last!)
+            firstTimes.append(lectTimes[lectTimes.count - count])
+            
             result.append((lecture, period, firstTimes))
         }
         
+        print(result)
         return result
     }
+
     
     func nextNumberString(from string: String) -> String? {
         let day = String(string.prefix(1)) // 요일 추출
@@ -790,9 +706,9 @@ struct TimeTableTutorial: View {
         return (Int(period) ?? 1)
     }
     
-    func getColorForCodeSection(codeSection: String) -> Color {
-        return colorMapping[codeSection] ?? .clear
-    }
+//    func getColorForCodeSection(codeSection: String) -> Color {
+//        return friendViewModel.colorMapping[codeSection] ?? .clear
+//    }
 }
 
 //#Preview {

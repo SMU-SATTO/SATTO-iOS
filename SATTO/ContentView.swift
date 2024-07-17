@@ -11,6 +11,8 @@ struct ContentView: View {
     @State private var selectedTab = Tab.friend
     @State private var stackPath: [Route] = []
     
+    @EnvironmentObject var authViewModel: AuthViewModel
+    
     var body: some View {
 
 //        NavigationStack(path: $stackPath){
@@ -43,8 +45,15 @@ struct ContentView: View {
                 }.tag(Tab.setting)
             }
             .accentColor(Color.blue7)
-            .navigationDestination(for: Route.self) { route in
-                switch route {
+            .onAppear {
+
+                    print("contentView onappear")
+                    authViewModel.userInfoInquiry()
+                    print("contentView onappear 끝")
+
+            }
+//            .navigationDestination(for: Route.self) { route in
+//                switch route {
 //                case .search:
 //                    SearchView(stackPath: $stackPath, TextFieldPlacehold: "친구의 학번을 입력해 주세요")
 //                case .followerSearch:
@@ -67,10 +76,10 @@ struct ContentView: View {
 //                    ProgressEventView(stackPath: $stackPath)
 //                case .announcementEvent:
 //                    AnnouncementEventView(stackPath: $stackPath)
-                default:
-                    EmptyView()
-                }
-            }
+//                default:
+//                    EmptyView()
+//                }
+//            }
 //        }
     }
 }

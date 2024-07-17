@@ -8,6 +8,7 @@
 import Foundation
 import Moya
 import Combine
+import SwiftUI
 
 
 class FriendViewModel: ObservableObject {
@@ -25,15 +26,18 @@ class FriendViewModel: ObservableObject {
     
     @Published var detailTimetable: DetailTimetable?
     
-    
-    @Published var semesterYears: [String] = []
-    
-    @Published var timeTableNamesForSelectedYear: [String] = []
-    
     @Published var selectedSemesterYear: String = ""
     @Published var selectedTimeTableName: String = ""
     
-    @Published var selectedTimeTableId: Int?
+    let colors: [Color] = [
+        .blue, .green, .orange, .purple, .pink, .yellow, .red, .gray, .cyan, .indigo
+    ]
+    
+    @Published var colorMapping: [String: Color] = [:]
+    
+    init() {
+        
+    }
 
     
     func followRequest(studentId: String) {
@@ -66,7 +70,7 @@ class FriendViewModel: ObservableObject {
             switch result {
             case .success(let response):
                 do {
-                    print("시도")
+                    print("fetchFollowerList \(studentId)")
                     
                     // 응답 데이터를 출력하여 확인
                     if let responseString = String(data: response.data, encoding: .utf8) {
@@ -123,7 +127,7 @@ class FriendViewModel: ObservableObject {
             switch result {
             case .success(let response):
                 do {
-                    print("시도")
+                    print("fetchFollowingList \(studentId)")
                     
                     // 응답 데이터를 출력하여 확인
                     if let responseString = String(data: response.data, encoding: .utf8) {
@@ -259,14 +263,7 @@ class FriendViewModel: ObservableObject {
                                 print("성공")
                                 print(timetableInfo)
                                 
-                                self.semesterYears = Array(Set(self.timetable.map { $0.semesterYear }))
-                                    .sorted(by: >)
-                                print(self.semesterYears)
-                                
-                                self.selectedSemesterYear = self.semesterYears.first ?? "학기 없음"
-                                print(self.selectedSemesterYear ?? "학기 없음")
-                                
-                                self.fetchYimeTableNamesForSelectedYear()
+                                self.selectedSemesterYear = self.시간표에서학기만추출(timeTables: self.timetable).first ?? "없음(뷰모댈)"
 
                             }
                         } else {
@@ -296,20 +293,25 @@ class FriendViewModel: ObservableObject {
         }
     }
     
-    func fetchYimeTableNamesForSelectedYear() {
-        
-        self.timeTableNamesForSelectedYear = self.timetable
-            .filter { $0.semesterYear == self.selectedSemesterYear }
-            .map { $0.timeTableName }
-        print(self.timeTableNamesForSelectedYear)
-        
-        self.selectedTimeTableName = self.timeTableNamesForSelectedYear.first ?? "시간표 이름 없음"
-        print(self.selectedTimeTableName ?? "시간표 이름 없음")
+    
+    func findTimetableId() -> Int {
+        return timetable.filter{ $0.semesterYear == selectedSemesterYear && $0.timeTableName == selectedTimeTableName }.first?.timeTableId ?? 99
     }
     
-    func findTimetableId() {
-            selectedTimeTableId = timetable.first { $0.semesterYear == selectedSemesterYear && $0.timeTableName == selectedTimeTableName }?.timeTableId
-        }
+    
+    func 학기텍스트추가(semester: String) -> String {
+        return "\(semester.prefix(4))학년도 \(semester.suffix(1))학기"
+    }
+    
+    func 시간표에서학기만추출(timeTables: [Timetable]) -> [String] {
+        return Array(Set(timeTables.map { $0.semesterYear })).sorted(by: >)
+    }
+    
+    func 시간표에서특정학기시간표이름추출(timeTables: [Timetable], semester: String) -> [String] {
+        return timeTables.filter { $0.semesterYear == semester }.map { $0.timeTableName }
+    }
+    
+    
     
     func showDetailTimeTable(timeTableId: Int) {
             provider.request(.showDetailTimeTable(timeTableId: timeTableId)) { result in
@@ -347,6 +349,8 @@ class FriendViewModel: ObservableObject {
                             self.detailTimetable = timetableInfo
                             print("성공")
                             print(timetableInfo)
+                            
+                            self.assignColors()
                         }
 
                     } catch let error {
@@ -364,6 +368,27 @@ class FriendViewModel: ObservableObject {
                 }
             }
         }
+    
+    func assignColors() {
+        var assignedColors: [String: Color] = [:]
+        var colorIndex = 0
+        
+        if let lectures = self.detailTimetable?.lects {
+            
+            for lecture in lectures {
+                if assignedColors[lecture.codeSection] == nil {
+                    assignedColors[lecture.codeSection] = self.colors[colorIndex % self.colors.count]
+                    colorIndex += 1
+                }
+            }
+        }
+//        print(assignedColors)
+        self.colorMapping = assignedColors
+    }
+    
+    func getColorForCodeSection(codeSection: String) -> Color {
+        return self.colorMapping[codeSection] ?? .clear
+    }
 
     
 }

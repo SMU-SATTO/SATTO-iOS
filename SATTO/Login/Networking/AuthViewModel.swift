@@ -14,7 +14,6 @@ class AuthViewModel: ObservableObject {
     private let provider = MoyaProvider<AuthAPI>()
     
     @Published var user: User?
-    @Published var user2: User2?
     @Published var errorMessage: String?
     
     @Published var token: String? = nil
@@ -28,10 +27,10 @@ class AuthViewModel: ObservableObject {
     let refreshTokenKey = "refreshToken"
 
     init() {
+        print("authViewModel init")
         self.token = self.getToken()
         self.isLoggedIn = (self.token != nil)
         self.user = User(studentId: "studentId", email: "email", password: "password", name: "name", nickname: "nickname", department: "department", grade: 5, isPublic: true)
-        self.user2 = User2(studentId: "studentId", name: "name", nickname: "nickname", department: "department", grade: 5, isPublic: true)
     }
     
     func checkEmailDuplicate(studentId: String) {
@@ -297,7 +296,7 @@ class AuthViewModel: ObservableObject {
             switch result {
             case .success(let response):
                 do {
-                    print("시도")
+                    print("userInfoInquiry 시도")
                     
                     // 응답 데이터를 출력하여 확인
                     if let responseString = String(data: response.data, encoding: .utf8) {
