@@ -51,7 +51,7 @@ struct SettingView: View {
                         )
                         
                         Button(action: {
-                            authViewModel.userInfoInquiry()
+//                            authViewModel.userInfoInquiry()
                         }, label: {
                             Text("유저정보")
                         })

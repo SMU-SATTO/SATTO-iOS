@@ -15,9 +15,6 @@ struct Onboarding: View {
     var body: some View {
         if authViewModel.isLoggedIn == true {
                 ContentView()
-                .onAppear {
-                    authViewModel.userInfoInquiry()
-                }
         }
         else {
             LoginView()

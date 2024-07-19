@@ -14,7 +14,6 @@ class AuthViewModel: ObservableObject {
     private let provider = MoyaProvider<AuthAPI>()
     
     @Published var user: User?
-    @Published var user2: User2?
     @Published var errorMessage: String?
     
     @Published var token: String? = nil
@@ -28,10 +27,11 @@ class AuthViewModel: ObservableObject {
     let refreshTokenKey = "refreshToken"
 
     init() {
+        print("authViewModel init")
         self.token = self.getToken()
         self.isLoggedIn = (self.token != nil)
-        self.user = User(studentId: "studentId", email: "email", password: "password", name: "name", nickname: "nickname", department: "department", grade: 5, isPublic: true)
-        self.user2 = User2(studentId: "studentId", name: "name", nickname: "nickname", department: "department", grade: 5, isPublic: true)
+        print(self.user)
+//        self.user = User(studentId: "studentId", email: "email", password: "password", name: "name", nickname: "nickname", department: "department", grade: 5, isPublic: true)
     }
     
     func checkEmailDuplicate(studentId: String) {
@@ -292,12 +292,13 @@ class AuthViewModel: ObservableObject {
         completion(true)
     }
     
-    func userInfoInquiry() {
+    func userInfoInquiry(completion: @escaping () -> Void) {
+        print("userInfoInquiry 시도")
         provider.request(.userInfoInquiry) { result in
             switch result {
             case .success(let response):
                 do {
-                    print("시도")
+                    print("userInfoInquiry 시도")
                     
                     // 응답 데이터를 출력하여 확인
                     if let responseString = String(data: response.data, encoding: .utf8) {
@@ -319,6 +320,7 @@ class AuthViewModel: ObservableObject {
                                 self.user = userInfo
                                 print("성공")
                                 print(userInfo)
+                                completion()
                             }
                         } else {
                             DispatchQueue.main.async {
@@ -346,6 +348,52 @@ class AuthViewModel: ObservableObject {
             }
         }
     }
+    
+//    func userInfoInquiry(completion: @escaping () -> Void) {
+//        print("userInfoInquiry 시도")
+//        provider.request(.userInfoInquiry) { result in
+//            DispatchQueue.main.async {
+//                switch result {
+//                case let .success(response):
+//                    print(response)
+//                    if let json = try? response.map(UserResponse.self) {
+//                        print("매핑 성공")
+//                        self.user = json.result
+//                    }
+//                    else {
+//                        print("매핑 실패")
+//                    }
+//                case .failure:
+//                    print("네트워크 요청 실패")
+//                }
+//            }
+//        }
+//    }
+    
+//    func fetchReservationAPI(for date: Date) {
+//        self.isLoading = true
+//        provider.request(.getReservation(date: date.toDateString())) { result in
+//            DispatchQueue.main.async {
+//                switch result {
+//                case let .success(response):
+//                    print(response)
+//                    if let reservations = try? response.map([Reservation?].self) {
+//                        print("세미나실 매핑 성공🚨")
+//                        self.reservations = reservations.compactMap { $0 }
+//                    } else {
+//                        print("세미나실 매핑 실패🚨")
+//                    }
+//                case .failure:
+//                    print("세미나실 네트워크 요청 실패🚨")
+//                }
+//            }
+//            self.isLoading = false
+//        }
+//    }
+
+    
+
+
 
     
 //    func sendAuthNumber(studentId: String) {

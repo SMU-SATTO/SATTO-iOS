@@ -7,6 +7,89 @@
 
 import SwiftUI
 
+
+struct FollwerSearchView: View {
+    
+    @State var text = ""
+//    @Binding var stackPath: [Route]
+    @EnvironmentObject var navPathFinder: FriendNavigationPathFinder
+    @ObservedObject var friendViewModel: FriendViewModel
+    var TextFieldPlacehold: String
+    
+    var body: some View {
+        
+        VStack(spacing: 0){
+            HStack(spacing: 0) {
+                
+                Button(action: {
+                    navPathFinder.path.popLast()
+                }, label: {
+                    Image("Classic")
+                })
+                .padding(.leading, 20)
+                
+                ClearButtonTextField(placehold: TextFieldPlacehold, text: $text)
+                    .padding(.horizontal, 20)
+            }
+            .padding(.bottom, 10)
+            
+            Divider()
+
+            ScrollView {
+                ForEach(friendViewModel.follower, id: \.studentId) { friend in
+                    FriendCell(name: friend.name, studentID: friend.studentId, isFollowing: false, friend: friend, friendViewModel: friendViewModel)
+                        .padding(.bottom, 15)
+                        .padding(.top, 10)
+                }
+            }
+            
+        }
+        .navigationBarBackButtonHidden()
+        
+    }
+}
+
+struct FollwingSearchView: View {
+    
+    @State var text = ""
+//    @Binding var stackPath: [Route]
+    @EnvironmentObject var navPathFinder: FriendNavigationPathFinder
+    @ObservedObject var friendViewModel: FriendViewModel
+    var TextFieldPlacehold: String
+    
+    var body: some View {
+        
+        VStack(spacing: 0){
+            HStack(spacing: 0) {
+                
+                Button(action: {
+                    navPathFinder.path.popLast()
+                }, label: {
+                    Image("Classic")
+                })
+                .padding(.leading, 20)
+                
+                ClearButtonTextField(placehold: TextFieldPlacehold, text: $text)
+                    .padding(.horizontal, 20)
+            }
+            .padding(.bottom, 10)
+            
+            Divider()
+
+            ScrollView {
+                ForEach(friendViewModel.following, id: \.studentId) { friend in
+                    FriendCell(name: friend.name, studentID: friend.studentId, isFollowing: false, friend: friend, friendViewModel: friendViewModel)
+                        .padding(.bottom, 15)
+                        .padding(.top, 10)
+                }
+            }
+            
+        }
+        .navigationBarBackButtonHidden()
+        
+    }
+}
+
 struct SearchView: View {
     
     @State var text = ""
@@ -32,22 +115,12 @@ struct SearchView: View {
             .padding(.bottom, 10)
             
             Divider()
-            
-            //            Button(action: {
-            //                stackPath.append(.friend)
-            //            }, label: {
-            //                Text("친구뷰 가기")
-            //            })
-            //            .navigationDestination(for: Route.self, destination: { item in
-            //                FriendView()
-            //            })
-            
-            //            Spacer()
+
             ScrollView {
                 ForEach(0 ..< 10) { item in
-                    FriendCell(name: "한민재", studentID: 20201499, isFollowing: false)
-                        .padding(.bottom, 15)
-                        .padding(.top, 10)
+//                    FriendCell(name: "한민재", studentID: "20201499", isFollowing: false, friendViewModel: <#FriendViewModel#>)
+//                        .padding(.bottom, 15)
+//                        .padding(.top, 10)
                 }
             }
             
@@ -59,53 +132,20 @@ struct SearchView: View {
 
 
 
-struct ClearButtonTextField: View {
-    
-    var placehold: String
-    @Binding var text: String
-    
-    var body: some View {
-        HStack(spacing: 0) {
-            
-            Image("seachIcon.gray")
-                .padding(.horizontal, 12)
-            
-            TextField(placehold, text: $text)
-            
-            Spacer()
-            if !text.isEmpty {
-                Button(action: {
-                    text = ""
-                }) {
-                    Image("Icon")
-//                        .foregroundColor(.gray)
-                        .padding(.trailing, 10)
-                }
-            }
-            
-        }
-        .padding(.vertical, 10)
-        .background(
-            Rectangle()
-                .fill(Color(red: 0.91, green: 0.92, blue: 0.93))
-                .cornerRadius(30)
-        )
-    }
-}
 
 
 
-//#Preview {
-//    SearchView()
-//}
 
 struct FriendCell: View {
     
     var name: String
-    var studentID: Int
+    var studentID: String
     var isFollowing: Bool
     
+    var friend: Friend
+    
     @EnvironmentObject var navPathFinder: FriendNavigationPathFinder
+    @ObservedObject var friendViewModel: FriendViewModel
     
     
     var body: some View {
@@ -123,15 +163,16 @@ struct FriendCell: View {
             
             Button(action: {
                 navPathFinder.addPath(route: .friend)
+                friendViewModel.friend = friend
             }, label: {
                 VStack(alignment: .leading, spacing: 0) {
                     // m16
-                    Text("20201499")
+                    Text(friend.name)
                         .font(.m16)
                         .foregroundColor(Color.gray800)
                     
                     // m12
-                    Text("한민재")
+                    Text(friend.studentId)
                         .font(.m12)
                         .foregroundColor(Color.gray600)
                 }

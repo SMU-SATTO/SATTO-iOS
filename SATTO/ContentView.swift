@@ -8,14 +8,18 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var selectedTab = Tab.setting
+    @State private var selectedTab = Tab.friend
     @State private var stackPath: [Route] = []
+    
+    @EnvironmentObject var authViewModel: AuthViewModel
     
     var body: some View {
 
 //        NavigationStack(path: $stackPath){
             TabView(selection: $selectedTab) {
-                HomeView().tabItem {
+                HomeView()
+                    .environmentObject(HomeNavigationPathFinder.shared)
+                    .tabItem {
                     Image(selectedTab == Tab.home ? "home.fill" : "home")
                     Text("홈")
                 }.tag(Tab.home)
@@ -23,7 +27,7 @@ struct ContentView: View {
                     Image(selectedTab == Tab.timeTable ? "timeTable.fill" : "timeTable")
                     Text("시간표")
                 }.tag(Tab.timeTable)
-                FriendView()
+                MyPageView()
                     .environmentObject(FriendNavigationPathFinder.shared)
                     .tabItem {
                     Image(selectedTab == Tab.friend ? "friend.fill" : "friend")
@@ -41,8 +45,15 @@ struct ContentView: View {
                 }.tag(Tab.setting)
             }
             .accentColor(Color.blue7)
-            .navigationDestination(for: Route.self) { route in
-                switch route {
+            .task {
+
+                    print("contentView onappear")
+//                    await authViewModel.userInfoInquiry()
+                    print("contentView onappear 끝")
+
+            }
+//            .navigationDestination(for: Route.self) { route in
+//                switch route {
 //                case .search:
 //                    SearchView(stackPath: $stackPath, TextFieldPlacehold: "친구의 학번을 입력해 주세요")
 //                case .followerSearch:
@@ -65,10 +76,10 @@ struct ContentView: View {
 //                    ProgressEventView(stackPath: $stackPath)
 //                case .announcementEvent:
 //                    AnnouncementEventView(stackPath: $stackPath)
-                default:
-                    EmptyView()
-                }
-            }
+//                default:
+//                    EmptyView()
+//                }
+//            }
 //        }
     }
 }
