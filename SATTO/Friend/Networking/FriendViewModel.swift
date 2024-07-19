@@ -66,6 +66,7 @@ class FriendViewModel: ObservableObject {
     
     
     func fetchFollowerList(studentId: String) {
+        print("fetchFollowerList")
         provider.request(.followerList(studentId: studentId)) { result in
             switch result {
             case .success(let response):
@@ -188,7 +189,7 @@ class FriendViewModel: ObservableObject {
                     
                     // 응답 데이터를 출력하여 확인
                     if let responseString = String(data: response.data, encoding: .utf8) {
-                        print("응답 데이터: \(responseString)")
+//                        print("응답 데이터: \(responseString)")
                     } else {
                         print("응답 데이터를 문자열로 변환할 수 없음")
                     }
@@ -197,7 +198,7 @@ class FriendViewModel: ObservableObject {
                     if let json = try JSONSerialization.jsonObject(with: response.data, options: []) as? [String: Any] {
                         print("JSON 파싱 성공: \(json)")
                         if let resultData = json["result"] as? [[String: Any]] {
-                            print("result 데이터: \(resultData)")
+//                            print("result 데이터: \(resultData)")
 
                             // JSON 데이터를 Timetable 객체 배열로 디코딩
                             let resultJsonData = try JSONSerialization.data(withJSONObject: resultData, options: [])
@@ -205,7 +206,7 @@ class FriendViewModel: ObservableObject {
                             DispatchQueue.main.async {
                                 self.timetable = timetableInfo
                                 print("성공")
-                                print(timetableInfo)
+//                                print(timetableInfo)
                             }
                         } else {
                             DispatchQueue.main.async {
@@ -244,16 +245,16 @@ class FriendViewModel: ObservableObject {
                     
                     // 응답 데이터를 출력하여 확인
                     if let responseString = String(data: response.data, encoding: .utf8) {
-                        print("응답 데이터: \(responseString)")
+//                        print("응답 데이터: \(responseString)")
                     } else {
                         print("응답 데이터를 문자열로 변환할 수 없음")
                     }
 
                     // JSON 데이터를 파싱
                     if let json = try JSONSerialization.jsonObject(with: response.data, options: []) as? [String: Any] {
-                        print("JSON 파싱 성공: \(json)")
+//                        print("JSON 파싱 성공: \(json)")
                         if let resultData = json["result"] as? [[String: Any]] {
-                            print("result 데이터: \(resultData)")
+//                            print("result 데이터: \(resultData)")
 
                             // JSON 데이터를 Timetable 객체 배열로 디코딩
                             let resultJsonData = try JSONSerialization.data(withJSONObject: resultData, options: [])
@@ -261,7 +262,7 @@ class FriendViewModel: ObservableObject {
                             DispatchQueue.main.async {
                                 self.timetable = timetableInfo
                                 print("성공")
-                                print(timetableInfo)
+//                                print(timetableInfo)
                                 
                                 self.selectedSemesterYear = self.시간표에서학기만추출(timeTables: self.timetable).first ?? "없음(뷰모댈)"
 
@@ -348,7 +349,7 @@ class FriendViewModel: ObservableObject {
                         DispatchQueue.main.async {
                             self.detailTimetable = timetableInfo
                             print("성공")
-                            print(timetableInfo)
+//                            print(timetableInfo)
                             
                             self.assignColors()
                         }

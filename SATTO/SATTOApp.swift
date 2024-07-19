@@ -14,8 +14,18 @@ struct SATTOApp: App {
     
     var body: some Scene {
         WindowGroup {
-            Onboarding()
-                .environmentObject(authViewModel)
+//            Onboarding()
+//                .environmentObject(authViewModel)
+            if authViewModel.isLoggedIn == true {
+                    ContentView()
+                    .environmentObject(authViewModel)
+            }
+            else {
+                LoginView()
+                    .environmentObject(LoginNavigationPathFinder.shared)
+                    .environmentObject(authViewModel)
+                    
+            }
         }
     }
 }

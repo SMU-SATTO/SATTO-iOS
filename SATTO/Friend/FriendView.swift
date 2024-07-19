@@ -159,10 +159,13 @@ struct MyPageView: View {
                     }
                     .onAppear {
                         print("마이페이지뷰 생성")
-                        print(authViewModel.user)
+                        
+                        authViewModel.userInfoInquiry {
+                            friendViewModel.fetchFollowerList(studentId: authViewModel.user?.studentId ?? "asd")
+                            friendViewModel.fetchFollowingList(studentId: authViewModel.user?.studentId ?? "asd")
+                            
+                        }
                         friendViewModel.myTimetableList()
-                        friendViewModel.fetchFollowerList(studentId: authViewModel.user?.studentId ?? "asd")
-                        friendViewModel.fetchFollowingList(studentId: authViewModel.user?.studentId ?? "asd")
                         print("선택학기 추가")
                     }
                     .onChange(of: friendViewModel.selectedSemesterYear) { _ in
@@ -673,7 +676,7 @@ struct TimeTableTutorial: View {
             result.append((lecture, period, firstTimes))
         }
         
-        print(result)
+//        print(result)
         return result
     }
 

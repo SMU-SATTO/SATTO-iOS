@@ -45,10 +45,10 @@ struct ContentView: View {
                 }.tag(Tab.setting)
             }
             .accentColor(Color.blue7)
-            .onAppear {
+            .task {
 
                     print("contentView onappear")
-                    authViewModel.userInfoInquiry()
+//                    await authViewModel.userInfoInquiry()
                     print("contentView onappear 끝")
 
             }

@@ -31,6 +31,13 @@ struct User: Codable {
     
 }
 
+struct UserResponse: Codable {
+    var isSuccess: Bool
+    var code: String
+    var message: String
+    var result: User
+}
+
 
 struct User2: Codable {
     
