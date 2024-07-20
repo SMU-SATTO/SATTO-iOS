@@ -126,23 +126,23 @@ struct MyPageView: View {
                                 
                                 Text("selectedSemesterYear: \(friendViewModel.selectedSemesterYear)")
                                 Text("selectedTimeTableName: \(friendViewModel.selectedTimeTableName)")
-                                Text("필터링된 시간표id: \(friendViewModel.findTimetableId())")
+                                Text("필터링된 시간표id: \(friendViewModel.getSelectedTimetableId(timeTables: friendViewModel.timeTables))")
                                 
-                                if friendViewModel.timetable.isEmpty {
+                                if friendViewModel.timeTables.isEmpty {
                                     Text("시간표가 없습니다")
                                 }
                                 else {
                                     HStack(spacing: 0) {
                                         Picker("Select Semester Year", selection: $friendViewModel.selectedSemesterYear) {
                                             
-                                            ForEach(friendViewModel.시간표에서학기만추출(timeTables: friendViewModel.timetable), id: \.self) { semester in
-                                                Text(friendViewModel.학기텍스트추가(semester: semester))
+                                            ForEach(friendViewModel.getSemestersFromTimetables(timeTables: friendViewModel.timeTables), id: \.self) { semester in
+                                                Text(friendViewModel.formatSemesterString(semester: semester))
                                                     .tag(semester)
                                             }
                                         }
                                         
                                         Picker("Select Time Table", selection: $friendViewModel.selectedTimeTableName) {
-                                            ForEach(friendViewModel.시간표에서특정학기시간표이름추출(timeTables: friendViewModel.timetable, semester: friendViewModel.selectedSemesterYear), id: \.self) { name in
+                                            ForEach(friendViewModel.getTimetableNamesForSemester(timeTables: friendViewModel.timeTables, semester: friendViewModel.selectedSemesterYear), id: \.self) { name in
                                                 Text(name).tag(name)
                                             }
                                         }
@@ -165,14 +165,14 @@ struct MyPageView: View {
                             friendViewModel.fetchFollowingList(studentId: authViewModel.user?.studentId ?? "asd")
                             
                         }
-                        friendViewModel.myTimetableList()
+                        friendViewModel.fetchMyTimetableList()
                         print("선택학기 추가")
                     }
                     .onChange(of: friendViewModel.selectedSemesterYear) { _ in
-                        friendViewModel.selectedTimeTableName = friendViewModel.시간표에서특정학기시간표이름추출(timeTables: friendViewModel.timetable, semester: friendViewModel.selectedSemesterYear).first ?? "이름없음"
+                        friendViewModel.selectedTimeTableName = friendViewModel.getTimetableNamesForSemester(timeTables: friendViewModel.timeTables, semester: friendViewModel.selectedSemesterYear).first ?? "이름없음"
                     }
                     .onChange(of: friendViewModel.selectedTimeTableName) { _ in
-                        friendViewModel.showDetailTimeTable(timeTableId: friendViewModel.findTimetableId())
+                        friendViewModel.fetchTimeTableInfo(timeTableId: friendViewModel.getSelectedTimetableId(timeTables: friendViewModel.timeTables))
                     }
                     .navigationBarBackButtonHidden()
                     .navigationDestination(for: FriendRoute.self) { route in
@@ -349,12 +349,12 @@ struct FriendView: View {
                                 Text("팔로잉 조회")
                             })
                             Button(action: {
-                                friendViewModel.timetableList(studentId: "201910914")
+                                friendViewModel.fetchFriendTimetableList(studentId: "201910914")
                             }, label: {
                                 Text("시간표 조회")
                             })
                             Button(action: {
-                                friendViewModel.myTimetableList()
+                                friendViewModel.fetchMyTimetableList()
                             }, label: {
                                 Text("내시간표 조회")
                             })
@@ -366,7 +366,7 @@ struct FriendView: View {
         }
         .onAppear {
             print("프랜드뷰 생성")
-            friendViewModel.myTimetableList()
+            friendViewModel.fetchMyTimetableList()
             friendViewModel.fetchFollowerList(studentId: friendViewModel.friend?.studentId ?? "asd")
             friendViewModel.fetchFollowingList(studentId: friendViewModel.friend?.studentId ?? "asd")
             
@@ -571,13 +571,13 @@ struct TimeTableTutorial: View {
                     }
                 }
                 
-                if friendViewModel.detailTimetable?.lects.count == 0 {
+                if friendViewModel.timeTableInfo?.lects.count == 0 {
                     VStack {
                         Text("시간표 비어있음")
                             .position(x: geo.size.width / 2, y: geo.size.height / 2)
                         
                         Button(action: {
-                            print(friendViewModel.detailTimetable?.lects.count)
+                            print(friendViewModel.timeTableInfo?.lects.count)
                         }, label: {
                             Text("과목개수")
                         })
@@ -585,7 +585,7 @@ struct TimeTableTutorial: View {
                     
                 }
                 else{
-                    if let lectures = friendViewModel.detailTimetable?.lects {
+                    if let lectures = friendViewModel.timeTableInfo?.lects {
                         
                         ForEach(lectures, id: \.codeSection) { lecture in
                             ForEach(makeTimeBlock(lectures: [lecture]), id: \.0.codeSection) { lecture, periods, firstTimes in

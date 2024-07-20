@@ -19,7 +19,7 @@ enum FriendAPI {
     case timetableList(studentId: String)
     case myTimeTableList
     
-    case showDetailTimeTable(timeTableId: Int)
+    case fetchTimeTableInfo(timeTableId: Int)
 }
 
 
@@ -46,7 +46,7 @@ extension FriendAPI: TargetType {
             return "/api/v1/timetable/\(studentId)/timetable"
         case .myTimeTableList:
             return "/api/v1/timetable/list"
-        case .showDetailTimeTable(timeTableId: let timeTableId):
+        case .fetchTimeTableInfo(timeTableId: let timeTableId):
             return "/api/v1/timetable/\(timeTableId)"
         }
     }
@@ -69,7 +69,7 @@ extension FriendAPI: TargetType {
             return .get
         case .myTimeTableList:
             return .get
-        case .showDetailTimeTable:
+        case .fetchTimeTableInfo:
             return .get
         }
     }
@@ -92,7 +92,7 @@ extension FriendAPI: TargetType {
             return .requestPlain
         case .myTimeTableList:
             return .requestPlain
-        case .showDetailTimeTable:
+        case .fetchTimeTableInfo:
             return .requestPlain
         }
     }
@@ -100,23 +100,23 @@ extension FriendAPI: TargetType {
     
     var headers: [String : String]? {
         switch self {
-        case .followRequest(studentId: let studentId):
+        case .followRequest:
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]
-        case .followAccept(studentId: let studentId):
+        case .followAccept:
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]
         case .followingList:
             return ["Content-type": "application/json"]
         case .followerList:
             return ["Content-type": "application/json"]
-        case .unfollwing(studentId: let studentId):
+        case .unfollwing:
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]
-        case .unfollow(studentId: let studentId):
+        case .unfollow:
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]
         case .timetableList:
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]
         case .myTimeTableList:
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]
-        case .showDetailTimeTable(timeTableId: let timeTableId):
+        case .fetchTimeTableInfo:
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]
         }
     }

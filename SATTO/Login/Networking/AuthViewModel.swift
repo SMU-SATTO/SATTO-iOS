@@ -144,105 +144,56 @@ class AuthViewModel: ObservableObject {
         }
     }
 
+    // 변경완료
     func logIn(email: String, password: String) {
         provider.request(.logIn(email: email, password: password)) { result in
-            switch result {
-            case .success(let response):
-                do {
-                    // 응답 데이터를 출력하여 확인
-                    if let responseString = String(data: response.data, encoding: .utf8) {
-                        print("응답 데이터: \(responseString)")
-                    } else {
-                        print("응답 데이터를 문자열로 변환할 수 없음")
-                    }
-
-                    if let json = try JSONSerialization.jsonObject(with: response.data, options: []) as? [String: Any] {
-                        print("JSON 파싱 성공: \(json)")
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+//                    print(response)
+                    if let loginResponse = try? response.map(LoginResponse.self) {
+                        print("logIn매핑 성공🚨")
+                        print("Access Token: \(loginResponse.result.access_token)")
+                        print("Refresh Token: \(loginResponse.result.refresh_token)")
                         
-                        if let result = json["result"] as? [String: Any] {
-                            print("result 데이터: \(result)")
-                            
-                            if let accessToken = result["access_token"] as? String, let refreshToken = result["refresh_token"] as? String {
-                                DispatchQueue.main.async {
-                                    // 저장 및 출력
-                                    print("성공")
-                                    print("Access Token: \(accessToken)")
-                                    print("Refresh Token: \(refreshToken)")
-                                    print("isLoggedIn 이전 값: \(self.isLoggedIn)")
-                                    
-                                    self.saveToken(accessToken)
-                                    self.saveRefreshToken(refreshToken)
-                                    self.token = accessToken
-                                    self.isLoggedIn = true
-                                    
-                                    print("isLoggedIn 이후 값: \(self.isLoggedIn)")
-                                }
-                            } else {
-                                DispatchQueue.main.async {
-                                    self.errorMessage = "Failed to parse JSON: Missing tokens"
-                                    print(self.errorMessage)
-                                }
-                            }
-                        } else {
-                            DispatchQueue.main.async {
-                                self.errorMessage = "Failed to parse JSON: Invalid structure in result"
-                                print(self.errorMessage)
-                            }
-                        }
-                    } else {
-                        DispatchQueue.main.async {
-                            self.errorMessage = "Failed to parse JSON: Invalid structure"
-                            print(self.errorMessage)
-                        }
+                        self.saveToken(loginResponse.result.access_token)
+                        self.saveRefreshToken(loginResponse.result.refresh_token)
+                        self.token = loginResponse.result.access_token
+                        self.isLoggedIn = true
                     }
-                } catch let error {
-                    DispatchQueue.main.async {
-                        self.errorMessage = "Failed to parse JSON: \(error)"
-                        print(self.errorMessage)
+                    else {
+                        print("logIn매핑 실패🚨")
                     }
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self.errorMessage = "Error: \(error)"
-                    print(self.errorMessage!)
+                case .failure:
+                    print("logIn네트워크 요청 실패🚨")
                 }
             }
         }
     }
-    
 
     
     func logout() {
-        
         provider.request(.logOut) { result in
-            switch result {
-            case .success(let response):
-                do {
-                    let json = try JSONSerialization.jsonObject(with: response.data, options: []) as? [String: Any]
-                    DispatchQueue.main.async {
-//                        self.user = json
-                        print("성공")
-                        print(json)
-                        
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    print(response)
+//                    if let logoutResponse = try? response.map(LogoutResponse.self) {
+                        print("logout매핑 성공🚨")
                         self.deleteToken()
                         self.deleteRefreshToken()
                         self.token = nil
                         self.isLoggedIn = false
-                    }
-                } catch let error {
-                    DispatchQueue.main.async {
-                        self.errorMessage = "Failed to parse JSON: \(error)"
-                    }
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self.errorMessage = "Error: \(error)"
-                    print(self.errorMessage!)
+//                    }
+//                    else {
+//                        print("logout매핑 실패🚨")
+//                    }
+                case .failure:
+                    print("logout네트워크 요청 실패🚨")
+                    
                 }
             }
         }
-        
-        
     }
     
     func signOut() {
@@ -292,104 +243,30 @@ class AuthViewModel: ObservableObject {
         completion(true)
     }
     
+    
+    // 변경완료
     func userInfoInquiry(completion: @escaping () -> Void) {
         print("userInfoInquiry 시도")
         provider.request(.userInfoInquiry) { result in
-            switch result {
-            case .success(let response):
-                do {
-                    print("userInfoInquiry 시도")
-                    
-                    // 응답 데이터를 출력하여 확인
-                    if let responseString = String(data: response.data, encoding: .utf8) {
-                        print("응답 데이터: \(responseString)")
-                    } else {
-                        print("응답 데이터를 문자열로 변환할 수 없음")
+            DispatchQueue.main.async {
+                switch result {
+                case let .success(response):
+                    print(response)
+                    if let userResponse = try? response.map(UserResponse.self) {
+                        print("userInfoInquiry매핑 성공🚨")
+                        self.user = userResponse.result
+                        completion()
                     }
-
-                    // JSON 데이터를 파싱
-                    if let json = try JSONSerialization.jsonObject(with: response.data, options: []) as? [String: Any] {
-                        print("JSON 파싱 성공: \(json)")
-                        if let resultData = json["result"] as? [String: Any] {
-                            print("result 데이터: \(resultData)")
-
-                            // JSON 데이터를 User 객체로 디코딩
-                            let resultJsonData = try JSONSerialization.data(withJSONObject: resultData, options: [])
-                            let userInfo = try JSONDecoder().decode(User.self, from: resultJsonData)
-                            DispatchQueue.main.async {
-                                self.user = userInfo
-                                print("성공")
-                                print(userInfo)
-                                completion()
-                            }
-                        } else {
-                            DispatchQueue.main.async {
-                                self.errorMessage = "Failed to parse JSON: Invalid format"
-                                print("result 데이터 파싱 실패")
-                            }
-                        }
-                    } else {
-                        DispatchQueue.main.async {
-                            self.errorMessage = "Failed to parse JSON: Invalid format"
-                            print("JSON 파싱 실패")
-                        }
+                    else {
+                        print("userInfoInquiry매핑 실패🚨")
                     }
-                } catch let error {
-                    DispatchQueue.main.async {
-                        self.errorMessage = "Failed to parse JSON: \(error)"
-                        print("JSON 파싱 중 오류: \(error)")
-                    }
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self.errorMessage = "Error: \(error)"
-                    print("요청 실패: \(error)")
+                case .failure:
+                    print("userInfoInquiry네트워크 요청 실패🚨")
                 }
             }
         }
     }
     
-//    func userInfoInquiry(completion: @escaping () -> Void) {
-//        print("userInfoInquiry 시도")
-//        provider.request(.userInfoInquiry) { result in
-//            DispatchQueue.main.async {
-//                switch result {
-//                case let .success(response):
-//                    print(response)
-//                    if let json = try? response.map(UserResponse.self) {
-//                        print("매핑 성공")
-//                        self.user = json.result
-//                    }
-//                    else {
-//                        print("매핑 실패")
-//                    }
-//                case .failure:
-//                    print("네트워크 요청 실패")
-//                }
-//            }
-//        }
-//    }
-    
-//    func fetchReservationAPI(for date: Date) {
-//        self.isLoading = true
-//        provider.request(.getReservation(date: date.toDateString())) { result in
-//            DispatchQueue.main.async {
-//                switch result {
-//                case let .success(response):
-//                    print(response)
-//                    if let reservations = try? response.map([Reservation?].self) {
-//                        print("세미나실 매핑 성공🚨")
-//                        self.reservations = reservations.compactMap { $0 }
-//                    } else {
-//                        print("세미나실 매핑 실패🚨")
-//                    }
-//                case .failure:
-//                    print("세미나실 네트워크 요청 실패🚨")
-//                }
-//            }
-//            self.isLoading = false
-//        }
-//    }
 
     
 
