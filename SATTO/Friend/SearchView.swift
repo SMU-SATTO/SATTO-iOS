@@ -37,7 +37,7 @@ struct FollwerSearchView: View {
 
             ScrollView {
                 ForEach(friendViewModel.follower, id: \.studentId) { friend in
-                    FriendCell(name: friend.name, studentID: friend.studentId, isFollowing: false, friend: friend, friendViewModel: friendViewModel)
+                    FriendCell(isFollowing: false, friend: friend, friendViewModel: friendViewModel)
                         .padding(.bottom, 15)
                         .padding(.top, 10)
                 }
@@ -78,7 +78,7 @@ struct FollwingSearchView: View {
 
             ScrollView {
                 ForEach(friendViewModel.following, id: \.studentId) { friend in
-                    FriendCell(name: friend.name, studentID: friend.studentId, isFollowing: false, friend: friend, friendViewModel: friendViewModel)
+                    FriendCell(isFollowing: false, friend: friend, friendViewModel: friendViewModel)
                         .padding(.bottom, 15)
                         .padding(.top, 10)
                 }
@@ -95,6 +95,7 @@ struct SearchView: View {
     @State var text = ""
 //    @Binding var stackPath: [Route]
     @EnvironmentObject var navPathFinder: FriendNavigationPathFinder
+    @ObservedObject var friendViewModel: FriendViewModel
     var TextFieldPlacehold: String
     
     var body: some View {
@@ -117,13 +118,17 @@ struct SearchView: View {
             Divider()
 
             ScrollView {
-                ForEach(0 ..< 10) { item in
-//                    FriendCell(name: "한민재", studentID: "20201499", isFollowing: false, friendViewModel: <#FriendViewModel#>)
-//                        .padding(.bottom, 15)
-//                        .padding(.top, 10)
+                ForEach(friendViewModel.searchUsers, id: \.studentId) { friend in
+                    FriendCell(isFollowing: false, friend: friend, friendViewModel: friendViewModel)
+                        .padding(.bottom, 15)
+                        .padding(.top, 10)
                 }
             }
-            
+            Button(action: {
+                friendViewModel.searchUser(studentIdOrName: text)
+            }, label: {
+                Text("검색")
+            })
         }
         .navigationBarBackButtonHidden()
         
@@ -138,8 +143,6 @@ struct SearchView: View {
 
 struct FriendCell: View {
     
-    var name: String
-    var studentID: String
     var isFollowing: Bool
     
     var friend: Friend
@@ -217,8 +220,8 @@ struct FriendCell: View {
     }
 }
 
-#Preview {
-    SearchView(TextFieldPlacehold: "검색")
-    .environmentObject(FriendNavigationPathFinder.shared)
-}
+//#Preview {
+//    SearchView(TextFieldPlacehold: "검색")
+//    .environmentObject(FriendNavigationPathFinder.shared)
+//}
 

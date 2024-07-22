@@ -8,6 +8,15 @@
 import Foundation
 
 
+
+
+struct FriendResponse: Codable {
+    var isSuccess: Bool
+    var code: String
+    var message: String
+    var result: [Friend]
+}
+
 struct Friend: Codable {
     
     var studentId: String
@@ -21,6 +30,13 @@ struct Friend: Codable {
 
 }
 
+struct TimeTableResponse: Codable {
+    var isSuccess: Bool
+    var code: String
+    var message: String
+    var result: [Timetable]
+}
+
 struct Timetable: Codable {
     
     var timeTableId: Int
@@ -31,8 +47,15 @@ struct Timetable: Codable {
     
 }
 
-// MARK: - Result
-struct DetailTimetable: Codable {
+
+struct TimeTableInfoResponse: Codable {
+    var isSuccess: Bool
+    var code: String
+    var message: String
+    var result: TimeTableInfo
+}
+
+struct TimeTableInfo: Codable {
     let timeTableId: Int
     let lects: [Lecture]
     let semesterYear: String
@@ -40,7 +63,6 @@ struct DetailTimetable: Codable {
     let isPublic: Bool
     let isRepresented: Bool
 }
-
 
 struct Lecture: Codable {
     var code: String
@@ -51,3 +73,5 @@ struct Lecture: Codable {
     var cmpDiv: String
     var credit: Int
 }
+
+

@@ -50,11 +50,6 @@ struct SettingView: View {
                             border
                         )
                         
-                        Button(action: {
-//                            authViewModel.userInfoInquiry()
-                        }, label: {
-                            Text("유저정보")
-                        })
                         
                         VStack(spacing: 0) {
                             
