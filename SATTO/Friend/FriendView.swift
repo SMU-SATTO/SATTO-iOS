@@ -178,7 +178,7 @@ struct MyPageView: View {
                     .navigationDestination(for: FriendRoute.self) { route in
                         switch route {
                         case .search:
-                            SearchView(TextFieldPlacehold: "친구의 학번을 입력해 주세요")
+                            SearchView(friendViewModel: friendViewModel, TextFieldPlacehold: "친구의 학번을 입력해 주세요")
                         case .followerSearch:
                             FollwerSearchView(friendViewModel: friendViewModel, TextFieldPlacehold: "팔로워 목록")
                         case .followingSearch:

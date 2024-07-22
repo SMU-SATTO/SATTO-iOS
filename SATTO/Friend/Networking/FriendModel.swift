@@ -8,6 +8,8 @@
 import Foundation
 
 
+
+
 struct FriendResponse: Codable {
     var isSuccess: Bool
     var code: String

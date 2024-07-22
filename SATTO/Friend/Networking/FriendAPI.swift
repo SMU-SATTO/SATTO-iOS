@@ -20,6 +20,7 @@ enum FriendAPI {
     case myTimeTableList
     
     case fetchTimeTableInfo(timeTableId: Int)
+    case searchUser(studentIdOrName: String)
 }
 
 
@@ -48,6 +49,8 @@ extension FriendAPI: TargetType {
             return "/api/v1/timetable/list"
         case .fetchTimeTableInfo(timeTableId: let timeTableId):
             return "/api/v1/timetable/\(timeTableId)"
+        case .searchUser:
+            return "/api/v1/users/search"
         }
     }
     
@@ -70,6 +73,8 @@ extension FriendAPI: TargetType {
         case .myTimeTableList:
             return .get
         case .fetchTimeTableInfo:
+            return .get
+        case .searchUser:
             return .get
         }
     }
@@ -94,6 +99,8 @@ extension FriendAPI: TargetType {
             return .requestPlain
         case .fetchTimeTableInfo:
             return .requestPlain
+        case .searchUser(let studentIdOrName):
+            return .requestParameters(parameters: ["query": studentIdOrName], encoding: URLEncoding.queryString)
         }
     }
     
@@ -117,6 +124,8 @@ extension FriendAPI: TargetType {
         case .myTimeTableList:
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]
         case .fetchTimeTableInfo:
+            return ["Authorization": "Bearer \(getToken() ?? "asd")"]
+        case .searchUser(studentIdOrName: let studentIdOrName):
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]
         }
     }

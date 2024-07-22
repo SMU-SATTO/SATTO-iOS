@@ -21,6 +21,7 @@ class FriendViewModel: ObservableObject {
     
     @Published var follower: [Friend] = []
     @Published var following: [Friend] = []
+    @Published var searchUsers: [Friend] = []
     
     @Published var timeTables: [Timetable] = []
     
@@ -38,6 +39,8 @@ class FriendViewModel: ObservableObject {
     init() {
         
     }
+    
+    
 
     // 변경해야 됨
     func followRequest(studentId: String) {
@@ -171,6 +174,26 @@ class FriendViewModel: ObservableObject {
 
             }
         }
+    
+    func searchUser(studentIdOrName: String) {
+        provider.request(.searchUser(studentIdOrName: studentIdOrName)) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    print(response)
+                    if let friendResponse = try? response.map(FriendResponse.self) {
+                        self.searchUsers = friendResponse.result
+                        print("searchUser매핑 성공🚨")
+                    }
+                    else {
+                        print("searchUser매핑 실패🚨")
+                    }
+                case .failure:
+                    print("searchUser네트워크 요청 실패🚨")
+                }
+            }
+        }
+    }
     
     func assignColors() {
         var assignedColors: [String: Color] = [:]
