@@ -10,7 +10,7 @@ import Moya
 
 enum FriendAPI {
     
-    case followRequest(studentId: String)
+    case followingRequest(studentId: String)
     case followAccept(studentId: String)
     case followingList(studentId: String)
     case followerList(studentId: String)
@@ -31,7 +31,7 @@ extension FriendAPI: TargetType {
     
     var path: String {
         switch self {
-        case .followRequest(let studentId):
+        case .followingRequest(let studentId):
             return "/api/v1/follow/request/\(studentId)"
         case .followAccept(let studentId):
             return "/api/v1/follow/accept/\(studentId)"
@@ -56,7 +56,7 @@ extension FriendAPI: TargetType {
     
     var method: Moya.Method {
         switch self {
-        case .followRequest:
+        case .followingRequest:
             return .post
         case .followAccept:
             return .post
@@ -81,7 +81,7 @@ extension FriendAPI: TargetType {
     
     var task: Moya.Task {
         switch self {
-        case .followRequest:
+        case .followingRequest:
             return .requestPlain
         case .followAccept:
             return .requestPlain
@@ -107,7 +107,7 @@ extension FriendAPI: TargetType {
     
     var headers: [String : String]? {
         switch self {
-        case .followRequest:
+        case .followingRequest:
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]
         case .followAccept:
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]

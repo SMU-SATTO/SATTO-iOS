@@ -43,25 +43,29 @@ class FriendViewModel: ObservableObject {
     
 
     // 변경해야 됨
-    func followRequest(studentId: String) {
-        provider.request(.followRequest(studentId: studentId)) { result in
-            switch result {
-            case .success(let response):
-                do {
-                    let json = try JSONSerialization.jsonObject(with: response.data, options: []) as? [String: Any]
-                    DispatchQueue.main.async {
-//                        self.user = json
-                        print("성공")
-                    }
-                } catch let error {
-                    DispatchQueue.main.async {
-                        self.errorMessage = "Failed to parse JSON: \(error)"
-                    }
+    func followingRequest(studentId: String) {
+        provider.request(.followingRequest(studentId: studentId)) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    print(response)
+                    print("followingRequest네트워크 요청 성공🚨")
+                case .failure:
+                    print("followingRequest네트워크 요청 실패🚨")
                 }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self.errorMessage = "Error: \(error)"
-                    print(self.errorMessage!)
+            }
+        }
+    }
+    
+    func unfollowing(studentId: String) {
+        provider.request(.unfollwing(studentId: studentId)) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    print(response)
+                    print("unfollowing네트워크 요청 성공🚨")
+                case .failure:
+                    print("unfollowing네트워크 요청 실패🚨")
                 }
             }
         }
