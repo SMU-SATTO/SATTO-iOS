@@ -10,13 +10,13 @@ import Moya
 
 enum FriendAPI {
     
-    case followRequest(studentId: String)
+    case followingRequest(studentId: String)
     case followAccept(studentId: String)
     case followingList(studentId: String)
     case followerList(studentId: String)
     case unfollwing(studentId: String)
     case unfollow(studentId: String)
-    case timetableList(studentId: String)
+    case friendTimetableList(studentId: String)
     case myTimeTableList
     
     case fetchTimeTableInfo(timeTableId: Int)
@@ -31,7 +31,7 @@ extension FriendAPI: TargetType {
     
     var path: String {
         switch self {
-        case .followRequest(let studentId):
+        case .followingRequest(let studentId):
             return "/api/v1/follow/request/\(studentId)"
         case .followAccept(let studentId):
             return "/api/v1/follow/accept/\(studentId)"
@@ -43,11 +43,11 @@ extension FriendAPI: TargetType {
             return "/api/v1/follow/unfollowing/\(studentId)"
         case .unfollow(let studentId):
             return "/api/v1/follow/unfollow/\(studentId)"
-        case .timetableList(let studentId):
+        case .friendTimetableList(let studentId):
             return "/api/v1/timetable/\(studentId)/timetable"
         case .myTimeTableList:
             return "/api/v1/timetable/list"
-        case .fetchTimeTableInfo(timeTableId: let timeTableId):
+        case .fetchTimeTableInfo(let timeTableId):
             return "/api/v1/timetable/\(timeTableId)"
         case .searchUser:
             return "/api/v1/users/search"
@@ -56,7 +56,7 @@ extension FriendAPI: TargetType {
     
     var method: Moya.Method {
         switch self {
-        case .followRequest:
+        case .followingRequest:
             return .post
         case .followAccept:
             return .post
@@ -68,7 +68,7 @@ extension FriendAPI: TargetType {
             return .delete
         case .unfollow:
             return .delete
-        case .timetableList:
+        case .friendTimetableList:
             return .get
         case .myTimeTableList:
             return .get
@@ -81,7 +81,7 @@ extension FriendAPI: TargetType {
     
     var task: Moya.Task {
         switch self {
-        case .followRequest:
+        case .followingRequest:
             return .requestPlain
         case .followAccept:
             return .requestPlain
@@ -93,7 +93,7 @@ extension FriendAPI: TargetType {
             return .requestPlain
         case .unfollow:
             return .requestPlain
-        case .timetableList:
+        case .friendTimetableList:
             return .requestPlain
         case .myTimeTableList:
             return .requestPlain
@@ -107,7 +107,7 @@ extension FriendAPI: TargetType {
     
     var headers: [String : String]? {
         switch self {
-        case .followRequest:
+        case .followingRequest:
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]
         case .followAccept:
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]
@@ -119,7 +119,7 @@ extension FriendAPI: TargetType {
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]
         case .unfollow:
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]
-        case .timetableList:
+        case .friendTimetableList:
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]
         case .myTimeTableList:
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]

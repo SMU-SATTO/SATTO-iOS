@@ -246,7 +246,6 @@ class AuthViewModel: ObservableObject {
     
     // 변경완료
     func userInfoInquiry(completion: @escaping () -> Void) {
-        print("userInfoInquiry 시도")
         provider.request(.userInfoInquiry) { result in
             DispatchQueue.main.async {
                 switch result {

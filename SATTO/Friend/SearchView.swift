@@ -37,7 +37,7 @@ struct FollwerSearchView: View {
 
             ScrollView {
                 ForEach(friendViewModel.follower, id: \.studentId) { friend in
-                    FriendCell(isFollowing: false, friend: friend, friendViewModel: friendViewModel)
+                    FriendCell(friend: friend, friendViewModel: friendViewModel)
                         .padding(.bottom, 15)
                         .padding(.top, 10)
                 }
@@ -45,6 +45,9 @@ struct FollwerSearchView: View {
             
         }
         .navigationBarBackButtonHidden()
+        .onAppear {
+            friendViewModel.fetchFollowerList(studentId: friendViewModel.friend.last?.studentId ?? "studentId")
+        }
         
     }
 }
@@ -78,7 +81,7 @@ struct FollwingSearchView: View {
 
             ScrollView {
                 ForEach(friendViewModel.following, id: \.studentId) { friend in
-                    FriendCell(isFollowing: false, friend: friend, friendViewModel: friendViewModel)
+                    FriendCell(friend: friend, friendViewModel: friendViewModel)
                         .padding(.bottom, 15)
                         .padding(.top, 10)
                 }
@@ -86,6 +89,9 @@ struct FollwingSearchView: View {
             
         }
         .navigationBarBackButtonHidden()
+        .onAppear {
+            friendViewModel.fetchFollowingList(studentId: friendViewModel.friend.last?.studentId ?? "studentId")
+        }
         
     }
 }
@@ -143,7 +149,7 @@ struct SearchView: View {
 
 struct FriendCell: View {
     
-    var isFollowing: Bool
+    @State var isFollowing = true
     
     var friend: Friend
     
@@ -166,7 +172,7 @@ struct FriendCell: View {
             
             Button(action: {
                 navPathFinder.addPath(route: .friend)
-                friendViewModel.friend = friend
+                friendViewModel.friend.append(friend)
             }, label: {
                 VStack(alignment: .leading, spacing: 0) {
                     // m16
@@ -185,31 +191,46 @@ struct FriendCell: View {
             Spacer()
             
             if isFollowing {
-                Text("팔로잉")
-                    .font(.m12)
-                    .foregroundColor(Color.blue7)
-                    .padding(.vertical, 7)
-                    .padding(.horizontal, 26)
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.blue7, lineWidth: 1)
-                        
-                    )
-                    .padding(.trailing, 20)
+                
+                Button(action: {
+                    friendViewModel.unfollowing(studentId: friend.studentId)
+                    isFollowing.toggle()
+                }, label: {
+                    Text("팔로잉")
+                        .font(.m12)
+                        .foregroundColor(Color.blue7)
+                        .padding(.vertical, 7)
+                        .padding(.horizontal, 26)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.blue7, lineWidth: 1)
+                            
+                        )
+                        .padding(.trailing, 20)
+                    
+                })
+                
             }
             
             else {
-                Text("팔로우")
-                    .font(.m12)
-                    .foregroundColor(Color.white)
-                    .padding(.vertical, 7)
-                    .padding(.horizontal, 26)
-                    .background(
-                        Rectangle()
-                            .fill(Color.blue7)
-                            .cornerRadius(10)
-                    )
-                    .padding(.trailing, 20)
+                
+                Button(action: {
+                    friendViewModel.followingRequest(studentId: friend.studentId)
+                    isFollowing.toggle()
+                }, label: {
+                    Text("팔로우")
+                        .font(.m12)
+                        .foregroundColor(Color.white)
+                        .padding(.vertical, 7)
+                        .padding(.horizontal, 26)
+                        .background(
+                            Rectangle()
+                                .fill(Color.blue7)
+                                .cornerRadius(10)
+                        )
+                        .padding(.trailing, 20)
+                })
+                
                 
             }
             

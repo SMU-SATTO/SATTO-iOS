@@ -39,6 +39,7 @@ struct MyPageView: View {
     @StateObject var friendViewModel = FriendViewModel()
     
     var body: some View {
+        
         NavigationStack(path: $navPathFinder.path) {
             ZStack {
                 VStack(spacing: 0) {
@@ -128,6 +129,12 @@ struct MyPageView: View {
                                 Text("selectedTimeTableName: \(friendViewModel.selectedTimeTableName)")
                                 Text("필터링된 시간표id: \(friendViewModel.getSelectedTimetableId(timeTables: friendViewModel.timeTables))")
                                 
+                                Button(action: {
+                                    print("\(friendViewModel.friend)")
+                                }, label: {
+                                    Text("현재 정보 조회")
+                                })
+                                
                                 if friendViewModel.timeTables.isEmpty {
                                     Text("시간표가 없습니다")
                                 }
@@ -157,17 +164,25 @@ struct MyPageView: View {
                             }
                         }
                     }
-                    .onAppear {
-                        print("마이페이지뷰 생성")
-                        
-                        authViewModel.userInfoInquiry {
-                            friendViewModel.fetchFollowerList(studentId: authViewModel.user?.studentId ?? "asd")
-                            friendViewModel.fetchFollowingList(studentId: authViewModel.user?.studentId ?? "asd")
-                            
-                        }
-                        friendViewModel.fetchMyTimetableList()
-                        print("선택학기 추가")
-                    }
+//                    .onAppear {
+//                        print("마이페이지뷰 생성")
+//                        
+//                        authViewModel.userInfoInquiry {
+//                            
+//                            if friendViewModel.friend.isEmpty {
+//                                let friend = convertUserToFriend(user: authViewModel.user ?? User(studentId: "studentId", email: "email", password: "password", name: "name", nickname: "nickname", department: "department", grade: 5, isPublic: true))
+//                                friendViewModel.friend.append(friend)
+//                            }
+//                            
+//                            friendViewModel.fetchFollowerList(studentId: authViewModel.user?.studentId ?? "asd")
+//                            friendViewModel.fetchFollowingList(studentId: authViewModel.user?.studentId ?? "asd")
+//                            
+//                        }
+//                        friendViewModel.fetchMyTimetableList()
+//                    }
+//                    .onDisappear {
+//                        print("마이페이지뷰 사라짐")
+//                    }
                     .onChange(of: friendViewModel.selectedSemesterYear) { _ in
                         friendViewModel.selectedTimeTableName = friendViewModel.getTimetableNamesForSemester(timeTables: friendViewModel.timeTables, semester: friendViewModel.selectedSemesterYear).first ?? "이름없음"
                     }
@@ -208,6 +223,25 @@ struct MyPageView: View {
                     
                 }
             }
+            .onAppear {
+                print("마이페이지뷰 생성")
+                
+                authViewModel.userInfoInquiry {
+                    
+                    if friendViewModel.friend.isEmpty {
+                        let friend = convertUserToFriend(user: authViewModel.user ?? User(studentId: "studentId", email: "email", password: "password", name: "name", nickname: "nickname", department: "department", grade: 5, isPublic: true))
+                        friendViewModel.friend.append(friend)
+                    }
+                    
+                    friendViewModel.fetchFollowerList(studentId: authViewModel.user?.studentId ?? "asd")
+                    friendViewModel.fetchFollowingList(studentId: authViewModel.user?.studentId ?? "asd")
+                    
+                }
+                friendViewModel.fetchMyTimetableList()
+            }
+            .onDisappear {
+                print("마이페이지뷰 사라짐")
+            }
             
         }
     }
@@ -237,6 +271,18 @@ struct MyPageView: View {
                 
             )
     }
+                            
+                            func convertUserToFriend(user: User) -> Friend {
+                                return Friend(
+                                    studentId: user.studentId,
+                                    email: user.email,
+                                    name: user.name,
+                                    nickname: user.nickname,
+                                    department: user.department,
+                                    grade: String(user.grade),
+                                    isPublic: user.isPublic ? "true" : "false"
+                                )
+                            }
 
 }
 
@@ -320,12 +366,17 @@ struct FriendView: View {
                             .padding(.horizontal, 51)
                             
                             
-                            Text("\(friendViewModel.friend?.name ?? "name") \(friendViewModel.friend?.studentId ?? "studentId")")
+//                            Text("\(friendViewModel.friend?.name ?? "name") \(friendViewModel.friend?.studentId ?? "studentId")")
+//                                .font(.sb16)
+//                                .foregroundColor(Color.gray800)
+//                                .padding(.bottom, 5)
+                            
+                            Text("\(friendViewModel.friend.last?.name ?? "name") \(friendViewModel.friend.last?.studentId ?? "studentId")")
                                 .font(.sb16)
                                 .foregroundColor(Color.gray800)
                                 .padding(.bottom, 5)
                             
-                            Text("\(friendViewModel.friend?.department ?? "department")")
+                            Text("\(friendViewModel.friend.last?.department ?? "department")")
                                 .font(.m14)
                                 .foregroundColor(Color.gray600)
                                 .padding(.bottom, 23)
@@ -338,26 +389,47 @@ struct FriendView: View {
                             }
                             .padding(.bottom, 37)
                             
+                            
+                            Text("selectedSemesterYear: \(friendViewModel.selectedSemesterYear)")
+                            Text("selectedTimeTableName: \(friendViewModel.selectedTimeTableName)")
+                            Text("필터링된 시간표id: \(friendViewModel.getSelectedTimetableId(timeTables: friendViewModel.timeTables))")
+                            
                             Button(action: {
-                                friendViewModel.fetchFollowerList(studentId: friendViewModel.friend?.studentId ?? "asd")
+                                print("\(friendViewModel.timeTables)")
+                                print("\(friendViewModel.timeTableInfo)")
+                                print("\(friendViewModel.selectedSemesterYear)")
+                                print("\(friendViewModel.selectedTimeTableName)")
                             }, label: {
-                                Text("팔로워 조회")
+                                Text("현재 정보 조회")
                             })
-                            Button(action: {
-                                friendViewModel.fetchFollowingList(studentId: friendViewModel.friend?.studentId ?? "asd")
-                            }, label: {
-                                Text("팔로잉 조회")
-                            })
-                            Button(action: {
-                                friendViewModel.fetchFriendTimetableList(studentId: "201910914")
-                            }, label: {
-                                Text("시간표 조회")
-                            })
-                            Button(action: {
-                                friendViewModel.fetchMyTimetableList()
-                            }, label: {
-                                Text("내시간표 조회")
-                            })
+                            
+                            if friendViewModel.timeTables.isEmpty {
+                                Text("시간표가 없습니다")
+                            }
+                            else {
+                                HStack(spacing: 0) {
+                                    Picker("Select Semester Year", selection: $friendViewModel.selectedSemesterYear) {
+                                        
+                                        ForEach(friendViewModel.getSemestersFromTimetables(timeTables: friendViewModel.timeTables), id: \.self) { semester in
+                                            Text(friendViewModel.formatSemesterString(semester: semester))
+                                                .tag(semester)
+                                        }
+                                    }
+                                    
+                                    Picker("Select Time Table", selection: $friendViewModel.selectedTimeTableName) {
+                                        ForEach(friendViewModel.getTimetableNamesForSemester(timeTables: friendViewModel.timeTables, semester: friendViewModel.selectedSemesterYear), id: \.self) { name in
+                                            Text(name).tag(name)
+                                        }
+                                    }
+                                    Spacer()
+                                }
+                                .padding(.horizontal, 20)
+                                .tint(Color.black)
+                            }
+
+                            TimeTableTutorial(friendViewModel: friendViewModel)
+                            
+                            
                         }
                     }
                 }
@@ -365,17 +437,26 @@ struct FriendView: View {
             }
         }
         .onAppear {
-            print("프랜드뷰 생성")
-            friendViewModel.fetchMyTimetableList()
-            friendViewModel.fetchFollowerList(studentId: friendViewModel.friend?.studentId ?? "asd")
-            friendViewModel.fetchFollowingList(studentId: friendViewModel.friend?.studentId ?? "asd")
+            print("프렌드뷰 생성")
+            authViewModel.userInfoInquiry {
+                friendViewModel.fetchFollowerList(studentId: friendViewModel.friend.last?.studentId ?? "studentId")
+                friendViewModel.fetchFollowingList(studentId: friendViewModel.friend.last?.studentId ?? "studentId")
+                friendViewModel.fetchFriendTimetableList(studentId: friendViewModel.friend.last?.studentId ?? "studentId")
+            }
             
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 HStack(spacing: 0) {
-                    CustomBackButton()
-                    CustomNavigationTitle(title: "내프로필")
+                    
+                    Button(action: {
+                        navPathFinder.path.popLast()
+                        friendViewModel.friend.popLast()
+                    }, label: {
+                        Image("Classic")
+                    })
+                    
+                    CustomNavigationTitle(title: "친구관리")
                 }
                 .frame(maxWidth: .infinity)
             }
@@ -530,6 +611,7 @@ struct TimeTableTutorial: View {
     }
     
     @ObservedObject var friendViewModel: FriendViewModel
+    
     
     var body: some View {
         //        ScrollView {
