@@ -11,7 +11,7 @@ struct SettingView: View {
     
     @State private var isOn = true
     
-    @EnvironmentObject var authViewModel: AuthVieModel
+    @EnvironmentObject var authViewModel: AuthViewModel
     
     var body: some View {
 
@@ -27,11 +27,11 @@ struct SettingView: View {
                         .padding(.top, 130)
                         .padding(.bottom, 14)
                     
-                    Text("한민재")
+                    Text(authViewModel.user?.name ?? "name")
                         .font(.sb18)
                         .foregroundColor(Color.gray800)
                     
-                    Text(authViewModel.userInfo2.email ?? "asd")
+                    Text(authViewModel.user?.email ?? "asd")
                         .font(.m14)
                         .foregroundColor(Color.gray600)
                         .padding(.bottom, 14)
@@ -49,6 +49,7 @@ struct SettingView: View {
                         .background(
                             border
                         )
+                        
                         
                         VStack(spacing: 0) {
                             
@@ -87,6 +88,7 @@ struct SettingView: View {
                         .padding(.bottom, 100)
                     }
                     .padding(.horizontal, 25)
+                    
                 }
             }
         }

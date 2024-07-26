@@ -7,11 +7,31 @@
 
 import Foundation
 
-struct User {
+struct User: Codable {
     
     var studentId: String
-//    var email: String?
+    var email: String
     var password: String
+    var name: String
+    var nickname: String
+    var department: String
+    var grade: Int
+    var isPublic: Bool
+}
+
+struct UserResponse: Codable {
+    var isSuccess: Bool
+    var code: String
+    var message: String
+    var result: User
+}
+
+
+struct User2: Codable {
+    
+    var studentId: String
+//    var email: String
+//    var password: String
     var name: String
     var nickname: String
     var department: String
@@ -20,35 +40,18 @@ struct User {
     
 }
 
-struct Model: Encodable, Decodable {
-    let isSuccess: Bool
-    let code, message: String
-    let result: UserInfo2
+struct LoginResponse: Codable {
+    var isSuccess: Bool
+    var code: String
+    var message: String
+    var result: Token
 }
 
-// MARK: - Result
-struct UserInfo2: Codable {
-//    let createdAt, updatedAt: String?
-//    let userID: Int?
-//    let profileImg: JSONNull?
-//    let name, nickname, department: String?
-//    let studentID: Int?
-//    let email, password, role: String?
-//    let grade: Int?
-//    let photoContest: JSONNull?
-//    let likeList, dislikeList, courseList: [JSONAny]
-//    let resultPublic, enabled: Bool?
-//    let username: String?
-//    let authorities: [Authority]
-//    let accountNonExpired, accountNonLocked, credentialsNonExpired: Bool?
-    
-    
-    var userID: String?
-    var email: String?
-    var password: String?
-    var name: String?
-    var nickname: String?
-    var department: String?
-    var grade: Int?
-    var resultPublic: Bool?
+struct Token: Codable {
+    var access_token: String
+    var refresh_token: String
+}
+
+struct LogoutResponse: Codable {
+    var message: String
 }

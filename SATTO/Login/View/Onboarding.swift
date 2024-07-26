@@ -10,14 +10,11 @@ import SwiftUI
 struct Onboarding: View {
     
 //    @StateObject var vm = LogInViewModel()
-    @EnvironmentObject var authViewModel: AuthVieModel
+    @EnvironmentObject var authViewModel: AuthViewModel
     
     var body: some View {
         if authViewModel.isLoggedIn == true {
                 ContentView()
-                .onAppear {
-                    authViewModel.userInfoInquiry()
-                }
         }
         else {
             LoginView()

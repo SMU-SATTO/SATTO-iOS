@@ -110,7 +110,6 @@ struct MidCheckPopupView: View {
                         Button(action: {
                             navigateForward()
                             midCheckPopup = false
-                            selectedValues.fetchMajorCombinations(GPA: selectedValues.credit, requiredLect: selectedValues.selectedSubjects, majorCount: selectedValues.majorNum, cyberCount: selectedValues.ELearnNum, impossibleTimeZone: selectedValues.selectedTimes)
                         }) {
                             Text("시간표 생성하러 가기")
                                 .font(.sb14)

@@ -10,7 +10,6 @@ import SwiftUI
 struct TimetableCustom: View {
     @Binding var stackPath: [TimetableRoute]
     
-    @StateObject var subjectViewModel = SubjectViewModel()
     @StateObject var selectedValues = SelectedValues()
     @StateObject var bottomSheetViewModel = BottomSheetViewModel()
     
@@ -36,7 +35,6 @@ struct TimetableCustom: View {
                     }
                     .sheet(isPresented: $isShowBottomSheet, content: {
                         BottomSheetTabView(
-                            subjectViewModel: subjectViewModel,
                             selectedValues: selectedValues,
                             bottomSheetViewModel: bottomSheetViewModel,
                             selectedSubviews: $selectedSubviews,

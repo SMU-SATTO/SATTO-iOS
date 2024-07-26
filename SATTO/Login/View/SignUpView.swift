@@ -21,7 +21,7 @@ struct SignUpView: View {
     @State private var isPublic = true
     
     @EnvironmentObject var navPathFinder: LoginNavigationPathFinder
-    @EnvironmentObject var authViewModel: AuthVieModel
+    @EnvironmentObject var authViewModel: AuthViewModel
     
     @State private var isPasswordValid: Bool = false
     @State private var errorMessage: String?
@@ -29,7 +29,7 @@ struct SignUpView: View {
     
 //    @ObservedObject var vm: AuthVieModel
     
-    let user = User(studentId: "201910914", password: "insungmms57!", name: "황인성", nickname: "insung", department: "컴퓨터과학과", grade: 3, isPublic: true)
+//    let user = User(studentId: "201910914", password: "insungmms57!", name: "황인성", nickname: "insung", department: "컴퓨터과학과", grade: 3, isPublic: true)
     
     var body: some View {
         ScrollView {
@@ -114,37 +114,43 @@ struct SignUpView: View {
                 Text("계정 공개 / 비공개")
                 
                 HStack(spacing: 10) {
-                    Text("공개")
-                        .padding(.vertical, 16)
-                        .padding(.horizontal, 20)
-                        .background(Color(red: 0.98, green: 0.98, blue: 0.98))
-                        .cornerRadius(20)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 20)
-                                .stroke(Color(red: 0.91, green: 0.92, blue: 0.93), lineWidth: 1)
-                            
-                        )
                     
-                    Text("비공개")
-                        .padding(.vertical, 16)
-                        .padding(.horizontal, 20)
-                        .background(Color(red: 0.98, green: 0.98, blue: 0.98))
-                        .cornerRadius(20)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 20)
-                                .stroke(Color(red: 0.91, green: 0.92, blue: 0.93), lineWidth: 1)
-                            
-                        )
+                    Button(action: {
+                        isPublic = true
+                    }, label: {
+                        Text("공개")
+                            .modifier(MyTextFieldModifier())
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 20)
+                                    .stroke(isPublic ? Color.blue : Color(red: 0.91, green: 0.92, blue: 0.93), lineWidth: 1)
+                                
+                            )
+                    })
+                    
+                    Button(action: {
+                        isPublic = false
+                    }, label: {
+                        Text("비공개")
+                            .modifier(MyTextFieldModifier())
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 20)
+                                    .stroke(!isPublic ? Color.blue : Color(red: 0.91, green: 0.92, blue: 0.93), lineWidth: 1)
+                                
+                            )
+                    })
                 }
                 
                 Button(action: {
+                    print(authViewModel.user ?? "ㅁㄴㅇ")
                     print(authViewModel.user?.studentId)
+                    
+                    authViewModel.user?.grade = grade
+                    authViewModel.user?.isPublic = isPublic
+                    authViewModel.user?.email = "\(authViewModel.user?.studentId ?? "asd")@sangmyung.kr"
                     authViewModel.user?.password = password
                     authViewModel.user?.name = name
                     authViewModel.user?.nickname = nickname
                     authViewModel.user?.department = department
-                    authViewModel.user?.grade = grade
-                    authViewModel.user?.isPublic = isPublic
                     
                     
                     authViewModel.signUp(user: authViewModel.user!)
@@ -157,6 +163,15 @@ struct SignUpView: View {
                 Button(action: {
                     validatePasswords()
                     
+                    print(authViewModel.user ?? "ㅁㄴㅇ")
+                    authViewModel.user?.password = password
+                    authViewModel.user?.name = name
+                    authViewModel.user?.nickname = nickname
+                    authViewModel.user?.department = department
+                    authViewModel.user?.grade = grade
+                    authViewModel.user?.isPublic = isPublic
+
+                    
                     authViewModel.signUp(user: authViewModel.user!)
                 }) {
                     Text("확인")
@@ -164,7 +179,7 @@ struct SignUpView: View {
                         .font(.headline)
                         .frame(width: 365, height: 50)
                         .background(Color.gray)
-                        .cornerRadius(10)
+                        .cornerRadius(20)
                 }
                 .padding(.bottom, 10)
             }
