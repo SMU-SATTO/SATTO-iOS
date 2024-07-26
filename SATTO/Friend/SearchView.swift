@@ -45,6 +45,9 @@ struct FollwerSearchView: View {
             
         }
         .navigationBarBackButtonHidden()
+        .onAppear {
+            friendViewModel.fetchFollowerList(studentId: friendViewModel.friend.last?.studentId ?? "studentId")
+        }
         
     }
 }
@@ -86,6 +89,9 @@ struct FollwingSearchView: View {
             
         }
         .navigationBarBackButtonHidden()
+        .onAppear {
+            friendViewModel.fetchFollowingList(studentId: friendViewModel.friend.last?.studentId ?? "studentId")
+        }
         
     }
 }
@@ -166,7 +172,7 @@ struct FriendCell: View {
             
             Button(action: {
                 navPathFinder.addPath(route: .friend)
-                friendViewModel.friend = friend
+                friendViewModel.friend.append(friend)
             }, label: {
                 VStack(alignment: .leading, spacing: 0) {
                     // m16

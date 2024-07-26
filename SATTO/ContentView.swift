@@ -45,13 +45,6 @@ struct ContentView: View {
                 }.tag(Tab.setting)
             }
             .accentColor(Color.blue7)
-            .task {
-
-                    print("contentView onappear")
-//                    await authViewModel.userInfoInquiry()
-                    print("contentView onappear 끝")
-
-            }
 //            .navigationDestination(for: Route.self) { route in
 //                switch route {
 //                case .search:
