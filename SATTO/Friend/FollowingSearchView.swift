@@ -1,13 +1,13 @@
 //
-//  SearchView.swift
+//  FollowingSearchView.swift
 //  SATTO
 //
-//  Created by 황인성 on 3/29/24.
+//  Created by 황인성 on 7/26/24.
 //
 
 import SwiftUI
 
-struct SearchView: View {
+struct FollowingSearchView: View {
     
     @State var text = ""
 //    @Binding var stackPath: [Route]
@@ -33,60 +33,26 @@ struct SearchView: View {
             .padding(.bottom, 10)
             
             Divider()
-            
-            Button(action: {
-                print(friendViewModel.follower)
-            }, label: {
-                Text("팔로워 조회")
-            })
-            Button(action: {
-                print(friendViewModel.following)
-            }, label: {
-                Text("팔로잉 조회")
-            })
-            Button(action: {
-                print(friendViewModel.myFollower)
-            }, label: {
-                Text("내팔로워 조회")
-            })
-            Button(action: {
-                print(friendViewModel.myFollowing)
-            }, label: {
-                Text("내팔로잉 조회")
-            })
 
             ScrollView {
-                ForEach(friendViewModel.searchUsers, id: \.studentId) { friend in
-                    FriendCell(friend: friend, friendViewModel: friendViewModel)
+                ForEach(friendViewModel.following, id: \.studentId) { friend in
+                    FollowingFriendCell(friend: friend, friendViewModel: friendViewModel)
                         .padding(.bottom, 15)
                         .padding(.top, 10)
                 }
             }
-            Button(action: {
-                friendViewModel.searchUser(studentIdOrName: text)
-            }, label: {
-                Text("검색")
-            })
-            Button(action: {
-                print(friendViewModel.myFollowing)
-                print(friendViewModel.following)
-            }, label: {
-                Text("팔로잉리스트 조회")
-            })
+            
         }
         .navigationBarBackButtonHidden()
-        .onDisappear {
-            friendViewModel.searchUsers = []
-//            print(friendViewModel.)
+        .onAppear {
+            friendViewModel.fetchFollowingList(studentId: friendViewModel.friend.last?.studentId ?? "studentId")
         }
-        .onChange(of: text) { _ in
-            friendViewModel.searchUser(studentIdOrName: text)
-        }
+        
         
     }
 }
 
-struct FriendCell: View {
+struct FollowingFriendCell: View {
     
     @State var isFollowing = true
     
@@ -128,7 +94,6 @@ struct FriendCell: View {
             
             
             Spacer()
-            
             
             if friendViewModel.myFollowing.contains(friend) {
                 
@@ -183,15 +148,6 @@ struct FriendCell: View {
             
             
         }
-        .onAppear {
-            
-        }
         
     }
 }
-
-//#Preview {
-//    SearchView(TextFieldPlacehold: "검색")
-//    .environmentObject(FriendNavigationPathFinder.shared)
-//}
-

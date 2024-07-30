@@ -19,6 +19,9 @@ class FriendViewModel: ObservableObject {
     
     @Published var friend: [Friend] = []
     
+    @Published var myFollower: [Friend] = []
+    @Published var myFollowing: [Friend] = []
+    
     @Published var follower: [Friend] = []
     @Published var following: [Friend] = []
     @Published var searchUsers: [Friend] = []
@@ -40,16 +43,14 @@ class FriendViewModel: ObservableObject {
         
     }
     
-    
-
-    // 변경해야 됨
-    func followingRequest(studentId: String) {
+    func followingRequest(studentId: String, completion: @escaping () -> Void) {
         provider.request(.followingRequest(studentId: studentId)) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let response):
                     print(response)
                     print("followingRequest네트워크 요청 성공🚨")
+                    completion()
                 case .failure:
                     print("followingRequest네트워크 요청 실패🚨")
                 }
@@ -57,13 +58,14 @@ class FriendViewModel: ObservableObject {
         }
     }
     
-    func unfollowing(studentId: String) {
+    func unfollowing(studentId: String, completion: @escaping () -> Void) {
         provider.request(.unfollwing(studentId: studentId)) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let response):
                     print(response)
                     print("unfollowing네트워크 요청 성공🚨")
+                    completion()
                 case .failure:
                     print("unfollowing네트워크 요청 실패🚨")
                 }
@@ -71,9 +73,23 @@ class FriendViewModel: ObservableObject {
         }
     }
     
+    func unfollow(studentId: String, completion: @escaping () -> Void) {
+        provider.request(.unfollow(studentId: studentId)) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    print(response)
+                    print("unfollow네트워크 요청 성공🚨")
+                    completion()
+                case .failure:
+                    print("unfollow네트워크 요청 실패🚨")
+                }
+            }
+        }
+    }
+    
     // 변경완료
     func fetchFollowerList(studentId: String) {
-        print("fetchFollowerList")
         provider.request(.followerList(studentId: studentId)) { result in
             DispatchQueue.main.async {
                 switch result {
@@ -103,6 +119,52 @@ class FriendViewModel: ObservableObject {
                     if let friendResponse = try? response.map(FriendResponse.self) {
                         self.following = friendResponse.result
                         print("fetchFollowingList매핑 성공🚨")
+                    }
+                    else {
+                        print("fetchFollowingList매핑 실패🚨")
+                    }
+                case .failure:
+                    print("fetchFollowingList네트워크 요청 실패🚨")
+                }
+            }
+        }
+    }
+    
+    // 내꺼
+    func fetchMyFollowerList(studentId: String) {
+        provider.request(.followerList(studentId: studentId)) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    print(response)
+                    if let friendResponse = try? response.map(FriendResponse.self) {
+                        self.myFollower = friendResponse.result
+                        self.follower = friendResponse.result
+                        print("fetchMyFollowerList매핑 성공🚨")
+//                        completion()
+                    }
+                    else {
+                        print("fetchMyFollowerList매핑 실패🚨")
+                    }
+                case .failure:
+                    print("fetchMyFollowerList네트워크 요청 실패🚨")
+                }
+            }
+        }
+    }
+    
+    // 내꺼
+    func fetchMyFollowingList(studentId: String) {
+        provider.request(.followingList(studentId: studentId)) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    print(response)
+                    if let friendResponse = try? response.map(FriendResponse.self) {
+                        self.myFollowing = friendResponse.result
+                        self.following = friendResponse.result
+                        print("fetchFollowingList매핑 성공🚨")
+//                        completion()
                     }
                     else {
                         print("fetchFollowingList매핑 실패🚨")
