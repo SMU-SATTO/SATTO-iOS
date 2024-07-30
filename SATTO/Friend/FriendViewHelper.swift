@@ -191,3 +191,88 @@ struct ClearButtonTextField: View {
     ClearButtonTextField(placehold: "asd", text: .constant("a"))
 }
 
+
+struct LectureTable: View {
+    var body: some View {
+        
+        
+        ScrollView(showsIndicators: true) {
+            ZStack(alignment: .top) {
+                
+                
+                Text("\u{200B}")
+                    .font(.m11)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 8)
+                    .background(Color(red: 0.89, green: 0.91, blue: 1.00)
+                        .clipShape(
+                            .rect(
+                                topLeadingRadius: 10,
+                                topTrailingRadius: 10
+                            )
+                        ))
+                
+                
+                HStack(spacing: 0) {
+                    VStack(spacing: 0) {
+                        Text("학수번호-분반")
+                            .padding(.vertical, 8)
+                        ForEach(0..<100){_ in
+                            Text("HAAC0012-1")
+                                .padding(.vertical, 8)
+                        }
+                    }
+                    .padding(.leading, 18)
+                    
+                    
+                    Spacer()
+                    VStack(spacing: 0) {
+                        Text("학년")
+                            .padding(.vertical, 8)
+                        ForEach(0..<100){_ in
+                            Text("3")
+                                .padding(.vertical, 8)
+                        }
+                    }
+                    Spacer()
+                    VStack(spacing: 0) {
+                        Text("교과목명")
+                            .padding(.vertical, 8)
+                        ForEach(0..<100){_ in
+                            Text("경제학의이해")
+                                .padding(.vertical, 8)
+                        }
+                    }
+                    Spacer()
+                    VStack(spacing: 0) {
+                        Text("이수구분")
+                            .padding(.vertical, 8)
+                        ForEach(0..<100){_ in
+                            Text("1전심")
+                                .padding(.vertical, 8)
+                        }
+                    }
+                    Spacer()
+                    VStack(spacing: 0) {
+                        Text("학점")
+                            .padding(.vertical, 8)
+                            .padding(.trailing, 29)
+                        
+                        ForEach(0..<100){_ in
+                            HStack(spacing: 0) {
+                                Text("3")
+                                    .padding(.vertical, 8)
+                                    .padding(.trailing, 15)
+                                
+                                Image(systemName: "plus.circle.dashed")
+                                    .frame(width: 14, height: 14)
+                                
+                            }
+                        }
+                    }
+                }
+                .font(.m11)
+            }
+        }
+    }
+}

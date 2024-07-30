@@ -17,7 +17,7 @@ struct FriendResponse: Codable {
     var result: [Friend]
 }
 
-struct Friend: Codable {
+struct Friend: Codable, Equatable {
     
     var studentId: String
     var email: String
