@@ -10,9 +10,10 @@ import SwiftUI
 struct FollowingSearchView: View {
     
     @State var text = ""
-//    @Binding var stackPath: [Route]
+    
     @EnvironmentObject var navPathFinder: FriendNavigationPathFinder
     @ObservedObject var friendViewModel: FriendViewModel
+    
     var TextFieldPlacehold: String
     
     var body: some View {
@@ -33,34 +34,57 @@ struct FollowingSearchView: View {
             .padding(.bottom, 10)
             
             Divider()
+            
+//            Button(action: {
+//                print(friendViewModel.follower)
+//            }, label: {
+//                Text("팔로워 조회")
+//            })
+//            Button(action: {
+//                print(friendViewModel.following)
+//            }, label: {
+//                Text("팔로잉 조회")
+//            })
+//            Button(action: {
+//                print(friendViewModel.myFollower)
+//            }, label: {
+//                Text("내팔로워 조회")
+//            })
+//            Button(action: {
+//                print(friendViewModel.myFollowing)
+//            }, label: {
+//                Text("내팔로잉 조회")
+//            })
+//            
+//            Button(action: {
+//                print("\(friendViewModel.friend)")
+//            }, label: {
+//                Text("현재 정보 조회")
+//            })
 
             ScrollView {
-                ForEach(friendViewModel.following, id: \.studentId) { friend in
+                ForEach(friendViewModel.following.filter {
+                    text.isEmpty || $0.name.contains(text) || $0.studentId.contains(text)
+                }, id: \.studentId) { friend in
                     FollowingFriendCell(friend: friend, friendViewModel: friendViewModel)
                         .padding(.bottom, 15)
                         .padding(.top, 10)
                 }
             }
-            
         }
         .navigationBarBackButtonHidden()
         .onAppear {
             friendViewModel.fetchFollowingList(studentId: friendViewModel.friend.last?.studentId ?? "studentId")
         }
-        
-        
     }
 }
 
 struct FollowingFriendCell: View {
     
-    @State var isFollowing = true
-    
     var friend: Friend
     
     @EnvironmentObject var navPathFinder: FriendNavigationPathFinder
     @ObservedObject var friendViewModel: FriendViewModel
-    
     
     var body: some View {
         HStack(spacing: 0) {
@@ -76,8 +100,13 @@ struct FollowingFriendCell: View {
                 .padding(.leading, 20)
             
             Button(action: {
-                navPathFinder.addPath(route: .friend)
-                friendViewModel.friend.append(friend)
+                if friend == friendViewModel.friend.first {
+                    
+                }
+                else {
+                    navPathFinder.addPath(route: .friend)
+                    friendViewModel.friend.append(friend)
+                }
             }, label: {
                 VStack(alignment: .leading, spacing: 0) {
                     // m16
@@ -92,7 +121,6 @@ struct FollowingFriendCell: View {
                 }
             })
             
-            
             Spacer()
             
             if friendViewModel.myFollowing.contains(friend) {
@@ -106,7 +134,6 @@ struct FollowingFriendCell: View {
                             
                         }
                     }
-//                    isFollowing.toggle()
                 }, label: {
                     Text("팔로잉")
                         .font(.m12)
@@ -124,6 +151,10 @@ struct FollowingFriendCell: View {
                 
             }
             
+            else if friend == friendViewModel.friend.first {
+                
+            }
+            
             else if !friendViewModel.myFollowing.contains(friend) {
                 
                 Button(action: {
@@ -135,7 +166,6 @@ struct FollowingFriendCell: View {
                             
                         }
                     }
-//                    isFollowing.toggle()
                 }, label: {
                     Text("팔로우")
                         .font(.m12)
@@ -149,13 +179,7 @@ struct FollowingFriendCell: View {
                         )
                         .padding(.trailing, 20)
                 })
-                
-                
             }
-            
-            
-            
         }
-        
     }
 }

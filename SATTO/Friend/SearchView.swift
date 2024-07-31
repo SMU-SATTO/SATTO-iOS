@@ -10,7 +10,6 @@ import SwiftUI
 struct SearchView: View {
     
     @State var text = ""
-//    @Binding var stackPath: [Route]
     @EnvironmentObject var navPathFinder: FriendNavigationPathFinder
     @ObservedObject var friendViewModel: FriendViewModel
     var TextFieldPlacehold: String
@@ -33,27 +32,6 @@ struct SearchView: View {
             .padding(.bottom, 10)
             
             Divider()
-            
-            Button(action: {
-                print(friendViewModel.follower)
-            }, label: {
-                Text("팔로워 조회")
-            })
-            Button(action: {
-                print(friendViewModel.following)
-            }, label: {
-                Text("팔로잉 조회")
-            })
-            Button(action: {
-                print(friendViewModel.myFollower)
-            }, label: {
-                Text("내팔로워 조회")
-            })
-            Button(action: {
-                print(friendViewModel.myFollowing)
-            }, label: {
-                Text("내팔로잉 조회")
-            })
 
             ScrollView {
                 ForEach(friendViewModel.searchUsers, id: \.studentId) { friend in
@@ -62,22 +40,14 @@ struct SearchView: View {
                         .padding(.top, 10)
                 }
             }
-            Button(action: {
-                friendViewModel.searchUser(studentIdOrName: text)
-            }, label: {
-                Text("검색")
-            })
-            Button(action: {
-                print(friendViewModel.myFollowing)
-                print(friendViewModel.following)
-            }, label: {
-                Text("팔로잉리스트 조회")
-            })
+
         }
         .navigationBarBackButtonHidden()
+        .onAppear {
+            friendViewModel.searchUser(studentIdOrName: text)
+        }
         .onDisappear {
             friendViewModel.searchUsers = []
-//            print(friendViewModel.)
         }
         .onChange(of: text) { _ in
             friendViewModel.searchUser(studentIdOrName: text)
@@ -88,13 +58,10 @@ struct SearchView: View {
 
 struct FriendCell: View {
     
-    @State var isFollowing = true
-    
     var friend: Friend
     
     @EnvironmentObject var navPathFinder: FriendNavigationPathFinder
     @ObservedObject var friendViewModel: FriendViewModel
-    
     
     var body: some View {
         HStack(spacing: 0) {
@@ -110,8 +77,13 @@ struct FriendCell: View {
                 .padding(.leading, 20)
             
             Button(action: {
-                navPathFinder.addPath(route: .friend)
-                friendViewModel.friend.append(friend)
+                if friend == friendViewModel.friend.first {
+                    
+                }
+                else {
+                    navPathFinder.addPath(route: .friend)
+                    friendViewModel.friend.append(friend)
+                }
             }, label: {
                 VStack(alignment: .leading, spacing: 0) {
                     // m16
@@ -126,9 +98,7 @@ struct FriendCell: View {
                 }
             })
             
-            
             Spacer()
-            
             
             if friendViewModel.myFollowing.contains(friend) {
                 
@@ -141,7 +111,6 @@ struct FriendCell: View {
                             
                         }
                     }
-//                    isFollowing.toggle()
                 }, label: {
                     Text("팔로잉")
                         .font(.m12)
@@ -159,6 +128,10 @@ struct FriendCell: View {
                 
             }
             
+            else if friend == friendViewModel.friend.first {
+                
+            }
+            
             else if !friendViewModel.myFollowing.contains(friend) {
                 
                 Button(action: {
@@ -170,7 +143,6 @@ struct FriendCell: View {
                             
                         }
                     }
-//                    isFollowing.toggle()
                 }, label: {
                     Text("팔로우")
                         .font(.m12)
@@ -185,21 +157,8 @@ struct FriendCell: View {
                         .padding(.trailing, 20)
                 })
                 
-                
             }
-            
-            
-            
         }
-        .onAppear {
-            
-        }
-        
     }
 }
-
-//#Preview {
-//    SearchView(TextFieldPlacehold: "검색")
-//    .environmentObject(FriendNavigationPathFinder.shared)
-//}
 

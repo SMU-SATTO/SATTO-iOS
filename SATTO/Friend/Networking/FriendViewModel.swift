@@ -20,7 +20,6 @@ class FriendViewModel: ObservableObject {
     
     @Published var friend: [Friend] = []
     
-    @Published var myProfile: User?
     @Published var myFollower: [Friend] = []
     @Published var myFollowing: [Friend] = []
     
@@ -168,14 +167,14 @@ class FriendViewModel: ObservableObject {
                     if let friendResponse = try? response.map(FriendResponse.self) {
                         self.myFollowing = friendResponse.result
 //                        self.following = friendResponse.result
-                        print("fetchFollowingList매핑 성공🚨")
+                        print("fetchMyFollowingList매핑 성공🚨")
                         completion()
                     }
                     else {
-                        print("fetchFollowingList매핑 실패🚨")
+                        print("fetchMyFollowingList매핑 실패🚨")
                     }
                 case .failure:
-                    print("fetchFollowingList네트워크 요청 실패🚨")
+                    print("fetchMyFollowingList네트워크 요청 실패🚨")
                 }
             }
         }
@@ -194,6 +193,7 @@ class FriendViewModel: ObservableObject {
                     }
                     else {
                         print("searchUser매핑 실패🚨")
+                        self.searchUsers = []
                     }
                 case .failure:
                     print("searchUser네트워크 요청 실패🚨")
@@ -312,5 +312,4 @@ class FriendViewModel: ObservableObject {
     func getTimetableNamesForSemester(timeTables: [Timetable], semester: String) -> [String] {
         return timeTables.filter { $0.semesterYear == semester }.map { $0.timeTableName }
     }
-
 }
