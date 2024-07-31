@@ -61,17 +61,9 @@ struct TimeTableTutorial: View {
                 }
                 
                 if friendViewModel.timeTableInfo?.lects.count == 0 {
-                    VStack {
-                        Text("시간표 비어있음")
-                            .position(x: geo.size.width / 2, y: geo.size.height / 2)
-                        
-                        Button(action: {
-                            print(friendViewModel.timeTableInfo?.lects.count)
-                        }, label: {
-                            Text("과목개수")
-                        })
-                    }
                     
+                        Text("시간표 비어있습니다")
+                            .position(x: geo.size.width / 2, y: geo.size.height / 2)
                 }
                 else{
                     if let lectures = friendViewModel.timeTableInfo?.lects {
