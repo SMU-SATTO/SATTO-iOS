@@ -92,14 +92,36 @@ struct MyPageView: View {
                                 }
                                 .padding(.bottom, 37)
                                 
-//                                Text("selectedSemesterYear: \(friendViewModel.selectedSemesterYear)")
-//                                Text("selectedTimeTableName: \(friendViewModel.selectedTimeTableName)")
-//                                Text("필터링된 시간표id: \(friendViewModel.getSelectedTimetableId(timeTables: friendViewModel.timeTables))")
-//                                Button(action: {
-//                                    print("\(friendViewModel.friend)")
-//                                }, label: {
-//                                    Text("현재 정보 조회")
-//                                })
+                                Text("selectedSemesterYear: \(friendViewModel.selectedSemesterYear)")
+                                Text("selectedTimeTableName: \(friendViewModel.selectedTimeTableName)")
+                                Text("필터링된 시간표id: \(friendViewModel.getSelectedTimetableId(timeTables: friendViewModel.timeTables))")
+                                
+                                Button(action: {
+                                    print(friendViewModel.follower)
+                                }, label: {
+                                    Text("팔로워 조회")
+                                })
+                                Button(action: {
+                                    print(friendViewModel.following)
+                                }, label: {
+                                    Text("팔로잉 조회")
+                                })
+                                Button(action: {
+                                    print(friendViewModel.myFollower)
+                                }, label: {
+                                    Text("내팔로워 조회")
+                                })
+                                Button(action: {
+                                    print(friendViewModel.myFollowing)
+                                }, label: {
+                                    Text("내팔로잉 조회")
+                                })
+                                
+                                Button(action: {
+                                    print("\(friendViewModel.friend)")
+                                }, label: {
+                                    Text("현재 정보 조회")
+                                })
                                 
                                 if friendViewModel.timeTables.isEmpty {
                                     Text("시간표가 없습니다")
@@ -140,15 +162,22 @@ struct MyPageView: View {
                 
                 authViewModel.userInfoInquiry {
                     
+//                    friendViewModel.myProfile = authViewModel.user
+                    
                     if friendViewModel.friend.isEmpty {
                         let friend = convertUserToFriend(user: authViewModel.user ?? User(studentId: "studentId", email: "email", password: "password", name: "name", nickname: "nickname", department: "department", grade: 5, isPublic: true))
                         friendViewModel.friend.append(friend)
                     }
                     
-                    friendViewModel.fetchMyFollowerList(studentId: authViewModel.user?.studentId ?? "asd")
-                    friendViewModel.fetchMyFollowingList(studentId: authViewModel.user?.studentId ?? "asd")
+                    friendViewModel.fetchMyFollowerList(studentId: authViewModel.user?.studentId ?? "asd") {
+                        friendViewModel.follower = friendViewModel.myFollower
+                    }
+                    friendViewModel.fetchMyFollowingList(studentId: authViewModel.user?.studentId ?? "asd") {
+                        friendViewModel.following = friendViewModel.myFollowing
+                    }
                     
                 }
+                
                 friendViewModel.fetchMyTimetableList()
             }
             .onDisappear {

@@ -10,7 +10,7 @@ import SwiftUI
 struct FollwerSearchView: View {
     
     @State var text = ""
-//    @Binding var stackPath: [Route]
+    //    @Binding var stackPath: [Route]
     @EnvironmentObject var navPathFinder: FriendNavigationPathFinder
     @ObservedObject var friendViewModel: FriendViewModel
     var TextFieldPlacehold: String
@@ -33,7 +33,7 @@ struct FollwerSearchView: View {
             .padding(.bottom, 10)
             
             Divider()
-
+            
             ScrollView {
                 ForEach(friendViewModel.follower, id: \.studentId) { friend in
                     
@@ -72,8 +72,6 @@ struct FollwerSearchView: View {
 
 
 struct MyFollowerFriendCell: View {
-    
-    @State var isFollowing = true
     
     var friend: Friend
     
@@ -114,64 +112,34 @@ struct MyFollowerFriendCell: View {
             
             Spacer()
             
-            if isFollowing {
-                
-                Button(action: {
-                    friendViewModel.unfollow(studentId: friend.studentId) {
-                        friendViewModel.fetchFollowerList(studentId: friendViewModel.friend.first?.studentId ?? "2019")
-                        friendViewModel.fetchFollowingList(studentId: friendViewModel.friend.first?.studentId ?? "2019")
-                        
-                        friendViewModel.fetchMyFollowerList(studentId: friendViewModel.friend.first?.studentId ?? "2019")
-                        friendViewModel.fetchMyFollowingList(studentId: friendViewModel.friend.first?.studentId ?? "2019")
-                        
-                    }
-                    isFollowing.toggle()
-                }, label: {
-                    Text("삭제")
-                        .font(.m12)
-                        .foregroundColor(Color.blue7)
-                        .padding(.vertical, 7)
-                        .padding(.horizontal, 26)
-                        .background(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.blue7, lineWidth: 1)
-                            
-                        )
-                        .padding(.trailing, 20)
+            Button(action: {
+                friendViewModel.unfollow(studentId: friend.studentId) {
+                    friendViewModel.fetchFollowerList(studentId: friendViewModel.friend.first?.studentId ?? "2019")
+                    friendViewModel.fetchFollowingList(studentId: friendViewModel.friend.first?.studentId ?? "2019")
                     
-                })
-                
-            }
-            
-            else {
-                
-                Button(action: {
-                    friendViewModel.followingRequest(studentId: friend.studentId) {
-                        friendViewModel.fetchMyFollowerList(studentId: friendViewModel.friend.first?.studentId ?? "2019")
-                        friendViewModel.fetchMyFollowingList(studentId: friendViewModel.friend.first?.studentId ?? "2019")
+                    friendViewModel.fetchMyFollowerList(studentId: friendViewModel.friend.first?.studentId ?? "2019") {
+                        
                     }
-                    isFollowing.toggle()
-                }, label: {
-                    Text("팔로우")
-                        .font(.m12)
-                        .foregroundColor(Color.white)
-                        .padding(.vertical, 7)
-                        .padding(.horizontal, 26)
-                        .background(
-                            Rectangle()
-                                .fill(Color.blue7)
-                                .cornerRadius(10)
-                        )
-                        .padding(.trailing, 20)
-                })
+                    friendViewModel.fetchMyFollowingList(studentId: friendViewModel.friend.first?.studentId ?? "2019") {
+                        
+                    }
+                    
+                }
+            }, label: {
+                Text("삭제")
+                    .font(.m12)
+                    .foregroundColor(Color.blue7)
+                    .padding(.vertical, 7)
+                    .padding(.horizontal, 26)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.blue7, lineWidth: 1)
+                        
+                    )
+                    .padding(.trailing, 20)
                 
-                
-            }
-            
-            
-            
+            })
         }
-        
     }
 }
 
@@ -247,8 +215,12 @@ struct FollowerFriendCell: View {
                 
                 Button(action: {
                     friendViewModel.followingRequest(studentId: friend.studentId) {
-                        friendViewModel.fetchMyFollowerList(studentId: friendViewModel.friend.first?.studentId ?? "2019")
-                        friendViewModel.fetchMyFollowingList(studentId: friendViewModel.friend.first?.studentId ?? "2019")
+                        friendViewModel.fetchMyFollowerList(studentId: friendViewModel.friend.first?.studentId ?? "2019") {
+                            
+                        }
+                        friendViewModel.fetchMyFollowingList(studentId: friendViewModel.friend.first?.studentId ?? "2019") {
+                            
+                        }
                     }
                     isFollowing.toggle()
                 }, label: {

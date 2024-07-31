@@ -17,8 +17,10 @@ class FriendViewModel: ObservableObject {
     
     @Published var errorMessage: String?
     
+    
     @Published var friend: [Friend] = []
     
+    @Published var myProfile: User?
     @Published var myFollower: [Friend] = []
     @Published var myFollowing: [Friend] = []
     
@@ -43,6 +45,7 @@ class FriendViewModel: ObservableObject {
         
     }
     
+    // 팔로잉 요청보내기
     func followingRequest(studentId: String, completion: @escaping () -> Void) {
         provider.request(.followingRequest(studentId: studentId)) { result in
             DispatchQueue.main.async {
@@ -58,6 +61,7 @@ class FriendViewModel: ObservableObject {
         }
     }
     
+    // 펄로잉 취소
     func unfollowing(studentId: String, completion: @escaping () -> Void) {
         provider.request(.unfollwing(studentId: studentId)) { result in
             DispatchQueue.main.async {
@@ -73,6 +77,7 @@ class FriendViewModel: ObservableObject {
         }
     }
     
+    // 나를 팔로잉하는 친구 삭제
     func unfollow(studentId: String, completion: @escaping () -> Void) {
         provider.request(.unfollow(studentId: studentId)) { result in
             DispatchQueue.main.async {
@@ -88,7 +93,7 @@ class FriendViewModel: ObservableObject {
         }
     }
     
-    // 변경완료
+    // 팔로워 새로고침
     func fetchFollowerList(studentId: String) {
         provider.request(.followerList(studentId: studentId)) { result in
             DispatchQueue.main.async {
@@ -109,7 +114,7 @@ class FriendViewModel: ObservableObject {
         }
     }
     
-    // 변경완료
+    // 팔로잉 새로고침
     func fetchFollowingList(studentId: String) {
         provider.request(.followingList(studentId: studentId)) { result in
             DispatchQueue.main.async {
@@ -130,8 +135,8 @@ class FriendViewModel: ObservableObject {
         }
     }
     
-    // 내꺼
-    func fetchMyFollowerList(studentId: String) {
+    // 내 팔로워 새로고침
+    func fetchMyFollowerList(studentId: String, completion: @escaping () -> Void) {
         provider.request(.followerList(studentId: studentId)) { result in
             DispatchQueue.main.async {
                 switch result {
@@ -139,9 +144,9 @@ class FriendViewModel: ObservableObject {
                     print(response)
                     if let friendResponse = try? response.map(FriendResponse.self) {
                         self.myFollower = friendResponse.result
-                        self.follower = friendResponse.result
+//                        self.follower = friendResponse.result
                         print("fetchMyFollowerList매핑 성공🚨")
-//                        completion()
+                        completion()
                     }
                     else {
                         print("fetchMyFollowerList매핑 실패🚨")
@@ -153,8 +158,8 @@ class FriendViewModel: ObservableObject {
         }
     }
     
-    // 내꺼
-    func fetchMyFollowingList(studentId: String) {
+    // 내 팔로잉 새로고침
+    func fetchMyFollowingList(studentId: String, completion: @escaping () -> Void) {
         provider.request(.followingList(studentId: studentId)) { result in
             DispatchQueue.main.async {
                 switch result {
@@ -162,9 +167,9 @@ class FriendViewModel: ObservableObject {
                     print(response)
                     if let friendResponse = try? response.map(FriendResponse.self) {
                         self.myFollowing = friendResponse.result
-                        self.following = friendResponse.result
+//                        self.following = friendResponse.result
                         print("fetchFollowingList매핑 성공🚨")
-//                        completion()
+                        completion()
                     }
                     else {
                         print("fetchFollowingList매핑 실패🚨")
@@ -176,6 +181,28 @@ class FriendViewModel: ObservableObject {
         }
     }
     
+    // 유저 검색
+    func searchUser(studentIdOrName: String) {
+        provider.request(.searchUser(studentIdOrName: studentIdOrName)) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    print(response)
+                    if let friendResponse = try? response.map(FriendResponse.self) {
+                        self.searchUsers = friendResponse.result
+                        print("searchUser매핑 성공🚨")
+                    }
+                    else {
+                        print("searchUser매핑 실패🚨")
+                    }
+                case .failure:
+                    print("searchUser네트워크 요청 실패🚨")
+                }
+            }
+        }
+    }
+    
+    // 친구 시간표 조회
     func fetchFriendTimetableList(studentId: String) {
         provider.request(.friendTimetableList(studentId: studentId)) { result in
             DispatchQueue.main.async {
@@ -198,7 +225,7 @@ class FriendViewModel: ObservableObject {
         }
     }
 
-    
+    // 내 시간표 조회
     func fetchMyTimetableList() {
         provider.request(.myTimeTableList) { result in
             
@@ -221,6 +248,7 @@ class FriendViewModel: ObservableObject {
         }
     }
     
+    // 시간표 강의 조회
     func fetchTimeTableInfo(timeTableId: Int) {
         provider.request(.fetchTimeTableInfo(timeTableId: timeTableId)) { result in
                 DispatchQueue.main.async {
@@ -244,25 +272,7 @@ class FriendViewModel: ObservableObject {
             }
         }
     
-    func searchUser(studentIdOrName: String) {
-        provider.request(.searchUser(studentIdOrName: studentIdOrName)) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let response):
-                    print(response)
-                    if let friendResponse = try? response.map(FriendResponse.self) {
-                        self.searchUsers = friendResponse.result
-                        print("searchUser매핑 성공🚨")
-                    }
-                    else {
-                        print("searchUser매핑 실패🚨")
-                    }
-                case .failure:
-                    print("searchUser네트워크 요청 실패🚨")
-                }
-            }
-        }
-    }
+    
     
     func assignColors() {
         var assignedColors: [String: Color] = [:]

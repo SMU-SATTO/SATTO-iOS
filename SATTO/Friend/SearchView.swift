@@ -134,8 +134,12 @@ struct FriendCell: View {
                 
                 Button(action: {
                     friendViewModel.unfollowing(studentId: friend.studentId) {
-                        friendViewModel.fetchMyFollowerList(studentId: friendViewModel.friend.first?.studentId ?? "2019")
-                        friendViewModel.fetchMyFollowingList(studentId: friendViewModel.friend.first?.studentId ?? "2019")
+                        friendViewModel.fetchMyFollowerList(studentId: friendViewModel.friend.first?.studentId ?? "2019") {
+                            
+                        }
+                        friendViewModel.fetchMyFollowingList(studentId: friendViewModel.friend.first?.studentId ?? "2019") {
+                            
+                        }
                     }
 //                    isFollowing.toggle()
                 }, label: {
@@ -159,8 +163,12 @@ struct FriendCell: View {
                 
                 Button(action: {
                     friendViewModel.followingRequest(studentId: friend.studentId) {
-                        friendViewModel.fetchMyFollowerList(studentId: friendViewModel.friend.first?.studentId ?? "2019")
-                        friendViewModel.fetchMyFollowingList(studentId: friendViewModel.friend.first?.studentId ?? "2019")
+                        friendViewModel.fetchMyFollowerList(studentId: friendViewModel.friend.first?.studentId ?? "2019") {
+                            
+                        }
+                        friendViewModel.fetchMyFollowingList(studentId: friendViewModel.friend.first?.studentId ?? "2019") {
+                            
+                        }
                     }
 //                    isFollowing.toggle()
                 }, label: {
