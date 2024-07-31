@@ -7,33 +7,6 @@
 
 import SwiftUI
 
-enum FriendRoute: Hashable {
-    case search
-    case followerSearch
-    case followingSearch
-    case friend
-}
-
-final class FriendNavigationPathFinder: ObservableObject {
-    static let shared = FriendNavigationPathFinder()
-    private init() { }
-    
-    @Published var path: [FriendRoute] = []
-    
-    func addPath(route: FriendRoute) {
-        path.append(route)
-    }
-    
-    func popToRoot() {
-        path = .init()
-    }
-}
-
-
-
-
-
-
 struct FriendView: View {
     
     @EnvironmentObject var navPathFinder: FriendNavigationPathFinder
@@ -44,35 +17,22 @@ struct FriendView: View {
     var body: some View {
         ZStack {
             
-            VStack(spacing: 0) {
-                Color(red: 0.92, green: 0.93, blue: 0.94)
-                    .ignoresSafeArea(.all)
-                
-                Color.white
-            }
+            background
             
             ScrollView {
                 VStack(spacing: 0) {
                     
-                    Spacer().frame(height: 60)
-                    
-                    
-                    
+                    Spacer()
+                        .frame(height: 60)
+
                     ZStack(alignment: .top) {
-                        Rectangle()
-                            .fill(Color.white)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .clipShape(
-                                .rect(
-                                    topLeadingRadius: 60,
-                                    topTrailingRadius: 60
-                                )
-                            )
                         
+                        upperRoundRectangle
                         
                         VStack(spacing: 0) {
                             HStack(spacing: 0) {
                                 
+                                // 팔로워 버튼
                                 Button(action: {
                                     navPathFinder.addPath(route: .followerSearch)
                                 }, label: {
@@ -95,6 +55,7 @@ struct FriendView: View {
                                 
                                 Spacer()
                                 
+                                // 팔로잉 버튼
                                 Button(action: {
                                     navPathFinder.addPath(route: .followingSearch)
                                 }, label: {
@@ -113,11 +74,6 @@ struct FriendView: View {
                             .padding(.horizontal, 51)
                             
                             
-                            //                            Text("\(friendViewModel.friend?.name ?? "name") \(friendViewModel.friend?.studentId ?? "studentId")")
-                            //                                .font(.sb16)
-                            //                                .foregroundColor(Color.gray800)
-                            //                                .padding(.bottom, 5)
-                            
                             Text("\(friendViewModel.friend.last?.name ?? "name") \(friendViewModel.friend.last?.studentId ?? "studentId")")
                                 .font(.sb16)
                                 .foregroundColor(Color.gray800)
@@ -129,47 +85,50 @@ struct FriendView: View {
                                 .padding(.bottom, 23)
                             
                             HStack(spacing: 0) {
-                                followState
+                                
+                                if friendViewModel.myFollowing.contains(friendViewModel.friend.last ?? Friend(studentId: "asd", email: "asd", name: "asd", nickname: "asd", department: "asd", grade: "asd", isPublic: "asd")) {
+                                    
+                                    Button(action: {
+                                        friendViewModel.unfollowing(studentId: friendViewModel.friend.last?.studentId ?? "studentId") {
+                                            friendViewModel.fetchMyFollowerList(studentId: friendViewModel.friend.first?.studentId ?? "2019") {
+                                                
+                                            }
+                                            friendViewModel.fetchMyFollowingList(studentId: friendViewModel.friend.first?.studentId ?? "2019") {
+                                                
+                                            }
+                                        }
+                                    }, label: {
+                                        unfollowingButton
+                                    })
                                     .padding(.trailing, 53)
+                                }
+                                else if !friendViewModel.myFollowing.contains(friendViewModel.friend.last ?? Friend(studentId: "asd", email: "asd", name: "asd", nickname: "asd", department: "asd", grade: "asd", isPublic: "asd")) {
+                                    Button(action: {
+                                        friendViewModel.followingRequest(studentId: friendViewModel.friend.last?.studentId ?? "studentId") {
+                                            friendViewModel.fetchMyFollowerList(studentId: friendViewModel.friend.first?.studentId ?? "2019") {
+                                                
+                                            }
+                                            friendViewModel.fetchMyFollowingList(studentId: friendViewModel.friend.first?.studentId ?? "2019") {
+                                                
+                                            }
+                                        }
+                                    }, label: {
+                                        followButton
+                                    })
+                                    .padding(.trailing, 53)
+                                }
+                                
+                                
                                 
                                 overlappingTimetable
                             }
                             .padding(.bottom, 37)
                             
                             
-                            Text("selectedSemesterYear: \(friendViewModel.selectedSemesterYear)")
-                            Text("selectedTimeTableName: \(friendViewModel.selectedTimeTableName)")
-                            Text("필터링된 시간표id: \(friendViewModel.getSelectedTimetableId(timeTables: friendViewModel.timeTables))")
-                            
-                            Button(action: {
-                                print(friendViewModel.follower)
-                            }, label: {
-                                Text("팔로워 조회")
-                            })
-                            Button(action: {
-                                print(friendViewModel.following)
-                            }, label: {
-                                Text("팔로잉 조회")
-                            })
-                            Button(action: {
-                                print(friendViewModel.myFollower)
-                            }, label: {
-                                Text("내팔로워 조회")
-                            })
-                            Button(action: {
-                                print(friendViewModel.myFollowing)
-                            }, label: {
-                                Text("내팔로잉 조회")
-                            })
-                            
-                            Button(action: {
-                                print("\(friendViewModel.friend)")
-                            }, label: {
-                                Text("현재 정보 조회")
-                            })
-                            
                             if friendViewModel.timeTables.isEmpty {
                                 Text("시간표가 없습니다")
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding(.horizontal, 20)
                             }
                             else {
                                 HStack(spacing: 0) {
@@ -194,7 +153,6 @@ struct FriendView: View {
                             
                             TimeTableTutorial(friendViewModel: friendViewModel)
                             
-                            
                         }
                     }
                 }
@@ -203,12 +161,9 @@ struct FriendView: View {
         .navigationBarBackButtonHidden()
         .onAppear {
             print("프렌드뷰 생성")
-//            authViewModel.userInfoInquiry {
-                friendViewModel.fetchFollowerList(studentId: friendViewModel.friend.last?.studentId ?? "studentId")
-                friendViewModel.fetchFollowingList(studentId: friendViewModel.friend.last?.studentId ?? "studentId")
-                friendViewModel.fetchFriendTimetableList(studentId: friendViewModel.friend.last?.studentId ?? "studentId")
-//            }
-            
+            friendViewModel.fetchFollowerList(studentId: friendViewModel.friend.last?.studentId ?? "studentId")
+            friendViewModel.fetchFollowingList(studentId: friendViewModel.friend.last?.studentId ?? "studentId")
+            friendViewModel.fetchFriendTimetableList(studentId: friendViewModel.friend.last?.studentId ?? "studentId")
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -225,21 +180,10 @@ struct FriendView: View {
                 }
                 .frame(maxWidth: .infinity)
             }
-//            ToolbarItem(placement: .topBarTrailing) {
-//                HStack(spacing: 0) {
-//                    Button(action: {
-//                        navPathFinder.addPath(route: .search)
-//                    }, label: {
-//                        Image("searchIcon")
-//                    })
-//                }
-//                .frame(maxWidth: .infinity)
-//            }
         }
-        
     }
     
-    var followState: some View {
+    var followButton: some View {
         Text("팔로우")
             .font(.m12)
             .foregroundColor(Color.white)
@@ -249,6 +193,17 @@ struct FriendView: View {
                 Rectangle()
                     .fill(Color(red: 0.4, green: 0.31, blue: 1.0))
                     .cornerRadius(10)
+            )
+    }
+    var unfollowingButton: some View {
+        Text("팔로잉")
+            .font(.m12)
+            .foregroundColor(Color(red: 0.4, green: 0.31, blue: 1.0))
+            .padding(.horizontal, 12)
+            .padding(.vertical, 7)
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color(red: 0.4, green: 0.31, blue: 1.0), lineWidth: 1)
             )
     }
     
@@ -261,7 +216,28 @@ struct FriendView: View {
             .background(
                 RoundedRectangle(cornerRadius: 10)
                     .stroke(Color(red: 0.4, green: 0.31, blue: 1.0), lineWidth: 1)
-                
+            )
+    }
+    
+    var background: some View {
+        VStack(spacing: 0) {
+            Color(red: 0.92, green: 0.93, blue: 0.94)
+                .ignoresSafeArea(.all)
+            
+            Color.white
+                .ignoresSafeArea(.all)
+        }
+    }
+    
+    var upperRoundRectangle: some View {
+        Rectangle()
+            .fill(Color.white)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .clipShape(
+                .rect(
+                    topLeadingRadius: 60,
+                    topTrailingRadius: 60
+                )
             )
     }
 }
@@ -270,13 +246,3 @@ struct FriendView: View {
     MyPageView()
         .environmentObject(FriendNavigationPathFinder.shared)
 }
-
-
-
-
-
-
-//#Preview {
-//    TimeTableTutorial()
-//}
-

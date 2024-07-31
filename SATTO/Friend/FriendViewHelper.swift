@@ -151,7 +151,6 @@ struct ClearButtonTextField: View {
         HStack(spacing: 0) {
             
             Image(systemName: "magnifyingglass")
-//            Image("seachIcon.gray")
                 .padding(.horizontal, 12)
             
             TextField(placehold, text: $text)
@@ -162,7 +161,6 @@ struct ClearButtonTextField: View {
                     text = ""
                 }) {
                     Image("Icon")
-//                        .foregroundColor(.gray)
                         .padding(.trailing, 10)
                 }
             }
