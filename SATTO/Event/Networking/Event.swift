@@ -37,3 +37,25 @@ struct UserInfo {
     let isPublicAccount: Bool
     
 }
+
+
+// MARK: - Model
+struct EventResponse: Codable {
+    let isSuccess: Bool
+    let code: String
+    let message: String
+    let result: Result2
+}
+
+struct Result2: Codable {
+    let eventCategoryResponseDtoList: [EventCategoryResponseDto]
+}
+
+struct EventCategoryResponseDto: Codable {
+    let eventId: Int
+    let category: String
+    let participantsCount: Int
+//    let startWhen
+//    let untilWhen
+}
+

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var selectedTab = Tab.friend
+    @State private var selectedTab = Tab.event
     @State private var stackPath: [Route] = []
     
     @EnvironmentObject var authViewModel: AuthViewModel

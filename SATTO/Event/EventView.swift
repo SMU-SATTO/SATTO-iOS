@@ -51,6 +51,13 @@ struct EventView: View {
                 
                 EventTopTabBar(selectedPage: $selectedPage)
                 
+                Button(action: {
+                    eventViewModel.getEventList()
+                    print(eventViewModel.eventList)
+                }, label: {
+                    Text("이벤트 리스트조회")
+                })
+                
                 TabView(selection: $selectedPage) {
                     
                     ProgressEventView(eventViewModel: eventViewModel)
