@@ -42,6 +42,7 @@
 		3BF1F4A72C538AF900B32C66 /* TimeTableTutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF1F4A62C538AF900B32C66 /* TimeTableTutorial.swift */; };
 		3BF1F4A92C538B1900B32C66 /* FollwerSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF1F4A82C538B1900B32C66 /* FollwerSearchView.swift */; };
 		3BF1F4AB2C538B3100B32C66 /* FollowingSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF1F4AA2C538B3100B32C66 /* FollowingSearchView.swift */; };
+		3BF1F4AE2C5B15E300B32C66 /* EventAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF1F4AD2C5B15E300B32C66 /* EventAPI.swift */; };
 		AA0B714E2C07C77100216A32 /* TimetableProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0B714D2C07C77100216A32 /* TimetableProgressView.swift */; };
 		AA0DFC6D2C0CE660002ED3C9 /* BottomSheetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0DFC6C2C0CE660002ED3C9 /* BottomSheetModel.swift */; };
 		AA0DFC6F2C0CEAD7002ED3C9 /* OptionSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0DFC6E2C0CEAD7002ED3C9 /* OptionSheetView.swift */; };
@@ -150,6 +151,7 @@
 		3BF1F4A62C538AF900B32C66 /* TimeTableTutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTableTutorial.swift; sourceTree = "<group>"; };
 		3BF1F4A82C538B1900B32C66 /* FollwerSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollwerSearchView.swift; sourceTree = "<group>"; };
 		3BF1F4AA2C538B3100B32C66 /* FollowingSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingSearchView.swift; sourceTree = "<group>"; };
+		3BF1F4AD2C5B15E300B32C66 /* EventAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventAPI.swift; sourceTree = "<group>"; };
 		AA0B714D2C07C77100216A32 /* TimetableProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableProgressView.swift; sourceTree = "<group>"; };
 		AA0DFC6C2C0CE660002ED3C9 /* BottomSheetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetModel.swift; sourceTree = "<group>"; };
 		AA0DFC6E2C0CEAD7002ED3C9 /* OptionSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionSheetView.swift; sourceTree = "<group>"; };
@@ -244,6 +246,7 @@
 				3B8335BE2BEA18650008EFB5 /* AnnouncementEventView.swift */,
 				3B8335C02BEA19030008EFB5 /* DetailProgressEventView.swift */,
 				3B8335C22BEA197D0008EFB5 /* UploadImageView.swift */,
+				3BF1F4AC2C5B143C00B32C66 /* Networking */,
 			);
 			path = Event;
 			sourceTree = "<group>";
@@ -307,22 +310,6 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
-		3BD532282BF06AB900152A77 /* Event */ = {
-			isa = PBXGroup;
-			children = (
-				3BD5322A2BF06ADB00152A77 /* Event.swift */,
-			);
-			path = Event;
-			sourceTree = "<group>";
-		};
-		3BD532292BF06AC400152A77 /* Event */ = {
-			isa = PBXGroup;
-			children = (
-				3BD5322C2BF06AEB00152A77 /* EventViewModel.swift */,
-			);
-			path = Event;
-			sourceTree = "<group>";
-		};
 		3BF1F4952C464C3C00B32C66 /* CustomComponents */ = {
 			isa = PBXGroup;
 			children = (
@@ -331,6 +318,16 @@
 				3BF1F49C2C465EA900B32C66 /* ProfileImageCell.swift */,
 			);
 			path = CustomComponents;
+			sourceTree = "<group>";
+		};
+		3BF1F4AC2C5B143C00B32C66 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				3BF1F4AD2C5B15E300B32C66 /* EventAPI.swift */,
+				3BD5322C2BF06AEB00152A77 /* EventViewModel.swift */,
+				3BD5322A2BF06ADB00152A77 /* Event.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 		AA0B714B2BFD994100216A32 /* Tabs */ = {
@@ -388,22 +385,6 @@
 				AA1018A12BDE812A009E6804 /* TimetableCustom.swift */,
 			);
 			path = TimetableCustom;
-			sourceTree = "<group>";
-		};
-		AA1018A42BDE878D009E6804 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				3BD532292BF06AC400152A77 /* Event */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		AA1018A72BDE8810009E6804 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				3BD532282BF06AB900152A77 /* Event */,
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		AA66001C2C21D0230055557C /* Repository */ = {
@@ -564,8 +545,6 @@
 				AA1018AA2BDE9C80009E6804 /* Info.plist */,
 				AACB4BCF2B40712D00169C52 /* SATTOApp.swift */,
 				3B1270D52BB147A200E38F86 /* ContentView.swift */,
-				AA1018A72BDE8810009E6804 /* Model */,
-				AA1018A42BDE878D009E6804 /* ViewModel */,
 				3B0CF0292BB165D800E876B7 /* Setting */,
 				3B0CF0282BB165CF00E876B7 /* Event */,
 				3B0CF0272BB165C400E876B7 /* Friend */,
@@ -734,6 +713,7 @@
 				AA65E60C2C3028B900655856 /* BottomSheetViewModel.swift in Sources */,
 				AAA950712BA5C39B004E16C8 /* TimetableListView.swift in Sources */,
 				AA0DFC6F2C0CEAD7002ED3C9 /* OptionSheetView.swift in Sources */,
+				3BF1F4AE2C5B15E300B32C66 /* EventAPI.swift in Sources */,
 				3BF1F4A92C538B1900B32C66 /* FollwerSearchView.swift in Sources */,
 				AA0DFC6D2C0CE660002ED3C9 /* BottomSheetModel.swift in Sources */,
 				AAA950812BA5E7A5004E16C8 /* TimetableOptionView.swift in Sources */,

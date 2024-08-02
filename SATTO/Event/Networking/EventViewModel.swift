@@ -6,8 +6,15 @@
 //
 
 import Foundation
+import Moya
 
 class EventViewModel: ObservableObject {
+    
+    private let provider = MoyaProvider<EventAPI>()
+    
+    @Published var eventList: [EventCategoryResponseDto] = []
+    
+    
     @Published var events: [Event] = []
     
     @Published var event: Event?
@@ -56,6 +63,26 @@ class EventViewModel: ObservableObject {
     
     func eventUnwrapping() {
         guard let unwrappedEvent = event else { return }
+    }
+    
+    func getEventList() {
+        provider.request(.getEventList) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    print(response)
+                    if let eventResponse = try? response.map(EventResponse.self) {
+                        self.eventList = eventResponse.result.eventCategoryResponseDtoList
+                        print("getEventList매핑 성공🚨")
+                    }
+                    else {
+                        print("getEventList매핑 실패🚨")
+                    }
+                case .failure:
+                    print("getEventList네트워크 요청 실패🚨")
+                }
+            }
+        }
     }
     
 }
