@@ -17,18 +17,13 @@ struct User: Codable {
     var department: String
     var grade: Int
     var isPublic: Bool
-    
-//    enum CodingKeys: String, CodingKey {
-//        case studentId
-//        case email
-//        case password
-//        case name
-//        case nickname
-//        case department
-//        case grade
-//        case isPublic = "public"
-//    }
-    
+}
+
+struct UserResponse: Codable {
+    var isSuccess: Bool
+    var code: String
+    var message: String
+    var result: User
 }
 
 
@@ -45,23 +40,18 @@ struct User2: Codable {
     
 }
 
-
-struct Model: Codable {
-    let isSuccess: Bool
-    let code, message: String
-    let result: UserInfo2
-//    let result: User
-    
+struct LoginResponse: Codable {
+    var isSuccess: Bool
+    var code: String
+    var message: String
+    var result: Token
 }
 
-// MARK: - Result
-struct UserInfo2: Codable {
-    var userID: String?
-    var email: String?
-    var password: String?
-    var name: String?
-    var nickname: String?
-    var department: String?
-    var grade: Int?
-    var resultPublic: Bool?
+struct Token: Codable {
+    var access_token: String
+    var refresh_token: String
+}
+
+struct LogoutResponse: Codable {
+    var message: String
 }

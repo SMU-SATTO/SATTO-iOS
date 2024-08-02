@@ -9,10 +9,23 @@ import SwiftUI
 
 @main
 struct SATTOApp: App {
+    
+    @StateObject var authViewModel = AuthViewModel()
+    
     var body: some Scene {
         WindowGroup {
-            Onboarding()
-                .environmentObject(AuthViewModel())
+//            Onboarding()
+//                .environmentObject(authViewModel)
+            if authViewModel.isLoggedIn == true {
+                    ContentView()
+                    .environmentObject(authViewModel)
+            }
+            else {
+                LoginView()
+                    .environmentObject(LoginNavigationPathFinder.shared)
+                    .environmentObject(authViewModel)
+                    
+            }
         }
     }
 }

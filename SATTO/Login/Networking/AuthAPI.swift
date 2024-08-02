@@ -108,6 +108,7 @@ extension AuthAPI: TargetType {
         case .logIn:
             return ["Content-type": "application/json"]
         case .logOut:
+//            return ["Content-type": "application/json"]
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]
         case .signOut:
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]

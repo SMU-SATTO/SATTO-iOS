@@ -1,17 +1,19 @@
 //
-//  SearchView.swift
+//  FollowingSearchView.swift
 //  SATTO
 //
-//  Created by 황인성 on 3/29/24.
+//  Created by 황인성 on 7/26/24.
 //
 
 import SwiftUI
 
-struct SearchView: View {
+struct FollowingSearchView: View {
     
     @State var text = ""
+    
     @EnvironmentObject var navPathFinder: FriendNavigationPathFinder
     @ObservedObject var friendViewModel: FriendViewModel
+    
     var TextFieldPlacehold: String
     
     var body: some View {
@@ -32,31 +34,52 @@ struct SearchView: View {
             .padding(.bottom, 10)
             
             Divider()
+            
+//            Button(action: {
+//                print(friendViewModel.follower)
+//            }, label: {
+//                Text("팔로워 조회")
+//            })
+//            Button(action: {
+//                print(friendViewModel.following)
+//            }, label: {
+//                Text("팔로잉 조회")
+//            })
+//            Button(action: {
+//                print(friendViewModel.myFollower)
+//            }, label: {
+//                Text("내팔로워 조회")
+//            })
+//            Button(action: {
+//                print(friendViewModel.myFollowing)
+//            }, label: {
+//                Text("내팔로잉 조회")
+//            })
+//            
+//            Button(action: {
+//                print("\(friendViewModel.friend)")
+//            }, label: {
+//                Text("현재 정보 조회")
+//            })
 
             ScrollView {
-                ForEach(friendViewModel.searchUsers, id: \.studentId) { friend in
-                    FriendCell(friend: friend, friendViewModel: friendViewModel)
+                ForEach(friendViewModel.following.filter {
+                    text.isEmpty || $0.name.contains(text) || $0.studentId.contains(text)
+                }, id: \.studentId) { friend in
+                    FollowingFriendCell(friend: friend, friendViewModel: friendViewModel)
                         .padding(.bottom, 15)
                         .padding(.top, 10)
                 }
             }
-
         }
         .navigationBarBackButtonHidden()
         .onAppear {
-            friendViewModel.searchUser(studentIdOrName: text)
+            friendViewModel.fetchFollowingList(studentId: friendViewModel.friend.last?.studentId ?? "studentId")
         }
-        .onDisappear {
-            friendViewModel.searchUsers = []
-        }
-        .onChange(of: text) { _ in
-            friendViewModel.searchUser(studentIdOrName: text)
-        }
-        
     }
 }
 
-struct FriendCell: View {
+struct FollowingFriendCell: View {
     
     var friend: Friend
     
@@ -156,9 +179,7 @@ struct FriendCell: View {
                         )
                         .padding(.trailing, 20)
                 })
-                
             }
         }
     }
 }
-
