@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EmailAuthView: View {
-    @State private var studentId = "201910914"
+    @State private var studentId = ""
     @State private var authNumber = ""
     @State private var isEmailEnabled = false
     //    @ObservedObject var vm: AuthVieModel
@@ -16,14 +16,19 @@ struct EmailAuthView: View {
     @EnvironmentObject var navPathFinder: LoginNavigationPathFinder
     
     
-    @State var isCheckedEmailDuplicate = false
-    @State var isCheckedsendAuthNumber = true
-    @State var isCheckedAuthNumber = true
+//    @State var isCheckedEmailDuplicate = false
+//    @State var isCheckedsendAuthNumber = true
+//    @State var isCheckedAuthNumber = true
     
     var body: some View {
         ZStack {
             //            Color(red: 0.98, green: 0.98, blue: 0.98)
             //                .ignoresSafeArea()
+            
+            if authViewModel.isCheckedsendAuthNumberLoading == true {
+                ProgressView()
+                    .zIndex(1)
+            }
             
             VStack(alignment: .leading, spacing: 0) {
                 
@@ -33,7 +38,7 @@ struct EmailAuthView: View {
                 HStack(spacing: 0) {
                         TextField("이메일 주소 입력", text: $studentId)
                             .modifier(MyTextFieldModifier())
-                            .disabled(isCheckedEmailDuplicate)
+                            .disabled(authViewModel.isCheckedEmailDuplicate)
                             .padding(.trailing, 8)
 
                     Text("@sangmyung.kr")
@@ -42,26 +47,27 @@ struct EmailAuthView: View {
                 
                 Button(action: {
                     authViewModel.checkEmailDuplicate(studentId: studentId)
-                    isCheckedEmailDuplicate = true
-                    isCheckedsendAuthNumber = false
+//                    isCheckedEmailDuplicate = true
+//                    isCheckedsendAuthNumber = false
                 }, label: {
                     Text("학번 중복확인")
-                        .modifier(MyButtonModifier(isDisabled: isCheckedEmailDuplicate))
+                        .modifier(MyButtonModifier(isDisabled: authViewModel.isCheckedEmailDuplicate))
                 })
-                .disabled(isCheckedEmailDuplicate)
+                .disabled(authViewModel.isCheckedEmailDuplicate)
                 .padding(.bottom, 16)
                 
                 Button(action: {
                     authViewModel.sendAuthNumber(studentId: studentId)
-                    authViewModel.user?.studentId = studentId
-                    print(authViewModel.user?.studentId ?? "known")
-                    isCheckedsendAuthNumber = true
-                    isCheckedAuthNumber = false
+                    print("학번 저장")
+                    authViewModel.user?.studentId = "201910914"
+//                    print(authViewModel.user?.studentId ?? "known")
+//                    authViewModel.isCheckedsendAuthNumber = true
+//                    authViewModel.isCheckedAuthNumber = false
                 }, label: {
                     Text("인증번호 전송")
-                        .modifier(MyButtonModifier(isDisabled: isCheckedsendAuthNumber))
+                        .modifier(MyButtonModifier(isDisabled: authViewModel.isCheckedsendAuthNumber))
                 })
-                .disabled(isCheckedsendAuthNumber)
+                .disabled(authViewModel.isCheckedsendAuthNumber)
                 .padding(.bottom, 30)
                 
                 
@@ -77,24 +83,43 @@ struct EmailAuthView: View {
                 
                 Button(action: {
                     authViewModel.checkAuthNumber(certificationNum: authNumber)
-                    isCheckedAuthNumber = true
                 }, label: {
                     Text("인증번호 확인")
-                        .modifier(MyButtonModifier(isDisabled: isCheckedAuthNumber))
+                        .modifier(MyButtonModifier(isDisabled: authViewModel.isCheckedAuthNumber))
                 })
-                .disabled(isCheckedAuthNumber)
+                .disabled(authViewModel.isCheckedAuthNumber)
                 
                 Spacer()
                 
                 Button(action: {
+
+                    if var user = authViewModel.user {
+                        user.studentId = studentId
+                        authViewModel.user = user
+                        
+                    }
+                    
                     navPathFinder.addPath(route: .SignUpView)
+                    
                 }, label: {
                     Text("다음")
-                        .modifier(MyButtonModifier(isDisabled: !(isCheckedEmailDuplicate && isCheckedsendAuthNumber && isCheckedAuthNumber)))
+                        .modifier(MyButtonModifier(isDisabled: !(authViewModel.isCheckedEmailDuplicate && authViewModel.isCheckedsendAuthNumber && authViewModel.isCheckedAuthNumber)))
                 })
-                .disabled(!(isCheckedEmailDuplicate && isCheckedsendAuthNumber && isCheckedAuthNumber))
+                .disabled(!(authViewModel.isCheckedEmailDuplicate && authViewModel.isCheckedsendAuthNumber && authViewModel.isCheckedAuthNumber))
             }
             .padding(.horizontal, 20)
+        }
+        .alert("이미 가입된 학번입니다", isPresented: $authViewModel.studentIdDuplicateAlert) {
+            Button("OK", role: .cancel) { }
+        }
+        .alert("인증번호가 틀렸습니다", isPresented: $authViewModel.authNumIsWrongAlert) {
+            Button("OK", role: .cancel) { }
+        }
+        .onAppear {
+            print("EmailAuthView 나타남")
+        }
+        .onDisappear {
+            print("EmailAuthView 사라짐")
         }
     }
 }
