@@ -38,7 +38,7 @@ struct EventView: View {
     
     @State private var selectedPage: EventTab = .progressEvent
 
-//    @State private var eventStackPath: [EventRoute] = []
+    @EnvironmentObject var authViewModel: AuthViewModel
     
     @StateObject var eventViewModel = EventViewModel()
     
@@ -52,10 +52,13 @@ struct EventView: View {
                 EventTopTabBar(selectedPage: $selectedPage)
                 
                 Button(action: {
-                    eventViewModel.getEventList()
-                    print(eventViewModel.eventList)
+                    if let uiImage = UIImage(named: "Avatar") {
+                        eventViewModel.uploadTimeTableImage(UIImage: uiImage)
+                                } else {
+                                    print("이미지 없음")
+                                }
                 }, label: {
-                    Text("이벤트 리스트조회")
+                    Text("시간표 경진대회 이미지 업로드")
                 })
                 
                 TabView(selection: $selectedPage) {
@@ -69,6 +72,15 @@ struct EventView: View {
                     
                 }
                 .tabViewStyle(PageTabViewStyle())
+            }
+            .onAppear {
+                print("이벤트뷰 생성")
+                authViewModel.userInfoInquiry {
+                    eventViewModel.getEventList()
+                }
+            }
+            .onDisappear {
+                print("이벤트뷰 사라짐")
             }
             .navigationDestination(for: EventRoute.self) { route in
                 switch route {
