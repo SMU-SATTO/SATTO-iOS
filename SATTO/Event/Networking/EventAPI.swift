@@ -7,9 +7,11 @@
 
 import Foundation
 import Moya
+import UIKit
 
 enum EventAPI {
     case getEventList
+    case uploadTimeTableImage(image: UIImage)
 }
 
 extension EventAPI: TargetType {
@@ -23,6 +25,8 @@ extension EventAPI: TargetType {
         case .getEventList:
             return "/api/v1/event"
             
+        case .uploadTimeTableImage:
+            return "/api/v1/event/timetable-contest"
         }
     }
     
@@ -32,6 +36,8 @@ extension EventAPI: TargetType {
         case .getEventList:
             return .get
             
+        case .uploadTimeTableImage:
+            return .post
         }
     }
     
@@ -41,6 +47,10 @@ extension EventAPI: TargetType {
         case .getEventList:
             return .requestPlain
             
+        case .uploadTimeTableImage(let image):
+            let imageData = image.jpegData(compressionQuality: 0.1)!
+            let formData = MultipartFormData(provider: .data(imageData), name: "file", fileName: "image.jpg", mimeType: "image/jpeg")
+            return .uploadMultipart([formData])
         }
     }
     
@@ -50,6 +60,8 @@ extension EventAPI: TargetType {
         case .getEventList:
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]
             
+        case .uploadTimeTableImage:
+            return ["Authorization": "Bearer \(getToken() ?? "asd")"]
         }
     }
     

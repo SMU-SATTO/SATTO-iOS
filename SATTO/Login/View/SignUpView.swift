@@ -10,26 +10,20 @@ import Combine
 
 struct SignUpView: View {
 
-    @State private var password = "insungmms57!"
-    @State private var confirmPassword = "insungmms57!"
-    @State private var passwordsMatch = true
+    @State private var password = ""
+    @State private var isPasswordValid: Bool = false
+    @State private var confirmPassword = ""
+    @State private var passwordsMatch: Bool = false
     @State private var passwordError = ""
-    @State private var name = "황인성"
-    @State private var nickname = "insung"
+    @State private var name = ""
+    @State private var nickname = ""
     @State private var department = "컴퓨터과학과"
-    @State private var grade = 3
+    @State private var grade = 1
     @State private var isPublic = true
     
     @EnvironmentObject var navPathFinder: LoginNavigationPathFinder
     @EnvironmentObject var authViewModel: AuthViewModel
     
-    @State private var isPasswordValid: Bool = false
-    @State private var errorMessage: String?
-    @State private var cancellable: AnyCancellable?
-    
-//    @ObservedObject var vm: AuthVieModel
-    
-//    let user = User(studentId: "201910914", password: "insungmms57!", name: "황인성", nickname: "insung", department: "컴퓨터과학과", grade: 3, isPublic: true)
     
     var body: some View {
         ScrollView {
@@ -102,6 +96,7 @@ struct SignUpView: View {
                     Text("융합전자공학과").tag("융합전자공학과")
                 }
             
+            
             Text("학년")
             
             Picker(selection: $grade, label: Text("grade")) {
@@ -139,75 +134,63 @@ struct SignUpView: View {
                             )
                     })
                 }
-                
-                Button(action: {
-                    print(authViewModel.user ?? "ㅁㄴㅇ")
-                    print(authViewModel.user?.studentId)
-                    
-                    authViewModel.user?.grade = grade
-                    authViewModel.user?.isPublic = isPublic
-                    authViewModel.user?.email = "\(authViewModel.user?.studentId ?? "asd")@sangmyung.kr"
-                    authViewModel.user?.password = password
-                    authViewModel.user?.name = name
-                    authViewModel.user?.nickname = nickname
-                    authViewModel.user?.department = department
-                    
-                    
-                    authViewModel.signUp(user: authViewModel.user!)
-                }, label: {
-                    Text("회원가입 테스트")
-                })
+
                 
                 Spacer()
-                
-                Button(action: {
-                    validatePasswords()
-                    
-                    print(authViewModel.user ?? "ㅁㄴㅇ")
-                    authViewModel.user?.password = password
-                    authViewModel.user?.name = name
-                    authViewModel.user?.nickname = nickname
-                    authViewModel.user?.department = department
-                    authViewModel.user?.grade = grade
-                    authViewModel.user?.isPublic = isPublic
 
-                    
-                    authViewModel.signUp(user: authViewModel.user!)
-                }) {
-                    Text("확인")
-                        .foregroundColor(.white)
-                        .font(.headline)
-                        .frame(width: 365, height: 50)
-                        .background(Color.gray)
-                        .cornerRadius(20)
+            
+            Button(action: {
+                authViewModel.user?.email = "\(authViewModel.user?.studentId ?? "asd")@sangmyung.kr"
+                authViewModel.user?.password = password
+                authViewModel.user?.name = name
+                authViewModel.user?.nickname = nickname
+                authViewModel.user?.department = department
+                authViewModel.user?.grade = grade
+                authViewModel.user?.isPublic = isPublic
+
+                
+                authViewModel.signUp(user: authViewModel.user!) {
+                    navPathFinder.popToRoot()
                 }
-                .padding(.bottom, 10)
+            }, label: {
+                Text("확인")
+                    .modifier(MyButtonModifier(isDisabled: !(passwordsMatch && isPasswordValid && !name.isEmpty && !nickname.isEmpty)))
+            })
+            .disabled(!(passwordsMatch && isPasswordValid && !name.isEmpty && !nickname.isEmpty))
+            .padding(.bottom, 10)
+            
+            
             }
             .padding(.horizontal, 20)
             .onChange(of: password) { _ in
-//                validatePasswordWithErrorHandling()
-//                print(isPasswordValid)
                 validatePasswords()
+                print(isPasswordValid)
+            }
+            .onChange(of: confirmPassword) { _ in
+                비밀번호재입력이맞는지()
                 print(passwordsMatch)
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
     
-//    var shouldEnableConfirmationButton: Bool {
-//        return passwordsMatch && passwordMeetsCriteria(password) && isNicknameEnabled
-//    }
-    
     func validatePasswords() {
-        if password.isEmpty || confirmPassword.isEmpty {
-            passwordError = "비밀번호를 입력해 주세요."
-        } else if password != confirmPassword {
-            passwordsMatch = false
-            passwordError = "비밀번호와 재입력한 비밀번호가 일치하지 않습니다."
-        } else if !passwordMeetsCriteria(password) {
+        if !passwordMeetsCriteria(password) {
             passwordError = "비밀번호 규칙을 확인해 주세요."
+            isPasswordValid = false
         } else {
-            passwordsMatch = true
             passwordError = ""
+            isPasswordValid = true
+        }
+    }
+    
+    func 비밀번호재입력이맞는지() {
+        if password == confirmPassword {
+            passwordError = ""
+            passwordsMatch = true
+        } else {
+            passwordError = "비밀번호가 일치하지 않습니다"
+            passwordsMatch = false
         }
     }
     
@@ -217,35 +200,6 @@ struct SignUpView: View {
         let count = password.count >= 6
         
         return containsNumber && containsLetter && count
-    }
-    
-    func validatePasswordWithErrorHandling() {
-        cancellable = Just(password)
-            .tryAllSatisfy { value in
-                if value.count < 6 {
-                    throw NSError(domain: "PasswordError", code: 100, userInfo: [NSLocalizedDescriptionKey: "Password must be at least 8 characters long"])
-                }
-                //                    if value.rangeOfCharacter(from: .uppercaseLetters) == nil {
-                //                        throw NSError(domain: "PasswordError", code: 101, userInfo: [NSLocalizedDescriptionKey: "Password must contain at least one uppercase letter"])
-                //                    }
-                if value.rangeOfCharacter(from: .lowercaseLetters) == nil {
-                    throw NSError(domain: "PasswordError", code: 102, userInfo: [NSLocalizedDescriptionKey: "Password must contain at least one lowercase letter"])
-                }
-                if value.rangeOfCharacter(from: .decimalDigits) == nil {
-                    throw NSError(domain: "PasswordError", code: 103, userInfo: [NSLocalizedDescriptionKey: "Password must contain at least one digit"])
-                }
-                return true
-            }
-            .sink(
-                receiveCompletion: { completion in
-                    if case .failure(let error) = completion {
-                        errorMessage = error.localizedDescription
-                    }
-                },
-                receiveValue: { result in
-                    isPasswordValid = result
-                }
-            )
     }
 }
 

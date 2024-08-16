@@ -34,9 +34,9 @@ struct DetailProgressEventView: View {
                     Rectangle()
                         .frame(height: 0)
                     HStack(spacing: 0) {
-                        Text(eventViewModel.event!.title)
-                            .font(.m18)
-                            .padding(.trailing, 7)
+//                        Text(eventViewModel.event!.title)
+//                            .font(.m18)
+//                            .padding(.trailing, 7)
                         
                         Text(eventDeadLine)
                             .font(.m12)
@@ -112,10 +112,10 @@ struct DetailProgressEventView: View {
                         }
                         
                         LazyVGrid(columns: columns, spacing: 18) {
-                            ForEach(eventViewModel.event!.feeds, id: \.id) { feed in
-                                EventFeedCell(eventViewModel: eventViewModel)
-                                
-                            }
+//                            ForEach(eventViewModel.event!.feeds, id: \.id) { feed in
+//                                EventFeedCell(eventViewModel: eventViewModel)
+//                                
+//                            }
                         }
                     }
                     .padding(.horizontal, 20)

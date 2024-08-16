@@ -7,6 +7,14 @@
 
 import Foundation
 
+struct CheckDuplicateResponse: Codable {
+    var isSuccess: Bool
+    var code: String
+    var message: String
+    var result: String
+}
+
+
 struct User: Codable {
     
     var studentId: String
