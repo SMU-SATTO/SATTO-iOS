@@ -180,8 +180,12 @@ extension TimetableRouter: TargetType {
     var headers: [String: String]? {
         return [
             "Content-type": "application/json",
-            "Authorization": "Bearer "
+            "Authorization": "Bearer \(getToken() ?? "")"
         ]
+    }
+    
+    private func getToken() -> String? {
+        return KeychainHelper.shared.read(forKey: "accessToken")
     }
     
     var sampleData: Data {

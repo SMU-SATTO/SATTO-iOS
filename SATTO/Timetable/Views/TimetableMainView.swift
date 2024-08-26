@@ -297,20 +297,21 @@ struct TimetableMainView: View {
                     .padding(.leading, 30)
                 Spacer()
                 Group {
-                    Button(action: {
-                        stackPath.append(TimetableRoute.timetableModify)
-                    }) {
-                        Image(systemName: "pencil")
-                            .foregroundStyle(Color.blackWhite)
-                    }
-                    Button(action: {
-                        bottomSheetPresented.toggle()
-                    }) {
-                        Image(systemName: "gearshape")
-                            .foregroundStyle(Color.blackWhite)
+                    if timetableMainViewModel.timetableId != -1 {
+                        Button(action: {
+                            stackPath.append(TimetableRoute.timetableModify)
+                        }) {
+                            Image(systemName: "pencil")
+                                .foregroundStyle(Color.blackWhite)
+                        }
+                        Button(action: {
+                            bottomSheetPresented.toggle()
+                        }) {
+                            Image(systemName: "gearshape")
+                                .foregroundStyle(Color.blackWhite)
+                        }
                     }
                 }
-                .disabled(timetableMainViewModel.timetableId == -1)
                 Button(action: {
                     stackPath.append(TimetableRoute.timetableList)
                 }) {
