@@ -9,6 +9,25 @@ import Foundation
 import Moya
 import Combine
 
+enum checkEmail: String {
+    case duplicate = "존재하는 아이디 입니다."
+    case unique = "해당 아이디를 사용할 수 있습니다."
+}
+
+enum checkAuthNum: String {
+    case wrong = "인증번호가 일치하지 않습니다."
+    case pass = "인증번호가 일치합니다."
+}
+
+enum checkSignUp: String {
+//    case fail = "
+    case success = "회원가입 성공"
+}
+
+//enum checkLogIn: String {
+//    case fail = "아이디 또는 비밀번호가 틀렸습니다."
+//    case success = "성공입니다."
+//}
 
 class AuthViewModel: ObservableObject {
     private let provider = MoyaProvider<AuthAPI>()
@@ -21,7 +40,16 @@ class AuthViewModel: ObservableObject {
     
     @Published var EmailDuplicateMessage: String = ""
     
-//    @Published var userInfo2 = UserInfo2()
+    @Published var isCheckedEmailDuplicate = false
+    @Published var isCheckedsendAuthNumber = true
+    @Published var isCheckedAuthNumber = true
+    
+    @Published var isCheckedsendAuthNumberLoading = false
+    
+    @Published var studentIdDuplicateAlert = false
+    @Published var authNumIsWrongAlert = false
+    @Published var LogInFailAlert = false
+    
     
     let accessTokenKey = "accessToken"
     let refreshTokenKey = "refreshToken"
@@ -30,63 +58,69 @@ class AuthViewModel: ObservableObject {
         print("authViewModel init")
         self.token = self.getToken()
         self.isLoggedIn = (self.token != nil)
+        user = User(studentId: "", email: "", password: "", name: "", nickname: "", department: "", grade: 1, isPublic: true)
         print(self.user)
-//        self.user = User(studentId: "studentId", email: "email", password: "password", name: "name", nickname: "nickname", department: "department", grade: 5, isPublic: true)
     }
     
     func checkEmailDuplicate(studentId: String) {
-            provider.request(.checkEemailDuplicate(studentId: studentId)) { result in
+        provider.request(.checkEemailDuplicate(studentId: studentId)) { result in
+            DispatchQueue.main.async {
                 switch result {
                 case .success(let response):
-                    do {
-                        if let json = try JSONSerialization.jsonObject(with: response.data, options: []) as? [String: Any],
-                           let resultMessage = json["result"] as? String {
-                            DispatchQueue.main.async {
-                                self.EmailDuplicateMessage = resultMessage
-                                print("성공")
-                                print(self.EmailDuplicateMessage)
-                                self.user?.studentId = studentId
-                            }
-                        } else {
-                            DispatchQueue.main.async {
-                                self.errorMessage = "Failed to parse JSON: Invalid format"
-                                print(self.errorMessage ?? "Unknown error")
-                            }
+                    print(response)
+                    if let checkEmailDuplicateResponse = try? response.map(CheckDuplicateResponse.self) {
+                        
+                        if checkEmailDuplicateResponse.result == checkEmail.unique.rawValue {
+                            self.isCheckedEmailDuplicate = true
+                            self.isCheckedsendAuthNumber = false
                         }
-                    } catch let error {
-                        DispatchQueue.main.async {
-                            self.errorMessage = "Failed to parse JSON: \(error)"
-                            print(self.errorMessage ?? "Unknown error")
+                        else {
+                            self.studentIdDuplicateAlert = true
                         }
+                        
+                        print("fetchFollowerList매핑 성공🚨")
+                    }
+                    else {
+                        print("fetchFollowerList매핑 실패🚨")
                     }
                 case .failure(let error):
-                    DispatchQueue.main.async {
-                        self.errorMessage = "Error: \(error)"
-                        print(self.errorMessage ?? "Unknown error")
-                    }
+                    print("fetchFollowerList네트워크 요청 실패🚨")
                 }
             }
         }
+    }
 
     func sendAuthNumber(studentId: String) {
+        self.isCheckedsendAuthNumberLoading = true
         provider.request(.sendAuthNumber(studentId: studentId)) { result in
-            switch result {
-            case .success(let response):
-                do {
-                    let json = try JSONSerialization.jsonObject(with: response.data, options: []) as? [String: Any]
-                    DispatchQueue.main.async {
-//                        self.user = json
-                        print("성공")
-                    }
-                } catch let error {
-                    DispatchQueue.main.async {
-                        self.errorMessage = "Failed to parse JSON: \(error)"
-                    }
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    print(response)
+                    print("sendAuthNumber매핑 성공🚨")
+                    self.isCheckedsendAuthNumber = true
+                    self.isCheckedAuthNumber = false
+                    
+                    self.isCheckedsendAuthNumberLoading = false
+                case .failure(let error):
+                    print("sendAuthNumber네트워크 요청 실패🚨")
+//                    self.isCheckedsendAuthNumberLoading = false
                 }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self.errorMessage = "Error: \(error)"
-                    print(self.errorMessage!)
+            }
+        }
+    }
+    
+    func reSendAuthNumber(studentId: String) {
+        provider.request(.sendAuthNumber(studentId: studentId)) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    print(response)
+                    print("reSendAuthNumber매핑 성공🚨")
+//                    self.isCheckedsendAuthNumber = true
+//                    self.isCheckedAuthNumber = false
+                case .failure(let error):
+                    print("reSendAuthNumber네트워크 요청 실패🚨")
                 }
             }
         }
@@ -94,51 +128,40 @@ class AuthViewModel: ObservableObject {
     
     func checkAuthNumber(certificationNum: String) {
         provider.request(.checkAuthNumber(certificationNum: certificationNum)) { result in
-            switch result {
-            case .success(let response):
-                do {
-                    let json = try JSONSerialization.jsonObject(with: response.data, options: []) as? [String: Any]
-                    DispatchQueue.main.async {
-//                        self.user = json
-                        print("성공")
-                        print(type(of: json!))
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    print(response)
+                    if let checkAuthNumberResponse = try? response.map(CheckDuplicateResponse.self) {
+                        
+                        if checkAuthNumberResponse.result == checkAuthNum.pass.rawValue {
+                            self.isCheckedAuthNumber = true
+                        }
+                        else {
+                            self.authNumIsWrongAlert = true
+                        }
+                        
+                        print("fetchFollowerList매핑 성공🚨")
                     }
-                } catch let error {
-                    DispatchQueue.main.async {
-                        self.errorMessage = "Failed to parse JSON: \(error)"
+                    else {
+                        print("fetchFollowerList매핑 실패🚨")
                     }
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self.errorMessage = "Error: \(error)"
-                    print(self.errorMessage!)
+                case .failure(let error):
+                    print("reSendAuthNumber네트워크 요청 실패🚨")
                 }
             }
         }
     }
     
-    func signUp(user: User) {
+    func signUp(user: User, completion: @escaping () -> Void) {
         provider.request(.signUp(user: user)) { result in
-            switch result {
-            case .success(let response):
-                do {
-                    let json = try JSONSerialization.jsonObject(with: response.data, options: []) as? [String: Any]
-                    DispatchQueue.main.async {
-//                        self.user = json
-                        print("성공")
-                        print(json)
-                        print(user)
-                    }
-                } catch let error {
-                    DispatchQueue.main.async {
-                        self.errorMessage = "Failed to parse JSON: \(error)"
-                        print(self.errorMessage)
-                    }
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self.errorMessage = "Error: \(error)"
-                    print(self.errorMessage!)
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    print("signUp매핑 성공🚨")
+                    completion()
+                case .failure(let error):
+                    print("signUp네트워크 요청 실패🚨")
                 }
             }
         }
@@ -163,6 +186,7 @@ class AuthViewModel: ObservableObject {
                     }
                     else {
                         print("logIn매핑 실패🚨")
+                        self.LogInFailAlert = true
                     }
                 case .failure:
                     print("logIn네트워크 요청 실패🚨")
@@ -265,38 +289,6 @@ class AuthViewModel: ObservableObject {
             }
         }
     }
-    
-
-    
-
-
-
-    
-//    func sendAuthNumber(studentId: String) {
-//        provider.request(.sendAuthNumber(studentId: studentId)) { result in
-//            switch result {
-//            case .success(let response):
-//                do {
-//                    let json = try JSONSerialization.jsonObject(with: response.data, options: []) as? [String: Any]
-//                    DispatchQueue.main.async {
-////                        self.user = json
-//                        print("성공")
-//                    }
-//                } catch let error {
-//                    DispatchQueue.main.async {
-//                        self.errorMessage = "Failed to parse JSON: \(error)"
-//                    }
-//                }
-//            case .failure(let error):
-//                DispatchQueue.main.async {
-//                    self.errorMessage = "Error: \(error)"
-//                    print(self.errorMessage!)
-//                }
-//            }
-//        }
-//    }
-    
-    
     
     private func saveToken(_ token: String) {
         KeychainHelper.shared.save(token, forKey: accessTokenKey)

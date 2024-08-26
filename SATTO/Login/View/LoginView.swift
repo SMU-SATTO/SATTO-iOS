@@ -79,16 +79,16 @@ struct LoginView: View {
                     
                 })
                 
-                Button(action: {
-                    isDisabled.toggle()
-                }, label: {
-                    Text("활성 비활성")
-                })
-                
                 Spacer()
                 
             }
             .padding(.horizontal)
+            .alert("아이디 또는 비밀번호가 틀렸습니다.", isPresented: $authViewModel.LogInFailAlert) {
+                Button("OK", role: .cancel) { 
+                    studentId = ""
+                    password = ""
+                }
+            }
             .navigationBarHidden(true)
             .navigationBarTitle("", displayMode: .inline)
             .navigationDestination(for: LoginRoute.self) { route in
