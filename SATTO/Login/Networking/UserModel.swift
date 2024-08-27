@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CheckDuplicateResponse: Codable {
+struct CheckResponse: Codable {
     var isSuccess: Bool
     var code: String
     var message: String
@@ -35,19 +35,6 @@ struct UserResponse: Codable {
 }
 
 
-struct User2: Codable {
-    
-    var studentId: String
-//    var email: String
-//    var password: String
-    var name: String
-    var nickname: String
-    var department: String
-    var grade: Int
-    var isPublic: Bool
-    
-}
-
 struct LoginResponse: Codable {
     var isSuccess: Bool
     var code: String
@@ -60,6 +47,3 @@ struct Token: Codable {
     var refresh_token: String
 }
 
-struct LogoutResponse: Codable {
-    var message: String
-}

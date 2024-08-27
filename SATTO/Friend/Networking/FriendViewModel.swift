@@ -15,23 +15,26 @@ class FriendViewModel: ObservableObject {
     
     private let provider = MoyaProvider<FriendAPI>()
     
-    @Published var errorMessage: String?
-    
-    
+    // 찬구목록 타고 들어가는 깊이(첫번쨰 요소는 본인)
     @Published var friend: [Friend] = []
     
+    // 내 팔로워, 팔로잉 목롱
+    // 내 팔로워, 팔로잉 탭에서 보여지는 목록 아님
     @Published var myFollower: [Friend] = []
     @Published var myFollowing: [Friend] = []
     
+    // 보여지는 팔로워, 팔로잉 목록
     @Published var follower: [Friend] = []
     @Published var following: [Friend] = []
+    // 검색화면 검색 리스트
     @Published var searchUsers: [Friend] = []
-    
+    // 시간표 목록
     @Published var timeTables: [Timetable] = []
-    
+    // 강의정보가 포함된 상태 시간표
     @Published var timeTableInfo: TimeTableInfo?
-    
+    // 선택한 한기정보
     @Published var selectedSemesterYear: String = ""
+    // 선택한 시간표 이름
     @Published var selectedTimeTableName: String = ""
     
     let colors: [Color] = [
@@ -92,7 +95,7 @@ class FriendViewModel: ObservableObject {
         }
     }
     
-    // 팔로워 새로고침
+    // 친구 팔로워 목록조회
     func fetchFollowerList(studentId: String) {
         provider.request(.followerList(studentId: studentId)) { result in
             DispatchQueue.main.async {
@@ -113,7 +116,7 @@ class FriendViewModel: ObservableObject {
         }
     }
     
-    // 팔로잉 새로고침
+    // 친구 팔로잉 목록조회
     func fetchFollowingList(studentId: String) {
         provider.request(.followingList(studentId: studentId)) { result in
             DispatchQueue.main.async {
@@ -134,7 +137,7 @@ class FriendViewModel: ObservableObject {
         }
     }
     
-    // 내 팔로워 새로고침
+    // 내 팔로워 목록조회
     func fetchMyFollowerList(studentId: String, completion: @escaping () -> Void) {
         provider.request(.followerList(studentId: studentId)) { result in
             DispatchQueue.main.async {
@@ -143,7 +146,6 @@ class FriendViewModel: ObservableObject {
                     print(response)
                     if let friendResponse = try? response.map(FriendResponse.self) {
                         self.myFollower = friendResponse.result
-//                        self.follower = friendResponse.result
                         print("fetchMyFollowerList매핑 성공🚨")
                         completion()
                     }
@@ -157,7 +159,7 @@ class FriendViewModel: ObservableObject {
         }
     }
     
-    // 내 팔로잉 새로고침
+    // 내 팔로잉 목록조회
     func fetchMyFollowingList(studentId: String, completion: @escaping () -> Void) {
         provider.request(.followingList(studentId: studentId)) { result in
             DispatchQueue.main.async {
@@ -166,7 +168,6 @@ class FriendViewModel: ObservableObject {
                     print(response)
                     if let friendResponse = try? response.map(FriendResponse.self) {
                         self.myFollowing = friendResponse.result
-//                        self.following = friendResponse.result
                         print("fetchMyFollowingList매핑 성공🚨")
                         completion()
                     }
@@ -215,7 +216,6 @@ class FriendViewModel: ObservableObject {
                         print("fetchFriendTimetableList매핑 성공🚨")
                     }
                     else {
-                        
                         print("fetchFriendTimetableList매핑 실패🚨")
                     }
                 case .failure:
@@ -272,8 +272,7 @@ class FriendViewModel: ObservableObject {
             }
         }
     
-    
-    
+
     func assignColors() {
         var assignedColors: [String: Color] = [:]
         var colorIndex = 0
@@ -287,7 +286,6 @@ class FriendViewModel: ObservableObject {
                 }
             }
         }
-//        print(assignedColors)
         self.colorMapping = assignedColors
     }
     
@@ -295,20 +293,19 @@ class FriendViewModel: ObservableObject {
         return self.colorMapping[codeSection] ?? .clear
     }
 
-    
-    
+    // 내가 고른 학기와 시간표 이름에 해당하는 시간표ID를 반환
     func getSelectedTimetableId(timeTables: [Timetable]) -> Int {
         return timeTables.filter{ $0.semesterYear == selectedSemesterYear && $0.timeTableName == selectedTimeTableName }.first?.timeTableId ?? 9999
     }
-    
+    // 학기정보 포멧팅 ex) 2023학년도 1학기
     func formatSemesterString(semester: String) -> String {
         return "\(semester.prefix(4))학년도 \(semester.suffix(1))학기"
     }
-    
+    // 시간표 목록의 학기정보만 중복없이 시간순으로 정렬
     func getSemestersFromTimetables(timeTables: [Timetable]) -> [String] {
         return Array(Set(timeTables.map { $0.semesterYear })).sorted(by: >)
     }
-    
+    // 내가 선택한 학기정보에 맞는 시간표 이름만 필터링
     func getTimetableNamesForSemester(timeTables: [Timetable], semester: String) -> [String] {
         return timeTables.filter { $0.semesterYear == semester }.map { $0.timeTableName }
     }

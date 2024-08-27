@@ -16,11 +16,7 @@ struct GraduationRequirementsView: View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
                 
-                Button(action: {
-                    navPathFinder.path.popLast()
-                }, label: {
-                    Image("Classic")
-                })
+                CustomBackButton()
                 .padding(.trailing, 10)
                 .padding(.leading, 20)
                 
@@ -37,14 +33,12 @@ struct GraduationRequirementsView: View {
             Image("GraduationRequirement")
                 .padding(.bottom, 26)
             
-            // m16
             Text("들었던 과목이 존재하지 않아 \n졸업 요건을 확인할 수 없어요.")
                 .font(.m16)
                 .lineSpacing(4)
                 .foregroundColor(Color.gray400)
                 .padding(.bottom, 57)
             
-            // sb14
             Text("들었던 과목 선택하기")
                 .font(.sb14)
                 .foregroundColor(Color.white)
@@ -77,11 +71,7 @@ struct SelectCompletedSubjectsView: View {
                 
                 HStack(spacing: 0) {
                     
-                    Button(action: {
-                        navPathFinder.path.popLast()
-                    }, label: {
-                        Image("Classic")
-                    })
+                    CustomBackButton()
                     .padding(.trailing, 10)
                     
                     
@@ -151,6 +141,8 @@ struct ClearButtonTextField: View {
         HStack(spacing: 0) {
             
             Image(systemName: "magnifyingglass")
+                .renderingMode(.template)
+                .foregroundStyle(.backButton)
                 .padding(.horizontal, 12)
             
             TextField(placehold, text: $text)
@@ -169,7 +161,7 @@ struct ClearButtonTextField: View {
         .padding(.vertical, 10)
         .background(
             Rectangle()
-                .fill(Color(red: 0.91, green: 0.92, blue: 0.93))
+                .fill(Color.textField)
                 .cornerRadius(30)
         )
     }

@@ -24,7 +24,12 @@ struct AgreeView: View {
     ]
     
     var body: some View {
+        
         ZStack {
+            
+            Color.background
+                .ignoresSafeArea()
+            
             VStack(spacing: 0) {
                 Text("SATTO 이용을 위해\n이용약관에 동의해 주세요")
                     .font(.sb30)
@@ -64,14 +69,14 @@ struct AgreeView: View {
                         Spacer()
                         
                         Button(action: {
-                            // 여기에 필요한 작업 추가
+                            // 여기에 약관 자세히 보기 화면 이동코드 추가
                         }, label: {
                             Image("icRight")
                         })
                     }
                     .padding(.bottom, 16)
                 }
-
+                
                 Spacer()
                 
                 Button(action: {
@@ -83,6 +88,13 @@ struct AgreeView: View {
                 .disabled(!(isChecked1 && isChecked2 && isChecked3))
             }
             .padding(.horizontal, 20)
+            .navigationBarBackButtonHidden()
+            .foregroundStyle(Color.cellText)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    CustomBackButton()
+                }
+            }
         }
     }
     
@@ -124,15 +136,5 @@ struct AgreeView: View {
         default:
             return false
         }
-    }
-}
-
-
-
-
-struct AgreeView_Previews: PreviewProvider {
-    static var previews: some View {
-        LoginView()
-            .environmentObject(LoginNavigationPathFinder.shared)
     }
 }

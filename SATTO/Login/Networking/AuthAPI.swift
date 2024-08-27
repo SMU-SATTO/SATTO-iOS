@@ -12,15 +12,17 @@ enum AuthAPI {
     
     case sendAuthNumber(studentId: String)
     case checkAuthNumber(certificationNum: String)
-    //    case checkPasswordCondition
-    //    case checkNickName
     case signUp(user: User)
     case logIn(email: String, password: String)
     case signOut
     case logOut
     case checkEemailDuplicate(studentId: String)
-    
     case userInfoInquiry
+    case regenerateToken
+    case setAccountPublic
+    case setAccountPrivate
+    case editProfile(name: String, nickname: String, department: String, grade: Int)
+    case editPassword(password: String)
     
 }
 
@@ -47,6 +49,16 @@ extension AuthAPI: TargetType {
             return "/api/v1/users/inform"
         case .checkEemailDuplicate(let studentId):
             return "/api/v1/users/id/\(studentId)@sangmyung.kr"
+        case .regenerateToken:
+            return "/api/v1/auth/refresh-token"
+        case .setAccountPublic:
+            return "/api/v1/users/account/public"
+        case .setAccountPrivate:
+            return "/api/v1/users/account/private"
+        case .editProfile:
+            return "/api/v1/users/account/update"
+        case .editPassword:
+            return "/api/v1/users/account/pw"
         }
     }
     
@@ -68,6 +80,16 @@ extension AuthAPI: TargetType {
             return .get
         case .checkEemailDuplicate:
             return.get
+        case .regenerateToken:
+            return .post
+        case .setAccountPublic:
+            return .patch
+        case .setAccountPrivate:
+            return .patch
+        case .editProfile:
+            return .patch
+        case .editPassword:
+            return .patch
         }
     }
     
@@ -93,6 +115,18 @@ extension AuthAPI: TargetType {
             return .requestPlain
         case .checkEemailDuplicate:
             return .requestPlain
+        case .regenerateToken:
+            return .requestPlain
+        case .setAccountPublic:
+            return .requestPlain
+        case .setAccountPrivate:
+            return .requestPlain
+        case .editProfile(let name, let nickname, let department, let grade):
+            let parameters: [String: Any] = ["name": name, "nickname": nickname, "department": department, "grade": grade]
+            return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
+        case .editPassword(let password):
+            let parameters: [String: Any] = ["password": password]
+            return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         }
     }
     
@@ -108,7 +142,6 @@ extension AuthAPI: TargetType {
         case .logIn:
             return ["Content-type": "application/json"]
         case .logOut:
-//            return ["Content-type": "application/json"]
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]
         case .signOut:
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]
@@ -116,30 +149,24 @@ extension AuthAPI: TargetType {
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]
         case .checkEemailDuplicate:
             return ["Content-type": "application/json"]
+        case .regenerateToken:
+            return ["Authorization": "Bearer \(getRefreshToken() ?? "asd")"]
+        case .setAccountPublic:
+            return ["Authorization": "Bearer \(getToken() ?? "asd")"]
+        case .setAccountPrivate:
+            return ["Authorization": "Bearer \(getToken() ?? "asd")"]
+        case .editProfile:
+            return ["Authorization": "Bearer \(getToken() ?? "asd")"]
+        case .editPassword:
+            return ["Authorization": "Bearer \(getToken() ?? "asd")"]
         }
     }
-    
-//    private func saveToken(_ token: String) {
-//        KeychainHelper.shared.save(token, forKey: accessTokenKey)
-//    }
 
     private func getToken() -> String? {
         return KeychainHelper.shared.read(forKey: "accessToken")
     }
-
-//    private func deleteToken() {
-//        KeychainHelper.shared.delete(forKey: accessTokenKey)
-//    }
-//
-//    private func saveRefreshToken(_ token: String) {
-//        KeychainHelper.shared.save(token, forKey: refreshTokenKey)
-//    }
-//
-//    private func getRefreshToken() -> String? {
-//        return KeychainHelper.shared.read(forKey: refreshTokenKey)
-//    }
-//
-//    private func deleteRefreshToken() {
-//        KeychainHelper.shared.delete(forKey: refreshTokenKey)
-//    }
+    private func getRefreshToken() -> String? {
+        return KeychainHelper.shared.read(forKey: "refreshToken")
+    }
+    
 }

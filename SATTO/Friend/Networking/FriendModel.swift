@@ -8,9 +8,8 @@
 import Foundation
 
 
-
-
 struct FriendResponse: Codable {
+    
     var isSuccess: Bool
     var code: String
     var message: String
@@ -21,16 +20,15 @@ struct Friend: Codable, Equatable {
     
     var studentId: String
     var email: String
-//    var password: String
     var name: String
     var nickname: String
     var department: String
     var grade: String
     var isPublic: String
-
 }
 
 struct TimeTableResponse: Codable {
+    
     var isSuccess: Bool
     var code: String
     var message: String
@@ -44,11 +42,11 @@ struct Timetable: Codable {
     var timeTableName: String
     var isPublic: Bool
     var isRepresent: Bool
-    
 }
 
 
 struct TimeTableInfoResponse: Codable {
+    
     var isSuccess: Bool
     var code: String
     var message: String
@@ -56,6 +54,7 @@ struct TimeTableInfoResponse: Codable {
 }
 
 struct TimeTableInfo: Codable {
+    
     let timeTableId: Int
     let lects: [Lecture]
     let semesterYear: String
@@ -65,6 +64,7 @@ struct TimeTableInfo: Codable {
 }
 
 struct Lecture: Codable {
+    
     var code: String
     var codeSection: String
     var lectName: String

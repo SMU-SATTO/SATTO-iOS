@@ -26,19 +26,18 @@ struct TimeTableTutorial: View {
             VStack(spacing: 0) {
                 Text("")
                     .font(Font.custom("Pretendard", size: 10))
-                    .foregroundColor(Color(red: 0.19, green: 0.17, blue: 0.21))
                     .opacity(0.6)
                     .frame(width: 32, height: 40)
                 
                 ForEach(hoursOfDay, id: \.self) { hour in
                     Text(hour)
                         .font(Font.custom("Pretendard", size: 10))
-                        .foregroundColor(Color(red: 0.19, green: 0.17, blue: 0.21))
                         .opacity(0.6)
                         .frame(width: 32, height: 40, alignment: .top)
                     
                 }
             }
+            .foregroundStyle(Color.cellText)
             
             GeometryReader { geo in
                 HStack(spacing: 0) {
@@ -47,18 +46,19 @@ struct TimeTableTutorial: View {
                             Text(day)
                                 .font(.system(size: 12, weight: .semibold)) // 변경된 폰트 사용
                                 .frame(width: geo.size.width/6, height: 40)
-                                .foregroundColor(Color(red: 0.27, green: 0.3, blue: 0.33))
+//                                .foregroundColor(Color(red: 0.27, green: 0.3, blue: 0.33))
                                 .frame(maxWidth: .infinity, alignment: .top)
                                 .opacity(0.9)
                             
                             ForEach(0..<hoursOfDay.count, id: \.self) { index in
                                 Rectangle()
-                                    .stroke(Color(red: 0.25, green: 0.25, blue: 0.24), lineWidth: 0.5)
+                                    .stroke(Color.cellText, lineWidth: 0.5)
                                     .frame(height: 40)
                             }
                         }
                     }
                 }
+                .foregroundStyle(Color.cellText)
                 
                 if friendViewModel.timeTableInfo?.lects.count == 0 {
                     
@@ -100,10 +100,11 @@ struct TimeTableTutorial: View {
                                 }
                             }
                         }
-                    } else {
-                        Text("No lectures found")
-                            .foregroundColor(.black)
-                    }
+                    } 
+//                    else {
+//                        Text("이 시간표는 비어있습니다")
+//                            .foregroundColor(.black)
+//                    }
                 }
             }
         }
