@@ -81,7 +81,7 @@ struct TimeTableTutorial: View {
                                     // firstTimes의 요소의 요일부분을 숫자로 변환 ex) 월3->0 화2->1
                                     let dayIndex = getDayIndex(day: String(firstTimes[index].prefix(1)))
                                     // firstTimes의 요소의 숫자부분을 숫자로 변환 ex) 월3->3 화2->2
-                                    let periodIndex = getPeriodIndex(period: String(firstTimes[index].suffix(1)))
+                                    let periodIndex = getPeriodIndex(period: String(firstTimes[index].substring(from: 1)))
                                     // 매핑되어있는 학수번호를 넣으면 색이 나온다
                                     let backgroundColor = friendViewModel.getColorForCodeSection(codeSection: lecture.codeSection)
                                     
@@ -168,7 +168,7 @@ struct TimeTableTutorial: View {
         // 입력받은 문자열 첫번쨰 글자
         let day = String(string.prefix(1)) // 요일 추출
         // 입력받은 문자열의 마지막 글자
-        let numberString = String(string.suffix(1)) // 숫자 부분 추출
+        let numberString = String(string.substring(from: 1)) // 숫자 부분 추출
         // 마지막 글자를 숫자로 형변환
         guard let number = Int(numberString) else {
             // 숫자가 아니면 함수 종류 nil반환
@@ -198,4 +198,11 @@ struct TimeTableTutorial: View {
     }
 }
 
+
+extension String {
+    func substring(from index: Int) -> String {
+        let startIndex = self.index(self.startIndex, offsetBy: index)
+        return String(self[startIndex...])
+    }
+}
 
