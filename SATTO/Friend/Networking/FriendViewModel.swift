@@ -192,6 +192,7 @@ class FriendViewModel: ObservableObject {
                         self.searchUsers = friendResponse.result
                         print("searchUser매핑 성공🚨")
                     }
+                    // 실패하면 searchUsers비우기
                     else {
                         print("searchUser매핑 실패🚨")
                         self.searchUsers = []
@@ -273,15 +274,23 @@ class FriendViewModel: ObservableObject {
         }
     
 
+    // 학수번호랑 색이랑 맵핑하는 메서드
     func assignColors() {
+        // 빈 딕셔너리 생성
         var assignedColors: [String: Color] = [:]
+        // 색깔 인덱스 0
         var colorIndex = 0
         
+        // timeTableInfo가 nil이 아닐때
         if let lectures = self.timeTableInfo?.lects {
-            
+            // 강의들을 반복하면서
             for lecture in lectures {
+                // 만약 강의의 학수번호가 매핑이 안되있을떄
                 if assignedColors[lecture.codeSection] == nil {
+                    // 강의의 학수번호에 맵핑
+                    // 나머지 연산자로 색배열 순회가능
                     assignedColors[lecture.codeSection] = self.colors[colorIndex % self.colors.count]
+                    // 색깔 인덱스 +1
                     colorIndex += 1
                 }
             }
@@ -289,6 +298,10 @@ class FriendViewModel: ObservableObject {
         self.colorMapping = assignedColors
     }
     
+    // 학수번호를 넣으면 색이 반환된다
+    // @Published var colorMapping: [String: Color] = [:]
+    // 이미 학수번호에 색깔이 맵핑 되어있음
+    // 없는 학수번호는 투명색
     func getColorForCodeSection(codeSection: String) -> Color {
         return self.colorMapping[codeSection] ?? .clear
     }
