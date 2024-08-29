@@ -9,7 +9,7 @@ import Foundation
 import Moya
 
 class TimetableRepository {
-    func postMajorComb(GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, completion: @escaping(Result<[MajorComb], Error>) -> Void) {
+    func postMajorComb(GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, completion: @escaping(Result<[MajorComb], SATTOError>) -> Void) {
         SATTONetworking.shared.postMajorComb(GPA: GPA, requiredLect: requiredLect, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: impossibleTimeZone) { result in
             switch result {
             case .success(let majorCombResponseDto):
@@ -20,12 +20,12 @@ class TimetableRepository {
                 }
                 completion(.success(majorCombModel))
             case .failure(let error):
-                completion(.failure(error))
+                self.handleSATTOError(error, completion: completion)
             }
         }
     }
     
-    func postFinalTimetableList(isRaw: Bool, GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [[String]], completion: @escaping(Result<[[SubjectModel]], Error>) -> Void) {
+    func postFinalTimetableList(isRaw: Bool, GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [[String]], completion: @escaping(Result<[[SubjectModel]], SATTOError>) -> Void) {
         SATTONetworking.shared.postFinalTimetableList(isRaw: isRaw, GPA: GPA, requiredLect: requiredLect, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: impossibleTimeZone, majorList: majorList) { result in
             switch result {
             case .success(let finalTimetableListResponseDto):
@@ -41,12 +41,12 @@ class TimetableRepository {
                 }
                 completion(.success(subjectModels))
             case .failure(let error):
-                completion(.failure(error))
+                self.handleSATTOError(error, completion: completion)
             }
         }
     }
     
-    func getTimetableList(completion: @escaping (Result<[TimetableListModel], Error>) -> Void) {
+    func getTimetableList(completion: @escaping (Result<[TimetableListModel], SATTOError>) -> Void) {
         SATTONetworking.shared.getTimetableList() { result in
             switch result {
             case .success(let dto):
@@ -61,12 +61,12 @@ class TimetableRepository {
                 }
                 completion(.success(timetableListModels))
             case .failure(let error):
-                completion(.failure(error))
+                self.handleSATTOError(error, completion: completion)
             }
         }
     }
     
-    func getUserTimetable(id: Int?, completion: @escaping (Result<TimetableMainInfoModel, Error>) -> Void) {
+    func getUserTimetable(id: Int?, completion: @escaping (Result<TimetableMainInfoModel, SATTOError>) -> Void) {
         SATTONetworking.shared.getUserTimetable(id: id) { result in
             switch result {
             case .success(let userTimetableDto):
@@ -89,15 +89,14 @@ class TimetableRepository {
                                                  semesterYear: userTimetableDto.result?.semesterYear,
                                                  timeTableName: userTimetableDto.result?.timeTableName)
                 completion(.success(result))
-                
             case .failure(let error):
-                completion(.failure(error))
+                self.handleSATTOError(error, completion: completion)
             }
         }
     }
 
     //MARK: - SubjectDetailModel에 이전 수강 인원 누락되어있음 + 담은인원 + 옵셔널 처리 체크
-    func postCurrentLectureList(request: CurrentLectureListRequest, page: Int, completion: @escaping(Result<([SubjectDetailModel], Int?), Error>) -> Void) {
+    func postCurrentLectureList(request: CurrentLectureListRequest, page: Int, completion: @escaping(Result<([SubjectDetailModel], Int?), SATTOError>) -> Void) {
         SATTONetworking.shared.postCurrentLectureList(request: request, page: page) { result in
             switch result {
             case .success(let dto):
@@ -117,8 +116,41 @@ class TimetableRepository {
                 let totalPage = dto.result?.totalPage
                 completion(.success((subjectDetailModels ?? [], totalPage)))
             case .failure(let error):
-                completion(.failure(error))
+                self.handleSATTOError(error, completion: completion)
             }
         }
+    }
+    
+    private func handleSATTOError<T>(_ error: Error, completion: @escaping (Result<T, SATTOError>) -> Void) {
+        let customError: SATTOError
+        
+        if let moyaError = error as? MoyaError {
+            // MoyaError를 SATTOError로 변환
+            switch moyaError {
+            case .imageMapping(let response):
+                customError = .imageMapping(response)
+            case .jsonMapping(let response):
+                customError = .jsonMapping(response)
+            case .stringMapping(let response):
+                customError = .stringMapping(response)
+            case .objectMapping(let error, let response):
+                customError = .objectMapping(error, response)
+            case .encodableMapping(let error):
+                customError = .encodableMapping(error)
+            case .statusCode(let response):
+                customError = .statusCode(response)
+            case .underlying(let error, let response):
+                customError = .underlying(error, response)
+            case .requestMapping(let string):
+                customError = .requestMapping(string)
+            case .parameterEncoding(let error):
+                customError = .parameterEncoding(error)
+            }
+        } else {
+            // MoyaError가 아닌 일반 Swift 에러의 경우
+            customError = .underlying(error, nil)
+        }
+        print("TimetableRepository Error occurred: \(customError.localizedDescription)")
+        completion(.failure(customError))
     }
 }

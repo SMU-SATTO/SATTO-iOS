@@ -100,8 +100,8 @@ class SelectedValues: TimeSelectorViewModelProtocol {
                 DispatchQueue.main.async {
                     self?.majorCombinations = majorCombModels
                 }
-            case .failure(let error):
-                print("Error fetching major combinations: \(error)")
+            case .failure:
+                print("전공조합을 가져오는데 실패했어요.")
             }
         }
     }
@@ -123,7 +123,7 @@ class SelectedValues: TimeSelectorViewModelProtocol {
                     completion(.success(()))
                 }
             case .failure(let error):
-                print("Error fetching finalTimetableList: \(error)")
+                print("최종 시간표 목록을 가져오는데 실패했어요.")
                 completion(.failure(error))
             }
         }
@@ -139,7 +139,7 @@ class SelectedValues: TimeSelectorViewModelProtocol {
                     completion(true)
                 }
             case .failure(let error):
-                print("Error post SelectedTimetable: \(error)")
+                print("시간표 저장에 실패했어요.")
                 completion(false)
             }
         }
@@ -155,7 +155,7 @@ class SelectedValues: TimeSelectorViewModelProtocol {
                     completion(true)
                 }
             case .failure(let error):
-                print("Error post SelectedTimetable: \(error)")
+                print("시간표 저장에 실패했어요.")
                 completion(false)
             }
         }

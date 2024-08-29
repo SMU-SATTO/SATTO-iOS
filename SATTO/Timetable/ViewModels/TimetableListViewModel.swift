@@ -19,8 +19,8 @@ final class TimetableListViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self?.timetables = response
                 }
-            case .failure(let error):
-                print("Error fetching timetable list: \(error)")
+            case .failure:
+                print("시간표 목록을 불러오는데 실패했어요.")
             }
         }
     }

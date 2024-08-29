@@ -315,8 +315,7 @@ struct TimetableMakeView: View {
                             self.isProgressing = false
                             selectedView = .finalTimetable
                         }
-                    case .failure(let error):
-                        print("Error: \(error)")
+                    case .failure:
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                             self.isProgressing = false
                             self.errorPopup = true
