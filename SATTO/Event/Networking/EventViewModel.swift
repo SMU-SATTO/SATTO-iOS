@@ -9,6 +9,15 @@ import Foundation
 import Moya
 import UIKit
 
+enum EventState: Int {
+    
+    case progress = 0
+    case yet = 1
+    case end = 2
+    case error = 99
+    
+}
+
 class EventViewModel: ObservableObject {
     
     private let provider = MoyaProvider<EventAPI>()
@@ -19,31 +28,15 @@ class EventViewModel: ObservableObject {
     
     @Published var event: Event?
     
-//    var userInfo1: UserInfo
-//    var event1: Event
-//    var eventFeed1: [EventFeed]
+    @Published var feeds: [Feed] = []
+    
+    @Published var feed: Feed?
     
     
     init() {
         var userInfo1 = UserInfo(studentID: 201910914, grade: 4, name: "황인성", isPublicAccount: true)
-        
-        var eventFeed1 = [
-            Feed(imageURL: URL(string: "https://www.example.com")!, uploadDate: Date(y: 2024, m: 5, d: 8)!, like: 12, userInfo: userInfo1, isMyLike: true),
-            Feed(imageURL: URL(string: "https://www.example.com")!, uploadDate: Date(y: 2024, m: 5, d: 10)!, like: 9, userInfo: userInfo1, isMyLike: false),
-            Feed(imageURL: URL(string: "https://www.example.com")!, uploadDate: Date(y: 2024, m: 5, d: 10)!, like: 9, userInfo: userInfo1, isMyLike: false),
-            Feed(imageURL: URL(string: "https://www.example.com")!, uploadDate: Date(y: 2024, m: 5, d: 10)!, like: 9, userInfo: userInfo1, isMyLike: false),
-            Feed(imageURL: URL(string: "https://www.example.com")!, uploadDate: Date(y: 2024, m: 5, d: 10)!, like: 9, userInfo: userInfo1, isMyLike: false),
-            Feed(imageURL: URL(string: "https://www.example.com")!, uploadDate: Date(y: 2024, m: 5, d: 10)!, like: 9, userInfo: userInfo1, isMyLike: false),
-            Feed(imageURL: URL(string: "https://www.example.com")!, uploadDate: Date(y: 2024, m: 5, d: 10)!, like: 9, userInfo: userInfo1, isMyLike: false)
-        ]
-//        var event1 = Event(title: "개강맞이 시간표 경진대회", startDate: Date(y: 2024, m: 5, d: 1)!, endDate: Date(y: 2024, m: 6, d: 1)!, description: "내 시간표를 공유해 시간표 경진대회에 참여해 보세요!", feeds: eventFeed1)
-//        
-//        
-//        var event2 = Event(title: "학교 사진 콘테스트", startDate: Date(y: 2024, m: 5, d: 5)!, endDate: Date(y: 2024, m: 6, d: 5)!, description: "꽃이 활짝 핀 캠퍼스 사진을 찍고 자랑해 보세요!", feeds: eventFeed1)
-        
-        // 이제 event1을 events 배열에 추가할 수 있습니다.
-//        events.append(event1)
-//        events.append(event2)
+
+
     }
     
     // 날짜를 문자열로 변환하는 함수
@@ -110,6 +103,113 @@ class EventViewModel: ObservableObject {
         }
     }
     
+    func getEventFeed(category: String) {
+        provider.request(.getEventFeed(category: category)) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    print(response)
+                    
+                    if let eventFeedResponse = try? response.map(FeedResponse.self) {
+                        self.feeds = eventFeedResponse.result
+                        print("getEventFeed매핑 성공🚨")
+                        print(self.feeds)
+                    }
+                    else {
+                        print("getEventFeed매핑 실패🚨")
+                    }
+                case .failure(let error):
+                    print("getEventFeed네트워크 요청 실패🚨")
+                }
+            }
+        }
+    }
+    
+    // 좋아요 누르기 취소도됨
+    func postContestLike(contestId: Int, completion: @escaping () -> Void) {
+        provider.request(.postContestLike(contestId: contestId)) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    print(response)
+                    print("postContestLike네트워크 요청 성공🚨")
+                    completion()
+                case .failure(let error):
+                    print("postContestLike네트워크 요청 실패🚨")
+                }
+            }
+        }
+    }
+    
+    func postContestDislike(contestId: Int, completion: @escaping () -> Void) {
+        provider.request(.postContestDislike(contestId: contestId)) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    print(response)
+                    print("postContestDislike네트워크 요청 성공🚨")
+                    completion()
+                case .failure(let error):
+                    print("postContestDislike네트워크 요청 실패🚨")
+                }
+            }
+        }
+    }
+    
+    func uploadImage(UIImage: UIImage, category: String) {
+        provider.request(.uploadImage(image: UIImage, category: category)) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    print(response)
+                    if let responseString = String(data: response.data, encoding: .utf8) {
+                        print("Response Data: \(responseString)")
+                    }
+                    print("uploadTimeTableImage네트워크 요청 성공🚨")
+                    
+                case .failure(let error):
+                    
+                    if let response = error.response {
+                        if let responseString = String(data: response.data, encoding: .utf8) {
+                            print("Error Response Data: \(responseString)")
+                        }
+                    }
+                    print("uploadTimeTableImage네트워크 요청 실패🚨")
+                }
+            }
+        }
+    }
+    func deleteImage(contestId: Int, completion: @escaping () -> Void) {
+        provider.request(.deleteImage(contestId: contestId)) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    print(response)
+                    if let deleteResponse = try? response.map(CheckResponse.self) {
+                        if deleteResponse.result == "삭제되었습니다." {
+                            print("deleteImage매핑 성공🚨")
+                            print("삭제 성공🚨")
+                            completion()
+                        }
+                        else {
+                            print("deleteImage매핑 성공🚨")
+                            print("삭제 실패🚨")
+                            
+                            if let responseString = String(data: response.data, encoding: .utf8) {
+                                print("Response Data: \(responseString)")
+                            }
+                        }
+                    }
+                    else {
+                        print("deleteImage매핑 실패🚨")
+                    }
+                case .failure(let error):
+                    print("deleteImage네트워크 요청 실패🚨")
+                }
+            }
+        }
+    }
+    
     func 두날짜사이간격(startDateString: String, endDateString: String) -> Int {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy.MM.dd"
@@ -146,11 +246,26 @@ class EventViewModel: ObservableObject {
         let components = calendar.dateComponents([.day], from: today, to: date)
         
         if let days = components.day {
-            print("Number of days between dates: \(days)") // 출력: 13
+            print("Number of days between dates: \(days)")
             return days
         }
         else {
             return 99
+        }
+    }
+    
+    func 이벤트상태출력(startDate: String, endDate: String) -> EventState {
+        if 오늘날짜와의간격(dateString: startDate) < 0 && 오늘날짜와의간격(dateString: endDate) < 0 {
+            return .end
+        }
+        else if 오늘날짜와의간격(dateString: startDate) <= 0 && 오늘날짜와의간격(dateString: endDate) > 0 {
+            return .progress
+        }
+        else if 오늘날짜와의간격(dateString: startDate) > 0 {
+            return .yet
+        }
+        else {
+            return .error
         }
     }
     
@@ -168,21 +283,15 @@ class EventViewModel: ObservableObject {
         return dateFormatter.string(from: date)
     }
     
+    
+    func sortingFeed(sort: String) {
+        if sort == "좋아요 순" {
+            feeds.sort { $0.likeCount < $1.likeCount }
+        }
+        else if sort == "최신순" {
+            feeds.sort { $0.formattedUpdatedAt < $1.formattedUpdatedAt }
+        }
+    }
+    
 }
 
-extension Date {
-    // 구조체 실패가능 생성자로 구현
-    init?(y year: Int, m month: Int, d day: Int) {
-        
-        var components = DateComponents()
-        components.year = year
-        components.month = month
-        components.day = day
-        
-        guard let date = Calendar.current.date(from: components) else {
-            return nil  // 날짜 생성할 수 없다면 nil리턴
-        }
-        
-        self = date      //구조체이기 때문에, self에 새로운 인스턴스를 할당하는 방식으로 초기화가능
-    }
-}

@@ -9,23 +9,18 @@ import SwiftUI
 
 struct DetailProgressEventView: View {
     
-    var eventName: String = "??"
-    var eventPeriod: String = "??"
-    var eventImage: String = "??"
-    var eventDeadLine: String = "??"
-    var eventNumberOfParticipants: String = "??"
-    var eventDescription: String = "??"
-    
-//    @Binding var stackPath: [Route]
     @ObservedObject var eventViewModel: EventViewModel
-//    @StateObject var detailEventViewModel: DetailEventViewModel
     
+    @EnvironmentObject var navPathFinder: NavigationPathFinder
+    @EnvironmentObject var authViewModel: AuthViewModel
     let columns = [
         //        GridItem(.flexible(), spacing: 0),
         //                GridItem(.flexible())
         GridItem(.fixed(165), spacing: 23),
         GridItem(.fixed(165))
     ]
+    
+    @State var sort = "좋아요 순"
     
     var body: some View {
         VStack(spacing: 0) {
@@ -34,11 +29,11 @@ struct DetailProgressEventView: View {
                     Rectangle()
                         .frame(height: 0)
                     HStack(spacing: 0) {
-//                        Text(eventViewModel.event!.title)
-//                            .font(.m18)
-//                            .padding(.trailing, 7)
+                        Text("\(eventViewModel.event?.category ?? "category")")
+                            .font(.m18)
+                            .padding(.trailing, 7)
                         
-                        Text(eventDeadLine)
+                        Text("\(eventViewModel.오늘날짜와의간격(dateString: eventViewModel.event?.formattedUntilWhen ?? "2024.01.01"))일 남음")
                             .font(.m12)
                             .foregroundColor(Color(red: 0.84, green: 0.36, blue: 0.34))
                             .padding(.horizontal, 11)
@@ -51,7 +46,7 @@ struct DetailProgressEventView: View {
                     }
                     .padding(.bottom, 6)
                     
-                    Text(eventPeriod)
+                    Text("\(eventViewModel.event?.formattedStartWhen ?? "2024.01.01") - \(eventViewModel.event?.formattedUntilWhen ?? "2024.01.01")")
                         .font(.m17)
                         .foregroundColor(Color(red: 0.39, green: 0.39, blue: 0.39))
                         .padding(.bottom, 5)
@@ -83,7 +78,7 @@ struct DetailProgressEventView: View {
                 
                 VStack(spacing: 0) {
                     
-                    Image(eventImage)
+                    Image("eventImage")
                         .resizable()
                         .frame(width: 127, height: 127)
                 }
@@ -108,66 +103,155 @@ struct DetailProgressEventView: View {
                                 .padding(.top, 10)
                                 .padding(.bottom, 12)
                             
+                            Picker(selection: $sort, label: Text("sort")) {
+                                Text("좋아요 순").tag("좋아요 순")
+                                Text("최신순").tag("최신순")
+                                Text("내가 올린 게시글만").tag("내가 올린 게시글만")
+                            }
+                            
                             Spacer()
                         }
                         
                         LazyVGrid(columns: columns, spacing: 18) {
-//                            ForEach(eventViewModel.event!.feeds, id: \.id) { feed in
-//                                EventFeedCell(eventViewModel: eventViewModel)
-//                                
-//                            }
+                            ForEach(sortedFeeds(), id: \.contestId.wrappedValue) { $feed in
+                                EventFeedCell(eventViewModel: eventViewModel, feed: $feed)
+                            }
                         }
                     }
                     .padding(.horizontal, 20)
                     //                .background(Color.blue)
                 }
                 
-                Circle()
-                    .fill(Color(red: 0.28, green: 0.18, blue: 0.89))
-                    .frame(width: 60, height: 60)
-                    .padding(.trailing, 30)
+                Button(action: {
+                    navPathFinder.addPath(route: .uploadEventImage)
+                }, label: {
+                    Circle()
+                        .fill(Color(red: 0.28, green: 0.18, blue: 0.89))
+                        .frame(width: 60, height: 60)
+                        .padding(.trailing, 30)
+                })
                 
             }
             
-        } // Vstsck
+        }// Vstsck
+        .onAppear {
+            eventViewModel.getEventFeed(category: eventViewModel.event?.category ?? "잘못된 요청")
+        }
+        .navigationBarBackButtonHidden()
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                HStack(spacing: 0) {
+                    CustomBackButton()
+                    CustomNavigationTitle(title: "이벤트")
+                }
+                .frame(maxWidth: .infinity)
+            }
+        }
     }
+    
+    // 선택된 정렬 기준에 따라 feeds를 정렬하는 함수
+    func sortedFeeds() -> [Binding<Feed>] {
+        switch sort {
+        case "좋아요 순":
+            return $eventViewModel.feeds.sorted(by: { $0.likeCount.wrappedValue > $1.likeCount.wrappedValue })
+        case "최신순":
+            return $eventViewModel.feeds.sorted(by: { $0.updatedAt.wrappedValue > $1.updatedAt.wrappedValue })
+        case "내가 올린 게시글만":
+            return $eventViewModel.feeds.filter { $0.studentId.wrappedValue == authViewModel.user.studentId }
+        default:
+            return $eventViewModel.feeds.map { $0 }
+        }
+    }
+
 }
 
 struct EventFeedCell: View {
     
     @ObservedObject var eventViewModel: EventViewModel
+    @EnvironmentObject var authViewModel: AuthViewModel
+    @Binding var feed: Feed
     
     var body: some View {
         ZStack(alignment: .bottom){
-            Image("eventSampleImage")
-                .resizable()
-                .frame(width: 165, height: 165)
+            
+            AsyncImage(url: URL(string: feed.photo)) { image in
+                        image
+                            .resizable()
+//                            .aspectRatio(contentMode: .fit)
+                    } placeholder: {
+                        ProgressView()
+                    }
+                    .frame(width: 165, height: 165)
             
             ZStack {
                 Rectangle()
                     .frame(width: 165, height: 28)
                 HStack(spacing: 0) {
-                    Image(systemName: "heart.fill")
-                        .foregroundColor(.white)
-                        .padding(.trailing, 12)
+                    Button(action: {
+                        eventViewModel.postContestLike(contestId: feed.contestId) {
+                            // api요청 아끼는법
+                            if feed.isLiked == true {
+                                feed.isLiked = false
+                                feed.likeCount -= 1
+                            }
+                            else {
+                                feed.isLiked = true
+                                feed.likeCount += 1
+                            }
+                            // 피드 새로고침 api사용
+//                            eventViewModel.getEventFeed(category: eventViewModel.event?.category ?? "asd")
+                        }
+                    }, label: {
+                        Image(systemName: "heart.fill")
+                            .foregroundColor(feed.isLiked ? .red : .white)
+                            .padding(.trailing, 12)
+                    })
                     
-                    Text("12")
+                    Text("\(feed.likeCount)")
                         .font(.m12)
                         .foregroundColor(.white)
                     
                     Spacer()
                     
-                    Circle()
-                        .fill(Color.white)
-                        .frame(width: 2, height: 2)
-                        .padding(.trailing, 3)
-                    Circle()
-                        .fill(Color.white)
-                        .frame(width: 2, height: 2)
-                        .padding(.trailing, 3)
-                    Circle()
-                        .fill(Color.white)
-                        .frame(width: 2, height: 2)
+                    Menu {
+                        if feed.studentId == authViewModel.user.studentId {
+                            Button(action: {
+                                eventViewModel.deleteImage(contestId: feed.contestId) {
+                                    eventViewModel.getEventFeed(category: eventViewModel.event?.category ?? "asd")
+                                }
+                            }, label: {
+                                Text("사진 삭제")
+                            })
+                        }
+                        else {
+                            if feed.isDisliked {
+                                Button(action: {
+                                    print("신고취소")
+                                    eventViewModel.postContestDislike(contestId: feed.contestId) {
+                                        feed.isDisliked.toggle()
+                                    }
+                                }, label: {
+                                    Text("신고 취소하기")
+                                        .padding(.horizontal, 30)
+                                })
+                            }
+                            else {
+                                Button(action: {
+                                    print("신고")
+                                    eventViewModel.postContestDislike(contestId: feed.contestId) {
+                                        feed.isDisliked.toggle()
+                                    }
+                                }, label: {
+                                    Text("신고하기")
+                                        .padding(.horizontal, 30)
+                                })
+                            }
+                        }
+                        
+                    } label: {
+                        Image(systemName: "ellipsis")
+                            .foregroundColor(Color.white)
+                    }
                     
                 }
                 .padding(.horizontal, 12)

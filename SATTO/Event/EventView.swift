@@ -17,6 +17,7 @@ enum EventRoute: Hashable {
     case progressEvent
     case announcementEvent
     case detailProgressEvent
+    case uploadEventImage
 }
 
 final class NavigationPathFinder: ObservableObject {
@@ -51,16 +52,6 @@ struct EventView: View {
                 
                 EventTopTabBar(selectedPage: $selectedPage)
                 
-                Button(action: {
-                    if let uiImage = UIImage(named: "Avatar") {
-                        eventViewModel.uploadTimeTableImage(UIImage: uiImage)
-                                } else {
-                                    print("이미지 없음")
-                                }
-                }, label: {
-                    Text("시간표 경진대회 이미지 업로드")
-                })
-                
                 TabView(selection: $selectedPage) {
                     
                     ProgressEventView(eventViewModel: eventViewModel)
@@ -78,6 +69,7 @@ struct EventView: View {
                 authViewModel.userInfoInquiry {
                     eventViewModel.getEventList()
                 }
+                eventViewModel.event = nil
             }
             .onDisappear {
                 print("이벤트뷰 사라짐")
@@ -90,6 +82,8 @@ struct EventView: View {
                     AnnouncementEventView(eventViewModel: eventViewModel)
                 case .detailProgressEvent:
                     DetailProgressEventView(eventViewModel: eventViewModel)
+                case .uploadEventImage:
+                    UploadImageView(eventViewModel: eventViewModel)
                 }
             }
         }

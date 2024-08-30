@@ -7,25 +7,50 @@
 
 import Foundation
 
-//struct Event {
-//    
-//    let id: UUID = UUID()
-//    let title: String
-//    let startDate: Date
-//    let endDate: Date
-//    let description: String
-//    let feeds: [Feed]
-//    
-//}
+struct FeedResponse: Codable {
+    var isSuccess: Bool
+    var code: String
+    var message: String
+    var result: [Feed]
+}
 
-struct Feed {
+
+
+struct Feed: Codable, Hashable {
     
-    let id: UUID = UUID()
-    let imageURL: URL
-    let uploadDate: Date
-    let like: Int
-    let userInfo: UserInfo
-    let isMyLike: Bool
+    var contestId: Int
+    var name: String
+    var studentId: String
+    var photo: String
+    var likeCount: Int
+    var dislikeCount: Int
+    var isLiked: Bool
+    var isDisliked: Bool
+    var createdAt: String
+    var updatedAt: String
+    
+    // 날짜 변환 메서드
+    func formattedDate(_ dateString: String) -> String {
+        let originalDateFormatter = DateFormatter()
+        originalDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        
+        let targetDateFormatter = DateFormatter()
+        targetDateFormatter.dateFormat = "yyyy.MM.dd"
+        
+        if let date = originalDateFormatter.date(from: dateString) {
+            return targetDateFormatter.string(from: date)
+        } else {
+            return dateString // 변환에 실패하면 원래 문자열 반환
+        }
+    }
+    
+    var formattedCreatedAt: String {
+        return formattedDate(createdAt)
+    }
+    
+    var formattedUpdatedAt: String {
+        return formattedDate(updatedAt)
+    }
     
 }
 
