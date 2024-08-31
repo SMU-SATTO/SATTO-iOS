@@ -54,15 +54,6 @@ struct Feed: Codable, Hashable {
     
 }
 
-struct UserInfo {
-    
-    let studentID: Int
-    let grade: Int
-    let name: String
-    let isPublicAccount: Bool
-    
-}
-
 
 // MARK: - Model
 struct EventResponse: Codable {

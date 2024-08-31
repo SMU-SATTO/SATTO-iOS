@@ -19,7 +19,7 @@ struct AnnouncementEventView: View {
                 Rectangle()
                     .frame(height: 0)
 
-                ForEach(eventViewModel.eventList.filter { eventViewModel.이벤트상태출력(startDate: $0.formattedStartWhen, endDate: $0.formattedUntilWhen) == .progress }, id: \.eventId) { endEvent in
+                ForEach(eventViewModel.eventList.filter { eventViewModel.getEventStatus(startDate: $0.formattedStartWhen, endDate: $0.formattedUntilWhen) == .end }, id: \.eventId) { endEvent in
                     
                     Button(action: {
                         eventViewModel.event = endEvent
@@ -52,7 +52,7 @@ struct AnnouncementEventCell: View {
             }
             .padding(.bottom, 20)
             
-            Text("\(eventViewModel.오늘날짜와의간격(dateString: event.formattedUntilWhen) * -1)일 전에 종료됨")
+            Text("\(eventViewModel.daysFromToday(dateString: event.formattedUntilWhen) * -1)일 전에 종료됨")
                 .font(.m14)
                 .padding(.leading, 12)
                 .padding(.bottom, 24)

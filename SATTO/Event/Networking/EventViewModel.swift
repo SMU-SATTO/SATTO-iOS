@@ -24,45 +24,14 @@ class EventViewModel: ObservableObject {
     private let provider = MoyaProvider<EventAPI>()
     
     @Published var eventList: [Event] = []
-    
-//    @Published var events: [Event] = []
-    
+    // 지금 보고있는 이벤트
     @Published var event: Event?
-    
     @Published var feeds: [Feed] = []
-    
-    @Published var feed: Feed?
-    
-    @Published var feedDislikeAlert = false
-    @Published var cancleFeedDislikeAlert = false
-    @Published var deleteFeedAlert = false
     
     var colors: [Color] = [.lectureBlue, .lectureGreen, .lectureMint, .lectureOrange, .lecturePink, .lecturePurple, .lectureRed, .lectureSkyblue, .lectureYellow]
     var medalColors: [Color] = [.yellow, .gray, .brown]
     
     init() {
-        var userInfo1 = UserInfo(studentID: 201910914, grade: 4, name: "황인성", isPublicAccount: true)
-
-
-    }
-    
-    // 날짜를 문자열로 변환하는 함수
-    func dateString(from date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy.MM.dd"
-        return formatter.string(from: date)
-    }
-    
-    // 날짜 기간을 문자열로 변환하는 함수
-    //    func durationString(from event: EventModel) -> String {
-    //        let duration = event.duration
-    //        let hours = Int(duration / 3600)
-    //        let minutes = Int(duration.truncatingRemainder(dividingBy: 3600) / 60)
-    //        return "\(hours)시간 \(minutes)분"
-    //    }
-    
-    func eventUnwrapping() {
-        guard let unwrappedEvent = event else { return }
     }
     
     func getEventList() {
@@ -187,6 +156,7 @@ class EventViewModel: ObservableObject {
             }
         }
     }
+    
     func deleteImage(contestId: Int, completion: @escaping () -> Void) {
         provider.request(.deleteImage(contestId: contestId)) { result in
             DispatchQueue.main.async {
@@ -218,28 +188,7 @@ class EventViewModel: ObservableObject {
         }
     }
     
-    func 두날짜사이간격(startDateString: String, endDateString: String) -> Int {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy.MM.dd"
-        
-        guard let startDate = dateFormatter.date(from: startDateString),
-              let endDate = dateFormatter.date(from: endDateString) else {
-            fatalError("Invalid date format")
-        }
-        
-        let calendar = Calendar.current
-        
-        let components = calendar.dateComponents([.day], from: startDate, to: endDate)
-        if let days = components.day {
-            print("Number of days between dates: \(days)") // 출력: 13
-            return days
-        }
-        else {
-            return 99
-        }
-    }
-    
-    func 오늘날짜와의간격(dateString: String) -> Int {
+    func daysFromToday(dateString: String) -> Int {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy.MM.dd"
         
@@ -262,42 +211,18 @@ class EventViewModel: ObservableObject {
         }
     }
     
-    func 이벤트상태출력(startDate: String, endDate: String) -> EventState {
-        if 오늘날짜와의간격(dateString: startDate) < 0 && 오늘날짜와의간격(dateString: endDate) < 0 {
+    func getEventStatus(startDate: String, endDate: String) -> EventState {
+        if daysFromToday(dateString: startDate) < 0 && daysFromToday(dateString: endDate) < 0 {
             return .end
         }
-        else if 오늘날짜와의간격(dateString: startDate) <= 0 && 오늘날짜와의간격(dateString: endDate) >= 0 {
+        else if daysFromToday(dateString: startDate) <= 0 && daysFromToday(dateString: endDate) >= 0 {
             return .progress
         }
-        else if 오늘날짜와의간격(dateString: startDate) > 0 {
+        else if daysFromToday(dateString: startDate) > 0 {
             return .yet
         }
         else {
             return .error
-        }
-    }
-    
-    // 문자열을 Date 객체로 변환하는 함수
-    func dateFromCustomString(dateString: String) -> Date? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy.MM.dd"
-        return dateFormatter.date(from: dateString)
-    }
-
-    // Date 객체를 문자열로 변환하는 함수
-    func stringFromDate(date: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy.MM.dd"
-        return dateFormatter.string(from: date)
-    }
-    
-    
-    func sortingFeed(sort: String) {
-        if sort == "좋아요 순" {
-            feeds.sort { $0.likeCount < $1.likeCount }
-        }
-        else if sort == "최신순" {
-            feeds.sort { $0.formattedUpdatedAt < $1.formattedUpdatedAt }
         }
     }
     

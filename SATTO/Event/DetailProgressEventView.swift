@@ -48,7 +48,7 @@ struct DetailProgressEventView: View {
                             .font(.m18)
                             .padding(.trailing, 7)
                         
-                        EventTimerView(text: "\(eventViewModel.오늘날짜와의간격(dateString: eventViewModel.event?.formattedUntilWhen ?? "2024.01.01"))일 남음")
+                        EventTimerView(text: "\(eventViewModel.daysFromToday(dateString: eventViewModel.event?.formattedUntilWhen ?? "2024.01.01"))일 남음")
                     }
                     .padding(.bottom, 6)
                     
@@ -224,7 +224,7 @@ struct EventFeedCell: View {
                                     print("신고취소")
                                     eventViewModel.postContestDislike(contestId: feed.contestId) {
                                         feed.isDisliked.toggle()
-                                        eventViewModel.cancleFeedDislikeAlert.toggle()
+                                        cancleFeedDislikeAlert.toggle()
                                     }
                                 }, label: {
                                     Text("신고 취소하기")
@@ -237,7 +237,7 @@ struct EventFeedCell: View {
                                     print("신고")
                                     eventViewModel.postContestDislike(contestId: feed.contestId) {
                                         feed.isDisliked.toggle()
-                                        eventViewModel.feedDislikeAlert.toggle()
+                                        feedDislikeAlert.toggle()
                                     }
                                 }, label: {
                                     Text("신고하기")

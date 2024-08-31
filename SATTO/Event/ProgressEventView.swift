@@ -35,7 +35,7 @@ struct ProgressEventView: View {
                         }, label: {
                             ProgressEventCell(eventViewModel: eventViewModel, event: event, color: color)
                         })
-                        .disabled(eventViewModel.이벤트상태출력(startDate: event.formattedStartWhen, endDate: event.formattedUntilWhen) == .yet || eventViewModel.이벤트상태출력(startDate: event.formattedStartWhen, endDate: event.formattedUntilWhen) == .end)
+                        .disabled(eventViewModel.getEventStatus(startDate: event.formattedStartWhen, endDate: event.formattedUntilWhen) == .yet || eventViewModel.getEventStatus(startDate: event.formattedStartWhen, endDate: event.formattedUntilWhen) == .end)
                         
                         // 패딩을 주면 빈공간을 눌러도 버튼이 작동한다
                         Spacer()
@@ -60,7 +60,7 @@ struct ProgressEventCell: View {
     var body: some View {
         ZStack {
             // 종료된 이벤트와 시작안한 이벤트는 앞에 표시
-            if eventViewModel.이벤트상태출력(startDate: event.formattedStartWhen, endDate: event.formattedUntilWhen) == .yet {
+            if eventViewModel.getEventStatus(startDate: event.formattedStartWhen, endDate: event.formattedUntilWhen) == .yet {
                 Color.gray
                     .opacity(0.5)
                     .cornerRadius(10)
@@ -70,7 +70,7 @@ struct ProgressEventCell: View {
                     }
                     .zIndex(1)
             }
-            else if eventViewModel.이벤트상태출력(startDate: event.formattedStartWhen, endDate: event.formattedUntilWhen) == .end {
+            else if eventViewModel.getEventStatus(startDate: event.formattedStartWhen, endDate: event.formattedUntilWhen) == .end {
                 Color.gray
                     .opacity(0.5)
                     .cornerRadius(10)
@@ -117,13 +117,13 @@ struct ProgressEventCell: View {
                                     HStack(spacing: 0) {
                                         
                                         // 이벤트 시작까지 남은기간 표시
-                                        switch eventViewModel.이벤트상태출력(startDate: event.formattedStartWhen, endDate: event.formattedUntilWhen) {
+                                        switch eventViewModel.getEventStatus(startDate: event.formattedStartWhen, endDate: event.formattedUntilWhen) {
                                         case .yet:
-                                            EventTimerView(text: "시작까지 \(eventViewModel.오늘날짜와의간격(dateString: event.formattedStartWhen))일 남음")
+                                            EventTimerView(text: "시작까지 \(eventViewModel.daysFromToday(dateString: event.formattedStartWhen))일 남음")
                                         case .end:
                                             EventTimerView(text: "종료")
                                         case .progress:
-                                            EventTimerView(text: "\(eventViewModel.오늘날짜와의간격(dateString: event.formattedUntilWhen))일 남음")
+                                            EventTimerView(text: "\(eventViewModel.daysFromToday(dateString: event.formattedUntilWhen))일 남음")
                                         case .error:
                                             EventTimerView(text: "에러")
                                         }
