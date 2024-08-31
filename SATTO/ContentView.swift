@@ -32,7 +32,7 @@ struct ContentView: View {
                     Text("친구관리")
                 }.tag(Tab.friend)
                 EventView()
-                    .environmentObject(NavigationPathFinder.shared)
+                    .environmentObject(EventNavigationPathFinder.shared)
                     .tabItem {
                     Image(selectedTab == Tab.event ? "event.fill" : "event")
                     Text("이벤트")
@@ -42,7 +42,6 @@ struct ContentView: View {
                     .tabItem {
                     Image(selectedTab == Tab.setting ? "setting.fill" : "setting")
                     Text("설정")
-                            .accentColor(.accentColor)
                 }.tag(Tab.setting)
             }
     }
@@ -58,5 +57,5 @@ enum Tab: String {
 
 #Preview {
     ContentView()
-        .environmentObject(NavigationPathFinder.shared)
+        .environmentObject(EventNavigationPathFinder.shared)
 }

@@ -34,6 +34,7 @@
 		3BCCBFCE2C7C44EC00C6427A /* AuthPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCCBFCD2C7C44EC00C6427A /* AuthPlugin.swift */; };
 		3BCCBFD02C7D610E00C6427A /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCCBFCF2C7D610E00C6427A /* EditProfileView.swift */; };
 		3BCCBFD22C7D68B300C6427A /* EditPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCCBFD12C7D68B300C6427A /* EditPasswordView.swift */; };
+		3BCCBFD62C82AB3A00C6427A /* DetailAnnouncementEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCCBFD52C82AB3A00C6427A /* DetailAnnouncementEventView.swift */; };
 		3BD5322B2BF06ADB00152A77 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD5322A2BF06ADB00152A77 /* Event.swift */; };
 		3BD5322D2BF06AEB00152A77 /* EventViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD5322C2BF06AEB00152A77 /* EventViewModel.swift */; };
 		3BF1F4972C464C5700B32C66 /* CustomBackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF1F4962C464C5700B32C66 /* CustomBackButton.swift */; };
@@ -142,6 +143,7 @@
 		3BCCBFCD2C7C44EC00C6427A /* AuthPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthPlugin.swift; sourceTree = "<group>"; };
 		3BCCBFCF2C7D610E00C6427A /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		3BCCBFD12C7D68B300C6427A /* EditPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPasswordView.swift; sourceTree = "<group>"; };
+		3BCCBFD52C82AB3A00C6427A /* DetailAnnouncementEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailAnnouncementEventView.swift; sourceTree = "<group>"; };
 		3BD5322A2BF06ADB00152A77 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		3BD5322C2BF06AEB00152A77 /* EventViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventViewModel.swift; sourceTree = "<group>"; };
 		3BF1F4962C464C5700B32C66 /* CustomBackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBackButton.swift; sourceTree = "<group>"; };
@@ -243,6 +245,7 @@
 				3B8335BC2BEA182D0008EFB5 /* ProgressEventView.swift */,
 				3B8335BE2BEA18650008EFB5 /* AnnouncementEventView.swift */,
 				3B8335C02BEA19030008EFB5 /* DetailProgressEventView.swift */,
+				3BCCBFD52C82AB3A00C6427A /* DetailAnnouncementEventView.swift */,
 				3B8335C22BEA197D0008EFB5 /* UploadImageView.swift */,
 				3BF1F4AC2C5B143C00B32C66 /* Networking */,
 			);
@@ -704,6 +707,7 @@
 				AAA950682BA5C39B004E16C8 /* CreditPickerView.swift in Sources */,
 				3BF1F49B2C465E7500B32C66 /* FriendViewHelper.swift in Sources */,
 				3BD5322B2BF06ADB00152A77 /* Event.swift in Sources */,
+				3BCCBFD62C82AB3A00C6427A /* DetailAnnouncementEventView.swift in Sources */,
 				3B8335BF2BEA18650008EFB5 /* AnnouncementEventView.swift in Sources */,
 				3B56A3492C09B83B0034B25B /* EmailAuthView.swift in Sources */,
 				3B8335BD2BEA182D0008EFB5 /* ProgressEventView.swift in Sources */,

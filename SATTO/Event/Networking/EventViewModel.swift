@@ -8,6 +8,7 @@
 import Foundation
 import Moya
 import UIKit
+import SwiftUI
 
 enum EventState: Int {
     
@@ -24,7 +25,7 @@ class EventViewModel: ObservableObject {
     
     @Published var eventList: [Event] = []
     
-    @Published var events: [Event] = []
+//    @Published var events: [Event] = []
     
     @Published var event: Event?
     
@@ -32,6 +33,12 @@ class EventViewModel: ObservableObject {
     
     @Published var feed: Feed?
     
+    @Published var feedDislikeAlert = false
+    @Published var cancleFeedDislikeAlert = false
+    @Published var deleteFeedAlert = false
+    
+    var colors: [Color] = [.lectureBlue, .lectureGreen, .lectureMint, .lectureOrange, .lecturePink, .lecturePurple, .lectureRed, .lectureSkyblue, .lectureYellow]
+    var medalColors: [Color] = [.yellow, .gray, .brown]
     
     init() {
         var userInfo1 = UserInfo(studentID: 201910914, grade: 4, name: "황인성", isPublicAccount: true)
@@ -156,7 +163,7 @@ class EventViewModel: ObservableObject {
         }
     }
     
-    func uploadImage(UIImage: UIImage, category: String) {
+    func uploadImage(UIImage: UIImage, category: String, completion: @escaping () -> Void) {
         provider.request(.uploadImage(image: UIImage, category: category)) { result in
             DispatchQueue.main.async {
                 switch result {
@@ -166,6 +173,7 @@ class EventViewModel: ObservableObject {
                         print("Response Data: \(responseString)")
                     }
                     print("uploadTimeTableImage네트워크 요청 성공🚨")
+                    completion()
                     
                 case .failure(let error):
                     
@@ -258,7 +266,7 @@ class EventViewModel: ObservableObject {
         if 오늘날짜와의간격(dateString: startDate) < 0 && 오늘날짜와의간격(dateString: endDate) < 0 {
             return .end
         }
-        else if 오늘날짜와의간격(dateString: startDate) <= 0 && 오늘날짜와의간격(dateString: endDate) > 0 {
+        else if 오늘날짜와의간격(dateString: startDate) <= 0 && 오늘날짜와의간격(dateString: endDate) >= 0 {
             return .progress
         }
         else if 오늘날짜와의간격(dateString: startDate) > 0 {
