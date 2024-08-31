@@ -117,8 +117,8 @@ final class BottomSheetViewModel: TimeSelectorViewModelProtocol {
                     self?.totalPage = subjectDetailModels.1
                     self?.hasMorePages = self?.currentPage ?? 0 < (self?.totalPage ?? 0) - 1
                     completion(true)
-                case .failure(let error):
-                    print("Error fetching currentLectureList: \(error)")
+                case .failure:
+                    print("현재 강의 목록 불러오기에 실패했어요.")
                     completion(false)
                 }
             }

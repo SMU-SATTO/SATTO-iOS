@@ -67,6 +67,8 @@
 		AA9E802F2B498DB400D51447 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = AA9E802E2B498DB400D51447 /* Moya */; };
 		AA9E80312B498DB400D51447 /* ReactiveMoya in Frameworks */ = {isa = PBXBuildFile; productRef = AA9E80302B498DB400D51447 /* ReactiveMoya */; };
 		AA9E80332B498DB400D51447 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = AA9E80322B498DB400D51447 /* RxMoya */; };
+		AAA522782C7C72100056C9B7 /* SATTOError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA522772C7C72100056C9B7 /* SATTOError.swift */; };
+		AAA5227B2C80C2780056C9B7 /* TermsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA5227A2C80C2780056C9B7 /* TermsView.swift */; };
 		AAA9504C2BA5C396004E16C8 /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAA9503E2BA5C396004E16C8 /* Color.xcassets */; };
 		AAA9504D2BA5C396004E16C8 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950402BA5C396004E16C8 /* Font.swift */; };
 		AAA9504E2BA5C396004E16C8 /* Pretendard-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = AAA950412BA5C396004E16C8 /* Pretendard-Black.otf */; };
@@ -98,6 +100,13 @@
 		AAA9508E2BB5A266004E16C8 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1270DD2BB147E300E38F86 /* SettingView.swift */; };
 		AACB4BD02B40712D00169C52 /* SATTOApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACB4BCF2B40712D00169C52 /* SATTOApp.swift */; };
 		AACB4BD72B40712F00169C52 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AACB4BD62B40712F00169C52 /* Preview Assets.xcassets */; };
+		AAD5D6A52C80F29B005FB52A /* 개인정보 수집 및 이용 동의.html in Resources */ = {isa = PBXBuildFile; fileRef = AAD5D6A42C80F29B005FB52A /* 개인정보 수집 및 이용 동의.html */; };
+		AAD5D6A92C80FBB4005FB52A /* 만 14세 이상 동의.html in Resources */ = {isa = PBXBuildFile; fileRef = AAD5D6A82C80FBB4005FB52A /* 만 14세 이상 동의.html */; };
+		AAD5D6AD2C80FEAA005FB52A /* 본인 명의 동의.html in Resources */ = {isa = PBXBuildFile; fileRef = AAD5D6AC2C80FEAA005FB52A /* 본인 명의 동의.html */; };
+		AAD5D6AF2C810C89005FB52A /* SATTO 서비스 이용약관.html in Resources */ = {isa = PBXBuildFile; fileRef = AAD5D6AE2C810C89005FB52A /* SATTO 서비스 이용약관.html */; };
+		AAF9775B2C38295800672090 /* TimetableCompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF9775A2C38295800672090 /* TimetableCompletionView.swift */; };
+		AAF9775D2C386E4300672090 /* PageControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF9775C2C386E4300672090 /* PageControls.swift */; };
+		AAF9775F2C386E8300672090 /* TimetableMakePopupViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF9775E2C386E8300672090 /* TimetableMakePopupViews.swift */; };
 		AAFE958D2BF25BCC00B3342A /* TimeSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAFE958C2BF25BCC00B3342A /* TimeSelectorView.swift */; };
 /* End PBXBuildFile section */
 
@@ -173,6 +182,8 @@
 		AA66001D2C21D6EB0055557C /* TimetableRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableRepository.swift; sourceTree = "<group>"; };
 		AA7752A52C2151EF00778870 /* ChartViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViews.swift; sourceTree = "<group>"; };
 		AA9E219B2BC81FC800F0566A /* MidCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidCheckView.swift; sourceTree = "<group>"; };
+		AAA522772C7C72100056C9B7 /* SATTOError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SATTOError.swift; sourceTree = "<group>"; };
+		AAA5227A2C80C2780056C9B7 /* TermsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsView.swift; sourceTree = "<group>"; };
 		AAA9503E2BA5C396004E16C8 /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
 		AAA950402BA5C396004E16C8 /* Font.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		AAA950412BA5C396004E16C8 /* Pretendard-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Black.otf"; sourceTree = "<group>"; };
@@ -200,6 +211,13 @@
 		AACB4BCC2B40712D00169C52 /* SATTO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SATTO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AACB4BCF2B40712D00169C52 /* SATTOApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SATTOApp.swift; sourceTree = "<group>"; };
 		AACB4BD62B40712F00169C52 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		AAD5D6A42C80F29B005FB52A /* 개인정보 수집 및 이용 동의.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "개인정보 수집 및 이용 동의.html"; sourceTree = "<group>"; };
+		AAD5D6A82C80FBB4005FB52A /* 만 14세 이상 동의.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "만 14세 이상 동의.html"; sourceTree = "<group>"; };
+		AAD5D6AC2C80FEAA005FB52A /* 본인 명의 동의.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "본인 명의 동의.html"; sourceTree = "<group>"; };
+		AAD5D6AE2C810C89005FB52A /* SATTO 서비스 이용약관.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "SATTO 서비스 이용약관.html"; sourceTree = "<group>"; };
+		AAF9775A2C38295800672090 /* TimetableCompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableCompletionView.swift; sourceTree = "<group>"; };
+		AAF9775C2C386E4300672090 /* PageControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageControls.swift; sourceTree = "<group>"; };
+		AAF9775E2C386E8300672090 /* TimetableMakePopupViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableMakePopupViews.swift; sourceTree = "<group>"; };
 		AAFE958C2BF25BCC00B3342A /* TimeSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSelectorView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -341,8 +359,8 @@
 				AAA9505B2BA5C39B004E16C8 /* InvalidTimeSelectorView.swift */,
 				AA9E219B2BC81FC800F0566A /* MidCheckView.swift */,
 				AAA950592BA5C39B004E16C8 /* MajorCombSelectorView.swift */,
-				AA0B714D2C07C77100216A32 /* TimetableProgressView.swift */,
 				AAA9505D2BA5C39B004E16C8 /* FinalTimetableSelectorView.swift */,
+				AAF9775A2C38295800672090 /* TimetableCompletionView.swift */,
 			);
 			path = Tabs;
 			sourceTree = "<group>";
@@ -378,6 +396,7 @@
 			isa = PBXGroup;
 			children = (
 				AA0DFC9B2C0F6413002ED3C9 /* SATTONetworking.swift */,
+				AAA522772C7C72100056C9B7 /* SATTOError.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -437,6 +456,14 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		AAA522792C80C25A0056C9B7 /* Terms */ = {
+			isa = PBXGroup;
+			children = (
+				AAA5227A2C80C2780056C9B7 /* TermsView.swift */,
+			);
+			path = Terms;
+			sourceTree = "<group>";
+		};
 		AAA9503A2BA5C380004E16C8 /* Charts */ = {
 			isa = PBXGroup;
 			children = (
@@ -474,6 +501,7 @@
 		AAA9504B2BA5C396004E16C8 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				AABFF76D2C80D650000E156E /* Terms */,
 				AAA9507D2BA5C8E5004E16C8 /* Images */,
 				AAA9503F2BA5C396004E16C8 /* Color */,
 				AAA9504A2BA5C396004E16C8 /* Font */,
@@ -494,6 +522,9 @@
 			isa = PBXGroup;
 			children = (
 				AAA950632BA5C39B004E16C8 /* TimetableMakeView.swift */,
+				AAF9775E2C386E8300672090 /* TimetableMakePopupViews.swift */,
+				AA0B714D2C07C77100216A32 /* TimetableProgressView.swift */,
+				AAF9775C2C386E4300672090 /* PageControls.swift */,
 				AA0B714B2BFD994100216A32 /* Tabs */,
 			);
 			path = TimetableAutoViews;
@@ -519,6 +550,17 @@
 			path = Images;
 			sourceTree = "<group>";
 		};
+		AABFF76D2C80D650000E156E /* Terms */ = {
+			isa = PBXGroup;
+			children = (
+				AAD5D6AE2C810C89005FB52A /* SATTO 서비스 이용약관.html */,
+				AAD5D6A42C80F29B005FB52A /* 개인정보 수집 및 이용 동의.html */,
+				AAD5D6AC2C80FEAA005FB52A /* 본인 명의 동의.html */,
+				AAD5D6A82C80FBB4005FB52A /* 만 14세 이상 동의.html */,
+			);
+			path = Terms;
+			sourceTree = "<group>";
+		};
 		AACB4BC32B40712D00169C52 = {
 			isa = PBXGroup;
 			children = (
@@ -542,6 +584,7 @@
 				3B0927152C3A6F3100777EEC /* secret.plist */,
 				3B82D8BE2C3A6D03008E0138 /* Home */,
 				3B56A3412C09B7B70034B25B /* Login */,
+				AAA522792C80C25A0056C9B7 /* Terms */,
 				AA1018AA2BDE9C80009E6804 /* Info.plist */,
 				AACB4BCF2B40712D00169C52 /* SATTOApp.swift */,
 				3B1270D52BB147A200E38F86 /* ContentView.swift */,
@@ -640,6 +683,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				AACB4BD72B40712F00169C52 /* Preview Assets.xcassets in Resources */,
+				AAD5D6A92C80FBB4005FB52A /* 만 14세 이상 동의.html in Resources */,
+				AAD5D6AD2C80FEAA005FB52A /* 본인 명의 동의.html in Resources */,
 				AAA950502BA5C396004E16C8 /* Pretendard-ExtraBold.otf in Resources */,
 				3B0927162C3A6F3100777EEC /* secret.plist in Resources */,
 				AAA950562BA5C396004E16C8 /* Pretendard-Thin.otf in Resources */,
@@ -649,8 +694,10 @@
 				3B79D5E02C1FE0B6002FE98F /* Asset.xcassets in Resources */,
 				AAA9504F2BA5C396004E16C8 /* Pretendard-Bold.otf in Resources */,
 				AAA950522BA5C396004E16C8 /* Pretendard-Light.otf in Resources */,
+				AAD5D6A52C80F29B005FB52A /* 개인정보 수집 및 이용 동의.html in Resources */,
 				AAA950532BA5C396004E16C8 /* Pretendard-Medium.otf in Resources */,
 				AAA950542BA5C396004E16C8 /* Pretendard-Regular.otf in Resources */,
+				AAD5D6AF2C810C89005FB52A /* SATTO 서비스 이용약관.html in Resources */,
 				AAA9504E2BA5C396004E16C8 /* Pretendard-Black.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -667,6 +714,7 @@
 				3B8335C12BEA19030008EFB5 /* DetailProgressEventView.swift in Sources */,
 				AAA9508E2BB5A266004E16C8 /* SettingView.swift in Sources */,
 				3B56A3512C09B8500034B25B /* SignUpView.swift in Sources */,
+				AAF9775B2C38295800672090 /* TimetableCompletionView.swift in Sources */,
 				AAA9508D2BB5A263004E16C8 /* FriendView.swift in Sources */,
 				3B0927182C3A78EE00777EEC /* WebView.swift in Sources */,
 				AAA9508C2BB5A260004E16C8 /* ContentView.swift in Sources */,
@@ -703,6 +751,7 @@
 				AA1018A92BDE882C009E6804 /* SubjectModel.swift in Sources */,
 				3B82D8BD2C3A3737008E0138 /* FriendModel.swift in Sources */,
 				AAA950672BA5C39B004E16C8 /* MajorCombSelectorView.swift in Sources */,
+				AAF9775F2C386E8300672090 /* TimetableMakePopupViews.swift in Sources */,
 				3B82D88C2C2268A0008E0138 /* KeyChainManager.swift in Sources */,
 				AAA950682BA5C39B004E16C8 /* CreditPickerView.swift in Sources */,
 				3BF1F49B2C465E7500B32C66 /* FriendViewHelper.swift in Sources */,
@@ -727,12 +776,15 @@
 				3B82D8A62C2BB700008E0138 /* FriendViewModel.swift in Sources */,
 				AAA9504D2BA5C396004E16C8 /* Font.swift in Sources */,
 				AA0DFC982C0F63B4002ED3C9 /* TimetableDto.swift in Sources */,
+				AAA522782C7C72100056C9B7 /* SATTOError.swift in Sources */,
 				3B1270DC2BB147DC00E38F86 /* EventView.swift in Sources */,
+				AAF9775D2C386E4300672090 /* PageControls.swift in Sources */,
 				3B56A3472C09B8320034B25B /* AgreeView.swift in Sources */,
 				AA65E6002C25AC8900655856 /* TimetableModifyView.swift in Sources */,
 				AA65E6022C25B1AB00655856 /* TimetableMainViewModel.swift in Sources */,
 				AACB4BD02B40712D00169C52 /* SATTOApp.swift in Sources */,
 				AAA9506B2BA5C39B004E16C8 /* FinalTimetableSelectorView.swift in Sources */,
+				AAA5227B2C80C2780056C9B7 /* TermsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

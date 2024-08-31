@@ -62,11 +62,10 @@ struct TimetableOptionView: View {
                     }) {
                         HStack(spacing: 5) {
                             Image(systemName: "chevron.left")
-                                .foregroundStyle(Color.blackWhite)
                             Text("뒤로가기")
-                                .font(.b18)
-                                .foregroundStyle(Color.blackWhite200)
+                                .font(.sb16)
                         }
+                        .foregroundStyle(Color.blackWhite)
                     }
                 }
             }

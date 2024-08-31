@@ -10,7 +10,7 @@ import Moya
 
 enum TimetableRouter {
     case postMajorComb(GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String)
-    case postFinalTimetableList(GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [[String]])
+    case postFinalTimetableList(isRaw: Bool, GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [[String]])
     case getTimetableList
     case getMainTimetable
     case getUserTimetable(id: Int?)
@@ -25,6 +25,7 @@ enum TimetableRouter {
     case patchTimetablePrivate(timetableId: Int, isPublic: Bool)
     case patchTimetableRepresent(timetableId: Int, isRepresent: Bool)
     case patchTimetableName(timetableId: Int, timetableName: String)
+    case patchTimetableInfo(timetableId: Int, codeSectionList: [String])
     case deleteTimetable(timetableId: Int)
 }
 
@@ -51,8 +52,8 @@ extension TimetableRouter: TargetType {
         switch self {
         case .postMajorComb:
             return "/timetable"
-        case .postFinalTimetableList:
-            return "/timetable/auto"
+        case .postFinalTimetableList(let isRaw, _, _, _, _, _, _):
+            return isRaw ? "/timetable/auto/raw" : "/timetable/auto"
         case .getTimetableList:
             return "/timetable/list"
         case .getMainTimetable:
@@ -73,6 +74,8 @@ extension TimetableRouter: TargetType {
             return "/timetable/\(timetableId)/represent"
         case .patchTimetableName(let timetableId, _):
             return "/timetable/\(timetableId)/name"
+        case .patchTimetableInfo(let timetableId, _):
+            return "/timetable/\(timetableId)"
         case .deleteTimetable(let timetableId):
             return "/timetable/\(timetableId)"
         }
@@ -80,25 +83,11 @@ extension TimetableRouter: TargetType {
     
     var method: Moya.Method {
         switch self {
-        case .postMajorComb:
+        case .postMajorComb, .postFinalTimetableList, .postTimetableSelect, .postCurrentLectureList:
             return .post
-        case .postFinalTimetableList:
-            return .post
-        case .getTimetableList:
+        case .getTimetableList, .getMainTimetable, .getUserTimetable:
             return .get
-        case .getMainTimetable:
-            return .get
-        case .getUserTimetable:
-            return .get
-        case .postTimetableSelect:
-            return .post
-        case .postCurrentLectureList:
-            return .post
-        case .patchTimetablePrivate:
-            return .patch
-        case .patchTimetableRepresent:
-            return .patch
-        case .patchTimetableName:
+        case .patchTimetablePrivate, .patchTimetableRepresent, .patchTimetableName, .patchTimetableInfo:
             return .patch
         case .deleteTimetable:
             return .delete
@@ -115,7 +104,7 @@ extension TimetableRouter: TargetType {
                 "cyberCount": cyberCount,
                 "impossibleTimeZone": impossibleTimeZone
             ], encoding: JSONEncoding.prettyPrinted)
-        case .postFinalTimetableList(let GPA, let requiredLect, let majorCount, let cyberCount, let impossibleTimeZone, let majorList):
+        case .postFinalTimetableList(_, let GPA, let requiredLect, let majorCount, let cyberCount, let impossibleTimeZone, let majorList):
             return .requestParameters(parameters: [
                 "GPA": GPA,
                 "requiredLect": requiredLect,
@@ -173,9 +162,13 @@ extension TimetableRouter: TargetType {
             return .requestParameters(parameters: [
                 "state": isRepresent
             ], encoding: JSONEncoding.prettyPrinted)
-        case .patchTimetableName(let timetableId, let timetableName):
+        case .patchTimetableName(_, let timetableName):
             return .requestParameters(parameters: [
                 "timeTableName": timetableName,
+            ], encoding: JSONEncoding.prettyPrinted)
+        case .patchTimetableInfo(_, let codeSectionList):
+            return .requestParameters(parameters: [
+                "codeSectionList": codeSectionList
             ], encoding: JSONEncoding.prettyPrinted)
         case .deleteTimetable(let timetableId):
             return .requestParameters(parameters: [
@@ -187,8 +180,12 @@ extension TimetableRouter: TargetType {
     var headers: [String: String]? {
         return [
             "Content-type": "application/json",
-            "Authorization": "Bearer "
+            "Authorization": "Bearer \(getToken() ?? "")"
         ]
+    }
+    
+    private func getToken() -> String? {
+        return KeychainHelper.shared.read(forKey: "accessToken")
     }
     
     var sampleData: Data {

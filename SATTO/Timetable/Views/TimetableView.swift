@@ -121,7 +121,7 @@ struct TimetableView: View {
     
     private func getEndTime(from timetableBaseArray: [SubjectModelBase]) -> Int {
         for endTime in timetableBaseArray {
-            if endTime.time.contains("10") || endTime.time.contains("11") {
+            if endTime.time.contains("13") || endTime.time.contains("14") || endTime.time.contains("15") {
                 return 24
             }
         }

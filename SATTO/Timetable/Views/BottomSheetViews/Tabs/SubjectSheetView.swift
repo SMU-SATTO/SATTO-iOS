@@ -81,7 +81,7 @@ struct SubjectSheetView: View {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundStyle(selectedValues.isSelected(subject: subjectDetail) ? Color.subjectCardSelected : Color.subjectCardBackground)
                 .shadow(color: colorScheme == .light ? Color(red: 0.65, green: 0.65, blue: 0.65).opacity(0.65) : Color.clear, radius: 6.23, x: 0, y: 1.22)
-            //TODO: - ToggleExpansion 백엔드 이슈로 빼기로 결정
+            //MARK: - 추후 개발 예정
 //                .onTapGesture {
 //                    withAnimation {
 //                        toggleExpansion(at: index)

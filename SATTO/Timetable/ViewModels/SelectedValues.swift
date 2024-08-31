@@ -26,7 +26,7 @@ class SelectedValues: TimeSelectorViewModelProtocol {
     //서버에서 준 과목 조합 리스트
     @Published var majorCombinations: [MajorComb] = []
     
-    @Published var timetableList: [[SubjectModelBase]] = [[]]
+    @Published var timetableList: [[SubjectModelBase]] = []
     
     func isSelectedSubjectsEmpty() -> Bool {
         return selectedSubjects.isEmpty
@@ -100,13 +100,13 @@ class SelectedValues: TimeSelectorViewModelProtocol {
                 DispatchQueue.main.async {
                     self?.majorCombinations = majorCombModels
                 }
-            case .failure(let error):
-                print("Error fetching major combinations: \(error)")
+            case .failure:
+                print("전공조합을 가져오는데 실패했어요.")
             }
         }
     }
     
-    func fetchFinalTimetableList(GPA: Int, requiredLect: [SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [MajorComb], completion: @escaping (Result<Void, Error>) -> Void) {
+    func fetchFinalTimetableList(isRaw: Bool, GPA: Int, requiredLect: [SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [MajorComb], completion: @escaping (Result<Void, Error>) -> Void) {
         let requiredLectStrings = requiredLect.map { $0.sbjDivcls }
         let adjustedRequiredLect = requiredLectStrings.isEmpty ? [""] : requiredLectStrings
         let adjustedImpossibleTimeZone = impossibleTimeZone.isEmpty ? "" : impossibleTimeZone
@@ -115,7 +115,7 @@ class SelectedValues: TimeSelectorViewModelProtocol {
                 combination.code
             }
         }
-        repository.postFinalTimetableList(GPA: GPA, requiredLect: adjustedRequiredLect, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: adjustedImpossibleTimeZone, majorList: adjustedMajorList) { [weak self] result in
+        repository.postFinalTimetableList(isRaw: isRaw, GPA: GPA, requiredLect: adjustedRequiredLect, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: adjustedImpossibleTimeZone, majorList: adjustedMajorList) { [weak self] result in
             switch result {
             case .success(let finalTimetableList):
                 DispatchQueue.main.async {
@@ -123,22 +123,40 @@ class SelectedValues: TimeSelectorViewModelProtocol {
                     completion(.success(()))
                 }
             case .failure(let error):
-                print("Error fetching finalTimetableList: \(error)")
+                print("최종 시간표 목록을 가져오는데 실패했어요.")
                 completion(.failure(error))
             }
         }
     }
     
-    func postSelectedTimetable(timetableIndex: Int, semesterYear: String, timeTableName: String, isPublic: Bool, isRepresented: Bool) {
+    func postSelectedTimetable(timetableIndex: Int, semesterYear: String, timeTableName: String, isPublic: Bool, isRepresented: Bool, completion: @escaping (Bool) -> Void) {
         let codeSectionList = timetableList[timetableIndex].map { $0.sbjDivcls }
         SATTONetworking.shared.postTimetableSelect(codeSectionList: codeSectionList, semesterYear: semesterYear, timeTableName: timeTableName, isPublic: isPublic, isRepresented: isRepresented) { result in
             switch result {
             case .success:
                 DispatchQueue.main.async {
                     print("시간표 저장 성공!")
+                    completion(true)
                 }
             case .failure(let error):
-                print("Error post SelectedTimetable: \(error)")
+                print("시간표 저장에 실패했어요.")
+                completion(false)
+            }
+        }
+    }
+    
+    func postCustomTimetable(codeSectionList: [String], semesterYear: String, timeTableName: String, isPublic: Bool, isRepresented: Bool, completion: @escaping (Bool) -> Void) {
+        
+        SATTONetworking.shared.postTimetableSelect(codeSectionList: codeSectionList, semesterYear: semesterYear, timeTableName: timeTableName, isPublic: isPublic, isRepresented: isRepresented) { result in
+            switch result {
+            case .success:
+                DispatchQueue.main.async {
+                    print("시간표 저장 성공!")
+                    completion(true)
+                }
+            case .failure(let error):
+                print("시간표 저장에 실패했어요.")
+                completion(false)
             }
         }
     }

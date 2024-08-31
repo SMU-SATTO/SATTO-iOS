@@ -100,6 +100,12 @@ struct PatchTimetableNameResponseDto: Decodable {
     let code, message, result: String
 }
 
+//MARK: - PatchTimetableInfoResponseDto
+struct PatchTimetableInfoResponseDto: Decodable {
+    let isSuccess: Bool
+    let code, message, result: String
+}
+
 //MARK: - DeleteTimetableResponseDto
 struct DeleteTimetableResponseDto: Decodable {
     let isSuccess: Bool

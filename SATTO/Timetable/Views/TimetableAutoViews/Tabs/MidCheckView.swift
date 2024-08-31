@@ -88,64 +88,6 @@ struct MidCheckView: View {
     }
 }
 
-struct MidCheckPopupView: View {
-    @Binding var midCheckPopup: Bool
-    let navigateForward: () -> Void
-    let selectedValues: SelectedValues
-    
-    var body: some View {
-        RoundedRectangle(cornerRadius: 20)
-            .foregroundStyle(.popupBackground)
-            .frame(width: 300, height: 360)
-            .overlay(
-                VStack(spacing: 30) {
-                    Image(systemName: "exclamationmark.warninglight")
-                        .resizable()
-                        .frame(width: 100, height: 100)
-                    Text("시간표를 생성하면\n현재 설정은 수정할 수 없어요!!")
-                        .font(.sb16)
-                        .lineSpacing(5)
-                        .multilineTextAlignment(.center)
-                    VStack {
-                        Button(action: {
-                            navigateForward()
-                            midCheckPopup = false
-                        }) {
-                            Text("시간표 생성하러 가기")
-                                .font(.sb14)
-                                .foregroundStyle(.white)
-                                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        }
-                        .background(
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(Color.buttonBlue)
-                        )
-                        .frame(height: 40)
-                        Button(action: {
-                            midCheckPopup = false
-                        }) {
-                            Text("조금 더 고민해보기")
-                                .font(.sb14)
-                                .foregroundStyle(Color.buttonBlue)
-                                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        }
-                        .background(
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(.clear)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .inset(by: 2)
-                                        .stroke(Color.buttonBlue, lineWidth: 1.5)
-                                )
-                        )
-                        .frame(height: 40)
-                    }
-                    .padding(.horizontal, 15)
-                }
-            )
-    }
-}
-
 #Preview {
     MidCheckView(selectedValues: SelectedValues())
         .preferredColorScheme(.dark)
