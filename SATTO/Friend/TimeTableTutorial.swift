@@ -65,8 +65,9 @@ struct TimeTableTutorial: View {
                 
                 // 만약 시간표 정보의 강의의 수가 0이면 지오메트리리더 가운데 텍스트 위치시키기
                 if friendViewModel.timeTableInfo?.lects.count == 0 {
-                        Text("시간표 비어있습니다")
-                            .position(x: geo.size.width / 2, y: geo.size.height / 2)
+                    // 일단 주석처리 ????
+//                        Text("시간표 비어있습니다")
+//                            .position(x: geo.size.width / 2, y: geo.size.height / 2)
                 }
                 // 시간표 정보의 강의가 있을때
                 else{

@@ -203,7 +203,6 @@ class EventViewModel: ObservableObject {
         let components = calendar.dateComponents([.day], from: today, to: date)
         
         if let days = components.day {
-            print("Number of days between dates: \(days)")
             return days
         }
         else {
