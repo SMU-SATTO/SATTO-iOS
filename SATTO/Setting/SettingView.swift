@@ -7,107 +7,153 @@
 
 import SwiftUI
 
+enum SettingRoute: Hashable {
+    case editProfile
+    case editPassword
+}
+
+final class SettingNavigationPathFinder: ObservableObject {
+    static let shared = SettingNavigationPathFinder()
+    private init() { }
+    
+    @Published var path: [SettingRoute] = []
+    
+    func addPath(route: SettingRoute) {
+        path.append(route)
+    }
+    
+    func popToRoot() {
+        path = .init()
+    }
+}
+
 struct SettingView: View {
     
-    @State private var isOn = true
-    
     @EnvironmentObject var authViewModel: AuthViewModel
+    @EnvironmentObject var navPathFinder: SettingNavigationPathFinder
+    
+    @AppStorage("isDarkMode") private var isDarkMode = false
     
     var body: some View {
 
-        
-        ZStack {
-            
-            background
-            
-            ScrollView {
-                VStack(spacing: 0) {
+        NavigationStack(path: $navPathFinder.path) {
+            ZStack {
+                background
+                
+                ScrollView {
+                    VStack(spacing: 0) {
                         
-                    ProfileImageCell(inCircleSize: 125, outCircleSize: 130)
-                        .padding(.top, 130)
-                        .padding(.bottom, 14)
-                    
-                    Text(authViewModel.user?.name ?? "name")
-                        .font(.sb18)
-                        .foregroundColor(Color.gray800)
-                    
-                    Text(authViewModel.user?.email ?? "asd")
-                        .font(.m14)
-                        .foregroundColor(Color.gray600)
-                        .padding(.bottom, 14)
-                    
-                    VStack(spacing: 18) {
-                        VStack(spacing: 0) {
+                        ProfileImageCell(inCircleSize: 125, outCircleSize: 130)
+                            .padding(.top, 130)
+                            .padding(.bottom, 14)
+                        
+                        Text(authViewModel.user.name)
+                            .font(.sb18)
+                        Text(authViewModel.user.email)
+                            .font(.m14)
+                            .padding(.bottom, 14)
+                        
+                        VStack(spacing: 18) {
+                            VStack(spacing: 0) {
+                                // 계정공개
+                                SettingToggle(isOn: $authViewModel.user.isPublic, toogleTitle: "계정 공개", toggleImage: "account")
+                                    .onChange(of: authViewModel.user.isPublic) { newValue in
+                                        if newValue == true {
+                                            authViewModel.setAccountPublic()
+                                        }
+                                        else {
+                                            authViewModel.setAccountPrivate()
+                                        }
+                                    }
+                                // 다크모드
+                                SettingToggle(isOn: $isDarkMode, toogleTitle: "다크모드", toggleImage: "darkmode")
+                            }
+                            .padding(.vertical, 5)
+                            .background(
+                                border
+                            )
                             
-                            SettingToggle(toogleTitle: "계정 공개", toggleImage: "account")
-                            SettingToggle(toogleTitle: "버스 우회 정보", toggleImage: "bus")
-                            SettingToggle(toogleTitle: "알림 기능", toggleImage: "alarm")
-                            SettingToggle(toogleTitle: "다크모드", toggleImage: "darkmode")
+                            VStack(spacing: 0) {
+                                // 개인정보 수정
+                                Button(action: {
+                                    navPathFinder.addPath(route: .editProfile)
+                                }, label: {
+                                    SettingOptionCell(settingImageName: "edit", settingName: "개인정보 수정하기")
+                                })
+                                // 비밀번호 수정
+                                Button(action: {
+                                    navPathFinder.addPath(route: .editPassword)
+                                }, label: {
+                                    SettingOptionCell(settingImageName: "info", settingName: "비밀번호 수정하기")
+                                })
+                            }
+                            .padding(.vertical, 5)
+                            .background(
+                                border
+                            )
                             
+                            VStack(spacing: 0) {
+                                // 아직 작동안함
+                                SettingOptionCell(settingImageName: "ask", settingName: "문의하기")
+                                SettingOptionCell(settingImageName: "version", settingName: "현재 버전")
+                                
+                                // 로그아웃
+                                Button(action: {
+                                    authViewModel.logout()
+                                }, label: {
+                                    SettingOptionCell(settingImageName: "logout", settingName: "로그아웃")
+                                })
+                                // 회원탈퇴
+                                Button(action: {
+                                    authViewModel.signOut()
+                                }, label: {
+                                    SettingOptionCell(settingImageName: "delete", settingName: "탈퇴하기")
+                                })
+                            }
+                            .padding(.vertical, 5)
+                            .background(
+                                border
+                            )
+                            .padding(.bottom, 100)
                         }
-                        .padding(.vertical, 5)
-                        .background(
-                            border
-                        )
-                        
-                        
-                        VStack(spacing: 0) {
-                            
-                            SettingOptionCell(settingImageName: "edit", settingName: "시간표 수정하기")
-                            SettingOptionCell(settingImageName: "info", settingName: "공지사항")
-                            
-                        }
-                        .padding(.vertical, 5)
-                        .background(
-                            border
-                        )
-                        
-                        VStack(spacing: 0) {
-                            
-                            SettingOptionCell(settingImageName: "ask", settingName: "문의하기")
-                            SettingOptionCell(settingImageName: "logout", settingName: "현재 버전")
-                            
-                            Button(action: {
-                                authViewModel.logout()
-                            }, label: {
-                                SettingOptionCell(settingImageName: "logout", settingName: "로그아웃")
-                            })
-                            
-                            Button(action: {
-                                authViewModel.signOut()
-                            }, label: {
-                                SettingOptionCell(settingImageName: "delete", settingName: "탈퇴하기")
-                            })
-                            
-                            
-                        }
-                        .padding(.vertical, 5)
-                        .background(
-                            border
-                        )
-                        .padding(.bottom, 100)
+                        .padding(.horizontal, 25)
                     }
-                    .padding(.horizontal, 25)
-                    
+                    .foregroundStyle(Color.cellText)
+                }
+            }
+            .ignoresSafeArea()
+            .onAppear {
+                authViewModel.userInfoInquiry { }
+            }
+            .navigationDestination(for: SettingRoute.self) { route in
+                switch route {
+                case .editProfile:
+                    EditProfileView()
+                case .editPassword:
+                    EditPasswordView()
                 }
             }
         }
-        .ignoresSafeArea()
     }
     
+    // 아래만 둥근 배경
     var background: some View {
-        VStack(spacing: 0) {
-            MySquare()
-                .fill(Color.gray100)
-            .frame(maxWidth: .infinity, maxHeight: 230)
+        ZStack{
+            Color.background
             
-            Spacer()
+            VStack(spacing: 0) {
+                MySquare()
+                    .fill(Color.settingBackground)
+                    .frame(maxWidth: .infinity, maxHeight: 230)
+                
+                Spacer()
+            }
         }
     }
     
     var border: some View {
         Rectangle()
-            .foregroundColor(.white)
+            .foregroundColor(.cellBackground)
             .cornerRadius(8)
             .shadow(radius: 5, x: 0, y: 0)
     }
@@ -115,30 +161,28 @@ struct SettingView: View {
 
 
 struct SettingToggle: View {
-    @State private var isOn = false
+    @Binding var isOn: Bool
     var toogleTitle: String
     var toggleImage: String
     
     var body: some View {
-        
             Toggle(isOn: $isOn) {
                 HStack(spacing: 0) {
                     Image(toggleImage)
+                        .renderingMode(.template)
+                        .foregroundStyle(Color.cellText)
                         .padding(.leading, 5)
                         .padding(.trailing, 14)
                     
                     Text(toogleTitle)
                         .font(Font.custom("Pretendard", size: 14))
-                        .foregroundColor(Color.gray600)
+                        .foregroundStyle(Color.cellText)
                 }
-                
             }
             .tint(Color(red: 0.18, green: 0.5, blue: 0.93))
             .padding(.horizontal, 23)
             .padding(.vertical, 7)
-        
     }
-        
 }
 
 struct SettingOptionCell: View {
@@ -149,12 +193,14 @@ struct SettingOptionCell: View {
     var body: some View {
         HStack(spacing: 0) {
             Image(settingImageName)
+                .renderingMode(.template)
+                .foregroundStyle(Color.cellText)
                 .padding(.leading, 5)
                 .padding(.trailing, 14)
             
             Text(settingName)
                 .font(Font.custom("Pretendard", size: 14))
-                .foregroundColor(Color.gray600)
+                .foregroundColor(Color.cellText)
             
             Spacer()
         }
@@ -163,7 +209,7 @@ struct SettingOptionCell: View {
     }
 }
 
-
+// 아래만 둥근 도형
 struct MySquare: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
@@ -179,12 +225,5 @@ struct MySquare: Shape {
     }
 }
 
-#Preview {
-    SettingView()
-}
-
-#Preview {
-    ContentView()
-}
 
 

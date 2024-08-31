@@ -15,10 +15,10 @@ struct CustomBackButton: View {
             dismiss()
         } label: {
             Image("Classic")
+                .renderingMode(.template)
+                .foregroundStyle(.backButton)
+            
         }
     }
 }
 
-#Preview {
-    CustomBackButton()
-}

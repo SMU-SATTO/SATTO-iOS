@@ -17,8 +17,11 @@ struct ProfileImageCell: View {
             .fill(Color.white)
             .frame(width: outCircleSize, height: outCircleSize)
             .overlay(
-                Circle()
+                Image("profileImage")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
                     .frame(width: inCircleSize, height: inCircleSize)
+                    .clipShape(Circle())
             )
             .shadow(radius: 15, x: 0, y: 10)
     }

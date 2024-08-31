@@ -40,22 +40,17 @@ struct MyPageView: View {
         
         NavigationStack(path: $navPathFinder.path) {
             ZStack {
-                
                 background
                 
                 ScrollView {
-                    
                     VStack(spacing: 0) {
-                        
                         Spacer()
                             .frame(height: 60)
                         
                         ZStack(alignment: .top) {
-                            
                             upperRoundRectangle
                             
                             VStack(spacing: 0) {
-                                
                                 HStack(spacing: 0) {
                                     
                                     // 팔로워 버튼
@@ -94,17 +89,18 @@ struct MyPageView: View {
                                         }
                                         .font(.sb16)
                                     })
-                                }
+                                    
+                                } // HStack
                                 .padding(.top, 22)
                                 .padding(.bottom, 14)
                                 .padding(.horizontal, 51)
                                 
-                                Text("\(authViewModel.user?.name ?? "name") \(authViewModel.user?.studentId ?? "studentId")")
+                                Text("\(authViewModel.user.name) \(authViewModel.user.studentId)")
                                     .font(.sb16)
                                     .foregroundColor(Color.gray800)
                                     .padding(.bottom, 5)
                                 
-                                Text("\(authViewModel.user?.department ?? "department")")
+                                Text("\(authViewModel.user.department)")
                                     .font(.m14)
                                     .foregroundColor(Color.gray600)
                                     .padding(.bottom, 23)
@@ -112,51 +108,19 @@ struct MyPageView: View {
                                 HStack(spacing: 0) {
                                     checkGraduation
                                         .padding(.trailing, 53)
-                                    
                                     modifyTimetable
                                 }
                                 .padding(.bottom, 37)
-                                
-//                                Text("selectedSemesterYear: \(friendViewModel.selectedSemesterYear)")
-//                                Text("selectedTimeTableName: \(friendViewModel.selectedTimeTableName)")
-//                                Text("필터링된 시간표id: \(friendViewModel.getSelectedTimetableId(timeTables: friendViewModel.timeTables))")
-//                                
-//                                Button(action: {
-//                                    print(friendViewModel.follower)
-//                                }, label: {
-//                                    Text("팔로워 조회")
-//                                })
-//                                Button(action: {
-//                                    print(friendViewModel.following)
-//                                }, label: {
-//                                    Text("팔로잉 조회")
-//                                })
-//                                Button(action: {
-//                                    print(friendViewModel.myFollower)
-//                                }, label: {
-//                                    Text("내팔로워 조회")
-//                                })
-//                                Button(action: {
-//                                    print(friendViewModel.myFollowing)
-//                                }, label: {
-//                                    Text("내팔로잉 조회")
-//                                })
-//                                
-//                                Button(action: {
-//                                    print("\(friendViewModel.friend)")
-//                                }, label: {
-//                                    Text("현재 정보 조회")
-//                                })
-                                
+
                                 if friendViewModel.timeTables.isEmpty {
                                     Text("시간표가 없습니다")
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                         .padding(.horizontal, 20)
+                                        .foregroundStyle(Color.cellText)
                                 }
                                 else {
                                     HStack(spacing: 0) {
                                         Picker("Select Semester Year", selection: $friendViewModel.selectedSemesterYear) {
-                                            
                                             ForEach(friendViewModel.getSemestersFromTimetables(timeTables: friendViewModel.timeTables), id: \.self) { semester in
                                                 Text(friendViewModel.formatSemesterString(semester: semester))
                                                     .tag(semester)
@@ -171,7 +135,7 @@ struct MyPageView: View {
                                         Spacer()
                                     }
                                     .padding(.horizontal, 20)
-                                    .tint(Color.black)
+                                    .tint(Color.cellText)
                                 }
                                 
                                 TimeTableTutorial(friendViewModel: friendViewModel)
@@ -185,37 +149,42 @@ struct MyPageView: View {
             .onAppear {
                 print("마이페이지뷰 생성")
                 
+                // 내 정보 조회가 성공하면
                 authViewModel.userInfoInquiry {
-                    
+                    // friend배열이 비어있으면 내 정보를 friend로 변환해서 첫번째 인덱스에 넣는다
                     if friendViewModel.friend.isEmpty {
-                        let friend = convertUserToFriend(user: authViewModel.user ?? User(studentId: "studentId", email: "email", password: "password", name: "name", nickname: "nickname", department: "department", grade: 5, isPublic: true))
+                        let friend = convertUserToFriend(user: authViewModel.user)
                         friendViewModel.friend.append(friend)
                     }
-                    
-                    friendViewModel.fetchMyFollowerList(studentId: authViewModel.user?.studentId ?? "asd") {
+                    // 내 팔로워들을 follower배열과 myFollower배열에 넣는다
+                    friendViewModel.fetchMyFollowerList(studentId: authViewModel.user.studentId) {
                         friendViewModel.follower = friendViewModel.myFollower
                     }
-                    friendViewModel.fetchMyFollowingList(studentId: authViewModel.user?.studentId ?? "asd") {
+                    // 내 팔로잉들을 following배열과 myFolloweing배열에 넣는다
+                    friendViewModel.fetchMyFollowingList(studentId: authViewModel.user.studentId) {
                         friendViewModel.following = friendViewModel.myFollowing
                     }
                 }
-                
+                // 내 시간표들을 조회한다 (강의정보 제외)
                 friendViewModel.fetchMyTimetableList()
             }
+            // 학기를 바꾸면 그 학기에 해당하는 시간표들의 첫번째 값을 보여준다
             .onChange(of: friendViewModel.selectedSemesterYear) { _ in
                 friendViewModel.selectedTimeTableName = friendViewModel.getTimetableNamesForSemester(timeTables: friendViewModel.timeTables, semester: friendViewModel.selectedSemesterYear).first ?? "이름없음"
             }
+            // 시간표 이름을 바꾸면 그 시간표의 값을 보여준다
             .onChange(of: friendViewModel.selectedTimeTableName) { _ in
                 friendViewModel.fetchTimeTableInfo(timeTableId: friendViewModel.getSelectedTimetableId(timeTables: friendViewModel.timeTables))
             }
+            // 마이페이지에서 팔로워 누를때만 FollwerSearchView로 이동
             .navigationDestination(for: FriendRoute.self) { route in
                 switch route {
                 case .search:
-                    SearchView(friendViewModel: friendViewModel, TextFieldPlacehold: "친구의 학번을 입력해 주세요")
+                    SearchView(friendViewModel: friendViewModel)
                 case .followerSearch:
-                    FollwerSearchView(friendViewModel: friendViewModel, TextFieldPlacehold: "팔로워 목록")
+                    FollwerSearchView(friendViewModel: friendViewModel)
                 case .followingSearch:
-                    FollowingSearchView(friendViewModel: friendViewModel, TextFieldPlacehold: "팔로잉 목록")
+                    FollowingSearchView(friendViewModel: friendViewModel)
                 case .friend:
                     FriendView(friendViewModel: friendViewModel)
                 }
@@ -225,7 +194,6 @@ struct MyPageView: View {
                     HStack(spacing: 0) {
                         CustomNavigationTitle(title: "내프로필")
                     }
-                    .frame(maxWidth: .infinity)
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     HStack(spacing: 0) {
@@ -233,12 +201,12 @@ struct MyPageView: View {
                             navPathFinder.addPath(route: .search)
                         }, label: {
                             Image("searchIcon")
+                                .renderingMode(.template)
+                                .foregroundStyle(.backButton)
                         })
                     }
-                    .frame(maxWidth: .infinity)
                 }
             }
-            
         }
     }
     
@@ -250,7 +218,7 @@ struct MyPageView: View {
             .padding(.vertical, 7)
             .background(
                 Rectangle()
-                    .fill(Color(red: 0.4, green: 0.31, blue: 1.0))
+                    .fill(Color.sattoPurple)
                     .cornerRadius(10)
             )
     }
@@ -258,29 +226,27 @@ struct MyPageView: View {
     var modifyTimetable: some View {
         Text("시간표 과목수정")
             .font(.m12)
-            .foregroundColor(Color(red: 0.4, green: 0.31, blue: 1.0))
+            .foregroundColor(Color.sattoPurple)
             .padding(.horizontal, 12)
             .padding(.vertical, 7)
             .background(
                 RoundedRectangle(cornerRadius: 10)
-                    .stroke(Color(red: 0.4, green: 0.31, blue: 1.0), lineWidth: 1)
-                
+                    .stroke(Color.sattoPurple, lineWidth: 1)
             )
     }
     
     var background: some View {
         VStack(spacing: 0) {
-            Color(red: 0.92, green: 0.93, blue: 0.94)
+            Color.friendBackUpper
                 .ignoresSafeArea(.all)
-            
-            Color.white
+            Color.friendBackLower
                 .ignoresSafeArea(.all)
         }
     }
     
     var upperRoundRectangle: some View {
         Rectangle()
-            .fill(Color.white)
+            .fill(Color.friendBackLower)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .clipShape(
                 .rect(
@@ -290,6 +256,7 @@ struct MyPageView: View {
             )
     }
     
+    // user를 friend로 바꾸는 함수
     func convertUserToFriend(user: User) -> Friend {
         return Friend(
             studentId: user.studentId,
