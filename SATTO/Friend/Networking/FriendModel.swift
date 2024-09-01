@@ -74,4 +74,10 @@ struct Lecture: Codable {
     var credit: Int
 }
 
+struct ComPareTimetableResponse: Codable {
+    var isSuccess: Bool
+    var code: String
+    var message: String
+    var result: [String]
+}
 

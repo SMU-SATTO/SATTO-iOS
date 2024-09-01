@@ -14,6 +14,8 @@ struct CompareTimeTableView: View {
     @State var compareFriendCount = 0
     @State var showResult: Bool = true
     
+    @ObservedObject var friendViewModel: FriendViewModel
+    
     var body: some View {
         VStack(spacing: 0) {
             
@@ -32,140 +34,207 @@ struct CompareTimeTableView: View {
                     Text("내가 팔로잉하는 친구만 확인 가능합니다.")
                         .font(.m12)
                         .foregroundColor(Color.gray500)
+                        .padding(.trailing, 20)
+                    if !friendViewModel.compareFriends.isEmpty {
+                        Button(action: {
+                            showFriendSheet.toggle()
+                        }, label: {
+                            Image(systemName: "person.badge.plus")
+                                .resizable()
+                                .frame(width: 20, height: 20)
+                                .foregroundStyle(Color.sattoPurple)
+                        })
+                    }
                 }
                 
             }
             .padding(.vertical, 14)
             .padding(.leading, 30)
             
-            if showResult == false {
+            
+            if friendViewModel.compareFriends.isEmpty {
                 
                 HStack(spacing: 0) {
-                    
                     
                     ProfileImageCell(inCircleSize: 65, outCircleSize: 70)
+                    
+                    Circle()
+//                        .fill(Color(red: 0.26, green: 0.56, blue: 1).opacity(0.2))
+                        .frame(width: 7, height: 7)
+                        .padding(.trailing, 7)
+                        .padding(.leading, 30)
+                    Circle()
+//                        .fill(Color(red: 0.26, green: 0.56, blue: 1).opacity(0.5))
+                        .frame(width: 7, height: 7)
+                        .padding(.trailing, 7)
+                    Circle()
+//                        .fill(Color(red: 0.26, green: 0.56, blue: 1))
+                        .frame(width: 7, height: 7)
                         .padding(.trailing, 30)
                     
                     
-                    Circle().frame(width: 7, height: 7)
-                        .padding(.trailing, 7)
-                    Circle().frame(width: 7, height: 7)
-                        .padding(.trailing, 7)
-                    Circle().frame(width: 7, height: 7)
-                        .padding(.trailing, 30)
-                    
-                    
-                    
-                    if compareFriendCount == 0 {
-                        Button(action: {
-                            showFriendSheet.toggle()
-                        }, label: {
-                            Image("append.friend")
-                                .resizable()
-                                .frame(width: 32.0, height: 32.0)
-                        })
-                        .sheet(isPresented: $showFriendSheet) {
-                            VStack(spacing: 0){
-                                HStack(spacing: 0) {
-                                    
-                                    
-                                    ClearButtonTextField(placehold: "친구 검색", text: $text)
-                                        .padding(.leading, 20)
-                                        .padding(.trailing, 10)
-                                    
-                                    Button(action: {
-                                        showFriendSheet.toggle()
-                                    }, label: {
-                                        Text("완료")
-                                    })
-                                    .padding(.trailing, 20)
-                                    
-                                }
-                                .padding(.bottom, 10)
-                                .padding(.top, 20)
-                                
-                                Divider()
-                                ScrollView {
-                                    ForEach(0 ..< 10) { item in
-                                        CompareFriendCell(name: "한민재", studentID: 20201499, isFollowing: false)
-                                            .padding(.bottom, 15)
-                                            .padding(.top, 10)
-                                    }
-                                }
-                                .presentationDetents([.fraction(0.7), .fraction(0.9)])
-                                .presentationDragIndicator(.visible)
-                            }
-                        }
-                    }
-                    else {
-                        
-                        ZStack {
-                            ProfileImageCell(inCircleSize: 56, outCircleSize: 60)
-                            ProfileImageCell(inCircleSize: 56, outCircleSize: 60)
-                                .offset(CGSize(width: 20.0, height: 0))
-                            
-                            HStack(spacing: 0) {
-                                Circle().frame(width: 3, height: 3)
-                                    .padding(.trailing, 3)
-                                Circle().frame(width: 3, height: 3)
-                                    .padding(.trailing, 3)
-                                Circle().frame(width: 3, height: 3)
-                            }
-                            .offset(CGSize(width: 65.0, height: 0))
-                            
-                        }
-                    }
-                    
-                    
-                    
-                    
-                    
-                    
+                    Button(action: {
+                        showFriendSheet.toggle()
+                    }, label: {
+                        Image(systemName: "person.badge.plus")
+                            .resizable()
+                            .frame(width: 60, height: 60)
+                            .foregroundStyle(Color.sattoPurple)
+                    })
                 }
-//                .background(Color.red)
-                .padding(.bottom, 14)
-                
-                //            .background(Color.red)
-                
-                
-                HStack(spacing: 0) {
-                    
-                    Text("확인하러 가기   ")
-                        .font(.sb14)
-                        .foregroundColor(.white)
-                        .padding(.leading, 38)
-                    
-                    Image("VectorTrailing")
-                        .padding(.bottom, 5)
-                        .padding(.trailing, 32)
-                }
-                .padding(.vertical,10)
-                .background(
-                    Rectangle()
-                        .cornerRadius(20)
-                )
-                .padding(.bottom, 14)
+                .padding(.vertical, 20)
             }
-            
             else {
-//                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 30) {
-                            ForEach(0 ..< 3) { item in
-                                ProfileImageCell(inCircleSize: 65, outCircleSize: 70)
+                VStack(spacing: 0) {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 0) {
+                            Spacer()
+                                .frame(width: 30)
+                            
+                            ForEach(friendViewModel.compareFriends, id: \.studentId) { friend in
+                                VStack(spacing: 0) {
+                                    ProfileImageCell(inCircleSize: 65, outCircleSize: 70)
+                                        .padding(.bottom, 10)
+                                    Text("\(friend.name)")
+                                        .font(.m12)
+                                }
+                                .padding(.trailing, 30)
                             }
                         }
-                        .padding(.top, 20)
-                        .padding(.bottom, 60)
-                        .padding(.horizontal, 20)
-//                    }
+                        .padding(.vertical, 20)
+                    }
+                    Button(action: {
+                        friendViewModel.postCompareTimeTable(studentIds: friendViewModel.compareFriends.map{ $0.studentId })
+                        print(friendViewModel.compareFriends.map{ $0.studentId })
+                    }, label: {
+                        Text("겹치는 시간표 조회")
+                    })
+                }
             }
-            
         }
         .background(
             Color.info60
         )
+        .sheet(isPresented: $showFriendSheet) {
+            CompareFriendSearchView(friendViewModel: friendViewModel)
+        }
         
         Spacer()
+    }
+}
+
+struct CompareFriendSearchView: View {
+    
+    @State var text = ""
+    var TextFieldPlacehold: String = "팔로잉 목록"
+    
+    @EnvironmentObject var navPathFinder: FriendNavigationPathFinder
+    @ObservedObject var friendViewModel: FriendViewModel
+    
+    var body: some View {
+        ZStack {
+            Color.background
+            
+            VStack(spacing: 0){
+                HStack(spacing: 0) {
+//                    CustomBackButton()
+//                        .padding(.leading, 20)
+                    ClearButtonTextField(placehold: TextFieldPlacehold, text: $text)
+                        .padding(.horizontal, 20)
+                }
+                .padding(.bottom, 10)
+                .padding(.top, 20)
+                
+                Divider()
+
+                ScrollView {
+                    // 네트워크 없이 로컬에서 검색
+                    // 이름과 학번 모두 검색 가능
+                    ForEach(friendViewModel.following.filter {
+                        text.isEmpty || $0.name.contains(text) || $0.studentId.contains(text)
+                    }, id: \.studentId) { friend in
+                        // 마이페이지든 친구페이지든 followingCell로 표시
+                        CompareFriendSearchCell(friend: friend, friendViewModel: friendViewModel)
+                            .padding(.bottom, 15)
+                            .padding(.top, 10)
+                    }
+                }
+            }
+            .navigationBarBackButtonHidden()
+            .onAppear {
+                // 내가 보고있는 친구의 팔로잉 조회
+                friendViewModel.fetchFollowingList(studentId: friendViewModel.friend.last?.studentId ?? "studentId")
+            }
+        }
+    }
+}
+
+struct CompareFriendSearchCell: View {
+    
+    var friend: Friend
+    
+    @EnvironmentObject var navPathFinder: FriendNavigationPathFinder
+    @ObservedObject var friendViewModel: FriendViewModel
+    
+    var body: some View {
+        HStack(spacing: 0) {
+            Circle()
+                .frame(width: 60, height: 60)
+                .background(
+                    Circle()
+                        .fill(Color.gray)
+                        .frame(width: 63, height: 63)
+                )
+                .shadow(radius: 5, x: 0, y: 5)
+                .padding(.trailing, 14)
+                .padding(.leading, 20)
+            
+//            Button(action: {
+//                // 내 정보와 일치하는 친구는 친구페이지로 이동 불가
+//                if friend == friendViewModel.friend.first { }
+//                // friend목록에 추가하고 뷰 이동
+//                else {
+//                    friendViewModel.friend.append(friend)
+//                    navPathFinder.addPath(route: .friend)
+//                }
+//                
+//                friendViewModel.compareFriends.append(friend)
+//            }, label: {
+                VStack(alignment: .leading, spacing: 0) {
+                    Text(friend.name)
+                        .font(.m16)
+                        .foregroundColor(Color.gray800)
+                    Text(friend.studentId)
+                        .font(.m12)
+                        .foregroundColor(Color.gray600)
+                }
+//            })
+            
+            Spacer()
+            
+            if friendViewModel.compareFriends.contains(friend) {
+                Image("Tick Square")
+                    .renderingMode(.template)
+                    .foregroundStyle(Color.blue)
+                    .padding(.trailing, 20)
+            }
+            else {
+                Image("Tick Square")
+                    .renderingMode(.template)
+                    .foregroundStyle(Color.gray)
+                    .padding(.trailing, 20)
+            }
+        }
+        .onTapGesture {
+            if friendViewModel.compareFriends.contains(friend) {
+                if let index = friendViewModel.compareFriends.firstIndex(of: friend) {
+                    friendViewModel.compareFriends.remove(at: index)
+                }
+            }
+            else {
+                friendViewModel.compareFriends.append(friend)
+            }
+        }
     }
 }
 
@@ -272,6 +341,29 @@ struct CompareTimeTableResultView: View {
                 
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 0) {
+                        
+                        ProfileImageCell(inCircleSize: 65, outCircleSize: 70)
+                        
+//                        Circle()
+//                            .fill(Color(red: 0.26, green: 0.56, blue: 1).opacity(0.2))
+//                            .frame(width: 7, height: 7)
+//                            .padding(.trailing, 7)
+//                            .padding(.leading, 30)
+//
+//                        Circle()
+//                            .fill(Color(red: 0.26, green: 0.56, blue: 1).opacity(0.5))
+//                            .frame(width: 7, height: 7)
+//                            .padding(.trailing, 7)
+//                        
+//                        Circle()
+//                            .fill(Color(red: 0.26, green: 0.56, blue: 1))
+//                            .frame(width: 7, height: 7)
+//                            .padding(.trailing, 30)
+//                        
+//                        Image(systemName: "person.badge.plus")
+//                            .frame(width: 65, height: 65)
+//                            .foregroundStyle(Color.sattoPurple)
+                        
                         ForEach(0 ..< 10) { item in
                             ProfileImageCell(inCircleSize: 65, outCircleSize: 70)
                                 .padding(.trailing, 30)
@@ -294,11 +386,5 @@ struct CompareTimeTableResultView: View {
 }
 
 
-#Preview {
-    CompareTimeTableView()
-}
 
-#Preview {
-    CompareTimeTableResultView()
-}
 

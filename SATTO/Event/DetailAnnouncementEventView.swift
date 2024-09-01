@@ -14,6 +14,8 @@ struct DetailAnnouncementEventView: View {
     @EnvironmentObject var navPathFinder: EventNavigationPathFinder
     @EnvironmentObject var authViewModel: AuthViewModel
     
+    @State var isImageZoomed = false
+    
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
@@ -64,7 +66,7 @@ struct DetailAnnouncementEventView: View {
                             // 메달 색은 최대 3개
                             let color = eventViewModel.medalColors[index]
                             
-                            EndEventFeedCell(eventViewModel: eventViewModel, feed: feed, color: color)
+                            EndEventFeedCell(eventViewModel: eventViewModel, isImageZoomed: $isImageZoomed, feed: feed, color: color)
                             
                             // 그 다음부터는 밑에 40씩 뛰운다
                             Spacer()
@@ -77,6 +79,9 @@ struct DetailAnnouncementEventView: View {
         .onAppear {
             eventViewModel.getEventFeed(category: eventViewModel.event?.category ?? "잘못된 요청")
         }
+        .fullScreenCover(isPresented: $isImageZoomed) {
+            ZoomedImageView(isImageZoomed: $isImageZoomed, feed: eventViewModel.feed!)
+                        }
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -95,6 +100,8 @@ struct EndEventFeedCell: View {
     @ObservedObject var eventViewModel: EventViewModel
     
     @EnvironmentObject var authViewModel: AuthViewModel
+    
+    @Binding var isImageZoomed: Bool
     
     var feed: Feed
     // 메달 색깔
@@ -124,6 +131,11 @@ struct EndEventFeedCell: View {
                     ProgressView()
                 }
                 .frame(width: 266, height: 266)
+                .onTapGesture {
+                    print("클릭")
+                    eventViewModel.feed = feed
+                    isImageZoomed = true
+                }
                 
                 ZStack {
                     Rectangle()

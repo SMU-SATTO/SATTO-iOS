@@ -12,6 +12,7 @@ enum FriendRoute: Hashable {
     case followerSearch
     case followingSearch
     case friend
+    case compareTimeTable
 }
 
 final class FriendNavigationPathFinder: ObservableObject {
@@ -108,7 +109,12 @@ struct MyPageView: View {
                                 HStack(spacing: 0) {
                                     checkGraduation
                                         .padding(.trailing, 53)
-                                    modifyTimetable
+                                    
+                                    Button(action: {
+                                        navPathFinder.addPath(route: .compareTimeTable)
+                                    }, label: {
+                                        modifyTimetable
+                                    })
                                 }
                                 .padding(.bottom, 37)
 
@@ -187,6 +193,8 @@ struct MyPageView: View {
                     FollowingSearchView(friendViewModel: friendViewModel)
                 case .friend:
                     FriendView(friendViewModel: friendViewModel)
+                case .compareTimeTable:
+                    CompareTimeTableView(friendViewModel: friendViewModel)
                 }
             }
             .toolbar {
@@ -197,6 +205,13 @@ struct MyPageView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     HStack(spacing: 0) {
+                        
+                        Button(action: {
+                            
+                        }, label: {
+                            Image(systemName: "bell")
+                        })
+                        
                         Button(action: {
                             navPathFinder.addPath(route: .search)
                         }, label: {
@@ -224,7 +239,7 @@ struct MyPageView: View {
     }
     
     var modifyTimetable: some View {
-        Text("시간표 과목수정")
+        Text("겹차는 시간표 확인")
             .font(.m12)
             .foregroundColor(Color.sattoPurple)
             .padding(.horizontal, 12)

@@ -43,6 +43,9 @@ class FriendViewModel: ObservableObject {
     
     @Published var colorMapping: [String: Color] = [:]
     
+    @Published var compareFriends: [Friend] = []
+    @Published var overlappingLectureId: [String] = []
+    
     init() {
         
     }
@@ -273,6 +276,28 @@ class FriendViewModel: ObservableObject {
             }
         }
     
+    func postCompareTimeTable(studentIds: [String]) {
+        provider.request(.compareTimeTable(studentIds: studentIds)) { result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let response):
+                        print(response)
+                        if let compareTimeTableResponse = try? response.map(ComPareTimetableResponse.self) {
+                            self.overlappingLectureId = compareTimeTableResponse.result
+                            print(self.overlappingLectureId)
+                            print("postCompareTimeTable매핑 성공🚨")
+                        }
+                        else {
+                            print("postCompareTimeTable매핑 실패🚨")
+                        }
+                    case .failure:
+                        print("postCompareTimeTable네트워크 요청 실패🚨")
+                    }
+                }
+
+            }
+    }
+    
 
     // 학수번호랑 색이랑 맵핑하는 메서드
     func assignColors() {
@@ -320,6 +345,6 @@ class FriendViewModel: ObservableObject {
     }
     // 내가 선택한 학기정보에 맞는 시간표 이름만 필터링
     func getTimetableNamesForSemester(timeTables: [Timetable], semester: String) -> [String] {
-        return timeTables.filter { $0.semesterYear == semester }.map { $0.timeTableName }
+        return timeTables.filter { $0.semesterYear == semester }.sorted(by: { $0.isRepresent && !$1.isRepresent }).map { $0.timeTableName }
     }
 }
