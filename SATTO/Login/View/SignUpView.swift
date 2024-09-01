@@ -69,8 +69,8 @@ struct SignUpView: View {
                         if department.isEmpty {
                             Text("선택").tag("")
                         }
-                        Text("컴퓨터과학과").tag("컴퓨터과학과")
-                        Text("융합전자공학과").tag("융합전자공학과")
+                        Text("컴퓨터과학전공").tag("컴퓨터과학전공")
+//                        Text("융합전자공학과").tag("융합전자공학과")
                     }
                     
                     Text("학년")
