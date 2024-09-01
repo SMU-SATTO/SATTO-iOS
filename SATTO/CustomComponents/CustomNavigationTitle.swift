@@ -12,7 +12,7 @@ struct CustomNavigationTitle: View {
     var body: some View {
         Text(title)
             .font(.b20)
-            .foregroundStyle(Color(red: 0.11, green: 0.11, blue: 0.12))
+            .foregroundStyle(.backButton)
             .padding(.leading, 5)
     }
 }

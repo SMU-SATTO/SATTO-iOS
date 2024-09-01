@@ -18,6 +18,8 @@ enum TimetableRoute: Hashable {
 }
 
 struct TimetableMainView: View {
+    @State var tabbarIsHidden: Bool = false
+    
     @Environment(\.colorScheme) private var colorScheme
     @State var stackPath = [TimetableRoute]()
     
@@ -25,18 +27,17 @@ struct TimetableMainView: View {
     
     @State private var selectedTab = "시간표"
     @State private var currSelectedOption = "총 이수학점"
+    @State private var tempTimetableName = ""
     
     @Namespace private var namespace
     
-    @State var username = "홍길동"
-    
     @State private var bottomSheetPresented = false
     
-    let majorCreditGoals = 72                  //전공 학점 목표
-    @State var majorCredit: Double = 60        //전공 학점
-    let GECreditGoals = 60                     //교양 학점 목표
-    @State var GECredit: Double = 33           //교양 학점
-    @State var totalCredit: Double = 130       //전체 학점
+    let majorCreditGoals = 72                  /// 전공 학점 목표
+    @State var majorCredit: Double = 60        /// 전공 학점
+    let GECreditGoals = 60                     /// 교양 학점 목표
+    @State var GECredit: Double = 33           /// 교양 학점
+    @State var totalCredit: Double = 130       /// 전체 학점
     
     @State private var nameModifyAlert = false
     @State private var timetableIsPrivateAlert = false
@@ -55,6 +56,8 @@ struct TimetableMainView: View {
                         Spacer()
                     }
                 }
+                .scrollIndicators(.hidden)
+                .frame(maxHeight: .infinity)
             }
             .sheet(isPresented: $bottomSheetPresented, content: {
                 ZStack {
@@ -65,6 +68,7 @@ struct TimetableMainView: View {
                         HStack {
                             Button(action: {
                                 nameModifyAlert = true
+                                tempTimetableName = timetableMainViewModel.timetableName
                             }) {
                                 HStack {
                                     Image(systemName: "pencil")
@@ -132,19 +136,22 @@ struct TimetableMainView: View {
                 .presentationDetents([.height(150)])
             })
             .alert("수정할 이름을 입력해주세요", isPresented: $nameModifyAlert) {
-                TextField(timetableMainViewModel.timetalbeName, text: $timetableMainViewModel.timetalbeName)
+                TextField(timetableMainViewModel.timetableName, text: $timetableMainViewModel.timetableName)
+                    .autocorrectionDisabled()
                 HStack {
-                    Button("취소", role: .cancel, action: {})
+                    Button("취소", role: .cancel) {
+                        timetableMainViewModel.timetableName = tempTimetableName
+                    }
                     Button("확인") {
-                        //MARK: timetable 수정 - 이름 변경 API
-                        timetableMainViewModel.patchTimetableName(timetableId: timetableMainViewModel.timetableId, timetableName: timetableMainViewModel.timetalbeName)
+                        /// timetable 수정 - 이름 변경 API
+                        timetableMainViewModel.patchTimetableName(timetableId: timetableMainViewModel.timetableId, timetableName: timetableMainViewModel.timetableName)
                     }
                 }
             }
             .alert("대표시간표로 설정", isPresented: $representAlert) {
                 HStack {
                     Button("대표시간표로 설정") {
-                        //MARK: 대표 시간표 변경 API
+                        /// 대표 시간표 변경 API
                         timetableMainViewModel.patchTimetableRepresent(timeTableId: timetableMainViewModel.timetableId, isRepresent: true)
                     }
                     Button("취소", role: .cancel, action: {})
@@ -153,7 +160,7 @@ struct TimetableMainView: View {
             .alert("시간표 공개 범위 변경", isPresented: $timetableIsPrivateAlert) {
                 HStack {
                     Button("공개") {
-                        //MARK: 공개 비공개 설정 API
+                        /// 공개 비공개 설정 API
                         timetableMainViewModel.patchTimetablePrivate(timeTableId: timetableMainViewModel.timetableId, isPublic: true)
                     }
                     Button("비공개") {
@@ -166,7 +173,8 @@ struct TimetableMainView: View {
                 HStack {
                     Button("아니요", role: .cancel, action: {})
                     Button("네") {
-                        //MARK: 삭제 API
+                        /// 삭제 API - 삭제하면 대표 시간표를 메인화면에 보여줌
+                        /// 대표시간표를 삭제하거나, 대표시간표가 없을 시 빈 시간표를 메인화면에 보여줌
                         timetableMainViewModel.deleteTimetable(timetableID: timetableMainViewModel.timetableId)
                     }
                 }
@@ -185,6 +193,19 @@ struct TimetableMainView: View {
                     TimetableModifyView(stackPath: $stackPath, timetableMainViewModel: timetableMainViewModel, timetableId: $timetableMainViewModel.timetableId)
                 }
             }
+            .onChange(of: stackPath) { _ in
+                if stackPath.isEmpty {
+                    tabbarIsHidden = false
+                }
+                else {
+                    tabbarIsHidden = true
+                }
+            }
+            .toolbar(
+                tabbarIsHidden ? .hidden : .visible,
+                for: .tabBar
+            )
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
     
@@ -211,7 +232,6 @@ struct TimetableMainView: View {
         }
         .frame(height: 180)
     }
-
     
     private var headerContent: some View {
         VStack(alignment: .leading, spacing: 15) {
@@ -225,7 +245,8 @@ struct TimetableMainView: View {
     private var headerTabs: some View {
         HStack(spacing: 20) {
             tabButton(title: "시간표", tab: "시간표")
-            tabButton(title: "이수학점", tab: "이수학점")
+            //MARK: - 추후 개발 예정
+//            tabButton(title: "이수학점", tab: "이수학점")
             Spacer()
         }
     }
@@ -236,7 +257,7 @@ struct TimetableMainView: View {
                 .font(.b16)
                 .shadow(color: colorScheme == .light ? .white : .black, radius: 1, x: 1, y: 1)
                 .shadow(color: colorScheme == .light ? .white : .black, radius: 1, x: -1, y: -1)
-            Text("\(username)님을 위한 시간표를 만들어 드릴게요.")
+            Text("지금 시간표를 만들어보세요!")
                 .font(.m12)
                 .foregroundStyle(Color.bannerText)
         }
@@ -271,21 +292,25 @@ struct TimetableMainView: View {
     private var timetableView: some View {
         VStack {
             HStack {
-                Text("\(timetableMainViewModel.semesterYear) \(timetableMainViewModel.timetalbeName)")
+                Text("\(timetableMainViewModel.semesterYear) \(timetableMainViewModel.timetableName)")
                     .font(.b14)
                     .padding(.leading, 30)
                 Spacer()
-                Button(action: {
-                    stackPath.append(TimetableRoute.timetableModify)
-                }) {
-                    Image(systemName: "pencil")
-                        .foregroundStyle(Color.blackWhite)
-                }
-                Button(action: {
-                    bottomSheetPresented.toggle()
-                }) {
-                    Image(systemName: "gearshape")
-                        .foregroundStyle(Color.blackWhite)
+                Group {
+                    if timetableMainViewModel.timetableId != -1 {
+                        Button(action: {
+                            stackPath.append(TimetableRoute.timetableModify)
+                        }) {
+                            Image(systemName: "pencil")
+                                .foregroundStyle(Color.blackWhite)
+                        }
+                        Button(action: {
+                            bottomSheetPresented.toggle()
+                        }) {
+                            Image(systemName: "gearshape")
+                                .foregroundStyle(Color.blackWhite)
+                        }
+                    }
                 }
                 Button(action: {
                     stackPath.append(TimetableRoute.timetableList)
@@ -299,12 +324,12 @@ struct TimetableMainView: View {
             
             TimetableView(timetableBaseArray: timetableMainViewModel.timetableInfo)
                 .onAppear {
-                    if timetableMainViewModel.timetableId == 0 {
-                        //MARK: 기본 default 시간표 호출 API
+                    if timetableMainViewModel.timetableId == -1 {
+                        /// 기본 default 시간표 호출 API
                         timetableMainViewModel.fetchUserTimetable(id: nil)
                     }
                     else {
-                        //MARK: API
+                        /// 특정 시간표 호출 API
                         timetableMainViewModel.fetchUserTimetable(id: timetableMainViewModel.timetableId)
                     }
                 }
@@ -315,7 +340,7 @@ struct TimetableMainView: View {
     private var creditsView: some View {
         VStack {
             HStack {
-                Text("\(username)님의 이수 학점")
+                Text("이수 학점")
                     .font(.b14)
                     .padding(.leading, 30)
                 Spacer()
@@ -338,7 +363,6 @@ struct TimetableMainView: View {
                 .padding(.horizontal, 20)
             
             if currSelectedOption == "총 이수학점" {
-                //TODO: API - onappear 추가 필요
                 pieChart
                     .padding(.top, 5)
                 HStack {
@@ -476,5 +500,5 @@ struct PieChartView: View {
 
 #Preview {
     TimetableMainView()
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
 }

@@ -14,38 +14,57 @@ struct MajorCombSelectorView: View {
     var body: some View {
         ScrollView {
             VStack {
-                HStack {
-                    VStack(alignment: .leading, spacing: 5) {
-                        HStack(spacing: 0) {
-                            Text("\(selectedValues.majorCombinations.count)개의 전공 조합")
-                                .font(.sb16)
-                                .foregroundStyle(Color.accentText)
-                            Text("이 만들어졌어요!")
-                                .font(.sb16)
-                                .foregroundStyle(Color.blackWhite200)
-                        }
-                        
-                        Text("원하는 전공 조합을 선택해\n최종 시간표를 만들어요.")
-                            .font(.m12)
+                if selectedValues.majorCombinations.count == 0 {
+                    VStack(spacing: 20) {
+                        Text("전공 조합 생성에 실패했어요..\n불가능한 시간대와 같은 제약 조건을 완화해보세요.")
+                            .font(.sb16)
                             .foregroundStyle(Color.blackWhite200)
+                            .multilineTextAlignment(.center)
                     }
+                    .padding()
                 }
-                
-                Circle()
-                    .foregroundStyle(Color.iconBackground)
-                    .frame(width: 200, height: 200)
-                    .overlay(
-                        Image("MajorSelect")
-                            .resizable()
-                            .frame(width: 150, height: 150)
-                    )
-                    .padding(.top, 20)
-                    .padding(.bottom, 20)
+                else {
+                    HStack {
+                        VStack(spacing: 5) {
+                            HStack(spacing: 0) {
+                                Text("\(selectedValues.majorCombinations.count)개의 전공 조합")
+                                    .font(.sb16)
+                                    .foregroundStyle(Color.accentText)
+                                Text("이 만들어졌어요!")
+                                    .font(.sb16)
+                                    .foregroundStyle(Color.blackWhite200)
+                            }
+                            
+                            Text("원하는 전공 조합을 선택해 최종 시간표를 만들어요.")
+                                .font(.m12)
+                                .foregroundStyle(Color.blackWhite200)
+                                .multilineTextAlignment(.center)
+                        }
+                    }
+                    
+                    Circle()
+                        .foregroundStyle(Color.iconBackground)
+                        .frame(width: 200, height: 200)
+                        .overlay(
+                            Image("MajorSelect")
+                                .resizable()
+                                .frame(width: 150, height: 150)
+                        )
+                        .padding(.top, 20)
+                        .padding(.bottom, 20)
+                    HStack {
+                        Image(systemName: "arrow.down")
+                        Text("전공 조합을 클릭해보세요!")
+                            .foregroundStyle(.blackWhite200)
+                        Image(systemName: "arrow.down")
+                    }
+                    .font(.sb14)
+                }
+                ForEach(selectedValues.majorCombinations.indices, id: \.self) { index in
+                    majorRectangle(combination: selectedValues.majorCombinations[index])
+                }
+                .padding(.horizontal, 20)
             }
-            ForEach(selectedValues.majorCombinations.indices, id: \.self) { index in
-                majorRectangle(combination: selectedValues.majorCombinations[index])
-            }
-            .padding(.horizontal, 20)
         }
         .onAppear {
             //MARK: API

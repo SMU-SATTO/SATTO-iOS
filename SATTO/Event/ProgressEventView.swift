@@ -8,133 +8,162 @@
 import SwiftUI
 
 struct ProgressEventView: View {
-    @State private var selectedPage: EventTab = .progressEvent
-    @Namespace var namespace
     
-//    @Binding var stackPath: [Route]
     @ObservedObject var eventViewModel: EventViewModel
-    @EnvironmentObject var navPathFinder: NavigationPathFinder
+    
+    @EnvironmentObject var navPathFinder: EventNavigationPathFinder
     
     var body: some View {
-        
         VStack(spacing: 0) {
-            
-                
-                ScrollView {
+            ScrollView {
+                VStack(spacing: 0){
+                    Spacer()
+                        .frame(height: 27)
                     
-                    VStack(spacing: 0){
+                    ForEach(eventViewModel.eventList.indices, id: \.self) { index in
                         
-                        ForEach(eventViewModel.eventList, id: \.eventId) { progressEvent in
-//                            NavigationLink(value: EventRoute.detailProgressEvent, label: {
-//                                ProgressEventCell(eventName: progressEvent.title, eventPeriod: "2024.02.15 - 2024.03.28", eventImage: "sb", eventDeadLine: "6일 남음", eventNumberOfParticipants: "256명 참여", eventDescription: progressEvent.description)
-//                                    .padding(.top, 27)
-//                            })
-                            
-                            Button(action: {
-                                navPathFinder.addPath(route: .detailProgressEvent)
-//                                eventViewModel.event = progressEvent
-                            }, label: {
-                                ProgressEventCell(eventName: progressEvent.category, eventPeriod: "\(progressEvent.formattedStartWhen) - \(progressEvent.formattedUntilWhen)", eventImage: "sb", eventDeadLine: "\(eventViewModel.두날짜사이간격(startDateString: progressEvent.formattedStartWhen, endDateString: progressEvent.formattedUntilWhen))일 남음", eventNumberOfParticipants: "\(progressEvent.participantsCount)명 참여", eventDescription: progressEvent.content)
-                                    .padding(.top, 27)
-                            })
-                        }
+                        // foreach문을 이벤트 리스트 개수로 반복하면서
+                        // 이벤트 리스트 인덱스로 찾기
+                        let event = eventViewModel.eventList[index]
+                        // 각 이벤트 리스트마다 색을 부여
+                        // 많으면 색을 순회한다
+                        let color = eventViewModel.colors[index % eventViewModel.colors.count]
                         
-//                        ForEach(eventViewModel.events, id: \.id) { progressEvent in
-//                            NavigationLink(value: EventRoute.detailProgressEvent, label: {
-//                                ProgressEventCell(eventName: progressEvent.title, eventPeriod: "2024.02.15 - 2024.03.28", eventImage: "sb", eventDeadLine: "6일 남음", eventNumberOfParticipants: "256명 참여", eventDescription: progressEvent.description)
-//                                    .padding(.top, 27)
-//                                
-//                                
-//
-//                            })
-//                        }
+                        Button(action: {
+                            navPathFinder.addPath(route: .detailProgressEvent(color: color))
+                            eventViewModel.event = event
+                        }, label: {
+                            ProgressEventCell(eventViewModel: eventViewModel, event: event, color: color)
+                        })
+                        .disabled(eventViewModel.getEventStatus(startDate: event.formattedStartWhen, endDate: event.formattedUntilWhen) == .yet || eventViewModel.getEventStatus(startDate: event.formattedStartWhen, endDate: event.formattedUntilWhen) == .end)
                         
-                        
+                        // 패딩을 주면 빈공간을 눌러도 버튼이 작동한다
+                        Spacer()
+                            .frame(height: 37)
                     }
-                    .padding(.horizontal, 20)
-                    
                 }
-//                .padding(.horizontal, 20)
-                
+                .padding(.horizontal, 20)
+            }
         }
-        
     }
 }
 
 struct ProgressEventCell: View {
     
-    var eventName: String
-    var eventPeriod: String
-    var eventImage: String
-    var eventDeadLine: String
-    var eventNumberOfParticipants: String
-    var eventDescription: String
+    @ObservedObject var eventViewModel: EventViewModel
+    
+    var event: Event
+    var color: Color
+    
+    var height: CGFloat = 180
     
     var body: some View {
-        Rectangle()
-            .frame(height: 180)
-            .overlay(
-                
-                VStack(spacing: 0) {
-                    Rectangle()
-                        .fill(Color(red: 0.98, green: 0.93, blue: 0.79))
-                        .frame(height: 100)
-                        .overlay(
-                            HStack(spacing: 0) {
-                                VStack(alignment: .leading, spacing: 0) {
-                                    Text(eventName)
-                                        .font(.m18)
-                                        .padding(.bottom, 10)
-                                    
-                                    Text(eventPeriod)
-                                        .font(.m17)
-                                        .foregroundColor(Color(red: 0.39, green: 0.39, blue: 0.39))
-                                }
-                                .padding(.leading, 24)
-                                .padding(.trailing, 27)
-                                
-                                Image(eventImage)
-                            }
-                            ,alignment: .leading
-                        )
-                    
-                    Rectangle()
-                        .fill(Color.white)
-                        .frame(height: 80)
-                        .overlay(
-                            VStack(spacing: 0) {
+        ZStack {
+            // 종료된 이벤트와 시작안한 이벤트는 앞에 표시
+            if eventViewModel.getEventStatus(startDate: event.formattedStartWhen, endDate: event.formattedUntilWhen) == .yet {
+                Color.gray
+                    .opacity(0.5)
+                    .cornerRadius(10)
+                    .overlay {
+                        Text("Coming Soon")
+                            .font(.title)
+                    }
+                    .zIndex(1)
+            }
+            else if eventViewModel.getEventStatus(startDate: event.formattedStartWhen, endDate: event.formattedUntilWhen) == .end {
+                Color.gray
+                    .opacity(0.5)
+                    .cornerRadius(10)
+                    .overlay {
+                        Text("종료된 이벤트")
+                            .font(.title)
+                    }
+                    .zIndex(1)
+            }
+            
+            Rectangle()
+                .frame(minHeight: height)
+                .overlay(
+                    VStack(spacing: 0) {
+                        // 윗부분 색깔있는 사각형
+                        Rectangle()
+                            .fill(color)
+                            .frame(height: height * 0.56)
+                        // 윗부분 색깔있는 사각형의 내용
+                            .overlay(
                                 HStack(spacing: 0) {
-                                    Text(eventDeadLine)
-                                        .font(.m12)
-                                        .foregroundColor(Color(red: 0.84, green: 0.36, blue: 0.34))
-                                        .padding(.horizontal, 11)
-                                        .padding(.vertical, 1)
-                                        .background(
-                                            Rectangle()
-                                                .fill(Color(red: 0.98, green: 0.93, blue: 0.94))
-                                                .cornerRadius(5)
-                                        )
+                                    VStack(alignment: .leading, spacing: 0) {
+                                        Text(event.category)
+                                            .font(.m18)
+                                            .padding(.bottom, 10)
+                                        
+                                        Text("\(event.formattedStartWhen) - \(event.formattedUntilWhen)")
+                                            .font(.m17)
+                                            .foregroundColor(Color(red: 0.39, green: 0.39, blue: 0.39))
+                                    }
+                                    .padding(.leading, 24)
+                                    .padding(.trailing, 27)
                                     
-                                    Spacer()
-                                    
-                                    Text(eventNumberOfParticipants)
-                                        .font(.m12)
-                                    
+                                    Image("sb")
                                 }
-                                .padding(.bottom, 8)
-                                
-                                Text(eventDescription)
-                                    .font(.m14)
-                                
-                                
-                            }
-                                .padding(.horizontal, 24)
-                        )
-                }
+                                ,alignment: .leading
+                            )
+                        // 아랫부분 흰색 사격형
+                        Rectangle()
+                            .fill(Color.white)
+                            .frame(height: height * 0.44)
+                            .overlay(
+                                VStack(spacing: 0) {
+                                    HStack(spacing: 0) {
+                                        
+                                        // 이벤트 시작까지 남은기간 표시
+                                        switch eventViewModel.getEventStatus(startDate: event.formattedStartWhen, endDate: event.formattedUntilWhen) {
+                                        case .yet:
+                                            EventTimerView(text: "시작까지 \(eventViewModel.daysFromToday(dateString: event.formattedStartWhen))일 남음")
+                                        case .end:
+                                            EventTimerView(text: "종료")
+                                        case .progress:
+                                            EventTimerView(text: "\(eventViewModel.daysFromToday(dateString: event.formattedUntilWhen))일 남음")
+                                        case .error:
+                                            EventTimerView(text: "에러")
+                                        }
+                                        
+                                        Spacer()
+                                        
+                                        // 참여자 수
+                                        Text("\(event.participantsCount)명 참여")
+                                            .font(.m12)
+                                    }
+                                    .padding(.bottom, 8)
+                                    
+                                    Text(event.content)
+                                        .font(.m14)
+                                }
+                                    .padding(.horizontal, 24)
+                            )
+                    }
+                )
+                .cornerRadius(10)
+                .shadow(radius: 10)
+        }
+    }
+}
+
+struct EventTimerView: View {
+    
+    var text: String
+    
+    var body: some View {
+        Text(text)
+            .font(.m12)
+            .foregroundColor(Color(red: 0.84, green: 0.36, blue: 0.34))
+            .padding(.horizontal, 11)
+            .padding(.vertical, 1)
+            .background(
+                Rectangle()
+                    .fill(Color(red: 0.98, green: 0.93, blue: 0.94))
+                    .cornerRadius(5)
             )
-            .cornerRadius(10)
-            .shadow(radius: 10)
-            .padding(.bottom, 37)
     }
 }
 

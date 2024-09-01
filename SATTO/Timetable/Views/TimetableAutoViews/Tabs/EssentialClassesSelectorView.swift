@@ -31,6 +31,13 @@ struct EssentialClassesSelectorView: View {
                         .foregroundStyle(.gray400)
                         .padding(.top, 5)
                 }
+                Button(action: {
+                    isShowBottomSheet = true
+                }) {
+                    RoundedRectangle(cornerRadius: 20)
+                        .foregroundStyle(.buttonBlue)
+                        .frame(width: 100, height: 50)
+                }
                 Spacer()
             }
             .padding(.leading, 30)

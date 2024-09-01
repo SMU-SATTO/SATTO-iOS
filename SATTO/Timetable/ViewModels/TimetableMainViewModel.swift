@@ -10,9 +10,9 @@ import Foundation
 final class TimetableMainViewModel: ObservableObject {
     let repository = TimetableRepository()
     
-    @Published var timetableId: Int = 0 //MainView에 띄워지는 시간표의 id
-    @Published var semesterYear: String = "2024년 2학기"
-    @Published var timetalbeName: String = "시간표"
+    @Published var timetableId: Int = -1 //MainView에 띄워지는 시간표의 id
+    @Published var semesterYear: String = "2024학년도 2학기"
+    @Published var timetableName: String = "시간표"
     @Published var timetableInfo: [SubjectModelBase] = []
     
     func fetchUserTimetable(id: Int?) {
@@ -20,17 +20,18 @@ final class TimetableMainViewModel: ObservableObject {
             switch result {
             case .success(let timetableInfoModel):
                 DispatchQueue.main.async {
-                    self?.semesterYear = timetableInfoModel.semesterYear ?? "2024년 2학기"
-                    self?.timetalbeName = timetableInfoModel.timeTableName ?? "시간표"
+                    self?.semesterYear = timetableInfoModel.semesterYear ?? "2024학년도 2학기"
+                    self?.timetableName = timetableInfoModel.timeTableName ?? "시간표"
                     self?.timetableInfo = timetableInfoModel.subjectModels
                 }
-            case .failure(let error):
+            case .failure:
                 DispatchQueue.main.async {
-                    self?.semesterYear = "2024년 2학기"
-                    self?.timetalbeName = "시간표"
+                    self?.timetableId = -1
+                    self?.semesterYear = "2024학년도 2학기"
+                    self?.timetableName = "시간표"
                     self?.timetableInfo = []
                 }
-                print("Error fetching UserTimetable!: \(error)")
+                print("시간표 불러오기에 실패했어요. 대표시간표가 있는지 확인해주세요!")
             }
         }
     }
@@ -42,8 +43,8 @@ final class TimetableMainViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     print("공개 여부 변경 성공!")
                 }
-            case .failure(let error):
-                print("Error patching timetablePrivate: \(error)")
+            case .failure:
+                print("공개 여부 변경에 실패했어요.")
             }
         }
     }
@@ -55,8 +56,8 @@ final class TimetableMainViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     print("대표시간표 변경 성공!")
                 }
-            case .failure(let error):
-                print("Error patching timetablePrivate: \(error)")
+            case .failure:
+                print("대표시간표 변경에 실패했어요.")
             }
         }
     }
@@ -68,8 +69,22 @@ final class TimetableMainViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     print("이름 바꾸기 성공!")
                 }
-            case .failure(let error):
-                print("Error patching timetableName: \(error)")
+            case .failure:
+                print("시간표 이름 바꾸기에 실패했어요.")
+            }
+        }
+    }
+    
+    func patchTimetableInfo(timetableId: Int, codeSectionList: [SubjectModelBase]) {
+        let adjustedCodeSectionList = codeSectionList.map { $0.sbjDivcls }
+        SATTONetworking.shared.patchTimetableInfo(timetableId: timetableId, codeSectionList: adjustedCodeSectionList) { result in
+            switch result {
+            case .success:
+                DispatchQueue.main.async {
+                    print("시간표 수정 성공!")
+                }
+            case .failure:
+                print("시간표 수정에 실패했어요.")
             }
         }
     }
@@ -79,10 +94,11 @@ final class TimetableMainViewModel: ObservableObject {
             switch result {
             case .success:
                 DispatchQueue.main.async {
-                    
+                    print("시간표 삭제 성공!")
+                    self.fetchUserTimetable(id: nil)
                 }
             case .failure(let error):
-                print("Error patching deleteTimetable: \(error)")
+                print("시간표 삭제에 실패했어요")
             }
         }
     }

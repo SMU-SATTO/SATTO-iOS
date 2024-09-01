@@ -34,23 +34,27 @@ struct HomeView: View {
     
     @EnvironmentObject var navPathFinder: HomeNavigationPathFinder
     
+    @EnvironmentObject var authViewModel: AuthViewModel
+    
+    @StateObject var friendViewModel = FriendViewModel()
+    
     var body: some View {
         NavigationStack(path: $navPathFinder.path) {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     
-                    HStack(spacing: 0) {
-                        Image("menu")
-                        
-                        Spacer()
-                        
-                        Image("alarm")
-                            .padding(.trailing, 20)
-                        
-                        Image("account")
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 13)
+//                    HStack(spacing: 0) {
+//                        Image("menu")
+//                        
+//                        Spacer()
+//                        
+//                        Image("alarm")
+//                            .padding(.trailing, 20)
+//                        
+//                        Image("account")
+//                    }
+//                    .padding(.horizontal, 20)
+//                    .padding(.bottom, 13)
                     
                     
                     
@@ -59,7 +63,7 @@ struct HomeView: View {
                             ProfileImageCell(inCircleSize: 58, outCircleSize: 61)
                                 .padding(.bottom, 3)
                             
-                            Text("한민재")
+                            Text(authViewModel.user.name)
                                 .font(.m10)
                                 .foregroundColor(Color(red: 0.27, green: 0.3, blue: 0.33))
                         }
@@ -70,7 +74,7 @@ struct HomeView: View {
                             Text("오늘은")
                                 .font(.m12)
                             
-                            Text("07월 07일 일요일 이에요!")
+                            Text("\(todayDateString()) 이에요!")
                                 .font(.m12)
                             
                         }
@@ -83,6 +87,8 @@ struct HomeView: View {
                             .fill(Color(red: 0.73, green: 0.83, blue: 0.98))
                         
                     )
+                    
+//                    TimeTableTutorial(friendViewModel: friendViewModel)
                     
                     CircularProgressView()
                         .frame(width: 100)
@@ -152,6 +158,9 @@ struct HomeView: View {
                                     .cornerRadius(10)
                             )
                             .padding(.leading, 20)
+                            
+                            Spacer()
+                                .frame(width: 20)
                         }
                         
                         
@@ -168,21 +177,29 @@ struct HomeView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 0) {
                             
-                            ForEach(0..<10) {_ in
+                            ForEach(friendViewModel.following, id: \.studentId) { friend in
                                 VStack(spacing: 0) {
                                     Circle()
                                         .frame(width: 60)
                                         .padding(.bottom, 7)
                                     
-                                    Text("황인성")
+                                    Text(friend.name)
                                         .font(.m10)
                                 }
                                 .padding(.leading, 20)
-                                
                             }
+                            Spacer()
+                                .frame(width: 20)
                         }
                     }
                     
+                }
+            }
+            .onAppear {
+                authViewModel.userInfoInquiry {
+                    friendViewModel.fetchMyFollowingList(studentId: authViewModel.user.studentId ?? "asd") {
+                        friendViewModel.following = friendViewModel.myFollowing
+                    }
                 }
             }
             .fullScreenCover(isPresented: $showSafari) {
@@ -196,6 +213,25 @@ struct HomeView: View {
                 }
             }
         }
+    }
+    
+    func todayDateString() -> String {
+        // 현재 날짜 가져오기
+        let today = Date()
+
+        // DateFormatter 생성
+        let dateFormatter = DateFormatter()
+
+        // 한국어로 지역 설정
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+
+        // 월, 일, 요일 형식 설정
+        dateFormatter.dateFormat = "M월 d일 EEEE"
+
+        // 날짜를 문자열로 변환
+        let dateString = dateFormatter.string(from: today)
+        
+        return dateString
     }
 }
 

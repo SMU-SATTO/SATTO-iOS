@@ -50,6 +50,7 @@ struct CreditPickerView: View {
                             Text("\(value)").tag(value)
                         }
                     }
+                    .pickerStyle(.menu)
                     .tint(.blackWhite)
                     .background(
                         RoundedRectangle(cornerRadius: 5)
@@ -57,7 +58,9 @@ struct CreditPickerView: View {
                             .padding(EdgeInsets(top: 5, leading: -5, bottom: 5, trailing: -5))
                     )
                     .padding(EdgeInsets(top: -5, leading: 5, bottom: -5, trailing: 5))
-                    
+                }
+                .onAppear {
+                    UIScrollView.appearance().isScrollEnabled = true //드래그제스처로 탭뷰 넘기는거 picker 때문에 허용해야 picker의 selection이 스크롤이 가능해짐.
                 }
                 .padding(.leading, 60)
                 .padding(.trailing, 120)
@@ -65,8 +68,6 @@ struct CreditPickerView: View {
         }
     }
 }
-
-
 
 #Preview {
     CreditPickerView(selectedValues: SelectedValues())

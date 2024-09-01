@@ -108,6 +108,7 @@ struct BottomSheetTabView: View {
                             .padding(.leading, 15)
                         TextField("듣고 싶은 과목을 입력해 주세요", text: $bottomSheetViewModel.searchText)
                             .font(.sb14)
+                            .autocorrectionDisabled()
                             .foregroundStyle(Color.searchbarText)
                             .padding(.leading, 5)
                             .submitLabel(.search)
