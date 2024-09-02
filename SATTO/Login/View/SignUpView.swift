@@ -37,7 +37,7 @@ struct SignUpView: View {
                         .font(.title)
                     
                     Text("아이디")
-                    Text("\(authViewModel.user.studentId)@sangmyung.kr")
+                    Text("\(authViewModel.user.studentId)")
                         .frame(maxWidth: .infinity)
                         .modifier(MyTextFieldModifier())
                     

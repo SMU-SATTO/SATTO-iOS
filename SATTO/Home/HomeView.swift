@@ -45,181 +45,187 @@ struct HomeView: View {
     
     var body: some View {
         NavigationStack(path: $navPathFinder.path) {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 0) {
-                    
-                    HStack(spacing: 0) {
-                        VStack(spacing: 0) {
-                            ProfileImageCell(inCircleSize: 58, outCircleSize: 61)
-                                .padding(.bottom, 3)
+            ZStack {
+                
+                Color.background
+                    .ignoresSafeArea()
+                
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 0) {
+                        
+                        HStack(spacing: 0) {
+                            VStack(spacing: 0) {
+                                ProfileImageCell(inCircleSize: 58, outCircleSize: 61)
+                                    .padding(.bottom, 3)
+                                
+                                Text(authViewModel.user.name)
+                                    .font(.m10)
+                                    .foregroundColor(Color.cellText)
+                            }
+                            .padding(.trailing, 21)
                             
-                            Text(authViewModel.user.name)
-                                .font(.m10)
-                                .foregroundColor(Color(red: 0.27, green: 0.3, blue: 0.33))
+                            VStack(alignment: .leading, spacing: 0) {
+                                // m12
+                                Text("오늘은")
+                                    .font(.m12)
+                                
+                                Text("\(todayDateString()) 이에요!")
+                                    .font(.m12)
+                                
+                            }
+                            
+                            Image("st_home")
                         }
-                        .padding(.trailing, 21)
-                        
-                        VStack(alignment: .leading, spacing: 0) {
-                            // m12
-                            Text("오늘은")
-                                .font(.m12)
+                        .frame(maxWidth: .infinity)
+                        .background(
+                            Rectangle()
+                                .fill(Color(red: 0.73, green: 0.83, blue: 0.98))
                             
-                            Text("\(todayDateString()) 이에요!")
-                                .font(.m12)
-                            
-                        }
-                        
-                        Image("st_home")
-                    }
-                    .frame(maxWidth: .infinity)
-                    .background(
-                        Rectangle()
-                            .fill(Color(red: 0.73, green: 0.83, blue: 0.98))
-                        
-                    )
-                    .padding(.bottom, 16)
-                    
-                    
-                    Text("중요한 정보 모아 보기")
-                        .font(.b14)
-                        .padding(.leading, 20)
+                        )
                         .padding(.bottom, 16)
-                    
-                    ScrollView(.horizontal, showsIndicators: false) {
                         
-                    
-                        HStack(spacing: 0) {
+                        
+                        Text("중요한 정보 모아 보기")
+                            .font(.b14)
+                            .padding(.leading, 20)
+                            .padding(.bottom, 16)
+                        
+                        ScrollView(.horizontal, showsIndicators: false) {
                             
-                            Spacer()
-                                .frame(width: 20)
                             
-                            Button(action: {
-                                showSafari = true
-                            }, label: {
-                                HStack(alignment: .top, spacing: 0) {
-                                    Text("학사 공지")
-                                        .font(.sb14)
-                                    
-                                    Image("st_noti 1")
-                                }
-                                .padding(.vertical, 12)
-                                .padding(.leading, 12)
-                                .background(
-                                    Rectangle()
-                                        .fill(Color(red: 0.91, green: 0.94, blue: 0.98))
-                                        .frame(width: 150, height: 100)
-                                        .cornerRadius(10)
-                                )
+                            HStack(spacing: 0) {
                                 
-                            })
-                            
-                            Spacer()
-                                .frame(width: 20)
-                            
-                            Button(action: {
-                                showSWNoti = true
-                            }, label: {
-                                HStack(alignment: .top, spacing: 0) {
-                                    Text("sw 공지")
-                                        .font(.sb14)
-                                    
-                                    Image("st_noti 1")
-                                }
-                                .padding(.vertical, 12)
-                                .padding(.leading, 12)
-                                .background(
-                                    Rectangle()
-                                        .fill(Color(red: 0.99, green: 0.93, blue: 0.99))
-                                        .frame(width: 150, height: 100)
-                                        .cornerRadius(10)
-                                )
+                                Spacer()
+                                    .frame(width: 20)
                                 
-                            })
-                            
-                            Spacer()
-                                .frame(width: 20)
-                            
-                            Button(action: {
-                                selectedTab = .event
-                            }, label: {
-                                HStack(alignment: .top, spacing: 0) {
-                                    Text("이벤트")
-                                        .font(.sb14)
+                                Button(action: {
+                                    showSafari = true
+                                }, label: {
+                                    HStack(alignment: .top, spacing: 0) {
+                                        Text("학사 공지")
+                                            .font(.sb14)
+                                        
+                                        Image("st_noti 1")
+                                    }
+                                    .padding(.vertical, 12)
+                                    .padding(.leading, 12)
+                                    .background(
+                                        Rectangle()
+                                            .fill(Color(red: 0.91, green: 0.94, blue: 0.98))
+                                            .frame(width: 150, height: 100)
+                                            .cornerRadius(10)
+                                    )
                                     
-                                    Image("st_event1 1")
-                                }
-                                .padding(.vertical, 12)
-                                .padding(.leading, 12)
-                                .background(
-                                    Rectangle()
-                                        .fill(Color(red: 0.98, green: 0.94, blue: 0.84))
-                                        .frame(width: 150, height: 100)
-                                        .cornerRadius(10)
-                                )
-                            })
+                                })
+                                
+                                Spacer()
+                                    .frame(width: 20)
+                                
+                                Button(action: {
+                                    showSWNoti = true
+                                }, label: {
+                                    HStack(alignment: .top, spacing: 0) {
+                                        Text("sw 공지")
+                                            .font(.sb14)
+                                        
+                                        Image("st_noti 1")
+                                    }
+                                    .padding(.vertical, 12)
+                                    .padding(.leading, 12)
+                                    .background(
+                                        Rectangle()
+                                            .fill(Color(red: 0.99, green: 0.93, blue: 0.99))
+                                            .frame(width: 150, height: 100)
+                                            .cornerRadius(10)
+                                    )
+                                    
+                                })
+                                
+                                Spacer()
+                                    .frame(width: 20)
+                                
+                                Button(action: {
+                                    selectedTab = .event
+                                }, label: {
+                                    HStack(alignment: .top, spacing: 0) {
+                                        Text("이벤트")
+                                            .font(.sb14)
+                                        
+                                        Image("st_event1 1")
+                                    }
+                                    .padding(.vertical, 12)
+                                    .padding(.leading, 12)
+                                    .background(
+                                        Rectangle()
+                                            .fill(Color(red: 0.98, green: 0.94, blue: 0.84))
+                                            .frame(width: 150, height: 100)
+                                            .cornerRadius(10)
+                                    )
+                                })
+                                
+                                
+                                Spacer()
+                                    .frame(width: 20)
+                            }
                             
                             
-                            Spacer()
-                                .frame(width: 20)
+                            
                         }
+                        .padding(.bottom, 30)
                         
-                        
-                        
-                    }
-                    .padding(.bottom, 30)
-                    
-                    if friendViewModel.timeTables.isEmpty {
-                        Text("시간표가 없습니다")
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                        if friendViewModel.timeTables.isEmpty {
+                            Text("시간표가 없습니다")
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.horizontal, 20)
+                                .foregroundStyle(Color.cellText)
+                        }
+                        else {
+                            HStack(spacing: 0) {
+                                Picker("Select Semester Year", selection: $friendViewModel.selectedSemesterYear) {
+                                    ForEach(friendViewModel.getSemestersFromTimetables(timeTables: friendViewModel.timeTables), id: \.self) { semester in
+                                        Text(friendViewModel.formatSemesterString(semester: semester))
+                                            .tag(semester)
+                                    }
+                                }
+                                
+                                Picker("Select Time Table", selection: $friendViewModel.selectedTimeTableName) {
+                                    ForEach(friendViewModel.getTimetableNamesForSemester(timeTables: friendViewModel.timeTables, semester: friendViewModel.selectedSemesterYear), id: \.self) { name in
+                                        Text(name).tag(name)
+                                    }
+                                }
+                                Spacer()
+                            }
                             .padding(.horizontal, 20)
-                            .foregroundStyle(Color.cellText)
-                    }
-                    else {
-                        HStack(spacing: 0) {
-                            Picker("Select Semester Year", selection: $friendViewModel.selectedSemesterYear) {
-                                ForEach(friendViewModel.getSemestersFromTimetables(timeTables: friendViewModel.timeTables), id: \.self) { semester in
-                                    Text(friendViewModel.formatSemesterString(semester: semester))
-                                        .tag(semester)
-                                }
-                            }
-                            
-                            Picker("Select Time Table", selection: $friendViewModel.selectedTimeTableName) {
-                                ForEach(friendViewModel.getTimetableNamesForSemester(timeTables: friendViewModel.timeTables, semester: friendViewModel.selectedSemesterYear), id: \.self) { name in
-                                    Text(name).tag(name)
-                                }
-                            }
-                            Spacer()
+                            .tint(Color.cellText)
                         }
-                        .padding(.horizontal, 20)
-                        .tint(Color.cellText)
+                        TimeTableTutorial(friendViewModel: friendViewModel)
+                        
+                        // b14
+                        //                    Text("친구들 시간표 보러 가기")
+                        //                        .font(.b14)
+                        //                        .padding(.bottom, 16)
+                        //                        .padding(.leading, 20)
+                        //
+                        //                    ScrollView(.horizontal, showsIndicators: false) {
+                        //                        HStack(spacing: 0) {
+                        //
+                        //                            ForEach(friendViewModel.following, id: \.studentId) { friend in
+                        //                                VStack(spacing: 0) {
+                        //                                    Circle()
+                        //                                        .frame(width: 60)
+                        //                                        .padding(.bottom, 7)
+                        //
+                        //                                    Text(friend.name)
+                        //                                        .font(.m10)
+                        //                                }
+                        //                                .padding(.leading, 20)
+                        //                            }
+                        //                            Spacer()
+                        //                                .frame(width: 20)
+                        //                        }
+                        //                    }
+                        
                     }
-                    TimeTableTutorial(friendViewModel: friendViewModel)
-                    
-                    // b14
-//                    Text("친구들 시간표 보러 가기")
-//                        .font(.b14)
-//                        .padding(.bottom, 16)
-//                        .padding(.leading, 20)
-//
-//                    ScrollView(.horizontal, showsIndicators: false) {
-//                        HStack(spacing: 0) {
-//
-//                            ForEach(friendViewModel.following, id: \.studentId) { friend in
-//                                VStack(spacing: 0) {
-//                                    Circle()
-//                                        .frame(width: 60)
-//                                        .padding(.bottom, 7)
-//
-//                                    Text(friend.name)
-//                                        .font(.m10)
-//                                }
-//                                .padding(.leading, 20)
-//                            }
-//                            Spacer()
-//                                .frame(width: 20)
-//                        }
-//                    }
-                    
                 }
             }
             .onAppear {

@@ -59,6 +59,7 @@ struct AnnouncementEventCell: View {
             
             SattoDivider()
         }
+        .foregroundStyle(Color.cellText)
         .padding(.top, 24)
     }
 }

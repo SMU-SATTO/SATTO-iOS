@@ -61,6 +61,7 @@ struct DetailProgressEventView: View {
                         
                         HStack(spacing: 0) {
                             Text("\(eventViewModel.event?.category ?? "category")")
+                                .foregroundStyle(Color.black)
                                 .font(.m18)
                                 .padding(.trailing, 7)
                             
@@ -85,6 +86,10 @@ struct DetailProgressEventView: View {
                 .background(color)
                 
                 ZStack(alignment: .bottomTrailing) {
+                    
+                    Color.background
+                        .ignoresSafeArea()
+                    
                     ScrollView {
                         VStack(spacing: 0) {
                             Rectangle()
@@ -93,7 +98,7 @@ struct DetailProgressEventView: View {
                             HStack(spacing: 0) {
                                 Text("게시물 유형")
                                     .font(.sb12)
-                                    .foregroundColor(Color(red: 0.53, green: 0.53, blue: 0.53))
+                                    .foregroundColor(Color.cellText)
                                     .padding(.top, 10)
                                     .padding(.bottom, 12)
                                 
@@ -102,6 +107,7 @@ struct DetailProgressEventView: View {
                                         Text(sortOption.rawValue).tag(sortOption)
                                     }
                                 }
+                                .tint(Color.cellText)
                                 .scaleEffect(0.9)
                                 
                                 Spacer()

@@ -17,37 +17,43 @@ struct DetailAnnouncementEventView: View {
     @State var isImageZoomed = false
     
     var body: some View {
-        VStack(spacing: 0) {
-            HStack(spacing: 0) {
-                VStack(alignment: .leading, spacing: 0) {
-                    Rectangle()
-                        .frame(height: 0)
-                    
-                    HStack(spacing: 0) {
-                        Text("\(eventViewModel.event?.category ?? "category")")
-                            .font(.m18)
-                            .padding(.trailing, 7)
-                        
-                        EventTimerView(text: "종료")
-                    }
-                    .padding(.bottom, 6)
-                    
-                    Text("\(eventViewModel.event?.formattedStartWhen ?? "2024.01.01") - \(eventViewModel.event?.formattedUntilWhen ?? "2024.01.01")")
-                        .font(.m17)
-                        .foregroundColor(Color(red: 0.39, green: 0.39, blue: 0.39))
-                        .padding(.bottom, 5)
-                    
-                    Text("\(eventViewModel.event?.participantsCount ?? 999)명이 참여했어요!")
-                        .font(Font.custom("Pretendard", size: 12))
-                        .foregroundColor(Color(red: 0.72, green: 0.25, blue: 0.25))
-                        .padding(.bottom, 10)
-                }
-            }
-            .padding(.leading, 25)
-            .padding(.top, 10)
-            .padding(.bottom, 17)
-            .background(Color(red: 0.91, green: 0.95, blue: 1))
+        ZStack {
             
+            Color.background
+                .ignoresSafeArea()
+            
+            VStack(spacing: 0) {
+                HStack(spacing: 0) {
+                    VStack(alignment: .leading, spacing: 0) {
+                        Rectangle()
+                            .frame(height: 0)
+                        
+                        HStack(spacing: 0) {
+                            Text("\(eventViewModel.event?.category ?? "category")")
+                                .font(.m18)
+                                .foregroundStyle(Color.black)
+                                .padding(.trailing, 7)
+                            
+                            EventTimerView(text: "종료")
+                        }
+                        .padding(.bottom, 6)
+                        
+                        Text("\(eventViewModel.event?.formattedStartWhen ?? "2024.01.01") - \(eventViewModel.event?.formattedUntilWhen ?? "2024.01.01")")
+                            .font(.m17)
+                            .foregroundColor(Color(red: 0.39, green: 0.39, blue: 0.39))
+                            .padding(.bottom, 5)
+                        
+                        Text("\(eventViewModel.event?.participantsCount ?? 999)명이 참여했어요!")
+                            .font(Font.custom("Pretendard", size: 12))
+                            .foregroundColor(Color(red: 0.72, green: 0.25, blue: 0.25))
+                            .padding(.bottom, 10)
+                    }
+                }
+                .padding(.leading, 25)
+                .padding(.top, 10)
+                .padding(.bottom, 17)
+                .background(Color(red: 0.91, green: 0.95, blue: 1))
+                
                 ScrollView {
                     // 젤 위에만 20 뛰우고
                     Spacer()
@@ -56,7 +62,7 @@ struct DetailAnnouncementEventView: View {
                     VStack(spacing: 0){
                         Rectangle()
                             .frame(height: 0)
-
+                        
                         // 피드배열에서 앞에서 3개의 인덱스 추출
                         // 만약 3개보다 적으면 그 개수만 추출
                         ForEach(eventViewModel.feeds.prefix(3).indices, id: \.self) { index in
@@ -75,7 +81,8 @@ struct DetailAnnouncementEventView: View {
                     }
                     .padding(.horizontal, 60)
                 }
-        }// Vstsck
+            }// Vstsck
+        }
         .onAppear {
             eventViewModel.getEventFeed(category: eventViewModel.event?.category ?? "잘못된 요청")
         }

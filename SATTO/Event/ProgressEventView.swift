@@ -110,7 +110,7 @@ struct ProgressEventCell: View {
                             )
                         // 아랫부분 흰색 사격형
                         Rectangle()
-                            .fill(Color.white)
+                            .fill(Color.cellBackground)
                             .frame(height: height * 0.44)
                             .overlay(
                                 VStack(spacing: 0) {
@@ -133,11 +133,13 @@ struct ProgressEventCell: View {
                                         // 참여자 수
                                         Text("\(event.participantsCount)명 참여")
                                             .font(.m12)
+                                            .foregroundStyle(Color.cellText)
                                     }
                                     .padding(.bottom, 8)
                                     
                                     Text(event.content)
                                         .font(.m14)
+                                        .foregroundStyle(Color.cellText)
                                 }
                                     .padding(.horizontal, 24)
                             )
