@@ -24,7 +24,7 @@ struct ProgressEventView: View {
                         
                         // foreach문을 이벤트 리스트 개수로 반복하면서
                         // 이벤트 리스트 인덱스로 찾기
-                        let event = eventViewModel.eventList[index]
+                        let event = eventViewModel.eventList.sorted(by: { eventViewModel.getEventStatus(startDate: $0.formattedStartWhen, endDate: $0.formattedUntilWhen).rawValue < eventViewModel.getEventStatus(startDate: $1.formattedStartWhen, endDate: $1.formattedUntilWhen).rawValue })[index]
                         // 각 이벤트 리스트마다 색을 부여
                         // 많으면 색을 순회한다
                         let color = eventViewModel.colors[index % eventViewModel.colors.count]
@@ -110,7 +110,7 @@ struct ProgressEventCell: View {
                             )
                         // 아랫부분 흰색 사격형
                         Rectangle()
-                            .fill(Color.white)
+                            .fill(Color.cellBackground)
                             .frame(height: height * 0.44)
                             .overlay(
                                 VStack(spacing: 0) {
@@ -133,11 +133,13 @@ struct ProgressEventCell: View {
                                         // 참여자 수
                                         Text("\(event.participantsCount)명 참여")
                                             .font(.m12)
+                                            .foregroundStyle(Color.cellText)
                                     }
                                     .padding(.bottom, 8)
                                     
                                     Text(event.content)
                                         .font(.m14)
+                                        .foregroundStyle(Color.cellText)
                                 }
                                     .padding(.horizontal, 24)
                             )

@@ -28,6 +28,9 @@ class EventViewModel: ObservableObject {
     @Published var event: Event?
     @Published var feeds: [Feed] = []
     
+    // 이미지를 확대해서볼 피드
+    @Published var feed: Feed?
+    
     var colors: [Color] = [.lectureBlue, .lectureGreen, .lectureMint, .lectureOrange, .lecturePink, .lecturePurple, .lectureRed, .lectureSkyblue, .lectureYellow]
     var medalColors: [Color] = [.yellow, .gray, .brown]
     

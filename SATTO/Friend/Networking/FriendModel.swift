@@ -19,6 +19,7 @@ struct FriendResponse: Codable {
 struct Friend: Codable, Equatable {
     
     var studentId: String
+    var profileImg: String?
     var email: String
     var name: String
     var nickname: String
@@ -74,4 +75,9 @@ struct Lecture: Codable {
     var credit: Int
 }
 
-
+struct CompareTimetableResponse: Codable {
+    var isSuccess: Bool
+    var code: String
+    var message: String
+    var result: [[Lecture]]
+}

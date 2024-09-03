@@ -34,6 +34,9 @@ struct SettingView: View {
     
     @AppStorage("isDarkMode") private var isDarkMode = false
     
+    @State var selectedImage: UIImage? = nil
+    @State var isImagePickerPresented = false
+    
     var body: some View {
 
         NavigationStack(path: $navPathFinder.path) {
@@ -46,6 +49,19 @@ struct SettingView: View {
                         ProfileImageCell(inCircleSize: 125, outCircleSize: 130)
                             .padding(.top, 130)
                             .padding(.bottom, 14)
+                        
+                        Button(action: {
+                            isImagePickerPresented.toggle()
+                        }, label: {
+                            Text("이미지편집")
+                        })
+                        Button(action: {
+                            authViewModel.deleteProfileImage {
+                                authViewModel.userInfoInquiry { }
+                            }
+                        }, label: {
+                            Text("이미지삭제")
+                        })
                         
                         Text(authViewModel.user.name)
                             .font(.sb18)
@@ -124,6 +140,16 @@ struct SettingView: View {
             .ignoresSafeArea()
             .onAppear {
                 authViewModel.userInfoInquiry { }
+            }
+            .sheet(isPresented: $isImagePickerPresented) {
+                SingleImagePickerView(selectedImage: $selectedImage)
+            }
+            .onChange(of: selectedImage) { _ in
+                if let image = selectedImage {
+                    authViewModel.uploadProfileImage(image: image) {
+                        authViewModel.userInfoInquiry { }
+                    }
+                }
             }
             .navigationDestination(for: SettingRoute.self) { route in
                 switch route {
