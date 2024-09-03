@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var selectedTab = Tab.event
+    @State private var selectedTab = Tab.friend
     
     @EnvironmentObject var authViewModel: AuthViewModel
     
     var body: some View {
 
             TabView(selection: $selectedTab) {
-                HomeView()
+                HomeView(selectedTab: $selectedTab)
                     .environmentObject(HomeNavigationPathFinder.shared)
                     .tabItem {
                     Image(selectedTab == Tab.home ? "home.fill" : "home")

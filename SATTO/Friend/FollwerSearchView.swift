@@ -18,6 +18,7 @@ struct FollwerSearchView: View {
     var body: some View {
         ZStack {
             Color.background
+                .ignoresSafeArea()
             
             VStack(spacing: 0){
                 HStack(spacing: 0) {
@@ -72,14 +73,7 @@ struct MyFollowerFriendCell: View {
     
     var body: some View {
         HStack(spacing: 0) {
-            Circle()
-                .frame(width: 60, height: 60)
-                .background(
-                    Circle()
-                        .fill(Color.gray)
-                        .frame(width: 63, height: 63)
-                )
-                .shadow(radius: 5, x: 0, y: 5)
+            FriendProfileImageCell(inCircleSize: 60, outCircleSize: 63, friend: friend)
                 .padding(.trailing, 14)
                 .padding(.leading, 20)
             

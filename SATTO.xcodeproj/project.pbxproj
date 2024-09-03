@@ -10,6 +10,7 @@
 		3B0927162C3A6F3100777EEC /* secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B0927152C3A6F3100777EEC /* secret.plist */; };
 		3B0927182C3A78EE00777EEC /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0927172C3A78EE00777EEC /* WebView.swift */; };
 		3B1270DC2BB147DC00E38F86 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1270DB2BB147DC00E38F86 /* EventView.swift */; };
+		3B41FE572C858DD700228EBC /* PasswordResetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B41FE562C858DD700228EBC /* PasswordResetView.swift */; };
 		3B56A3432C09B7F40034B25B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56A3422C09B7F40034B25B /* LoginView.swift */; };
 		3B56A3472C09B8320034B25B /* AgreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56A3462C09B8320034B25B /* AgreeView.swift */; };
 		3B56A3492C09B83B0034B25B /* EmailAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56A3482C09B83B0034B25B /* EmailAuthView.swift */; };
@@ -130,6 +131,7 @@
 		3B1270D92BB147D500E38F86 /* FriendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendView.swift; sourceTree = "<group>"; };
 		3B1270DB2BB147DC00E38F86 /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		3B1270DD2BB147E300E38F86 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		3B41FE562C858DD700228EBC /* PasswordResetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordResetView.swift; sourceTree = "<group>"; };
 		3B56A3422C09B7F40034B25B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		3B56A3462C09B8320034B25B /* AgreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreeView.swift; sourceTree = "<group>"; };
 		3B56A3482C09B83B0034B25B /* EmailAuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailAuthView.swift; sourceTree = "<group>"; };
@@ -296,6 +298,7 @@
 				3B56A3462C09B8320034B25B /* AgreeView.swift */,
 				3B56A3482C09B83B0034B25B /* EmailAuthView.swift */,
 				3B56A3502C09B8500034B25B /* SignUpView.swift */,
+				3B41FE562C858DD700228EBC /* PasswordResetView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -785,6 +788,7 @@
 				AACB4BD02B40712D00169C52 /* SATTOApp.swift in Sources */,
 				AAA9506B2BA5C39B004E16C8 /* FinalTimetableSelectorView.swift in Sources */,
 				AAA5227B2C80C2780056C9B7 /* TermsView.swift in Sources */,
+				3B41FE572C858DD700228EBC /* PasswordResetView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

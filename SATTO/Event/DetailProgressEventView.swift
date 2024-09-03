@@ -21,6 +21,7 @@ struct DetailProgressEventView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     
     @State var alreadyParticipatedAlert = false
+    @State var isImageZoomed = false
     
     var color: Color
     
@@ -37,98 +38,124 @@ struct DetailProgressEventView: View {
     //    @State var deleteFeed = false
     
     var body: some View {
-        VStack(spacing: 0) {
-            HStack(spacing: 0) {
-                VStack(alignment: .leading, spacing: 0) {
-                    Rectangle()
-                        .frame(height: 0)
-                    
-                    HStack(spacing: 0) {
-                        Text("\(eventViewModel.event?.category ?? "category")")
-                            .font(.m18)
-                            .padding(.trailing, 7)
-                        
-                        EventTimerView(text: "\(eventViewModel.daysFromToday(dateString: eventViewModel.event?.formattedUntilWhen ?? "2024.01.01"))일 남음")
-                    }
-                    .padding(.bottom, 6)
-                    
-                    Text("\(eventViewModel.event?.formattedStartWhen ?? "2024.01.01") - \(eventViewModel.event?.formattedUntilWhen ?? "2024.01.01")")
-                        .font(.m17)
-                        .foregroundColor(Color(red: 0.39, green: 0.39, blue: 0.39))
-                        .padding(.bottom, 5)
-                    
-                    Text("마음에 드는 사진에 좋아요를 눌러 주세요!")
-                        .font(Font.custom("Pretendard", size: 12))
-                        .foregroundColor(Color(red: 0.72, green: 0.25, blue: 0.25))
-                        .padding(.bottom, 10)
-                }
-            }
-            .padding(.leading, 25)
-            .padding(.top, 10)
-            .padding(.bottom, 17)
-            .background(color)
+//        ZStack {
+//            if isImageZoomed {
+//                AsyncImage(url: URL(string: eventViewModel.feed?.photo ?? "asd")) { image in
+//                    image
+//                        .resizable()
+//                } placeholder: {
+//                    ProgressView()
+//                }
+//                .frame(width: 300, height: 300)
+//                .zIndex(1)
+//                .onTapGesture {
+//                    isImageZoomed.toggle()
+//                }
+//            }
             
-            ZStack(alignment: .bottomTrailing) {
-                ScrollView {
-                    VStack(spacing: 0) {
+            VStack(spacing: 0) {
+                HStack(spacing: 0) {
+                    VStack(alignment: .leading, spacing: 0) {
                         Rectangle()
                             .frame(height: 0)
                         
                         HStack(spacing: 0) {
-                            Text("게시물 유형")
-                                .font(.sb12)
-                                .foregroundColor(Color(red: 0.53, green: 0.53, blue: 0.53))
-                                .padding(.top, 10)
-                                .padding(.bottom, 12)
+                            Text("\(eventViewModel.event?.category ?? "category")")
+                                .foregroundStyle(Color.black)
+                                .font(.m18)
+                                .padding(.trailing, 7)
                             
-                            Picker(selection: $sort, label: Text("sort")) {
-                                ForEach(SortOption.allCases, id: \.self) { sortOption in
-                                    Text(sortOption.rawValue).tag(sortOption)
+                            EventTimerView(text: "\(eventViewModel.daysFromToday(dateString: eventViewModel.event?.formattedUntilWhen ?? "2024.01.01"))일 남음")
+                        }
+                        .padding(.bottom, 6)
+                        
+                        Text("\(eventViewModel.event?.formattedStartWhen ?? "2024.01.01") - \(eventViewModel.event?.formattedUntilWhen ?? "2024.01.01")")
+                            .font(.m17)
+                            .foregroundColor(Color(red: 0.39, green: 0.39, blue: 0.39))
+                            .padding(.bottom, 5)
+                        
+                        Text("마음에 드는 사진에 좋아요를 눌러 주세요!")
+                            .font(Font.custom("Pretendard", size: 12))
+                            .foregroundColor(Color(red: 0.72, green: 0.25, blue: 0.25))
+                            .padding(.bottom, 10)
+                    }
+                }
+                .padding(.leading, 25)
+                .padding(.top, 10)
+                .padding(.bottom, 17)
+                .background(color)
+                
+                ZStack(alignment: .bottomTrailing) {
+                    
+                    Color.background
+                        .ignoresSafeArea()
+                    
+                    ScrollView {
+                        VStack(spacing: 0) {
+                            Rectangle()
+                                .frame(height: 0)
+                            
+                            HStack(spacing: 0) {
+                                Text("게시물 유형")
+                                    .font(.sb12)
+                                    .foregroundColor(Color.cellText)
+                                    .padding(.top, 10)
+                                    .padding(.bottom, 12)
+                                
+                                Picker(selection: $sort, label: Text("sort")) {
+                                    ForEach(SortOption.allCases, id: \.self) { sortOption in
+                                        Text(sortOption.rawValue).tag(sortOption)
+                                    }
+                                }
+                                .tint(Color.cellText)
+                                .scaleEffect(0.9)
+                                
+                                Spacer()
+                            }
+                            
+                            // 두개씩 피드 띄우기 코드인데 나중에 다시 잃어봐야함 ?????
+                            LazyVGrid(columns: columns, spacing: 18) {
+                                ForEach(sortedFeeds(), id: \.contestId.wrappedValue) { $feed in
+                                    EventFeedCell(eventViewModel: eventViewModel, feed: $feed, isImageZoomed: $isImageZoomed)
+                                    
                                 }
                             }
-                            .scaleEffect(0.9)
-                            
-                            Spacer()
                         }
-                        
-                        // 두개씩 피드 띄우기 코드인데 나중에 다시 잃어봐야함 ?????
-                        LazyVGrid(columns: columns, spacing: 18) {
-                            ForEach(sortedFeeds(), id: \.contestId.wrappedValue) { $feed in
-                                EventFeedCell(eventViewModel: eventViewModel, feed: $feed)
-                            }
-                        }
-                    }
-                    .padding(.horizontal, 20)
-                }
-                
-                // 사진 추가할때 이미 내가 사진이 올라가 있으면 경고문 띄운다
-                Button(action: {
-                    let containsStudentId = eventViewModel.feeds.contains { feed in
-                        feed.studentId == authViewModel.user.studentId
+                        .padding(.horizontal, 20)
                     }
                     
-                    if containsStudentId {
-                        alreadyParticipatedAlert.toggle()
-                    }
-                    else {
-                        navPathFinder.addPath(route: .uploadEventImage)
-                    }
-                }, label: {
-                    Image(systemName: "plus.circle.fill")
-                        .resizable()
-                        .frame(width: 50, height: 50)
-                        .foregroundStyle(Color(red: 0.28, green: 0.18, blue: 0.89))
-                })
-                .padding(.trailing, 30)
-                .padding(.bottom, 20)
-            }
-        }// Vstsck
+                    // 사진 추가할때 이미 내가 사진이 올라가 있으면 경고문 띄운다
+                    Button(action: {
+                        let containsStudentId = eventViewModel.feeds.contains { feed in
+                            feed.studentId == authViewModel.user.studentId
+                        }
+                        
+                        if containsStudentId {
+                            alreadyParticipatedAlert.toggle()
+                        }
+                        else {
+                            navPathFinder.addPath(route: .uploadEventImage)
+                        }
+                    }, label: {
+                        Image(systemName: "plus.circle.fill")
+                            .resizable()
+                            .frame(width: 50, height: 50)
+                            .foregroundStyle(Color(red: 0.28, green: 0.18, blue: 0.89))
+                    })
+                    .padding(.trailing, 30)
+                    .padding(.bottom, 20)
+                }
+            }// Vstsck
+//        }
         .onAppear {
             eventViewModel.getEventFeed(category: eventViewModel.event?.category ?? "잘못된 요청")
         }
         .alert("이미 참여하셨습니다.", isPresented: $alreadyParticipatedAlert) {
             Button("확인") { }
         }
+        .fullScreenCover(isPresented: $isImageZoomed) {
+            ZoomedImageView(isImageZoomed: $isImageZoomed, feed: eventViewModel.feed!)
+                        }
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -161,6 +188,7 @@ struct EventFeedCell: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     
     @Binding var feed: Feed
+    @Binding var isImageZoomed: Bool
     
     @State var feedDislikeAlert = false
     @State var cancleFeedDislikeAlert = false
@@ -176,9 +204,15 @@ struct EventFeedCell: View {
                 ProgressView()
             }
             .frame(width: 165, height: 165)
+            .onTapGesture {
+                print("클릭")
+                eventViewModel.feed = feed
+                isImageZoomed.toggle()
+            }
             
             ZStack {
                 Rectangle()
+                    .fill(Color.black.opacity(0.5))
                     .frame(width: 165, height: 28)
                 HStack(spacing: 0) {
                     Button(action: {
@@ -269,6 +303,56 @@ struct EventFeedCell: View {
                 eventViewModel.deleteImage(contestId: feed.contestId) {
                     eventViewModel.getEventFeed(category: eventViewModel.event?.category ?? "asd")
                 }
+            }
+        }
+    }
+}
+
+struct ZoomedImageView: View {
+    @Binding var isImageZoomed: Bool
+    var feed: Feed
+    
+    @State private var scale: CGFloat = 1.0
+        @State private var lastScale: CGFloat = 1.0
+    
+    var body: some View {
+        ZStack(alignment: .topLeading) {
+            Color.black.edgesIgnoringSafeArea(.all) // 전체 화면 배경을 검게 설정
+            
+            
+            AsyncImage(url: URL(string: feed.photo)) { image in
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .scaleEffect(scale)
+                                .gesture(
+                                    MagnificationGesture()
+                                        .onChanged { value in
+                                            // 사용자가 이미지를 확대/축소할 때 실행됩니다.
+                                            let delta = value / lastScale
+                                            lastScale = value
+                                            scale *= delta
+                                        }
+                                        .onEnded { _ in
+                                            // 제스처가 종료되면, 마지막 스케일 값을 업데이트합니다.
+                                            lastScale = 1.0
+                                        }
+                                )
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color.black)
+//                    .edgesIgnoringSafeArea(.all)
+                
+            } placeholder: {
+                ProgressView()
+            }
+            
+            Button(action: {
+                isImageZoomed = false
+            }) {
+                Image(systemName: "xmark.circle.fill")
+                    .foregroundColor(.white)
+                    .font(.largeTitle)
+                    .padding()
             }
         }
     }

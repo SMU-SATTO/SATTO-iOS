@@ -14,38 +14,46 @@ struct DetailAnnouncementEventView: View {
     @EnvironmentObject var navPathFinder: EventNavigationPathFinder
     @EnvironmentObject var authViewModel: AuthViewModel
     
+    @State var isImageZoomed = false
+    
     var body: some View {
-        VStack(spacing: 0) {
-            HStack(spacing: 0) {
-                VStack(alignment: .leading, spacing: 0) {
-                    Rectangle()
-                        .frame(height: 0)
-                    
-                    HStack(spacing: 0) {
-                        Text("\(eventViewModel.event?.category ?? "category")")
-                            .font(.m18)
-                            .padding(.trailing, 7)
-                        
-                        EventTimerView(text: "종료")
-                    }
-                    .padding(.bottom, 6)
-                    
-                    Text("\(eventViewModel.event?.formattedStartWhen ?? "2024.01.01") - \(eventViewModel.event?.formattedUntilWhen ?? "2024.01.01")")
-                        .font(.m17)
-                        .foregroundColor(Color(red: 0.39, green: 0.39, blue: 0.39))
-                        .padding(.bottom, 5)
-                    
-                    Text("\(eventViewModel.event?.participantsCount ?? 999)명이 참여했어요!")
-                        .font(Font.custom("Pretendard", size: 12))
-                        .foregroundColor(Color(red: 0.72, green: 0.25, blue: 0.25))
-                        .padding(.bottom, 10)
-                }
-            }
-            .padding(.leading, 25)
-            .padding(.top, 10)
-            .padding(.bottom, 17)
-            .background(Color(red: 0.91, green: 0.95, blue: 1))
+        ZStack {
             
+            Color.background
+                .ignoresSafeArea()
+            
+            VStack(spacing: 0) {
+                HStack(spacing: 0) {
+                    VStack(alignment: .leading, spacing: 0) {
+                        Rectangle()
+                            .frame(height: 0)
+                        
+                        HStack(spacing: 0) {
+                            Text("\(eventViewModel.event?.category ?? "category")")
+                                .font(.m18)
+                                .foregroundStyle(Color.black)
+                                .padding(.trailing, 7)
+                            
+                            EventTimerView(text: "종료")
+                        }
+                        .padding(.bottom, 6)
+                        
+                        Text("\(eventViewModel.event?.formattedStartWhen ?? "2024.01.01") - \(eventViewModel.event?.formattedUntilWhen ?? "2024.01.01")")
+                            .font(.m17)
+                            .foregroundColor(Color(red: 0.39, green: 0.39, blue: 0.39))
+                            .padding(.bottom, 5)
+                        
+                        Text("\(eventViewModel.event?.participantsCount ?? 999)명이 참여했어요!")
+                            .font(Font.custom("Pretendard", size: 12))
+                            .foregroundColor(Color(red: 0.72, green: 0.25, blue: 0.25))
+                            .padding(.bottom, 10)
+                    }
+                }
+                .padding(.leading, 25)
+                .padding(.top, 10)
+                .padding(.bottom, 17)
+                .background(Color(red: 0.91, green: 0.95, blue: 1))
+                
                 ScrollView {
                     // 젤 위에만 20 뛰우고
                     Spacer()
@@ -54,7 +62,7 @@ struct DetailAnnouncementEventView: View {
                     VStack(spacing: 0){
                         Rectangle()
                             .frame(height: 0)
-
+                        
                         // 피드배열에서 앞에서 3개의 인덱스 추출
                         // 만약 3개보다 적으면 그 개수만 추출
                         ForEach(eventViewModel.feeds.prefix(3).indices, id: \.self) { index in
@@ -64,7 +72,7 @@ struct DetailAnnouncementEventView: View {
                             // 메달 색은 최대 3개
                             let color = eventViewModel.medalColors[index]
                             
-                            EndEventFeedCell(eventViewModel: eventViewModel, feed: feed, color: color)
+                            EndEventFeedCell(eventViewModel: eventViewModel, isImageZoomed: $isImageZoomed, feed: feed, color: color)
                             
                             // 그 다음부터는 밑에 40씩 뛰운다
                             Spacer()
@@ -73,10 +81,14 @@ struct DetailAnnouncementEventView: View {
                     }
                     .padding(.horizontal, 60)
                 }
-        }// Vstsck
+            }// Vstsck
+        }
         .onAppear {
             eventViewModel.getEventFeed(category: eventViewModel.event?.category ?? "잘못된 요청")
         }
+        .fullScreenCover(isPresented: $isImageZoomed) {
+            ZoomedImageView(isImageZoomed: $isImageZoomed, feed: eventViewModel.feed!)
+                        }
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -95,6 +107,8 @@ struct EndEventFeedCell: View {
     @ObservedObject var eventViewModel: EventViewModel
     
     @EnvironmentObject var authViewModel: AuthViewModel
+    
+    @Binding var isImageZoomed: Bool
     
     var feed: Feed
     // 메달 색깔
@@ -124,6 +138,11 @@ struct EndEventFeedCell: View {
                     ProgressView()
                 }
                 .frame(width: 266, height: 266)
+                .onTapGesture {
+                    print("클릭")
+                    eventViewModel.feed = feed
+                    isImageZoomed = true
+                }
                 
                 ZStack {
                     Rectangle()

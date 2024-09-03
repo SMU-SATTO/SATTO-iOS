@@ -7,6 +7,7 @@
 
 import Foundation
 import Moya
+import UIKit
 
 enum AuthAPI {
     
@@ -23,7 +24,10 @@ enum AuthAPI {
     case setAccountPrivate
     case editProfile(name: String, nickname: String, department: String, grade: Int)
     case editPassword(password: String)
+    case resetPassword(studentId: String)
     
+    case uploadProfileImage(image: UIImage)
+    case deleteProfileImage
 }
 
 extension AuthAPI: TargetType {
@@ -59,6 +63,12 @@ extension AuthAPI: TargetType {
             return "/api/v1/users/account/update"
         case .editPassword:
             return "/api/v1/users/account/pw"
+        case .resetPassword:
+            return "/api/v1/users/id/findPw"
+        case .uploadProfileImage:
+            return "/api/v1/users/profile/image"
+        case .deleteProfileImage:
+            return "/api/v1/users/profile/image"
         }
     }
     
@@ -90,6 +100,12 @@ extension AuthAPI: TargetType {
             return .patch
         case .editPassword:
             return .patch
+        case .resetPassword:
+            return .post
+        case .uploadProfileImage:
+            return .patch
+        case .deleteProfileImage:
+            return .delete
         }
     }
     
@@ -127,6 +143,15 @@ extension AuthAPI: TargetType {
         case .editPassword(let password):
             let parameters: [String: Any] = ["password": password]
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
+        case .resetPassword(let studentId):
+            let parameters: [String: Any] = ["studentId": studentId]
+            return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
+        case .uploadProfileImage(let image):
+            let imageData = image.jpegData(compressionQuality: 0.1)!
+            let formData = MultipartFormData(provider: .data(imageData), name: "file", fileName: "image.jpg", mimeType: "image/jpeg")
+            return .uploadMultipart([formData])
+        case .deleteProfileImage:
+            return .requestPlain
         }
     }
     
@@ -158,6 +183,12 @@ extension AuthAPI: TargetType {
         case .editProfile:
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]
         case .editPassword:
+            return ["Authorization": "Bearer \(getToken() ?? "asd")"]
+        case .resetPassword:
+            return ["Content-type": "application/json"]
+        case .uploadProfileImage(image: let image):
+            return ["Authorization": "Bearer \(getToken() ?? "asd")"]
+        case .deleteProfileImage:
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]
         }
     }

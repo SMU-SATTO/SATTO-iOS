@@ -49,18 +49,24 @@ struct EventView: View {
     var body: some View {
         
         NavigationStack(path: $navPathFinder.path) {
-            VStack(spacing: 0) {
+            ZStack {
                 
-                EventTopTabBar(selectedPage: $selectedPage)
+                Color.background
+                    .ignoresSafeArea()
                 
-                TabView(selection: $selectedPage) {
-                    ProgressEventView(eventViewModel: eventViewModel)
-                        .tag(EventTab.progressEvent)
+                VStack(spacing: 0) {
                     
-                    AnnouncementEventView(eventViewModel: eventViewModel)
-                        .tag(EventTab.announcementOfWinners)
+                    EventTopTabBar(selectedPage: $selectedPage)
+                    
+                    TabView(selection: $selectedPage) {
+                        ProgressEventView(eventViewModel: eventViewModel)
+                            .tag(EventTab.progressEvent)
+                        
+                        AnnouncementEventView(eventViewModel: eventViewModel)
+                            .tag(EventTab.announcementOfWinners)
+                    }
+                    .tabViewStyle(PageTabViewStyle())
                 }
-                .tabViewStyle(PageTabViewStyle())
             }
             .onAppear {
                 print("이벤트뷰 생성")
@@ -114,7 +120,7 @@ struct EventTopTabBar: View {
             HStack(spacing: 0) {
                 Text("진행 중인 이벤트")
                     .font(.b14)
-                    .foregroundColor(selectedPage == .progressEvent ? .black : .gray)
+                    .foregroundColor(selectedPage == .progressEvent ? .topTabSelected : .topTabNotSelected)
                     .onTapGesture {
                         withAnimation {
                             selectedPage = .progressEvent
@@ -132,7 +138,7 @@ struct EventTopTabBar: View {
                 
                 Text("당첨자 발표")
                     .font(.system(size: 14))
-                    .foregroundColor(selectedPage == .announcementOfWinners ? .black : .gray)
+                    .foregroundColor(selectedPage == .announcementOfWinners ? .topTabSelected : .topTabNotSelected)
                     .onTapGesture {
                         withAnimation {
                             selectedPage = .announcementOfWinners

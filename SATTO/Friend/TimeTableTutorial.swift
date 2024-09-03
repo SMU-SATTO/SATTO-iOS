@@ -73,46 +73,88 @@ struct TimeTableTutorial: View {
                 else{
                     // timeTableInfo가 nil이 아닐때
                     if let lectures = friendViewModel.timeTableInfo?.lects {
-                        // 강의들을 학수번호를 id로 반복
-                        ForEach(lectures, id: \.codeSection) { lecture in
-                            // [(Lecture, [Int], [String])]로 반환된 값을 Lecture.codeSection을 id로 반복
-                            ForEach(makeTimeBlock(lectures: [lecture]), id: \.0.codeSection) { lecture, periods, firstTimes in
-                                // periods의 개수 만큼 반복
-                                ForEach(0..<periods.count, id: \.self) { index in
-                                    // firstTimes의 요소의 요일부분을 숫자로 변환 ex) 월3->0 화2->1
-                                    let dayIndex = getDayIndex(day: String(firstTimes[index].prefix(1)))
-                                    // firstTimes의 요소의 숫자부분을 숫자로 변환 ex) 월3->3 화2->2
-                                    let periodIndex = getPeriodIndex(period: String(firstTimes[index].substring(from: 1)))
-                                    // 매핑되어있는 학수번호를 넣으면 색이 나온다
-                                    let backgroundColor = friendViewModel.getColorForCodeSection(codeSection: lecture.codeSection)
+                        
+                        var mappedLectures = makeTimeBlock(lectures: lectures)
+                        
+                        ForEach(mappedLectures, id: \.0.codeSection) { lecture, periods, firstTimes in
+                            // periods의 개수 만큼 반복
+                            ForEach(0..<periods.count, id: \.self) { index in
+                                // firstTimes의 요소의 요일부분을 숫자로 변환 ex) 월3->0 화2->1
+                                let dayIndex = getDayIndex(day: String(firstTimes[index].prefix(1)))
+                                // firstTimes의 요소의 숫자부분을 숫자로 변환 ex) 월3->3 화2->2
+                                let periodIndex = getPeriodIndex(period: String(firstTimes[index].substring(from: 1)))
+                                // 매핑되어있는 학수번호를 넣으면 색이 나온다
+                                let backgroundColor = friendViewModel.getColorForCodeSection(codeSection: lecture.codeSection)
+                                
+                                // 강의 표시하는 블럭
+                                VStack(spacing: 0) {
+                                    Spacer()
+                                        .frame(height: 5)
+                                    Text(lecture.lectName)
+                                        .font(.m11)
+                                        .foregroundColor(.white)
                                     
-                                    // 강의 표시하는 블럭
-                                    VStack(spacing: 0) {
-                                        Spacer()
-                                            .frame(height: 5)
-                                        Text(lecture.lectName)
-                                            .font(.m11)
-                                            .foregroundColor(.white)
-                                        
-                                        Spacer()
-                                    }
-                                    // 가로길이는 전체에서 요일의 개수로 나눔
-                                    // 세로길이는 블럭 세로길이 곱하기 periods[index]
-                                    .frame(width: geo.size.width/6, height: CGFloat(periods[index]) * 40)
-                                    .overlay(
-                                        // 테두리 표시하는거 같은데 의미있나???
-                                        Rectangle()
-                                            .stroke(Color(red: 0.25, green: 0.25, blue: 0.24), lineWidth: 0.5)
-                                    )
-                                    // 학수번호에 맵핑되어있던 배경색
-                                    .background(backgroundColor)
-                                    // x축은 몇번쨰 요일인지 확인후 그 요일의 중앙으로 옮긴다
-                                    // y축은 이해가 안되게 나중에 봐야함 ????
-                                    .position(x: CGFloat(dayIndex) * geo.size.width/6 + geo.size.width / 12,
-                                              y: CGFloat(periodIndex) * 40 + CGFloat(periods[index]) * 20 + 40)
+                                    
+                                    
+                                    Spacer()
                                 }
+                                // 가로길이는 전체에서 요일의 개수로 나눔
+                                // 세로길이는 블럭 세로길이 곱하기 periods[index]
+                                .frame(width: geo.size.width/6, height: CGFloat(periods[index]) * 40)
+                                .overlay(
+                                    // 테두리 표시하는거 같은데 의미있나???
+                                    Rectangle()
+                                        .stroke(Color(red: 0.25, green: 0.25, blue: 0.24), lineWidth: 0.5)
+                                )
+                                // 학수번호에 맵핑되어있던 배경색
+                                .background(backgroundColor)
+                                // x축은 몇번쨰 요일인지 확인후 그 요일의 중앙으로 옮긴다
+                                // y축은 이해가 안되게 나중에 봐야함 ????
+                                .position(x: CGFloat(dayIndex) * geo.size.width/6 + geo.size.width / 12,
+                                          y: CGFloat(periodIndex) * 40 + CGFloat(periods[index]) * 20 + 40)
                             }
                         }
+                        
+//                        // 강의들을 학수번호를 id로 반복
+//                        ForEach(lectures, id: \.codeSection) { lecture in
+//                            // [(Lecture, [Int], [String])]로 반환된 값을 Lecture.codeSection을 id로 반복
+//                            ForEach(makeTimeBlock(lectures: [lecture]), id: \.0.codeSection) { lecture, periods, firstTimes in
+//                                // periods의 개수 만큼 반복
+//                                ForEach(0..<periods.count, id: \.self) { index in
+//                                    // firstTimes의 요소의 요일부분을 숫자로 변환 ex) 월3->0 화2->1
+//                                    let dayIndex = getDayIndex(day: String(firstTimes[index].prefix(1)))
+//                                    // firstTimes의 요소의 숫자부분을 숫자로 변환 ex) 월3->3 화2->2
+//                                    let periodIndex = getPeriodIndex(period: String(firstTimes[index].substring(from: 1)))
+//                                    // 매핑되어있는 학수번호를 넣으면 색이 나온다
+//                                    let backgroundColor = friendViewModel.getColorForCodeSection(codeSection: lecture.codeSection)
+//                                    
+//                                    // 강의 표시하는 블럭
+//                                    VStack(spacing: 0) {
+//                                        Spacer()
+//                                            .frame(height: 5)
+//                                        Text(lecture.lectName)
+//                                            .font(.m11)
+//                                            .foregroundColor(.white)
+//                                        
+//                                        Spacer()
+//                                    }
+//                                    // 가로길이는 전체에서 요일의 개수로 나눔
+//                                    // 세로길이는 블럭 세로길이 곱하기 periods[index]
+//                                    .frame(width: geo.size.width/6, height: CGFloat(periods[index]) * 40)
+//                                    .overlay(
+//                                        // 테두리 표시하는거 같은데 의미있나???
+//                                        Rectangle()
+//                                            .stroke(Color(red: 0.25, green: 0.25, blue: 0.24), lineWidth: 0.5)
+//                                    )
+//                                    // 학수번호에 맵핑되어있던 배경색
+//                                    .background(backgroundColor)
+//                                    // x축은 몇번쨰 요일인지 확인후 그 요일의 중앙으로 옮긴다
+//                                    // y축은 이해가 안되게 나중에 봐야함 ????
+//                                    .position(x: CGFloat(dayIndex) * geo.size.width/6 + geo.size.width / 12,
+//                                              y: CGFloat(periodIndex) * 40 + CGFloat(periods[index]) * 20 + 40)
+//                                }
+//                            }
+//                        }
                     }
                 }
             }
