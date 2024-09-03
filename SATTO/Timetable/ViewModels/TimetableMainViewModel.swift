@@ -20,6 +20,7 @@ final class TimetableMainViewModel: ObservableObject {
             switch result {
             case .success(let timetableInfoModel):
                 DispatchQueue.main.async {
+                    self?.timetableId = timetableInfoModel.timetableId ?? -1
                     self?.semesterYear = timetableInfoModel.semesterYear ?? "2024학년도 2학기"
                     self?.timetableName = timetableInfoModel.timeTableName ?? "시간표"
                     self?.timetableInfo = timetableInfoModel.subjectModels
@@ -97,7 +98,7 @@ final class TimetableMainViewModel: ObservableObject {
                     print("시간표 삭제 성공!")
                     self.fetchUserTimetable(id: nil)
                 }
-            case .failure(let error):
+            case .failure:
                 print("시간표 삭제에 실패했어요")
             }
         }

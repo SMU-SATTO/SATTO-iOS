@@ -138,7 +138,7 @@ class SelectedValues: TimeSelectorViewModelProtocol {
                     print("시간표 저장 성공!")
                     completion(true)
                 }
-            case .failure(let error):
+            case .failure:
                 print("시간표 저장에 실패했어요.")
                 completion(false)
             }
@@ -154,7 +154,7 @@ class SelectedValues: TimeSelectorViewModelProtocol {
                     print("시간표 저장 성공!")
                     completion(true)
                 }
-            case .failure(let error):
+            case .failure:
                 print("시간표 저장에 실패했어요.")
                 completion(false)
             }

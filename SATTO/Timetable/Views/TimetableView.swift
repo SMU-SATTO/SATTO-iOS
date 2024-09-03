@@ -11,9 +11,23 @@ import JHTimeTable
 struct TimetableView: View {
     let timetableBaseArray: [SubjectModelBase]
     
+    var weeks: [LectureWeeks] = [.mon, .tue, .wed, .thu, .fri, .sat, .sun]
+    var startAt: Int = 8
+    var endAt: Int = 24
+    
     let colors: [Color] = [.lectureRed, .lectureBlue, .lectureMint, .lecturePink, .lectureGreen, .lectureOrange, .lecturePurple, .lectureYellow, .lectureSkyblue]
     @State private var usedColorIndices: Set<Int> = []
-        
+    
+    init(timetableBaseArray: [SubjectModelBase],
+         weeks: [LectureWeeks]? = nil,
+         startAt: Int? = nil,
+         endAt: Int? = nil) {
+        self.timetableBaseArray = timetableBaseArray
+        self.weeks = weeks ?? getWeeks(from: timetableBaseArray)
+        self.startAt = startAt ?? getFirstTime(from: timetableBaseArray)
+        self.endAt = endAt ?? getEndTime(from: timetableBaseArray)
+    }
+    
     var body: some View {
         JHLectureTable {
             ForEach(convertToLectureModels(from: timetableBaseArray)) { lecture in
@@ -35,8 +49,8 @@ struct TimetableView: View {
         } background: {
             // Add background
         }
-        .lectureTableWeekdays(getWeeks(from: timetableBaseArray))
-        .lectureTableTimes(startAt: .init(hour: getFirstTime(from: timetableBaseArray), minute: 0), endAt: .init(hour: getEndTime(from: timetableBaseArray), minute: 0)) // 시작, 끝 시간 설정
+        .lectureTableWeekdays(weeks)
+        .lectureTableTimes(startAt: .init(hour: startAt, minute: 0), endAt: .init(hour: endAt, minute: 0)) // 시작, 끝 시간 설정
         .lectureTableBorder(width: 0.5, radius: 0, color: "#979797") // table 그리드 선 색 변경
         .lectureTableBar(time: .init(height: 0, width: 35), week: .init(height: 30, width: 10)) //날짜, 시간 위치 변경 가능, 시간, 주 크기 변경
         .aspectRatio(7/10, contentMode: .fit)
