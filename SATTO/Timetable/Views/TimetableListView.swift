@@ -18,15 +18,43 @@ struct TimetableListView: View {
         ZStack {
             Color.backgroundDefault
                 .ignoresSafeArea(.all)
-            ScrollView {
-                VStack(spacing: 10) {
-                    ForEach(groupedTimetables.keys.sorted(by: >), id: \.self) { semesterYear in
-                        if let timetables = groupedTimetables[semesterYear] {
-                            TimetableListRec(headerText: semesterYear, timetableList: timetables, timetableMainViewModel: timetableMainViewModel, stackPath: $stackPath)
+            VStack {
+                if groupedTimetables.isEmpty {
+                    VStack {
+                        Text("등록된 시간표가 없어요.")
+                        Text("시간표를 만들어보세요!")
+                        Button(action: {
+                            stackPath.removeAll()
+                            stackPath.append(.timetableOption)
+                        }) {
+                            HStack {
+                                Text("시간표 생성하러 가기")
+                                Image(systemName: "arrowshape.right.fill")
+                            }
+                            .font(.sb14)
+                            .foregroundStyle(.blackWhite)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundStyle(.buttonBlue200)
+                                    .padding(EdgeInsets(top: -10, leading: -15, bottom: -10, trailing: -15))
+                            )
+                            .padding(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15))
                         }
                     }
+                    .font(.sb16)
+                    .foregroundStyle(Color.blackWhite)
+                } else {
+                    ScrollView {
+                        VStack(spacing: 10) {
+                            ForEach(groupedTimetables.keys.sorted(by: >), id: \.self) { semesterYear in
+                                if let timetables = groupedTimetables[semesterYear] {
+                                    TimetableListRec(headerText: semesterYear, timetableList: timetables, timetableMainViewModel: timetableMainViewModel, stackPath: $stackPath)
+                                }
+                            }
+                        }
+                        .padding(.horizontal, 20)
+                    }
                 }
-                .padding(.horizontal, 20)
             }
             .navigationBarBackButtonHidden(true)
             .toolbar {
