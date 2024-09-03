@@ -25,6 +25,11 @@ enum checkSignUp: String {
     case success = "회원가입 성공"
 }
 
+enum checkResetPassword: String {
+    case fail = "존재하지 않는 이메일 입니다."
+    case success = "인증번호 전송 성공"
+}
+
 class AuthViewModel: ObservableObject {
     
     private var provider: MoyaProvider<AuthAPI>!
@@ -52,6 +57,11 @@ class AuthViewModel: ObservableObject {
     @Published var networkError = false
     @Published var networkErrorAlert = false
     
+    // 에러메세지 받는 변수
+    @Published var errorMessage = ""
+    
+//    @Published var profileImage: UIImage?
+    
     // 토근 찾는 키값
     let accessTokenKey = "accessToken"
     let refreshTokenKey = "refreshToken"
@@ -59,7 +69,7 @@ class AuthViewModel: ObservableObject {
     init() {
         print("authViewModel init")
         // 사용자 정보 초기화
-        user = User(studentId: "", email: "", password: "", name: "", nickname: "", department: "", grade: 0, isPublic: true)
+        user = User(studentId: "", profileImg: nil, email: "", password: "", name: "", nickname: "", department: "", grade: 0, isPublic: true)
         // 플러그인 주입
         let authPlugin = AuthPlugin(viewModel: self)
         self.provider = MoyaProvider<AuthAPI>(plugins: [authPlugin])
@@ -114,6 +124,7 @@ class AuthViewModel: ObservableObject {
                     self.isLoading = false
                 case .failure(let error):
                     print("sendAuthNumber네트워크 요청 실패🚨")
+                    self.isLoading = false
                 }
             }
         }
@@ -356,6 +367,69 @@ class AuthViewModel: ObservableObject {
                     completion()
                 case .failure:
                     print("editPassword네트워크 요청 실패🚨")
+                }
+            }
+        }
+    }
+    
+    func resetPassword(studentId: String, completion: @escaping (Bool) -> Void) {
+        self.isLoading = true
+        provider.request(.resetPassword(studentId: studentId)) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case let .success(response):
+                    print(response)
+                    
+                    if let response = try? response.map(CheckResponse.self) {
+                        print("resetPassword매핑 성공🚨")
+                        if response.result == checkResetPassword.success.rawValue {
+                            self.errorMessage = response.result
+                            print(self.errorMessage)
+                            completion(true)
+                        }
+                        else {
+                            self.errorMessage = response.result
+                            print(self.errorMessage)
+                            completion(false)
+                        }
+                    }
+                    else {
+                        print("resetPassword매핑 실패🚨")
+                    }
+                    self.isLoading = false
+                case .failure:
+                    print("resetPassword네트워크 요청 실패🚨")
+                    self.isLoading = false
+                }
+            }
+        }
+    }
+    
+    func uploadProfileImage(image: UIImage, completion: @escaping () -> Void) {
+        provider.request(.uploadProfileImage(image: image)) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case let .success(response):
+                    print(response)
+                    print("uploadProfileImage네트워크 요청 성공🚨")
+                    completion()
+                case .failure:
+                    print("uploadProfileImage네트워크 요청 실패🚨")
+                }
+            }
+        }
+    }
+    
+    func deleteProfileImage(completion: @escaping () -> Void) {
+        provider.request(.deleteProfileImage) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case let .success(response):
+                    print(response)
+                    print("deleteProfileImage네트워크 요청 성공🚨")
+                    completion()
+                case .failure:
+                    print("deleteProfileImage네트워크 요청 실패🚨")
                 }
             }
         }

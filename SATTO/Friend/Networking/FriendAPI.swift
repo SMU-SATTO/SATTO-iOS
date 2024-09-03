@@ -23,6 +23,7 @@ enum FriendAPI {
     case searchUser(studentIdOrName: String)
     
     case compareTimeTable(studentIds: [String])
+    case compareTimeTableGap(studentIds: [String])
 }
 
 
@@ -54,7 +55,10 @@ extension FriendAPI: TargetType {
         case .searchUser:
             return "/api/v1/users/search"
         case .compareTimeTable:
-            return "/api/v1/timetable/compare"
+            return "/api/v1/timetable/compare/lect"
+        case .compareTimeTableGap:
+            return "/api/v1/timetable/compare/gap"
+         
         }
     }
     
@@ -82,6 +86,8 @@ extension FriendAPI: TargetType {
             return .get
         case .compareTimeTable:
             return .post
+        case .compareTimeTableGap:
+            return .post
         }
     }
     
@@ -108,7 +114,9 @@ extension FriendAPI: TargetType {
         case .searchUser(let studentIdOrName):
             return .requestParameters(parameters: ["query": studentIdOrName], encoding: URLEncoding.queryString)
         case .compareTimeTable(let studentIds):
-            return .requestParameters(parameters: ["studentIds": studentIds], encoding: URLEncoding.queryString)
+            return .requestParameters(parameters: ["studentIds": studentIds], encoding: JSONEncoding.default)
+        case .compareTimeTableGap(studentIds: let studentIds):
+            return .requestParameters(parameters: ["studentIds": studentIds], encoding: JSONEncoding.default)
         }
     }
     
@@ -136,6 +144,8 @@ extension FriendAPI: TargetType {
         case .searchUser:
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]
         case .compareTimeTable:
+            return ["Authorization": "Bearer \(getToken() ?? "asd")"]
+        case .compareTimeTableGap(studentIds: let studentIds):
             return ["Authorization": "Bearer \(getToken() ?? "asd")"]
         }
     }

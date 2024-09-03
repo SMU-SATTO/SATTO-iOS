@@ -11,6 +11,7 @@ enum LoginRoute: Hashable {
     case AgreeView
     case EmailAuthView
     case SignUpView
+    case PasswordResetView
 }
 
 final class LoginNavigationPathFinder: ObservableObject {
@@ -81,6 +82,13 @@ struct LoginView: View {
                                     .stroke(Color(red: 0.3, green: 0.32, blue: 0.34), lineWidth: 1)
                             )
                     })
+                    .padding(.bottom, 12)
+                    
+                    Button(action: {
+                        navPathFinder.addPath(route: .PasswordResetView)
+                    }, label: {
+                        Text("비밀번호 찾기")
+                    })
                     
                     Spacer()
                     
@@ -97,6 +105,8 @@ struct LoginView: View {
                         EmailAuthView()
                     case .SignUpView:
                         SignUpView()
+                    case .PasswordResetView:
+                        PasswordResetView()
                     }
                 }
             }

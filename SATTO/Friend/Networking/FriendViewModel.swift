@@ -44,7 +44,8 @@ class FriendViewModel: ObservableObject {
     @Published var colorMapping: [String: Color] = [:]
     
     @Published var compareFriends: [Friend] = []
-    @Published var overlappingLectureId: [String] = []
+    @Published var overlappingLectures: [[Lecture]] = []
+    @Published var overlappingGapLectures: [[Lecture]] = []
     
     init() {
         
@@ -282,9 +283,14 @@ class FriendViewModel: ObservableObject {
                     switch result {
                     case .success(let response):
                         print(response)
-                        if let compareTimeTableResponse = try? response.map(ComPareTimetableResponse.self) {
-                            self.overlappingLectureId = compareTimeTableResponse.result
-                            print(self.overlappingLectureId)
+                        
+                        if let responseString = String(data: response.data, encoding: .utf8) {
+                            print("Response Data: \(responseString)")
+                        }
+                        
+                        if let compareTimeTableResponse = try? response.map(CompareTimetableResponse.self) {
+                            self.overlappingLectures = compareTimeTableResponse.result
+                            print(self.overlappingLectures)
                             print("postCompareTimeTable매핑 성공🚨")
                         }
                         else {
@@ -292,6 +298,33 @@ class FriendViewModel: ObservableObject {
                         }
                     case .failure:
                         print("postCompareTimeTable네트워크 요청 실패🚨")
+                    }
+                }
+
+            }
+    }
+    
+    func postCompareTimeTableGap(studentIds: [String]) {
+        provider.request(.compareTimeTableGap(studentIds: studentIds)) { result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let response):
+                        print(response)
+                        
+                        if let responseString = String(data: response.data, encoding: .utf8) {
+                            print("Response Data: \(responseString)")
+                        }
+                        
+                        if let compareTimeTableResponse = try? response.map(CompareTimetableResponse.self) {
+                            self.overlappingGapLectures = compareTimeTableResponse.result
+                            print(self.overlappingGapLectures)
+                            print("postCompareTimeTableGap매핑 성공🚨")
+                        }
+                        else {
+                            print("postCompareTimeTableGap매핑 실패🚨")
+                        }
+                    case .failure:
+                        print("postCompareTimeTableGap네트워크 요청 실패🚨")
                     }
                 }
 

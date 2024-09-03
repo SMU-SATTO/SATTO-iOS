@@ -117,6 +117,7 @@ struct MyPageView: View {
                                     })
                                 }
                                 .padding(.bottom, 37)
+                                
 
                                 if friendViewModel.timeTables.isEmpty {
                                     Text("시간표가 없습니다")
@@ -275,6 +276,7 @@ struct MyPageView: View {
     func convertUserToFriend(user: User) -> Friend {
         return Friend(
             studentId: user.studentId,
+            profileImg: user.profileImg,
             email: user.email,
             name: user.name,
             nickname: user.nickname,
