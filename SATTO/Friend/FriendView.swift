@@ -45,7 +45,7 @@ struct FriendView: View {
                                 
                                 Spacer()
                                 
-                                ProfileImageCell(inCircleSize: 100, outCircleSize: 105)
+                                FriendProfileImageCell(inCircleSize: 100, outCircleSize: 105, friend: friendViewModel.friend.last!)
                                     .shadow(radius: 15, x: 0, y: 10)
                                     .padding(.top, -72)
                                     .zIndex(1)
@@ -93,7 +93,7 @@ struct FriendView: View {
                                     }, label: {
                                         unfollowingButton
                                     })
-                                    .padding(.trailing, 53)
+//                                    .padding(.trailing, 53)
                                 }
                                 // 내가 보는 친구가 내 팔로잉 목록에 없을때 팔로잉 버튼이 표시됨
                                 else if !friendViewModel.myFollowing.contains(friendViewModel.friend.last ?? Friend(studentId: "친구배열 비어있음", email: "친구배열 비어있음", name: "친구배열 비어있음", nickname: "친구배열 비어있음", department: "친구배열 비어있음", grade: "친구배열 비어있음", isPublic: "친구배열 비어있음")) {
@@ -107,10 +107,10 @@ struct FriendView: View {
                                     }, label: {
                                         followButton
                                     })
-                                    .padding(.trailing, 53)
+//                                    .padding(.trailing, 53)
                                 }
                                 
-                                overlappingTimetable
+//                                overlappingTimetable
                             }
                             .padding(.bottom, 37)
                             
@@ -150,11 +150,37 @@ struct FriendView: View {
         .navigationBarBackButtonHidden()
         .onAppear {
             print("프렌드뷰 생성")
+            
+            friendViewModel.timeTables = []
+            friendViewModel.timeTableInfo = nil
             // 내가 보는 친구의 팔로워, 팔로잉, 시간표 목록을 조회
             friendViewModel.fetchFollowerList(studentId: friendViewModel.friend.last?.studentId ?? "studentId")
             friendViewModel.fetchFollowingList(studentId: friendViewModel.friend.last?.studentId ?? "studentId")
-            friendViewModel.fetchFriendTimetableList(studentId: friendViewModel.friend.last?.studentId ?? "studentId")
+            friendViewModel.fetchFriendTimetableList(studentId: friendViewModel.friend.last?.studentId ?? "studentId") {
+                
+                friendViewModel.selectedTimeTableName = friendViewModel.getTimetableNamesForSemester(timeTables: friendViewModel.timeTables, semester: friendViewModel.selectedSemesterYear).first ?? "이름없음"
+                
+                friendViewModel.fetchTimeTableInfo(timeTableId: friendViewModel.getSelectedTimetableId(timeTables: friendViewModel.timeTables))
+                
+                if let timeTableId = friendViewModel.timeTables.filter({$0.semesterYear == friendViewModel.selectedSemesterYear && $0.timeTableName == friendViewModel.selectedTimeTableName
+                }).first?.timeTableId {
+                    friendViewModel.fetchTimeTableInfo(timeTableId: timeTableId)
+                }
+            }
+            // 학기 이름이 안바뀌어서 시간표가 안바뀌는거임
+            
         }
+        // 학기를 바꾸면 그 학기에 해당하는 시간표들의 첫번째 값을 보여준다
+        .onChange(of: friendViewModel.selectedSemesterYear) { _ in
+            print("학기 바뀜")
+            friendViewModel.selectedTimeTableName = friendViewModel.getTimetableNamesForSemester(timeTables: friendViewModel.timeTables, semester: friendViewModel.selectedSemesterYear).first ?? "이름없음"
+        }
+        // 시간표 이름을 바꾸면 그 시간표의 값을 보여준다
+        .onChange(of: friendViewModel.selectedTimeTableName) { _ in
+            print("시간표이름 바뀜")
+            friendViewModel.fetchTimeTableInfo(timeTableId: friendViewModel.getSelectedTimetableId(timeTables: friendViewModel.timeTables))
+        }
+        
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 HStack(spacing: 0) {

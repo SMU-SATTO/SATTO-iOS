@@ -38,20 +38,6 @@ struct DetailProgressEventView: View {
     //    @State var deleteFeed = false
     
     var body: some View {
-//        ZStack {
-//            if isImageZoomed {
-//                AsyncImage(url: URL(string: eventViewModel.feed?.photo ?? "asd")) { image in
-//                    image
-//                        .resizable()
-//                } placeholder: {
-//                    ProgressView()
-//                }
-//                .frame(width: 300, height: 300)
-//                .zIndex(1)
-//                .onTapGesture {
-//                    isImageZoomed.toggle()
-//                }
-//            }
             
             VStack(spacing: 0) {
                 HStack(spacing: 0) {

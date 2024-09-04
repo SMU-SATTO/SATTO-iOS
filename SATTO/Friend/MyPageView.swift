@@ -96,6 +96,16 @@ struct MyPageView: View {
                                 .padding(.bottom, 14)
                                 .padding(.horizontal, 51)
                                 
+//                                Button(action: {
+//                                    friendViewModel.timeTables = []
+//                                    friendViewModel.timeTableInfo = nil
+//                                    print(friendViewModel.selectedSemesterYear)
+//                                    print(friendViewModel.selectedTimeTableName)
+//                                }, label: {
+//                                    Text("시간표 비우기")
+//                                })
+                                
+                                
                                 Text("\(authViewModel.user.name) \(authViewModel.user.studentId)")
                                     .font(.sb16)
                                     .foregroundColor(Color.gray800)
@@ -107,8 +117,8 @@ struct MyPageView: View {
                                     .padding(.bottom, 23)
                                 
                                 HStack(spacing: 0) {
-                                    checkGraduation
-                                        .padding(.trailing, 53)
+//                                    checkGraduation
+//                                        .padding(.trailing, 53)
                                     
                                     Button(action: {
                                         navPathFinder.addPath(route: .compareTimeTable)
@@ -156,6 +166,9 @@ struct MyPageView: View {
             .onAppear {
                 print("마이페이지뷰 생성")
                 
+                friendViewModel.timeTables = []
+                friendViewModel.timeTableInfo = nil
+                
                 // 내 정보 조회가 성공하면
                 authViewModel.userInfoInquiry {
                     // friend배열이 비어있으면 내 정보를 friend로 변환해서 첫번째 인덱스에 넣는다
@@ -173,14 +186,27 @@ struct MyPageView: View {
                     }
                 }
                 // 내 시간표들을 조회한다 (강의정보 제외)
-                friendViewModel.fetchMyTimetableList()
+                friendViewModel.fetchMyTimetableList {
+                    
+                    friendViewModel.selectedTimeTableName = friendViewModel.getTimetableNamesForSemester(timeTables: friendViewModel.timeTables, semester: friendViewModel.selectedSemesterYear).first ?? "이름없음"
+                    
+                    friendViewModel.fetchTimeTableInfo(timeTableId: friendViewModel.getSelectedTimetableId(timeTables: friendViewModel.timeTables))
+                    
+                    
+                    if let timeTableId = friendViewModel.timeTables.filter({$0.semesterYear == friendViewModel.selectedSemesterYear && $0.timeTableName == friendViewModel.selectedTimeTableName
+                    }).first?.timeTableId {
+                        friendViewModel.fetchTimeTableInfo(timeTableId: timeTableId)
+                    }
+                }
             }
             // 학기를 바꾸면 그 학기에 해당하는 시간표들의 첫번째 값을 보여준다
             .onChange(of: friendViewModel.selectedSemesterYear) { _ in
+                print("학기 바뀜")
                 friendViewModel.selectedTimeTableName = friendViewModel.getTimetableNamesForSemester(timeTables: friendViewModel.timeTables, semester: friendViewModel.selectedSemesterYear).first ?? "이름없음"
             }
             // 시간표 이름을 바꾸면 그 시간표의 값을 보여준다
             .onChange(of: friendViewModel.selectedTimeTableName) { _ in
+                print("시간표이름 바뀜")
                 friendViewModel.fetchTimeTableInfo(timeTableId: friendViewModel.getSelectedTimetableId(timeTables: friendViewModel.timeTables))
             }
             // 마이페이지에서 팔로워 누를때만 FollwerSearchView로 이동
