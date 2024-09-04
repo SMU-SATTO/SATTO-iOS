@@ -50,18 +50,18 @@ struct SettingView: View {
                             .padding(.top, 130)
                             .padding(.bottom, 14)
                         
-                        Button(action: {
-                            isImagePickerPresented.toggle()
-                        }, label: {
-                            Text("이미지편집")
-                        })
-                        Button(action: {
-                            authViewModel.deleteProfileImage {
-                                authViewModel.userInfoInquiry { }
-                            }
-                        }, label: {
-                            Text("이미지삭제")
-                        })
+//                        Button(action: {
+//                            isImagePickerPresented.toggle()
+//                        }, label: {
+//                            Text("이미지편집")
+//                        })
+//                        Button(action: {
+//                            authViewModel.deleteProfileImage {
+//                                authViewModel.userInfoInquiry { }
+//                            }
+//                        }, label: {
+//                            Text("이미지삭제")
+//                        })
                         
                         Text(authViewModel.user.name)
                             .font(.sb18)
@@ -90,6 +90,18 @@ struct SettingView: View {
                             )
                             
                             VStack(spacing: 0) {
+                                Button(action: {
+                                    isImagePickerPresented.toggle()
+                                }, label: {
+                                    SettingOptionCell(settingImageName: "edit", settingName: "프로필 이미지 수정하기")
+                                })
+                                Button(action: {
+                                    authViewModel.deleteProfileImage {
+                                        authViewModel.userInfoInquiry { }
+                                    }
+                                }, label: {
+                                    SettingOptionCell(settingImageName: "edit", settingName: "프로필 이미지 삭제하기")
+                                })
                                 // 개인정보 수정
                                 Button(action: {
                                     navPathFinder.addPath(route: .editProfile)

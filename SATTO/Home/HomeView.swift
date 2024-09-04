@@ -235,7 +235,20 @@ struct HomeView: View {
                         friendViewModel.following = friendViewModel.myFollowing
                     }
                 }
-                friendViewModel.fetchMyTimetableList()
+                
+                friendViewModel.fetchMyTimetableList {
+                    
+                    friendViewModel.selectedTimeTableName = friendViewModel.getTimetableNamesForSemester(timeTables: friendViewModel.timeTables, semester: friendViewModel.selectedSemesterYear).first ?? "이름없음"
+                    
+                    friendViewModel.fetchTimeTableInfo(timeTableId: friendViewModel.getSelectedTimetableId(timeTables: friendViewModel.timeTables))
+                    
+                    
+                    if let timeTableId = friendViewModel.timeTables.filter({$0.semesterYear == friendViewModel.selectedSemesterYear && $0.timeTableName == friendViewModel.selectedTimeTableName
+                    }).first?.timeTableId {
+                        friendViewModel.fetchTimeTableInfo(timeTableId: timeTableId)
+                    }
+                }
+                
             }
             // 학기를 바꾸면 그 학기에 해당하는 시간표들의 첫번째 값을 보여준다
             .onChange(of: friendViewModel.selectedSemesterYear) { _ in
