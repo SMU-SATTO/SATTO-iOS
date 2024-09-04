@@ -27,7 +27,7 @@ final class TimetableMainViewModel: ObservableObject {
                 }
             case .failure:
                 DispatchQueue.main.async {
-                    self?.timetableId = -1
+                    self?.timetableId = -2
                     self?.semesterYear = "2024학년도 2학기"
                     self?.timetableName = "시간표"
                     self?.timetableInfo = []

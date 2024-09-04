@@ -295,9 +295,18 @@ struct TimetableMainView: View {
                 Text("\(timetableMainViewModel.semesterYear) \(timetableMainViewModel.timetableName)")
                     .font(.b14)
                     .padding(.leading, 30)
+                    .task {
+                        if timetableMainViewModel.timetableId < 0 {
+                            // 기본 default 시간표 호출 API
+                            timetableMainViewModel.fetchUserTimetable(id: nil)
+                        } else {
+                            // 특정 시간표 호출 API
+                            timetableMainViewModel.fetchUserTimetable(id: timetableMainViewModel.timetableId)
+                        }
+                    }
                 Spacer()
                 Group {
-                    if timetableMainViewModel.timetableId != -1 {
+                    if timetableMainViewModel.timetableId >= 0 {
                         Button(action: {
                             stackPath.append(TimetableRoute.timetableModify)
                         }) {
@@ -321,19 +330,16 @@ struct TimetableMainView: View {
                 .padding(.trailing, 20)
             }
             .padding(.top, 10)
-            
-            TimetableView(timetableBaseArray: timetableMainViewModel.timetableInfo)
-                .onAppear {
-                    if timetableMainViewModel.timetableId == -1 {
-                        /// 기본 default 시간표 호출 API
-                        timetableMainViewModel.fetchUserTimetable(id: nil)
-                    }
-                    else {
-                        /// 특정 시간표 호출 API
-                        timetableMainViewModel.fetchUserTimetable(id: timetableMainViewModel.timetableId)
-                    }
-                }
-            .padding(.horizontal, 15)
+            if timetableMainViewModel.timetableId == -2 {
+                Text("대표시간표가 없어요.\n시간표를 생성하고, 시간표를 선택한 다음\n톱니바퀴 버튼을 눌러 대표시간표를 등록해 주세요!")
+                    .font(.sb14)
+                    .multilineTextAlignment(.center)
+                    .padding()
+            }
+            else {
+                TimetableView(timetableBaseArray: timetableMainViewModel.timetableInfo)
+                    .padding(.horizontal, 15)
+            }
         }
     }
     
