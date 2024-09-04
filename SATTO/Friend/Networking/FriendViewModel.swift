@@ -209,7 +209,7 @@ class FriendViewModel: ObservableObject {
     }
     
     // 친구 시간표 조회
-    func fetchFriendTimetableList(studentId: String) {
+    func fetchFriendTimetableList(studentId: String, completion: @escaping () -> Void) {
         provider.request(.friendTimetableList(studentId: studentId)) { result in
             DispatchQueue.main.async {
                 switch result {
@@ -219,6 +219,7 @@ class FriendViewModel: ObservableObject {
                         self.timeTables = timeTableResponse.result
                         self.selectedSemesterYear = self.getSemestersFromTimetables(timeTables: self.timeTables).first ?? ""
                         print("fetchFriendTimetableList매핑 성공🚨")
+                        completion()
                     }
                     else {
                         print("fetchFriendTimetableList매핑 실패🚨")
@@ -231,7 +232,7 @@ class FriendViewModel: ObservableObject {
     }
 
     // 내 시간표 조회
-    func fetchMyTimetableList() {
+    func fetchMyTimetableList(completion: @escaping () -> Void) {
         provider.request(.myTimeTableList) { result in
             
             DispatchQueue.main.async {
@@ -242,6 +243,7 @@ class FriendViewModel: ObservableObject {
                         self.timeTables = timeTableResponse.result
                         self.selectedSemesterYear = self.getSemestersFromTimetables(timeTables: self.timeTables).first ?? ""
                         print("fetchMyTimetableList매핑 성공🚨")
+                        completion()
                     }
                     else {
                         print("fetchMyTimetableList매핑 실패🚨")
@@ -370,7 +372,8 @@ class FriendViewModel: ObservableObject {
     }
     // 학기정보 포멧팅 ex) 2023학년도 1학기
     func formatSemesterString(semester: String) -> String {
-        return "\(semester.prefix(4))학년도 \(semester.suffix(1))학기"
+//        return "\(semester.prefix(4))학년도 \(semester.suffix(1))학기"
+        return semester
     }
     // 시간표 목록의 학기정보만 중복없이 시간순으로 정렬
     func getSemestersFromTimetables(timeTables: [Timetable]) -> [String] {
