@@ -71,7 +71,7 @@ class TimetableRepository {
             switch result {
             case .success(let userTimetableDto):
                 guard let lects = userTimetableDto.result?.lects else {
-                    completion(.success(TimetableMainInfoModel(subjectModels: [], semesterYear: nil, timeTableName: nil)))
+                    completion(.success(TimetableMainInfoModel(timetableId: nil, subjectModels: [], semesterYear: nil, timeTableName: nil)))
                     return
                 }
                 
@@ -85,9 +85,11 @@ class TimetableRepository {
                     return SubjectModel(sbjDivcls: sbjDivcls, sbjNo: sbjNo, sbjName: sbjName, time: time)
                 }
                 
-                let result = TimetableMainInfoModel(subjectModels: subjectModels,
-                                                 semesterYear: userTimetableDto.result?.semesterYear,
-                                                 timeTableName: userTimetableDto.result?.timeTableName)
+                let result = TimetableMainInfoModel(
+                    timetableId: userTimetableDto.result?.timeTableId,
+                    subjectModels: subjectModels,
+                    semesterYear: userTimetableDto.result?.semesterYear,
+                    timeTableName: userTimetableDto.result?.timeTableName)
                 completion(.success(result))
             case .failure(let error):
                 self.handleSATTOError(error, completion: completion)

@@ -31,16 +31,28 @@ struct EssentialClassesSelectorView: View {
                         .foregroundStyle(.gray400)
                         .padding(.top, 5)
                 }
+                Spacer()
+                
                 Button(action: {
                     isShowBottomSheet = true
                 }) {
-                    RoundedRectangle(cornerRadius: 20)
-                        .foregroundStyle(.buttonBlue)
-                        .frame(width: 100, height: 50)
+                    Text("강의 목록 보기")
+                        .font(.sb14)
+                        .foregroundStyle(.blackWhite)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundStyle(.clear)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .inset(by: 2)
+                                        .stroke(.buttonBlue200, lineWidth: 1.5)
+                                )
+                                .padding(EdgeInsets(top: -10, leading: -15, bottom: -10, trailing: -15))
+                        )
+                        .padding(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15))
                 }
-                Spacer()
             }
-            .padding(.leading, 30)
+            .padding(.horizontal, 30)
             
             TimetableView(timetableBaseArray: selectedValues.selectedSubjects)
                 .onTapGesture {

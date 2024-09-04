@@ -15,12 +15,16 @@ struct MajorCombSelectorView: View {
         ScrollView {
             VStack {
                 if selectedValues.majorCombinations.count == 0 {
-                    VStack(spacing: 20) {
-                        Text("전공 조합 생성에 실패했어요..\n불가능한 시간대와 같은 제약 조건을 완화해보세요.")
-                            .font(.sb16)
-                            .foregroundStyle(Color.blackWhite200)
-                            .multilineTextAlignment(.center)
+                    VStack(spacing: 10) {
+                        Text("설정하신 조건으로는 시간표를 생성할 수 없었어요.")
+                        Text("입력된 조건 중 충돌하는 조건이 있었거나,")
+                        Text("과목을 배치할 수 있는 시간대가 부족한 것 같아요.")
+                        Text("조건을 일부 수정해 보시거나, 불가능한 시간대를 줄여주세요.")
+                        Text("도움이 필요하면 개발자에게 문의해 주세요!")
                     }
+                    .font(.sb16)
+                    .foregroundStyle(Color.blackWhite200)
+                    .multilineTextAlignment(.center)
                     .padding()
                 }
                 else {
@@ -67,7 +71,6 @@ struct MajorCombSelectorView: View {
             }
         }
         .onAppear {
-            //MARK: API
             selectedValues.fetchMajorCombinations(GPA: selectedValues.credit, requiredLect: selectedValues.selectedSubjects, majorCount: selectedValues.majorNum, cyberCount: selectedValues.ELearnNum, impossibleTimeZone: selectedValues.selectedTimes)
         }
     }

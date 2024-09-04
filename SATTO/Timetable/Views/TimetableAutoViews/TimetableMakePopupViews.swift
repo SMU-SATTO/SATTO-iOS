@@ -49,7 +49,6 @@ struct InvalidPopup: View {
 struct MidCheckPopup: View {
     @Binding var midCheckPopup: Bool
     let navigateForward: () -> Void
-    let selectedValues: SelectedValues
     
     var body: some View {
         RoundedRectangle(cornerRadius: 20)
@@ -128,7 +127,7 @@ struct FinalSelectPopup: View {
                     VStack(spacing: 0) {
                         TimetableView(timetableBaseArray: selectedValues.timetableList[timetableIndex])
                             .padding()
-                        Text("이 시간표를 이번 학기 시간표로\n결정하시겠어요?")
+                        Text("이 시간표를 이번 학기 시간표로\n등록하시겠어요?")
                             .font(.sb16)
                             .foregroundStyle(Color.blackWhite200)
                             .multilineTextAlignment(.center)
@@ -150,7 +149,7 @@ struct FinalSelectPopup: View {
                 .foregroundStyle(Color.buttonBlue)
                 .padding(.horizontal, 30)
                 .overlay(
-                    Text("네, 결정했어요")
+                    Text("네, 등록할래요")
                         .font(.sb14)
                         .foregroundStyle(.white)
                 )
@@ -249,6 +248,67 @@ struct TimetableSelectCompletionPopup: View {
                 .shadow(radius: 5)
         )
         .padding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20))
+    }
+}
+
+struct FinishMakingTimetablePopup: View {
+    @Binding var finishMakingTimetablePopup: Bool
+    
+    let navigateForward: () -> Void
+    
+    var body: some View {
+        VStack {
+            RoundedRectangle(cornerRadius: 20)
+                .foregroundStyle(.popupBackground)
+                .frame(width: 300, height: 360)
+                .overlay(
+                    VStack(spacing: 30) {
+                        Image(systemName: "light.beacon.max")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 100, height: 100)
+                        Text("시간표 생성을 마치고\n등록된 시간표 목록을 보러가시겠어요?")
+                            .font(.sb16)
+                            .lineSpacing(5)
+                            .multilineTextAlignment(.center)
+                        VStack {
+                            Button(action: {
+                                navigateForward()
+                                finishMakingTimetablePopup = false
+                            }) {
+                                Text("시간표 목록 보러 가기")
+                                    .font(.sb14)
+                                    .foregroundStyle(.white)
+                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            }
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundStyle(Color.buttonBlue)
+                            )
+                            .frame(height: 40)
+                            Button(action: {
+                                finishMakingTimetablePopup = false
+                            }) {
+                                Text("시간표 등록 더하기")
+                                    .font(.sb14)
+                                    .foregroundStyle(Color.buttonBlue)
+                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            }
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundStyle(.clear)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .inset(by: 2)
+                                            .stroke(Color.buttonBlue, lineWidth: 1.5)
+                                    )
+                            )
+                            .frame(height: 40)
+                        }
+                        .padding(.horizontal, 15)
+                    }
+                )
+        }
     }
 }
 

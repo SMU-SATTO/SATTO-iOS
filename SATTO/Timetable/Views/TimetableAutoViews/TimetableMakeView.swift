@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TimetableMakeView: View {
     enum SelectedView: CaseIterable {
-        case creditPicker, essentialClasses, invalidTime, midCheck, majorCombination, finalTimetable, completionTimetable
+        case creditPicker, essentialClasses, invalidTime, midCheck, majorCombination, finalTimetable
     }
 
     @Binding var stackPath: [TimetableRoute]
@@ -29,6 +29,7 @@ struct TimetableMakeView: View {
     @State private var finalSelectPopup = false
     @State private var errorPopup = false
     @State private var completionPopup = false
+    @State private var finishMakingPopup = false          //시간표 생성 끝낼 때 뜨는 팝업
     @State private var showingAlert = false
     
     @State private var isRegisterSuccess = false
@@ -74,7 +75,7 @@ struct TimetableMakeView: View {
                 .backgroundColor(.black.opacity(0.5))
         })
         .popup(isPresented: $midCheckPopup, view: {
-            MidCheckPopup(midCheckPopup: $midCheckPopup, navigateForward: navigateForward, selectedValues: selectedValues)
+            MidCheckPopup(midCheckPopup: $midCheckPopup, navigateForward: navigateForward)
         }, customize: {
             $0
                 .position(.center)
@@ -124,10 +125,21 @@ struct TimetableMakeView: View {
                 .position(.bottom)
                 .appearFrom(.bottom)
                 .closeOnTapOutside(true)
-                .closeOnTap(false)
-                .dragToDismiss(false)
+                .closeOnTap(true)
+                .dragToDismiss(true)
                 .backgroundColor(.black.opacity(0.5))
                 .autohideIn(3)
+        }
+        .popup(isPresented: $finishMakingPopup) {
+            FinishMakingTimetablePopup(finishMakingTimetablePopup: $finishMakingPopup, navigateForward: navigateForward)
+        } customize: {
+            $0.type(.floater())
+                .position(.center)
+                .appearFrom(.bottom)
+                .closeOnTapOutside(false)
+                .closeOnTap(false)
+                .dragToDismiss(false)
+                .backgroundColor(.black.opacity(0.9))
         }
     }
     
@@ -219,8 +231,6 @@ struct TimetableMakeView: View {
         switch selectedView {
         case .finalTimetable:
             return "전공조합 선택하기"
-        case .completionTimetable:
-            return "시간표 더 고르기"
         default:
             return "이전으로"
         }
@@ -231,6 +241,8 @@ struct TimetableMakeView: View {
             Button(action: {
                 if selectedView == .midCheck {
                     midCheckPopup = true
+                } else if selectedView == .finalTimetable {
+                    finishMakingPopup = true
                 } else {
                     navigateForward()
                 }
@@ -260,8 +272,6 @@ struct TimetableMakeView: View {
             return "시간표 생성하기"
         case .finalTimetable:
             return "시간표 등록 끝내기"
-        case .completionTimetable:
-            return "시간표 목록 보기"
         default:
             return "다음으로"
         }
@@ -279,8 +289,6 @@ struct TimetableMakeView: View {
             selectedView = .midCheck
         case .finalTimetable:
             selectedView = .majorCombination
-        case .completionTimetable:
-            selectedView = .finalTimetable
         default:
             break
         }
@@ -321,14 +329,12 @@ struct TimetableMakeView: View {
                             self.errorPopup = true
                         }
                     }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                         self.isButtonDisabled = false
                     }
                 }
             }
         case .finalTimetable:
-            selectedView = .completionTimetable
-        case .completionTimetable:
             stackPath.removeAll()
             stackPath.append(.timetableList)
         }
@@ -354,8 +360,6 @@ struct TimetableMakeView: View {
             return AnyView(MajorCombSelectorView(selectedValues: selectedValues))
         case .finalTimetable:
             return AnyView(FinalTimetableSelectorView(selectedValues: selectedValues, showingPopup: $finalSelectPopup, timetableIndex: $timetableIndex))
-        case .completionTimetable:
-            return AnyView(TimetableCompletionView(stackPath: $stackPath))
         }
     }
 }

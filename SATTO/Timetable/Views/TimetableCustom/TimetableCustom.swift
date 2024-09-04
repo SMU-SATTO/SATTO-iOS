@@ -27,9 +27,27 @@ struct TimetableCustom: View {
                 .ignoresSafeArea(.all)
             VStack {
                 HStack {
-                    Text("시간표를 눌러서 이번 학기에 들을 과목을 선택해 보세요!")
+                    Text("이번 학기에 들을 과목을 선택해 보세요!")
                         .font(.sb18)
                     Spacer()
+                    Button(action: {
+                        isShowBottomSheet = true
+                    }) {
+                        Text("강의 목록 보기")
+                            .font(.sb14)
+                            .foregroundStyle(.blackWhite)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundStyle(.clear)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .inset(by: 2)
+                                            .stroke(.buttonBlue200, lineWidth: 1.5)
+                                    )
+                                    .padding(EdgeInsets(top: -10, leading: -15, bottom: -10, trailing: -15))
+                            )
+                            .padding(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15))
+                    }
                 }
                 .padding(.horizontal, 30)
                 TimetableView(timetableBaseArray: selectedValues.selectedSubjects)
@@ -82,12 +100,13 @@ struct TimetableCustom: View {
                     Button(action: {
                         stackPath.removeLast()
                     }) {
-                        Image(systemName: "chevron.left")
-                            .foregroundStyle(Color.blackWhite)
+                        HStack {
+                            Image(systemName: "chevron.left")
+                            Text("시간표 생성 취소하기")
+                                .font(.sb16)
+                        }
+                        .foregroundStyle(Color.blackWhite)
                     }
-                    Text("시간표 커스텀하기")
-                        .font(.b18)
-                        .foregroundStyle(Color.blackWhite200)
                 }
             }
         }
