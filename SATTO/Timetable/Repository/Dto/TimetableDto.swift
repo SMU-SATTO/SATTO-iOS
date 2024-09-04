@@ -64,7 +64,7 @@ struct UserTimetableResponseDto: Decodable {
 }
 
 struct UserTimetableDto: Decodable {
-    let timeTableID: Int?
+    let timeTableId: Int?
     let lects: [LectDto]?
     let semesterYear, timeTableName: String?
     let isPublic, isRepresented: Bool?

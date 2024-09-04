@@ -33,6 +33,24 @@ struct TimetableModifyView: View {
                     Text("이번 학기에 들을 과목을 선택해 주세요.")
                         .font(.sb18)
                     Spacer()
+                    Button(action: {
+                        isShowBottomSheet = true
+                    }) {
+                        Text("강의 목록 보기")
+                            .font(.sb14)
+                            .foregroundStyle(.blackWhite)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundStyle(.clear)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .inset(by: 2)
+                                            .stroke(.buttonBlue200, lineWidth: 1.5)
+                                    )
+                                    .padding(EdgeInsets(top: -10, leading: -15, bottom: -10, trailing: -15))
+                            )
+                            .padding(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15))
+                    }
                 }
                 .padding(.horizontal, 30)
                 TimetableView(timetableBaseArray: selectedValues.selectedSubjects)
