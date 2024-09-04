@@ -32,9 +32,10 @@ struct CompareTimeTableView: View {
                 
                 VStack(spacing: 0) {
                     
-                    LazyVStack(alignment: .leading, spacing: 0) {
+                    VStack(alignment: .leading, spacing: 0) {
+                        Rectangle()
+                            .frame(height: 0)
                         
-                        // sb16
                         Text("이번 학기 겹치는 대표 시간표를\n확인해 같이 수업을 들어 보세요!")
                             .font(.sb16)
                             .foregroundColor(Color.gray800)
@@ -59,10 +60,9 @@ struct CompareTimeTableView: View {
                                 })
                             }
                         }
-                        
                     }
                     .padding(.vertical, 14)
-                    .padding(.leading, 30)
+                    .padding(.horizontal, 30)
                     
                     
                     if friendViewModel.compareFriends.isEmpty {
@@ -72,19 +72,15 @@ struct CompareTimeTableView: View {
                             ProfileImageCell(inCircleSize: 65, outCircleSize: 70)
                             
                             Circle()
-                            //                        .fill(Color(red: 0.26, green: 0.56, blue: 1).opacity(0.2))
                                 .frame(width: 7, height: 7)
                                 .padding(.trailing, 7)
                                 .padding(.leading, 30)
                             Circle()
-                            //                        .fill(Color(red: 0.26, green: 0.56, blue: 1).opacity(0.5))
                                 .frame(width: 7, height: 7)
                                 .padding(.trailing, 7)
                             Circle()
-                            //                        .fill(Color(red: 0.26, green: 0.56, blue: 1))
                                 .frame(width: 7, height: 7)
                                 .padding(.trailing, 30)
-                            
                             
                             Button(action: {
                                 showFriendSheet.toggle()
@@ -114,7 +110,7 @@ struct CompareTimeTableView: View {
                                         .padding(.trailing, 30)
                                     }
                                 }
-                                .padding(.vertical, 20)
+                                .padding(.bottom, 20)
                             }
                             Button(action: {
                                 friendViewModel.postCompareTimeTable(studentIds: friendViewModel.compareFriends.map{ $0.studentId })
@@ -128,40 +124,30 @@ struct CompareTimeTableView: View {
                                     .background(
                                         Rectangle()
                                             .fill(Color.brown)
-                                        .cornerRadius(20)
+                                            .cornerRadius(20)
                                     )
                             })
-                            
-                            Spacer()
-                                .frame(height: 16)
-                            
                         }
+                        .padding(.vertical, 20)
                     }
                 }
-//                .ignoresSafeArea()
                 .background(
                     Color.info60
                 )
                 .padding(.bottom, 10)
                 
                 CompareTopTabBar(selectedPage: $selectedPage)
-//                
+                
                 TabView(selection: $selectedPage) {
                     CompareTimeTableTutorial(friendViewModel: friendViewModel)
                         .tag(CompareTab.overlap)
-//                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                     
                     CompareTimeTableTutorial2(friendViewModel: friendViewModel)
                         .tag(CompareTab.gap)
-//                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
                 .tabViewStyle(PageTabViewStyle())
                 .frame(height: 600)
-//                .background(Color.red)
-                
             }
-            
-            
         }
         .sheet(isPresented: $showFriendSheet) {
             CompareFriendSearchView(friendViewModel: friendViewModel, showFriendSheet: $showFriendSheet)
@@ -172,10 +158,10 @@ struct CompareTimeTableView: View {
             // 내 정보 조회가 성공하면
             authViewModel.userInfoInquiry {
                 // friend배열이 비어있으면 내 정보를 friend로 변환해서 첫번째 인덱스에 넣는다
-//                if friendViewModel.friend.isEmpty {
-//                    let friend = convertUserToFriend(user: authViewModel.user)
-//                    friendViewModel.friend.append(friend)
-//                }
+                //                if friendViewModel.friend.isEmpty {
+                //                    let friend = convertUserToFriend(user: authViewModel.user)
+                //                    friendViewModel.friend.append(friend)
+                //                }
                 // 내 팔로워들을 follower배열과 myFollower배열에 넣는다
                 friendViewModel.fetchMyFollowerList(studentId: authViewModel.user.studentId) {
                     friendViewModel.follower = friendViewModel.myFollower
@@ -204,29 +190,19 @@ struct CompareTimeTableView: View {
             friendViewModel.overlappingLectures = []
             friendViewModel.overlappingGapLectures = []
         }
-        // 학기를 바꾸면 그 학기에 해당하는 시간표들의 첫번째 값을 보여준다
-//        .onChange(of: friendViewModel.selectedSemesterYear) { _ in
-//            friendViewModel.selectedTimeTableName = friendViewModel.getTimetableNamesForSemester(timeTables: friendViewModel.timeTables, semester: friendViewModel.selectedSemesterYear).first ?? "이름없음"
-//        }
-//        // 시간표 이름을 바꾸면 그 시간표의 값을 보여준다
-//        .onChange(of: friendViewModel.selectedTimeTableName) { _ in
-//            friendViewModel.fetchTimeTableInfo(timeTableId: friendViewModel.getSelectedTimetableId(timeTables: friendViewModel.timeTables))
-//        }
         .navigationBarBackButtonHidden()
         .toolbar {
-                    ToolbarItem(placement: .topBarLeading) {
-                            CustomBackButton()
-                    }
-                }
+            ToolbarItem(placement: .topBarLeading) {
+                CustomBackButton()
+            }
+        }
     }
 }
 
 struct CompareFriendSearchView: View {
     
     @State var text = ""
-//    @State var selectedFriends: [Friend] = []
     var TextFieldPlacehold: String = "팔로잉 목록"
-    
     
     @EnvironmentObject var navPathFinder: FriendNavigationPathFinder
     @ObservedObject var friendViewModel: FriendViewModel
@@ -240,8 +216,6 @@ struct CompareFriendSearchView: View {
             
             VStack(spacing: 0){
                 HStack(spacing: 0) {
-//                    CustomBackButton()
-//                        .padding(.leading, 20)
                     ClearButtonTextField(placehold: TextFieldPlacehold, text: $text)
                         .padding(.horizontal, 20)
                 }
@@ -249,7 +223,7 @@ struct CompareFriendSearchView: View {
                 .padding(.top, 20)
                 
                 Divider()
-
+                
                 ScrollView {
                     // 네트워크 없이 로컬에서 검색
                     // 이름과 학번 모두 검색 가능
@@ -264,7 +238,6 @@ struct CompareFriendSearchView: View {
                 }
                 
                 Button(action: {
-//                    friendViewModel.compareFriends = selectedFriends
                     showFriendSheet = false
                 }, label: {
                     Text("확인")
@@ -276,17 +249,8 @@ struct CompareFriendSearchView: View {
             }
             .navigationBarBackButtonHidden()
             .onAppear {
-                // 내가 보고있는 친구의 팔로잉 조회
-                friendViewModel.fetchMyTimetableList{}
-                friendViewModel.fetchFollowingList(studentId: friendViewModel.friend.last?.studentId ?? "studentId")
-            }
-            // 학기를 바꾸면 그 학기에 해당하는 시간표들의 첫번째 값을 보여준다
-            .onChange(of: friendViewModel.selectedSemesterYear) { _ in
-                friendViewModel.selectedTimeTableName = friendViewModel.getTimetableNamesForSemester(timeTables: friendViewModel.timeTables, semester: friendViewModel.selectedSemesterYear).first ?? "이름없음"
-            }
-            // 시간표 이름을 바꾸면 그 시간표의 값을 보여준다
-            .onChange(of: friendViewModel.selectedTimeTableName) { _ in
-                friendViewModel.fetchTimeTableInfo(timeTableId: friendViewModel.getSelectedTimetableId(timeTables: friendViewModel.timeTables))
+                // 내가 팔로잉목록 조회
+                friendViewModel.fetchFollowingList(studentId: friendViewModel.friend.first?.studentId ?? "studentId")
             }
         }
     }
@@ -295,9 +259,7 @@ struct CompareFriendSearchView: View {
 struct CompareFriendSearchCell: View {
     
     var friend: Friend
-    
-//    @Binding var selectedFriends: [Friend]
-    
+
     @EnvironmentObject var navPathFinder: FriendNavigationPathFinder
     @ObservedObject var friendViewModel: FriendViewModel
     
@@ -307,26 +269,14 @@ struct CompareFriendSearchCell: View {
                 .padding(.trailing, 14)
                 .padding(.leading, 20)
             
-//            Button(action: {
-//                // 내 정보와 일치하는 친구는 친구페이지로 이동 불가
-//                if friend == friendViewModel.friend.first { }
-//                // friend목록에 추가하고 뷰 이동
-//                else {
-//                    friendViewModel.friend.append(friend)
-//                    navPathFinder.addPath(route: .friend)
-//                }
-//                
-//                friendViewModel.compareFriends.append(friend)
-//            }, label: {
-                VStack(alignment: .leading, spacing: 0) {
-                    Text(friend.name)
-                        .font(.m16)
-                        .foregroundColor(Color.gray800)
-                    Text(friend.studentId)
-                        .font(.m12)
-                        .foregroundColor(Color.gray600)
-                }
-//            })
+            VStack(alignment: .leading, spacing: 0) {
+                Text(friend.name)
+                    .font(.m16)
+                    .foregroundColor(Color.gray800)
+                Text(friend.studentId)
+                    .font(.m12)
+                    .foregroundColor(Color.gray600)
+            }
             
             Spacer()
             
@@ -356,152 +306,6 @@ struct CompareFriendSearchCell: View {
     }
 }
 
-struct CompareFriendCell: View {
-    
-    var name: String
-    var studentID: Int
-    var isFollowing: Bool
-    
-    
-    var body: some View {
-        HStack(spacing: 0) {
-            Circle()
-                .frame(width: 60, height: 60)
-                .background(
-                    Circle()
-                        .fill(Color.gray)
-                        .frame(width: 63, height: 63)
-                )
-                .shadow(radius: 5, x: 0, y: 5)
-                .padding(.trailing, 14)
-                .padding(.leading, 20)
-            
-            Button(action: {
-                
-            }, label: {
-                VStack(alignment: .leading, spacing: 0) {
-                    // m16
-                    Text("20201499")
-                        .font(.m16)
-                        .foregroundColor(Color.gray800)
-                    
-                    // m12
-                    Text("한민재")
-                        .font(.m12)
-                        .foregroundColor(Color.gray600)
-                }
-            })
-            
-            
-            Spacer()
-            
-            if isFollowing {
-                Text("팔로잉")
-                    .font(.m12)
-                    .foregroundColor(Color.blue7)
-                    .padding(.vertical, 7)
-                    .padding(.horizontal, 26)
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.blue7, lineWidth: 1)
-                        
-                    )
-                    .padding(.trailing, 20)
-            }
-            
-            else {
-                Text("팔로우")
-                    .font(.m12)
-                    .foregroundColor(Color.white)
-                    .padding(.vertical, 7)
-                    .padding(.horizontal, 26)
-                    .background(
-                        Rectangle()
-                            .fill(Color.blue7)
-                            .cornerRadius(10)
-                    )
-                    .padding(.trailing, 20)
-                
-            }
-            
-            
-            
-        }
-        
-    }
-}
-
-
-struct CompareTimeTableResultView: View {
-    
-//    @State var showFriendSheet: Bool = false
-//    @State var text: String = ""
-//    @State var compareFriendCount = 0
-//    @State var showResult: Bool = true
-    
-    var body: some View {
-        VStack(spacing: 0) {
-            
-            LazyVStack(alignment: .leading, spacing: 0) {
-                
-                // sb16
-                Text("이번 학기 겹치는 시간표를\n확인해 같이 수업을 들어 보세요!")
-                    .font(.sb16)
-                    .foregroundColor(Color.gray800)
-                    .padding(.bottom, 5)
-                
-            }
-            .padding(.vertical, 14)
-            .padding(.leading, 30)
-            
-            
-//            HStack(spacing: 0) {
-                
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 0) {
-                        
-                        ProfileImageCell(inCircleSize: 65, outCircleSize: 70)
-                        
-//                        Circle()
-//                            .fill(Color(red: 0.26, green: 0.56, blue: 1).opacity(0.2))
-//                            .frame(width: 7, height: 7)
-//                            .padding(.trailing, 7)
-//                            .padding(.leading, 30)
-//
-//                        Circle()
-//                            .fill(Color(red: 0.26, green: 0.56, blue: 1).opacity(0.5))
-//                            .frame(width: 7, height: 7)
-//                            .padding(.trailing, 7)
-//                        
-//                        Circle()
-//                            .fill(Color(red: 0.26, green: 0.56, blue: 1))
-//                            .frame(width: 7, height: 7)
-//                            .padding(.trailing, 30)
-//                        
-//                        Image(systemName: "person.badge.plus")
-//                            .frame(width: 65, height: 65)
-//                            .foregroundStyle(Color.sattoPurple)
-                        
-                        ForEach(0 ..< 10) { item in
-                            ProfileImageCell(inCircleSize: 65, outCircleSize: 70)
-                                .padding(.trailing, 30)
-                        }
-                    }
-                    .padding(.vertical, 20)
-                }
-                
-//            }
-//            .padding(.bottom, 14)
-
-            
-        }
-        .background(
-            Color.info60
-        )
-        
-        Spacer()
-    }
-}
 
 struct CompareTimeTableTutorial: View {
     
@@ -562,8 +366,8 @@ struct CompareTimeTableTutorial: View {
                 // 만약 시간표 정보의 강의의 수가 0이면 지오메트리리더 가운데 텍스트 위치시키기
                 if friendViewModel.timeTableInfo?.lects.count == 0 {
                     // 일단 주석처리 ????
-//                        Text("시간표 비어있습니다")
-//                            .position(x: geo.size.width / 2, y: geo.size.height / 2)
+                    //                        Text("시간표 비어있습니다")
+                    //                            .position(x: geo.size.width / 2, y: geo.size.height / 2)
                 }
                 // 시간표 정보의 강의가 있을때
                 else{
@@ -589,12 +393,12 @@ struct CompareTimeTableTutorial: View {
                                     Text(lecture.lectName)
                                         .font(.m11)
                                         .foregroundColor(.white)
-//                                    HStack(spacing: 0) {
-                                        ForEach(compareFriends, id: \.studentId) { compareFriend in
-                                            Text("\(compareFriend.name)")
-                                                .font(.system(size: 8))
-                                        }
-//                                    }
+                                    //                                    HStack(spacing: 0) {
+                                    ForEach(compareFriends, id: \.studentId) { compareFriend in
+                                        Text("\(compareFriend.name)")
+                                            .font(.system(size: 8))
+                                    }
+                                    //                                    }
                                     
                                     Spacer()
                                 }
@@ -620,7 +424,7 @@ struct CompareTimeTableTutorial: View {
         }
         .padding(.horizontal, 20)
     }
-
+    
     
     func makeTimeBlock(lectures: [Lecture], overlappingLectures: [[Lecture]], compareFriends: [Friend]) -> [(Lecture, [Int], [String], [Friend])] {
         var result: [(Lecture, [Int], [String], [Friend])] = []
@@ -631,7 +435,7 @@ struct CompareTimeTableTutorial: View {
             var firstTimes = [String]()
             var count = 1
             var matchingFriends: [Friend] = []
-
+            
             for i in 0..<lectTimes.count-1 {
                 if let nextTime = nextNumberString(from: String(lectTimes[i])), nextTime == String(lectTimes[i+1]) {
                     count += 1
@@ -641,10 +445,10 @@ struct CompareTimeTableTutorial: View {
                     count = 1
                 }
             }
-
+            
             period.append(count)
             firstTimes.append(lectTimes[lectTimes.count - count])
-
+            
             // 같은 강의를 듣는 친구들을 찾아서 matchingFriends에 추가
             for overlappingLectureIndex in 0..<overlappingLectures.count {
                 let friend = compareFriends[overlappingLectureIndex]
@@ -661,7 +465,7 @@ struct CompareTimeTableTutorial: View {
         
         return result
     }
-
+    
     
     // 문자열을 받아서 옵셔널 문자열을 리턴
     func nextNumberString(from string: String) -> String? {
@@ -759,8 +563,8 @@ struct CompareTimeTableTutorial2: View {
                 // 만약 시간표 정보의 강의의 수가 0이면 지오메트리리더 가운데 텍스트 위치시키기
                 if friendViewModel.timeTableInfo?.lects.count == 0 {
                     // 일단 주석처리 ????
-//                        Text("시간표 비어있습니다")
-//                            .position(x: geo.size.width / 2, y: geo.size.height / 2)
+                    //                        Text("시간표 비어있습니다")
+                    //                            .position(x: geo.size.width / 2, y: geo.size.height / 2)
                 }
                 // 시간표 정보의 강의가 있을때
                 else{
@@ -781,15 +585,15 @@ struct CompareTimeTableTutorial2: View {
                                 
                                 // 강의 표시하는 블럭
                                 VStack(spacing: 0) {
-//                                    Spacer()
-//                                        .frame(height: 5)
-//                                    Text(lecture.lectName)
-//                                        .font(.m11)
-//                                        .foregroundColor(.white)
-//                                    
-//                                    
-//                                    
-//                                    Spacer()
+                                    //                                    Spacer()
+                                    //                                        .frame(height: 5)
+                                    //                                    Text(lecture.lectName)
+                                    //                                        .font(.m11)
+                                    //                                        .foregroundColor(.white)
+                                    //
+                                    //
+                                    //
+                                    //                                    Spacer()
                                 }
                                 // 가로길이는 전체에서 요일의 개수로 나눔
                                 // 세로길이는 블럭 세로길이 곱하기 periods[index]
@@ -825,15 +629,15 @@ struct CompareTimeTableTutorial2: View {
                                     
                                     // 강의 표시하는 블럭
                                     VStack(spacing: 0) {
-//                                        Spacer()
-//                                            .frame(height: 5)
-//                                        Text(lecture.lectName)
-//                                            .font(.m11)
-//                                            .foregroundColor(.white)
-//                                        
-//                                        
-//                                        
-//                                        Spacer()
+                                        //                                        Spacer()
+                                        //                                            .frame(height: 5)
+                                        //                                        Text(lecture.lectName)
+                                        //                                            .font(.m11)
+                                        //                                            .foregroundColor(.white)
+                                        //
+                                        //
+                                        //
+                                        //                                        Spacer()
                                     }
                                     // 가로길이는 전체에서 요일의 개수로 나눔
                                     // 세로길이는 블럭 세로길이 곱하기 periods[index]
@@ -859,7 +663,7 @@ struct CompareTimeTableTutorial2: View {
         }
         .padding(.horizontal, 20)
     }
-
+    
     
     // 강의 배열을 받으면 강의와 숫자배열, 문자배열을 리턴한다
     func makeTimeBlock(lectures: [Lecture]) -> [(Lecture, [Int], [String])] {
