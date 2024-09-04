@@ -12,7 +12,6 @@
 		3B1270DC2BB147DC00E38F86 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1270DB2BB147DC00E38F86 /* EventView.swift */; };
 		3B41FE572C858DD700228EBC /* PasswordResetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B41FE562C858DD700228EBC /* PasswordResetView.swift */; };
 		3B56A3432C09B7F40034B25B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56A3422C09B7F40034B25B /* LoginView.swift */; };
-		3B56A3472C09B8320034B25B /* AgreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56A3462C09B8320034B25B /* AgreeView.swift */; };
 		3B56A3492C09B83B0034B25B /* EmailAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56A3482C09B83B0034B25B /* EmailAuthView.swift */; };
 		3B56A3512C09B8500034B25B /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56A3502C09B8500034B25B /* SignUpView.swift */; };
 		3B56A3562C09B9F40034B25B /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3B56A3552C09B9F40034B25B /* KeychainSwift */; };
@@ -69,7 +68,7 @@
 		AA9E80312B498DB400D51447 /* ReactiveMoya in Frameworks */ = {isa = PBXBuildFile; productRef = AA9E80302B498DB400D51447 /* ReactiveMoya */; };
 		AA9E80332B498DB400D51447 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = AA9E80322B498DB400D51447 /* RxMoya */; };
 		AAA522782C7C72100056C9B7 /* SATTOError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA522772C7C72100056C9B7 /* SATTOError.swift */; };
-		AAA5227B2C80C2780056C9B7 /* TermsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA5227A2C80C2780056C9B7 /* TermsView.swift */; };
+		AAA5227B2C80C2780056C9B7 /* AgreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA5227A2C80C2780056C9B7 /* AgreeView.swift */; };
 		AAA9504C2BA5C396004E16C8 /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAA9503E2BA5C396004E16C8 /* Color.xcassets */; };
 		AAA9504D2BA5C396004E16C8 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950402BA5C396004E16C8 /* Font.swift */; };
 		AAA9504E2BA5C396004E16C8 /* Pretendard-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = AAA950412BA5C396004E16C8 /* Pretendard-Black.otf */; };
@@ -132,7 +131,6 @@
 		3B1270DD2BB147E300E38F86 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		3B41FE562C858DD700228EBC /* PasswordResetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordResetView.swift; sourceTree = "<group>"; };
 		3B56A3422C09B7F40034B25B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		3B56A3462C09B8320034B25B /* AgreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreeView.swift; sourceTree = "<group>"; };
 		3B56A3482C09B83B0034B25B /* EmailAuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailAuthView.swift; sourceTree = "<group>"; };
 		3B56A3502C09B8500034B25B /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		3B742B592BB687D60000399F /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
@@ -184,7 +182,7 @@
 		AA7752A52C2151EF00778870 /* ChartViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViews.swift; sourceTree = "<group>"; };
 		AA9E219B2BC81FC800F0566A /* MidCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidCheckView.swift; sourceTree = "<group>"; };
 		AAA522772C7C72100056C9B7 /* SATTOError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SATTOError.swift; sourceTree = "<group>"; };
-		AAA5227A2C80C2780056C9B7 /* TermsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsView.swift; sourceTree = "<group>"; };
+		AAA5227A2C80C2780056C9B7 /* AgreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreeView.swift; sourceTree = "<group>"; };
 		AAA9503E2BA5C396004E16C8 /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
 		AAA950402BA5C396004E16C8 /* Font.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		AAA950412BA5C396004E16C8 /* Pretendard-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Black.otf"; sourceTree = "<group>"; };
@@ -293,8 +291,8 @@
 			isa = PBXGroup;
 			children = (
 				3B56A3422C09B7F40034B25B /* LoginView.swift */,
-				3B56A3462C09B8320034B25B /* AgreeView.swift */,
 				3B56A3482C09B83B0034B25B /* EmailAuthView.swift */,
+				AAA5227A2C80C2780056C9B7 /* AgreeView.swift */,
 				3B56A3502C09B8500034B25B /* SignUpView.swift */,
 				3B41FE562C858DD700228EBC /* PasswordResetView.swift */,
 			);
@@ -456,14 +454,6 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		AAA522792C80C25A0056C9B7 /* Terms */ = {
-			isa = PBXGroup;
-			children = (
-				AAA5227A2C80C2780056C9B7 /* TermsView.swift */,
-			);
-			path = Terms;
-			sourceTree = "<group>";
-		};
 		AAA9503A2BA5C380004E16C8 /* Charts */ = {
 			isa = PBXGroup;
 			children = (
@@ -584,7 +574,6 @@
 				3B0927152C3A6F3100777EEC /* secret.plist */,
 				3B82D8BE2C3A6D03008E0138 /* Home */,
 				3B56A3412C09B7B70034B25B /* Login */,
-				AAA522792C80C25A0056C9B7 /* Terms */,
 				AA1018AA2BDE9C80009E6804 /* Info.plist */,
 				AACB4BCF2B40712D00169C52 /* SATTOApp.swift */,
 				3B1270D52BB147A200E38F86 /* ContentView.swift */,
@@ -778,12 +767,11 @@
 				AAA522782C7C72100056C9B7 /* SATTOError.swift in Sources */,
 				3B1270DC2BB147DC00E38F86 /* EventView.swift in Sources */,
 				AAF9775D2C386E4300672090 /* PageControls.swift in Sources */,
-				3B56A3472C09B8320034B25B /* AgreeView.swift in Sources */,
 				AA65E6002C25AC8900655856 /* TimetableModifyView.swift in Sources */,
 				AA65E6022C25B1AB00655856 /* TimetableMainViewModel.swift in Sources */,
 				AACB4BD02B40712D00169C52 /* SATTOApp.swift in Sources */,
 				AAA9506B2BA5C39B004E16C8 /* FinalTimetableSelectorView.swift in Sources */,
-				AAA5227B2C80C2780056C9B7 /* TermsView.swift in Sources */,
+				AAA5227B2C80C2780056C9B7 /* AgreeView.swift in Sources */,
 				3B41FE572C858DD700228EBC /* PasswordResetView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

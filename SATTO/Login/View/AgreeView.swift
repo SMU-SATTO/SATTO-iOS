@@ -1,140 +1,146 @@
 //
-//  SignUpPageView.swift
+//  AgreeView.swift
 //  SATTO
 //
-//  Created by 황인성 on 5/31/24.
+//  Created by yeongjoon on 8/29/24.
 //
 
 import SwiftUI
+import UIKit
 
 struct AgreeView: View {
     @EnvironmentObject var navPathFinder: LoginNavigationPathFinder
     
-    @State private var isChecked0: Bool = false
-    @State private var isChecked1: Bool = false
-    @State private var isChecked2: Bool = false
-    @State private var isChecked3: Bool = false
-    @State private var isChecked4: Bool = false
+    @State private var isAgree = [false, false, false, false]
     
-    private let terms = [
-        "(필수) 개인정보처리방침을 읽고 숙지하였습니다",
-        "(필수) 개인정보 수집 및 이용 동의",
-        "(필수) 이용약관 동의",
-        "(선택) 개인정보 제 3자 제공 동의"
-    ]
+    @State private var termsOfService: NSAttributedString = NSAttributedString(string: "")
     
     var body: some View {
-        
-        ZStack {
-            
-            Color.background
-                .ignoresSafeArea()
-            
-            VStack(spacing: 0) {
-                Text("SATTO 이용을 위해\n이용약관에 동의해 주세요")
-                    .font(.sb30)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.bottom, 40)
-                
-                Button(action: {
-                    toggleAllCheckboxes()
-                }, label: {
-                    HStack(spacing: 0) {
-                        Image("Tick Square")
-                            .renderingMode(.template)
-                            .foregroundStyle(isChecked0 ? Color.blue : Color.gray)
-                            .padding(.trailing, 10)
-                        Text("이용약관 전체 동의")
-                    }
-                    .frame(maxWidth: .infinity)
-                    .modifier(MyTextFieldModifier())
-                })
-                .padding(.bottom, 47)
-                
-                ForEach(0..<terms.count, id: \.self) { index in
-                    HStack(spacing: 0) {
-                        Button(action: {
-                            toggleCheckbox(index: index + 1)
-                        }, label: {
-                            HStack(spacing: 0) {
-                                Image("Tick Square")
-                                    .renderingMode(.template)
-                                    .foregroundStyle(isChecked(for: index) ? Color.blue : Color.gray)
-                                    .padding(.trailing, 10)
-                                Text(terms[index])
-                                    .font(.m14)
-                            }
-                        })
-                        
-                        Spacer()
-                        
-                        Button(action: {
-                            // 여기에 약관 자세히 보기 화면 이동코드 추가
-                        }, label: {
-                            Image("icRight")
-                        })
-                    }
-                    .padding(.bottom, 16)
-                }
-                
+        VStack {
+            HStack {
+                Text("약관 동의")
+                    .font(.b20)
+                    .padding(.leading, 30)
                 Spacer()
+            }
+            .padding(.bottom, 5)
+            
+            termsSection(
+                fileName: "SATTO 서비스 이용약관",
+                title: "서비스 이용약관 동의하기 (필수)",
+                index: 0
+            )
+            
+            termsSection(
+                fileName: "개인정보 수집 및 이용 동의",
+                title: "개인정보 수집 및 이용 동의 (필수)",
+                index: 1
+            )
+            
+            termsSection(
+                fileName: "본인 명의 동의",
+                title: "본인 명의를 이용하여 가입을 진행하겠습니다.",
+                index: 2
+            )
+            .frame(height: 100)
+            
+            termsSection(
+                fileName: "만 14세 이상 동의",
+                title: "만 14세 이상입니다.",
+                index: 3
+            )
+            .frame(height: 70)
+            
+            Button(action: {
+                navPathFinder.addPath(route: .EmailAuthView)
+            }, label: {
+                RoundedRectangle(cornerRadius: 20)
+                    .frame(width: 320, height: 60)
+                    .foregroundStyle(isAllAgreed() ? .blue : .blackWhite400)
+                    .overlay(
+                        Text("다음으로")
+                            .font(.m20)
+                            .foregroundStyle(.white)
+                    )
                 
+            })
+            .disabled(!isAllAgreed())
+            .padding(.bottom, 10)
+        }
+    }
+    
+    private func termsSection(fileName: String, title: String, index: Int) -> some View {
+        VStack {
+            TermsAgreementView(
+                isAgree: $isAgree[index],
+                title: title
+            )
+            .padding(.leading, 20)
+            
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.blackWhite600, lineWidth: 1.5)
+                .overlay(
+                    TermsWebView(fileName: fileName)
+                        .edgesIgnoringSafeArea(.all)
+                        .padding(EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
+                )
+                .padding(.horizontal, 20)
+        }
+    }
+    
+    private func isAllAgreed() -> Bool {
+        return !isAgree.contains(false)
+    }
+}
+
+struct TermsAgreementView: View {
+    @Binding var isAgree: Bool
+    let title: String
+
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 10) {
                 Button(action: {
-                    navPathFinder.addPath(route: .EmailAuthView)
+                    isAgree.toggle()
                 }, label: {
-                    Text("다음")
-                        .modifier(MyButtonModifier(isDisabled: !(isChecked1 && isChecked2 && isChecked3)))
+                    HStack {
+                        if isAgree {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundStyle(.blackWhite)
+                        } else {
+                            Image(systemName: "circle")
+                                .foregroundStyle(.blackWhite)
+                        }
+                        Text(title)
+                            .font(.m16)
+                            .foregroundStyle(.blackWhite)
+                    }
                 })
-                .disabled(!(isChecked1 && isChecked2 && isChecked3))
             }
-            .padding(.horizontal, 20)
-            .navigationBarBackButtonHidden()
-            .foregroundStyle(Color.cellText)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    CustomBackButton()
-                }
-            }
+            Spacer()
         }
     }
-    
-    private func toggleAllCheckboxes() {
-        isChecked0.toggle()
-        let newValue = isChecked0
-        isChecked1 = newValue
-        isChecked2 = newValue
-        isChecked3 = newValue
-        isChecked4 = newValue
+}
+
+import WebKit
+
+struct TermsWebView: UIViewRepresentable {
+    let fileName: String
+
+    func makeUIView(context: Context) -> WKWebView {
+        return WKWebView()
     }
-    
-    private func toggleCheckbox(index: Int) {
-        switch index {
-        case 1:
-            isChecked1.toggle()
-        case 2:
-            isChecked2.toggle()
-        case 3:
-            isChecked3.toggle()
-        case 4:
-            isChecked4.toggle()
-        default:
-            break
-        }
-        isChecked0 = isChecked1 && isChecked2 && isChecked3 && isChecked4
-    }
-    
-    private func isChecked(for index: Int) -> Bool {
-        switch index {
-        case 0:
-            return isChecked1
-        case 1:
-            return isChecked2
-        case 2:
-            return isChecked3
-        case 3:
-            return isChecked4
-        default:
-            return false
+
+    func updateUIView(_ uiView: WKWebView, context: Context) {
+        if let filePath = Bundle.main.path(forResource: fileName, ofType: "html") {
+            let fileURL = URL(fileURLWithPath: filePath)
+            let request = URLRequest(url: fileURL)
+            uiView.load(request)
         }
     }
+}
+
+
+#Preview {
+    AgreeView()
 }
