@@ -34,9 +34,19 @@ protocol SubjectModelBase: Codable {
 
 // MARK: - SubjectModel
 /// SubjectModel(sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", name: "컴퓨터네트워크", time: "목4 목5 목6 ")
-struct SubjectModel: SubjectModelBase {
+struct SubjectModel: SubjectModelBase, Equatable {
     let sbjDivcls, sbjNo, sbjName, time: String
 }
+
+extension SubjectModel {
+    static func ==(lhs: Self, rhs: Self) -> Bool {
+        return lhs.sbjDivcls == rhs.sbjDivcls &&
+               lhs.sbjNo == rhs.sbjNo &&
+               lhs.sbjName == rhs.sbjName &&
+               lhs.time == rhs.time
+    }
+}
+
 
 //MARK: - SubjectDetailModel
 ///  SubjectDetailModel(major: "전공", "sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", sbjName: "과목명", prof: "교수명", "time: "목4 목5 목6 ", enrollmentCapacity: 200, enrolledStudents: 230)
