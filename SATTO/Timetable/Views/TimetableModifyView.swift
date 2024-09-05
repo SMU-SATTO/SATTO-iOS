@@ -21,7 +21,8 @@ struct TimetableModifyView: View {
     @State private var isShowBottomSheet = false
     @State private var isUsingSelectedSubjects = true
     
-    @State private var showingAlert = false
+    @State private var showingBackAlert = false
+    @State private var showingConfirmAlert = false
     
     @Binding var timetableId: Int
     var body: some View {
@@ -68,8 +69,7 @@ struct TimetableModifyView: View {
                         .presentationDetents([.medium, .large])
                     })
                 Button(action: {
-                    timetableMainViewModel.patchTimetableInfo(timetableId: timetableMainViewModel.timetableId, codeSectionList: selectedValues.selectedSubjects)
-                    stackPath.removeLast()
+                    showingConfirmAlert = true
                 }) {
                     Text("시간표 저장하기")
                         .font(.sb16)
@@ -93,7 +93,7 @@ struct TimetableModifyView: View {
             ToolbarItem(placement: .topBarLeading) {
                 HStack {
                     Button(action: {
-                        showingAlert = true
+                        showingBackAlert = true
                     }) {
                         HStack {
                             Image(systemName: "chevron.left")
@@ -106,9 +106,16 @@ struct TimetableModifyView: View {
                 }
             }
         }
-        .alert("지금 뒤로 가면 수정사항이 사라져요!", isPresented: $showingAlert) {
+        .alert("지금 뒤로 가면 수정사항이 사라져요!", isPresented: $showingBackAlert) {
             Button("취소", role: .cancel, action: {})
             Button("확인") {
+                stackPath.removeLast()
+            }
+        }
+        .alert("이대로 시간표를 수정할까요?", isPresented: $showingConfirmAlert) {
+            Button("취소", role: .cancel, action: {})
+            Button("확인") {
+                timetableMainViewModel.patchTimetableInfo(timetableId: timetableMainViewModel.timetableId, codeSectionList: selectedValues.selectedSubjects)
                 stackPath.removeLast()
             }
         }
