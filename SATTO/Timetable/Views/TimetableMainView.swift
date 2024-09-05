@@ -295,7 +295,7 @@ struct TimetableMainView: View {
                 Text("\(timetableMainViewModel.semesterYear) \(timetableMainViewModel.timetableName)")
                     .font(.b14)
                     .padding(.leading, 30)
-                    .task {
+                    .onAppear {
                         if timetableMainViewModel.timetableId < 0 {
                             // 기본 default 시간표 호출 API
                             timetableMainViewModel.fetchUserTimetable(id: nil)
@@ -303,6 +303,9 @@ struct TimetableMainView: View {
                             // 특정 시간표 호출 API
                             timetableMainViewModel.fetchUserTimetable(id: timetableMainViewModel.timetableId)
                         }
+                    }
+                    .onChange(of: timetableMainViewModel.timetableInfo) { _ in
+                        timetableMainViewModel.fetchUserTimetable(id: timetableMainViewModel.timetableId)
                     }
                 Spacer()
                 Group {

@@ -13,7 +13,7 @@ final class TimetableMainViewModel: ObservableObject {
     @Published var timetableId: Int = -1 //MainView에 띄워지는 시간표의 id
     @Published var semesterYear: String = "2024학년도 2학기"
     @Published var timetableName: String = "시간표"
-    @Published var timetableInfo: [SubjectModelBase] = []
+    @Published var timetableInfo: [SubjectModel] = []
     
     func fetchUserTimetable(id: Int?) {
         repository.getUserTimetable(id: id) { [weak self] result in

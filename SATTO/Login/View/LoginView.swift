@@ -31,8 +31,8 @@ final class LoginNavigationPathFinder: ObservableObject {
 
 struct LoginView: View {
     
-    @State private var studentId: String = "201910914"
-    @State private var password: String = "insungmms57"
+    @State private var studentId: String = ""
+    @State private var password: String = ""
     
     @EnvironmentObject var navPathFinder: LoginNavigationPathFinder
     @EnvironmentObject var authViewModel: AuthViewModel
