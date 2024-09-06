@@ -10,6 +10,8 @@ import Foundation
 final class TimetableMainViewModel: ObservableObject {
     let repository = TimetableRepository()
     
+    /// -1: 맵핑 실패         -2: fetch실패
+    /// 0보다 작으면 대표시간표가 없는 것으로 간주
     @Published var timetableId: Int = -1 //MainView에 띄워지는 시간표의 id
     @Published var semesterYear: String = "2024학년도 2학기"
     @Published var timetableName: String = "시간표"
