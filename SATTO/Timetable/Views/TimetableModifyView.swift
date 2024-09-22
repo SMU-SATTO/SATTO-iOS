@@ -115,7 +115,9 @@ struct TimetableModifyView: View {
         .alert("이대로 시간표를 수정할까요?", isPresented: $showingConfirmAlert) {
             Button("취소", role: .cancel, action: {})
             Button("확인") {
-                timetableMainViewModel.patchTimetableInfo(timetableId: timetableMainViewModel.timetableId, codeSectionList: selectedValues.selectedSubjects)
+                Task {
+                    await timetableMainViewModel.patchTimetableInfo(timetableId: timetableMainViewModel.timetableId, codeSectionList: selectedValues.selectedSubjects)
+                }
                 stackPath.removeLast()
             }
         }

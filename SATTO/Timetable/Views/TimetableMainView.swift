@@ -143,8 +143,10 @@ struct TimetableMainView: View {
                         timetableMainViewModel.timetableName = tempTimetableName
                     }
                     Button("확인") {
-                        /// timetable 수정 - 이름 변경 API
-                        timetableMainViewModel.patchTimetableName(timetableId: timetableMainViewModel.timetableId, timetableName: timetableMainViewModel.timetableName)
+                        Task {
+                            /// timetable 수정 - 이름 변경 API
+                            await timetableMainViewModel.patchTimetableName(timetableId: timetableMainViewModel.timetableId, timetableName: timetableMainViewModel.timetableName)
+                        }
                     }
                 }
             }
@@ -152,7 +154,9 @@ struct TimetableMainView: View {
                 HStack {
                     Button("대표시간표로 설정") {
                         /// 대표 시간표 변경 API
-                        timetableMainViewModel.patchTimetableRepresent(timeTableId: timetableMainViewModel.timetableId, isRepresent: true)
+                        Task {
+                            await timetableMainViewModel.patchTimetableRepresent(timeTableId: timetableMainViewModel.timetableId, isRepresent: true)
+                        }
                     }
                     Button("취소", role: .cancel, action: {})
                 }
@@ -161,10 +165,14 @@ struct TimetableMainView: View {
                 HStack {
                     Button("공개") {
                         /// 공개 비공개 설정 API
-                        timetableMainViewModel.patchTimetablePrivate(timeTableId: timetableMainViewModel.timetableId, isPublic: true)
+                        Task {
+                            await timetableMainViewModel.patchTimetablePrivate(timetableId: timetableMainViewModel.timetableId, isPublic: true)
+                        }
                     }
                     Button("비공개") {
-                        timetableMainViewModel.patchTimetablePrivate(timeTableId: timetableMainViewModel.timetableId, isPublic: false)
+                        Task {
+                            await timetableMainViewModel.patchTimetablePrivate(timetableId: timetableMainViewModel.timetableId, isPublic: false)
+                        }
                     }
                     Button("취소", role: .cancel, action: {})
                 }
@@ -175,7 +183,9 @@ struct TimetableMainView: View {
                     Button("네") {
                         /// 삭제 API - 삭제하면 대표 시간표를 메인화면에 보여줌
                         /// 대표시간표를 삭제하거나, 대표시간표가 없을 시 빈 시간표를 메인화면에 보여줌
-                        timetableMainViewModel.deleteTimetable(timetableID: timetableMainViewModel.timetableId)
+                        Task {
+                            await timetableMainViewModel.deleteTimetable(timetableID: timetableMainViewModel.timetableId)
+                        }
                     }
                 }
             }
@@ -298,14 +308,20 @@ struct TimetableMainView: View {
                     .onAppear {
                         if timetableMainViewModel.timetableId < 0 {
                             // 기본 default 시간표 호출 API
-                            timetableMainViewModel.fetchUserTimetable(id: nil)
+                            Task {
+                                await timetableMainViewModel.fetchUserTimetable(id: nil)
+                            }
                         } else {
                             // 특정 시간표 호출 API
-                            timetableMainViewModel.fetchUserTimetable(id: timetableMainViewModel.timetableId)
+                            Task {
+                                await timetableMainViewModel.fetchUserTimetable(id: timetableMainViewModel.timetableId)
+                            }
                         }
                     }
                     .onChange(of: timetableMainViewModel.timetableInfo) { _ in
-                        timetableMainViewModel.fetchUserTimetable(id: timetableMainViewModel.timetableId)
+                        Task {
+                            await timetableMainViewModel.fetchUserTimetable(id: timetableMainViewModel.timetableId)
+                        }
                     }
                 Spacer()
                 Group {

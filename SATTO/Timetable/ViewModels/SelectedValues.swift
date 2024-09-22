@@ -94,7 +94,7 @@ class SelectedValues: TimeSelectorViewModelProtocol {
     func fetchMajorCombinations(GPA: Int, requiredLect: [SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String) {
         let requiredLectStrings = requiredLect.map { $0.sbjDivcls }
         let adjustedRequiredLect = requiredLectStrings.isEmpty ? [""] : requiredLectStrings
-        repository.postMajorComb(GPA: GPA, requiredLect: adjustedRequiredLect, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: impossibleTimeZone) { [weak self] result in
+        repository.fetchMajorCombinations(GPA: GPA, requiredLect: adjustedRequiredLect, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: impossibleTimeZone) { [weak self] result in
             switch result {
             case .success(let majorCombModels):
                 DispatchQueue.main.async {

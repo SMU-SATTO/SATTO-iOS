@@ -8,8 +8,65 @@
 import Foundation
 import Moya
 
-class TimetableRepository {
-    func postMajorComb(GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, completion: @escaping(Result<[MajorComb], SATTOError>) -> Void) {
+private struct Empty: Decodable {}
+
+/// 비즈니스 로직이 아닌 데이터 소스와의 상호작용을 담당. 네트워크에서 받은 DTO 반환
+protocol TimetableRepositoryProtocol {
+    func getUserTimetable(id: Int?) async throws -> UserTimetableResponseDto
+    func patchTimetablePrivate(timetableId: Int, isPublic: Bool) async throws
+    func patchTimetableRepresent(timetableId: Int, isRepresent: Bool) async throws
+    func patchTimetableName(timetableId: Int, timetableName: String) async throws
+    func patchTimetableInfo(timetableId: Int, codeSectionList: [String]) async throws
+    func deleteTimetable(timetableId: Int) async throws
+    func getTimetableList() async throws -> TimetableListResponseDto
+}
+
+class TimetableRepository: TimetableRepositoryProtocol {
+    private let provider = MoyaProvider<TimetableRouter>()
+    
+    func patchTimetablePrivate(timetableId: Int, isPublic: Bool) async throws {
+        let _ = try await provider
+            .request(.patchTimetablePrivate(timetableId: timetableId, isPublic: isPublic))
+            .filterSuccessfulStatusCodes()
+            .map(Empty.self)
+    }
+    
+    func patchTimetableRepresent(timetableId: Int, isRepresent: Bool) async throws {
+        let _ = try await provider
+            .request(.patchTimetableRepresent(timetableId: timetableId, isRepresent: isRepresent))
+            .filterSuccessfulStatusCodes()
+            .map(Empty.self)
+    }
+    
+    func patchTimetableName(timetableId: Int, timetableName: String) async throws {
+        let _ = try await provider
+            .request(.patchTimetableName(timetableId: timetableId, timetableName: timetableName))
+            .filterSuccessfulStatusCodes()
+            .map(Empty.self)
+    }
+    
+    func patchTimetableInfo(timetableId: Int, codeSectionList: [String]) async throws {
+        let _ = try await provider
+            .request(.patchTimetableInfo(timetableId: timetableId, codeSectionList: codeSectionList))
+            .filterSuccessfulStatusCodes()
+            .map(Empty.self)
+    }
+    
+    func deleteTimetable(timetableId: Int) async throws {
+        let _ = try await provider
+            .request(.deleteTimetable(timetableId: timetableId))
+            .filterSuccessfulStatusCodes()
+            .map(Empty.self)
+    }
+    
+    func getTimetableList() async throws -> TimetableListResponseDto {
+        return try await provider
+            .request(.getTimetableList)
+            .filterSuccessfulStatusCodes()
+            .map(TimetableListResponseDto.self)
+    }
+    
+    func fetchMajorCombinations(GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, completion: @escaping(Result<[MajorComb], SATTOError>) -> Void) {
         SATTONetworking.shared.postMajorComb(GPA: GPA, requiredLect: requiredLect, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: impossibleTimeZone) { result in
             switch result {
             case .success(let majorCombResponseDto):
@@ -46,55 +103,11 @@ class TimetableRepository {
         }
     }
     
-    func getTimetableList(completion: @escaping (Result<[TimetableListModel], SATTOError>) -> Void) {
-        SATTONetworking.shared.getTimetableList() { result in
-            switch result {
-            case .success(let dto):
-                let timetableListModels: [TimetableListModel] = dto.result.map { timetable in
-                    TimetableListModel(
-                        id: timetable.timeTableId,
-                        timetableName: timetable.timeTableName,
-                        semesterYear: timetable.semesterYear,
-                        isPublic: timetable.isPublic,
-                        isRepresent: timetable.isRepresent
-                    )
-                }
-                completion(.success(timetableListModels))
-            case .failure(let error):
-                self.handleSATTOError(error, completion: completion)
-            }
-        }
-    }
-    
-    func getUserTimetable(id: Int?, completion: @escaping (Result<TimetableMainInfoModel, SATTOError>) -> Void) {
-        SATTONetworking.shared.getUserTimetable(id: id) { result in
-            switch result {
-            case .success(let userTimetableDto):
-                guard let lects = userTimetableDto.result?.lects else {
-                    completion(.success(TimetableMainInfoModel(timetableId: nil, subjectModels: [], semesterYear: nil, timeTableName: nil)))
-                    return
-                }
-                
-                let subjectModels = lects.compactMap { lect -> SubjectModel? in
-                    guard let sbjDivcls = lect.codeSection,
-                          let sbjNo = lect.code,
-                          let sbjName = lect.lectName,
-                          let time = lect.lectTime else {
-                        return nil
-                    }
-                    return SubjectModel(sbjDivcls: sbjDivcls, sbjNo: sbjNo, sbjName: sbjName, time: time)
-                }
-                
-                let result = TimetableMainInfoModel(
-                    timetableId: userTimetableDto.result?.timeTableId,
-                    subjectModels: subjectModels,
-                    semesterYear: userTimetableDto.result?.semesterYear,
-                    timeTableName: userTimetableDto.result?.timeTableName)
-                completion(.success(result))
-            case .failure(let error):
-                self.handleSATTOError(error, completion: completion)
-            }
-        }
+    func getUserTimetable(id: Int?) async throws -> UserTimetableResponseDto {
+        return try await provider
+            .request(.getUserTimetable(id: id))
+            .filterSuccessfulStatusCodes()
+            .map(UserTimetableResponseDto.self)
     }
 
     //MARK: - SubjectDetailModel에 이전 수강 인원 누락되어있음 + 담은인원 + 옵셔널 처리 체크

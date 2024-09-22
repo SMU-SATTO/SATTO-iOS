@@ -98,6 +98,7 @@
 		AAA9508C2BB5A260004E16C8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1270D52BB147A200E38F86 /* ContentView.swift */; };
 		AAA9508D2BB5A263004E16C8 /* FriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1270D92BB147D500E38F86 /* FriendView.swift */; };
 		AAA9508E2BB5A266004E16C8 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1270DD2BB147E300E38F86 /* SettingView.swift */; };
+		AACAD6272C932166005C2F26 /* TimetableService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACAD6262C932166005C2F26 /* TimetableService.swift */; };
 		AACB4BD02B40712D00169C52 /* SATTOApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACB4BCF2B40712D00169C52 /* SATTOApp.swift */; };
 		AACB4BD72B40712F00169C52 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AACB4BD62B40712F00169C52 /* Preview Assets.xcassets */; };
 		AAD5D6A52C80F29B005FB52A /* 개인정보 수집 및 이용 동의.html in Resources */ = {isa = PBXBuildFile; fileRef = AAD5D6A42C80F29B005FB52A /* 개인정보 수집 및 이용 동의.html */; };
@@ -207,6 +208,7 @@
 		AAA950802BA5E7A5004E16C8 /* TimetableOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableOptionView.swift; sourceTree = "<group>"; };
 		AAA950822BA722EF004E16C8 /* SubjectSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectSheetView.swift; sourceTree = "<group>"; };
 		AAA9508A2BA723C2004E16C8 /* TimeSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSheetView.swift; sourceTree = "<group>"; };
+		AACAD6262C932166005C2F26 /* TimetableService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableService.swift; sourceTree = "<group>"; };
 		AACB4BCC2B40712D00169C52 /* SATTO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SATTO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AACB4BCF2B40712D00169C52 /* SATTOApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SATTOApp.swift; sourceTree = "<group>"; };
 		AACB4BD62B40712F00169C52 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -407,14 +409,14 @@
 			path = TimetableCustom;
 			sourceTree = "<group>";
 		};
-		AA66001C2C21D0230055557C /* Repository */ = {
+		AA66001C2C21D0230055557C /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
 				AA0DFCA02C0F6D82002ED3C9 /* Dto */,
 				AA0DFC9F2C0F6A34002ED3C9 /* Router */,
 				AA66001D2C21D6EB0055557C /* TimetableRepository.swift */,
 			);
-			path = Repository;
+			path = Repositories;
 			sourceTree = "<group>";
 		};
 		AA7752A22C2024D300778870 /* Views */ = {
@@ -526,7 +528,8 @@
 				AA7752A22C2024D300778870 /* Views */,
 				AA7752A32C2024DD00778870 /* Models */,
 				AA7752A42C2024E200778870 /* ViewModels */,
-				AA66001C2C21D0230055557C /* Repository */,
+				AA66001C2C21D0230055557C /* Repositories */,
+				AACAD6252C932114005C2F26 /* Services */,
 				AA0DFCA12C0F6DA7002ED3C9 /* Networking */,
 			);
 			path = Timetable;
@@ -549,6 +552,14 @@
 				AAD5D6A82C80FBB4005FB52A /* 만 14세 이상 동의.html */,
 			);
 			path = Terms;
+			sourceTree = "<group>";
+		};
+		AACAD6252C932114005C2F26 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				AACAD6262C932166005C2F26 /* TimetableService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		AACB4BC32B40712D00169C52 = {
@@ -715,6 +726,7 @@
 				AAA9506F2BA5C39B004E16C8 /* SelectedValues.swift in Sources */,
 				3BCCBFCE2C7C44EC00C6427A /* AuthPlugin.swift in Sources */,
 				3BCCBFD22C7D68B300C6427A /* EditPasswordView.swift in Sources */,
+				AACAD6272C932166005C2F26 /* TimetableService.swift in Sources */,
 				AAA950692BA5C39B004E16C8 /* InvalidTimeSelectorView.swift in Sources */,
 				3B82D8582C211637008E0138 /* AuthAPI.swift in Sources */,
 				AAA9506E2BA5C39B004E16C8 /* TimetableMainView.swift in Sources */,

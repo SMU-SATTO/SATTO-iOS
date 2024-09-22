@@ -4,6 +4,7 @@
 //
 //  Created by yeongjoon on 5/13/24.
 //
+//MARK: -  삭제 예정 파일
 
 import Foundation
 import Moya
@@ -47,38 +48,6 @@ class SATTONetworking {
         }
     }
     
-    func getTimetableList(completion: @escaping(Result<TimetableListResponseDto, SATTOError>) -> Void) {
-        provider.request(.getTimetableList) { result in
-            switch result {
-            case .success(let response):
-                do {
-                    let timetableListResponse = try response.map(TimetableListResponseDto.self)
-                    completion(.success(timetableListResponse))
-                } catch {
-                    self.handleSATTOError(error, response: response, completion: completion)
-                }
-            case .failure(let error):
-                self.handleSATTOError(error, completion: completion)
-            }
-        }
-    }
-    
-    func getUserTimetable(id: Int?, completion: @escaping(Result<UserTimetableResponseDto, SATTOError>) -> Void) {
-        provider.request(.getUserTimetable(id: id)) { result in
-            switch result {
-            case .success(let response):
-                do {
-                    let userTimetableResponse = try response.map(UserTimetableResponseDto.self)
-                    completion(.success(userTimetableResponse))
-                } catch {
-                    self.handleSATTOError(error, response: response, completion: completion)
-                }
-            case .failure(let error):
-                self.handleSATTOError(error, completion: completion)
-            }
-        }
-    }
-    
     func postTimetableSelect(
         codeSectionList: [String],
         semesterYear: String,
@@ -109,86 +78,6 @@ class SATTONetworking {
                 do {
                     let currentLectureResponse = try response.map(CurrentLectureResponseDto.self)
                     completion(.success(currentLectureResponse))
-                } catch {
-                    self.handleSATTOError(error, response: response, completion: completion)
-                }
-            case .failure(let error):
-                self.handleSATTOError(error, completion: completion)
-            }
-        }
-    }
-    
-    func patchTimetablePrivate(timetableId: Int, isPublic: Bool, completion: @escaping(Result<PatchTimetablePrivateResponseDto, SATTOError>) -> Void) {
-        provider.request(.patchTimetablePrivate(timetableId: timetableId, isPublic: isPublic)) { result in
-            switch result {
-            case .success(let response):
-                do {
-                    let patchTimetablePrivateResponse = try response.map(PatchTimetablePrivateResponseDto.self)
-                    completion(.success(patchTimetablePrivateResponse))
-                } catch {
-                    self.handleSATTOError(error, response: response, completion: completion)
-                }
-            case .failure(let error):
-                self.handleSATTOError(error, completion: completion)
-            }
-        }
-    }
-    
-    func patchTimetableRepresent(timetableId: Int, isRepresent: Bool, completion: @escaping(Result<PatchTimetableRepresentResponseDto, SATTOError>) -> Void) {
-        provider.request(.patchTimetableRepresent(timetableId: timetableId, isRepresent: isRepresent)) { result in
-            switch result {
-            case .success(let response):
-                do {
-                    let patchTimetableRepresentResponseDto = try response.map(PatchTimetableRepresentResponseDto.self)
-                    completion(.success(patchTimetableRepresentResponseDto))
-                } catch {
-                    self.handleSATTOError(error, response: response, completion: completion)
-                }
-            case .failure(let error):
-                self.handleSATTOError(error, completion: completion)
-            }
-        }
-    }
-    
-    func patchTimetableName(timetableId: Int, timetableName: String, completion: @escaping(Result<PatchTimetableNameResponseDto, SATTOError>) -> Void) {
-        provider.request(.patchTimetableName(timetableId: timetableId, timetableName: timetableName)) { result in
-            switch result {
-            case .success(let response):
-                do {
-                    let patchTimetableNameResponseDto = try response.map(PatchTimetableNameResponseDto.self)
-                    completion(.success(patchTimetableNameResponseDto))
-                } catch {
-                    self.handleSATTOError(error, response: response, completion: completion)
-                }
-            case .failure(let error):
-                self.handleSATTOError(error, completion: completion)
-            }
-        }
-    }
-    
-    func patchTimetableInfo(timetableId: Int, codeSectionList: [String], completion: @escaping(Result<PatchTimetableInfoResponseDto, SATTOError>) -> Void) {
-        provider.request(.patchTimetableInfo(timetableId: timetableId, codeSectionList: codeSectionList)) { result in
-            switch result {
-            case .success(let response):
-                do {
-                    let patchTimetableInfoResponseDto = try response.map(PatchTimetableInfoResponseDto.self)
-                    completion(.success(patchTimetableInfoResponseDto))
-                } catch {
-                    self.handleSATTOError(error, response: response, completion: completion)
-                }
-            case .failure(let error):
-                self.handleSATTOError(error, completion: completion)
-            }
-        }
-    }
-    
-    func deleteTimetable(timetableId: Int, completion: @escaping(Result<DeleteTimetableResponseDto, SATTOError>) -> Void) {
-        provider.request(.deleteTimetable(timetableId: timetableId)) { result in
-            switch result {
-            case .success(let response):
-                do {
-                    let deleteTimetableResponse = try response.map(DeleteTimetableResponseDto.self)
-                    completion(.success(deleteTimetableResponse))
                 } catch {
                     self.handleSATTOError(error, response: response, completion: completion)
                 }

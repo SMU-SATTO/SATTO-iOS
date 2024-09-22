@@ -80,7 +80,9 @@ struct TimetableListView: View {
             }
         }
         .onAppear {
-            timetableListViewModel.fetchTimetableList()
+            Task {
+                await timetableListViewModel.fetchTimetableList()
+            }
         }
     }
     
