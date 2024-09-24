@@ -20,10 +20,9 @@ enum TimetableRoute: Hashable {
 struct TimetableMainView: View {
     @State var tabbarIsHidden: Bool = false
     
-    @Environment(\.colorScheme) private var colorScheme
     @State var stackPath = [TimetableRoute]()
     
-    @StateObject private var timetableMainViewModel = TimetableMainViewModel()
+    @ObservedObject var timetableMainViewModel: TimetableMainViewModel
     
     @State private var selectedTab = "시간표"
     @State private var currSelectedOption = "총 이수학점"
@@ -43,6 +42,8 @@ struct TimetableMainView: View {
     @State private var timetableIsPrivateAlert = false
     @State private var deleteTableAlert = false
     @State private var representAlert = false
+    
+    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
         NavigationStack(path: $stackPath){
@@ -68,7 +69,7 @@ struct TimetableMainView: View {
                         HStack {
                             Button(action: {
                                 nameModifyAlert = true
-                                tempTimetableName = timetableMainViewModel.timetableName
+                                tempTimetableName = timetableMainViewModel.currentTimetable?.name ?? ""
                             }) {
                                 HStack {
                                     Image(systemName: "pencil")
@@ -136,16 +137,19 @@ struct TimetableMainView: View {
                 .presentationDetents([.height(150)])
             })
             .alert("수정할 이름을 입력해주세요", isPresented: $nameModifyAlert) {
-                TextField(timetableMainViewModel.timetableName, text: $timetableMainViewModel.timetableName)
+                TextField(timetableMainViewModel.currentTimetable?.name ?? "", text: $tempTimetableName)
                     .autocorrectionDisabled()
                 HStack {
                     Button("취소", role: .cancel) {
-                        timetableMainViewModel.timetableName = tempTimetableName
+
                     }
                     Button("확인") {
                         Task {
-                            /// timetable 수정 - 이름 변경 API
-                            await timetableMainViewModel.patchTimetableName(timetableId: timetableMainViewModel.timetableId, timetableName: timetableMainViewModel.timetableName)
+                            guard let timetableId = timetableMainViewModel.currentTimetable?.id else { return }
+                            await timetableMainViewModel.patchTimetableName(
+                                timetableId: timetableId,
+                                timetableName: tempTimetableName
+                            )
                         }
                     }
                 }
@@ -153,9 +157,9 @@ struct TimetableMainView: View {
             .alert("대표시간표로 설정", isPresented: $representAlert) {
                 HStack {
                     Button("대표시간표로 설정") {
-                        /// 대표 시간표 변경 API
                         Task {
-                            await timetableMainViewModel.patchTimetableRepresent(timeTableId: timetableMainViewModel.timetableId, isRepresent: true)
+                            guard let timetableId = timetableMainViewModel.currentTimetable?.id else { return }
+                            await timetableMainViewModel.patchTimetableRepresent(timetableId: timetableId, isRepresent: true)
                         }
                     }
                     Button("취소", role: .cancel, action: {})
@@ -164,14 +168,15 @@ struct TimetableMainView: View {
             .alert("시간표 공개 범위 변경", isPresented: $timetableIsPrivateAlert) {
                 HStack {
                     Button("공개") {
-                        /// 공개 비공개 설정 API
                         Task {
-                            await timetableMainViewModel.patchTimetablePrivate(timetableId: timetableMainViewModel.timetableId, isPublic: true)
+                            guard let timetableId = timetableMainViewModel.currentTimetable?.id else { return }
+                            await timetableMainViewModel.patchTimetablePrivate(timetableId: timetableId, isPublic: true)
                         }
                     }
                     Button("비공개") {
                         Task {
-                            await timetableMainViewModel.patchTimetablePrivate(timetableId: timetableMainViewModel.timetableId, isPublic: false)
+                            guard let timetableId = timetableMainViewModel.currentTimetable?.id else { return }
+                            await timetableMainViewModel.patchTimetablePrivate(timetableId: timetableId, isPublic: false)
                         }
                     }
                     Button("취소", role: .cancel, action: {})
@@ -181,10 +186,9 @@ struct TimetableMainView: View {
                 HStack {
                     Button("아니요", role: .cancel, action: {})
                     Button("네") {
-                        /// 삭제 API - 삭제하면 대표 시간표를 메인화면에 보여줌
-                        /// 대표시간표를 삭제하거나, 대표시간표가 없을 시 빈 시간표를 메인화면에 보여줌
                         Task {
-                            await timetableMainViewModel.deleteTimetable(timetableID: timetableMainViewModel.timetableId)
+                            guard let timetableId = timetableMainViewModel.currentTimetable?.id else { return }
+                            await timetableMainViewModel.deleteTimetable(timetableId: timetableId)
                         }
                     }
                 }
@@ -200,7 +204,7 @@ struct TimetableMainView: View {
                 case .timetableCustom:
                     TimetableCustom(stackPath: $stackPath)
                 case .timetableModify:
-                    TimetableModifyView(stackPath: $stackPath, timetableMainViewModel: timetableMainViewModel, timetableId: $timetableMainViewModel.timetableId)
+                    TimetableModifyView(stackPath: $stackPath, timetableMainViewModel: timetableMainViewModel)
                 }
             }
             .onChange(of: stackPath) { _ in
@@ -302,30 +306,32 @@ struct TimetableMainView: View {
     private var timetableView: some View {
         VStack {
             HStack {
-                Text("\(timetableMainViewModel.semesterYear) \(timetableMainViewModel.timetableName)")
-                    .font(.b14)
-                    .padding(.leading, 30)
-                    .onAppear {
-                        if timetableMainViewModel.timetableId < 0 {
-                            // 기본 default 시간표 호출 API
-                            Task {
-                                await timetableMainViewModel.fetchUserTimetable(id: nil)
-                            }
-                        } else {
-                            // 특정 시간표 호출 API
-                            Task {
-                                await timetableMainViewModel.fetchUserTimetable(id: timetableMainViewModel.timetableId)
-                            }
-                        }
-                    }
-                    .onChange(of: timetableMainViewModel.timetableInfo) { _ in
-                        Task {
-                            await timetableMainViewModel.fetchUserTimetable(id: timetableMainViewModel.timetableId)
-                        }
-                    }
+                if let currentTimetable = timetableMainViewModel.currentTimetable {
+                    Text("\(currentTimetable.semester) \(currentTimetable.name)")
+                        .font(.b14)
+                        .padding(.leading, 30)
+//                        .onAppear {
+//                            //MARK: - 대표시간표 기본적으로 불러오는 방식 수정 필요 + onappear .task로 변경 필요
+//                            if currentTimetable.id <= 0 {
+//                                print("초기 대표시간표 불러오기")
+//                                Task {
+//                                    await timetableMainViewModel.fetchUserTimetable(id: nil)
+//                                }
+//                            } else {
+//                                Task {
+//                                    await timetableMainViewModel.fetchUserTimetable(id: currentTimetable.id)
+//                                }
+//                            }
+//                        }
+//                        .onChange(of: currentTimetable.lectures) { _ in
+//                            Task {
+//                                await timetableMainViewModel.fetchUserTimetable(id: timetableMainViewModel.currentTimetable?.id)
+//                            }
+//                        }
+                }
                 Spacer()
                 Group {
-                    if timetableMainViewModel.timetableId >= 0 {
+                    if let _ = timetableMainViewModel.currentTimetable {
                         Button(action: {
                             stackPath.append(TimetableRoute.timetableModify)
                         }) {
@@ -340,6 +346,7 @@ struct TimetableMainView: View {
                         }
                     }
                 }
+                    
                 Button(action: {
                     stackPath.append(TimetableRoute.timetableList)
                 }) {
@@ -349,15 +356,15 @@ struct TimetableMainView: View {
                 .padding(.trailing, 20)
             }
             .padding(.top, 10)
-            if timetableMainViewModel.timetableId == -2 {
+            if let currentTimetable = timetableMainViewModel.currentTimetable {
+                TimetableView(timetableBaseArray: currentTimetable.lectures)
+                    .padding(.horizontal, 15)
+            }
+            else {
                 Text("대표시간표가 없어요.\n시간표를 생성하고, 시간표를 선택한 다음\n톱니바퀴 버튼을 눌러 대표시간표를 등록해 주세요!")
                     .font(.sb14)
                     .multilineTextAlignment(.center)
                     .padding()
-            }
-            else {
-                TimetableView(timetableBaseArray: timetableMainViewModel.timetableInfo)
-                    .padding(.horizontal, 15)
             }
         }
     }
@@ -482,48 +489,8 @@ struct TimetableMainView: View {
         }
     }
 }
-
-struct PieChartView: View {
-    @State var slices: [(Double, Color)]
-    var centerText: String = "sample text"
-    
-    var body: some View {
-        Canvas { context, size in
-            let donut = Path { p in
-                p.addEllipse(in: CGRect(origin: .zero, size: size))
-                p.addEllipse(in: CGRect(x: size.width * 0.1, y: size.height * 0.1, width: size.width * 0.8, height: size.height * 0.8))
-            }
-            context.clip(to: donut, style: .init(eoFill: true))
-            
-            let total = slices.reduce(0) { $0 + $1.0 }
-            context.translateBy(x: size.width * 0.5, y: size.height * 0.5)
-            var pieContext = context
-            pieContext.rotate(by: .degrees(-90))
-            let radius = min(size.width, size.height) * 0.48
-            var startAngle = Angle.zero
-            for (value, color) in slices {
-                let angle = Angle(degrees: 360 * (value / total))
-                let endAngle = startAngle + angle
-                let path = Path { p in
-                    p.move(to: .zero)
-                    p.addArc(center: .zero, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: false)
-                    p.closeSubpath()
-                }
-                pieContext.fill(path, with: .color(color))
-                
-                startAngle = endAngle
-            }
-        }
-        .aspectRatio(1, contentMode: .fit)
-        .overlay(
-            Text(centerText)
-                .font(.m14)
-                .multilineTextAlignment(.center)
-        )
-    }
-}
-
-#Preview {
-    TimetableMainView()
-        .preferredColorScheme(.light)
-}
+//
+//#Preview {
+//    TimetableMainView()
+//        .preferredColorScheme(.light)
+//}

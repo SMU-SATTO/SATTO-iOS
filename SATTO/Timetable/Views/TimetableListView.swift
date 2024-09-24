@@ -11,7 +11,6 @@ struct TimetableListView: View {
     @Environment(\.colorScheme) var colorScheme
     @Binding var stackPath: [TimetableRoute]
     
-    @StateObject var timetableListViewModel = TimetableListViewModel()
     @ObservedObject var timetableMainViewModel: TimetableMainViewModel
     
     var body: some View {
@@ -81,13 +80,13 @@ struct TimetableListView: View {
         }
         .onAppear {
             Task {
-                await timetableListViewModel.fetchTimetableList()
+                await timetableMainViewModel.fetchTimetableList()
             }
         }
     }
     
     private var groupedTimetables: [String: [TimetableListModel]] {
-        Dictionary(grouping: timetableListViewModel.timetables, by: { $0.semesterYear })
+        Dictionary(grouping: timetableMainViewModel.timetableList?.compactMap { $0 } ?? [], by: { $0.semesterYear })
     }
 }
 
@@ -126,7 +125,10 @@ struct TimetableListRec: View {
             ForEach(timetableList.indices, id: \.self) { index in
                 let timetable = timetableList[index]
                 Button(action: {
-                    timetableMainViewModel.timetableId = timetable.id
+                    Task {
+                        await timetableMainViewModel.fetchUserTimetable(id: timetable.id)
+                    }
+//                    timetableMainViewModel.timetableId = timetable.id
                     stackPath.removeLast()
                 }) {
                     HStack {
@@ -152,7 +154,7 @@ struct TimetableListRec: View {
     }
 }
 
-#Preview {
-    TimetableListView(stackPath: .constant([]), timetableMainViewModel: TimetableMainViewModel())
-        .preferredColorScheme(.light)
-}
+//#Preview {
+//    TimetableListView(stackPath: .constant([]), timetableMainViewModel: TimetableMainViewModel())
+//        .preferredColorScheme(.light)
+//}

@@ -72,13 +72,13 @@ struct SubjectDetailModel: SubjectModelBase {
     }
 }
 
-//MARK: - TimetableMain에서 사용하는 구조체
-struct TimetableMainInfoModel {
-    let timetableId: Int?
-    let subjectModels: [SubjectModel]
-    let semesterYear: String?
-    let timeTableName: String?
-}
+////MARK: - TimetableMain에서 사용하는 구조체
+//struct TimetableMainInfoModel {
+//    let timetableId: Int?
+//    let subjectModels: [SubjectModel]
+//    let semesterYear: String?
+//    let timeTableName: String?
+//}
 
 //MARK: - TimetableListModel
 struct TimetableListModel {

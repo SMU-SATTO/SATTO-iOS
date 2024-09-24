@@ -8,6 +8,46 @@
 import SwiftUI
 import Charts
 
+struct PieChartView: View {
+    @State var slices: [(Double, Color)]
+    var centerText: String = "sample text"
+    
+    var body: some View {
+        Canvas { context, size in
+            let donut = Path { p in
+                p.addEllipse(in: CGRect(origin: .zero, size: size))
+                p.addEllipse(in: CGRect(x: size.width * 0.1, y: size.height * 0.1, width: size.width * 0.8, height: size.height * 0.8))
+            }
+            context.clip(to: donut, style: .init(eoFill: true))
+            
+            let total = slices.reduce(0) { $0 + $1.0 }
+            context.translateBy(x: size.width * 0.5, y: size.height * 0.5)
+            var pieContext = context
+            pieContext.rotate(by: .degrees(-90))
+            let radius = min(size.width, size.height) * 0.48
+            var startAngle = Angle.zero
+            for (value, color) in slices {
+                let angle = Angle(degrees: 360 * (value / total))
+                let endAngle = startAngle + angle
+                let path = Path { p in
+                    p.move(to: .zero)
+                    p.addArc(center: .zero, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: false)
+                    p.closeSubpath()
+                }
+                pieContext.fill(path, with: .color(color))
+                
+                startAngle = endAngle
+            }
+        }
+        .aspectRatio(1, contentMode: .fit)
+        .overlay(
+            Text(centerText)
+                .font(.m14)
+                .multilineTextAlignment(.center)
+        )
+    }
+}
+
 struct RadarChartView: View {
     let data: [(name: String, value: Double)]
     

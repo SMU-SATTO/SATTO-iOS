@@ -11,8 +11,10 @@ struct ContentView: View {
     @State private var selectedTab = Tab.friend
     
     @EnvironmentObject var authViewModel: AuthViewModel
+    @Environment(\.dependencyContainer) var container: DIContainer?
     
     var body: some View {
+        let container = container ?? DIContainer(appState: AppState(), services: AppEnvironment.Services.preview(appState: AppState()))
 
             TabView(selection: $selectedTab) {
                 HomeView(selectedTab: $selectedTab)
@@ -21,7 +23,7 @@ struct ContentView: View {
                     Image(selectedTab == Tab.home ? "home.fill" : "home")
                     Text("홈")
                 }.tag(Tab.home)
-                TimetableMainView().tabItem {
+                TimetableMainView(timetableMainViewModel: TimetableMainViewModel(container: container)).tabItem {
                     Image(selectedTab == Tab.timeTable ? "timeTable.fill" : "timeTable")
                     Text("시간표")
                 }.tag(Tab.timeTable)

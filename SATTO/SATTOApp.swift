@@ -9,9 +9,14 @@ import SwiftUI
 
 @main
 struct SATTOApp: App {
+    let appEnvironment: AppEnvironment
     
     @StateObject var authViewModel = AuthViewModel()
     @AppStorage("isDarkMode") private var isDarkMode = false
+    
+    init() {
+        appEnvironment = AppEnvironment.bootstrap()
+    }
     
     var body: some Scene {
         WindowGroup {
@@ -19,6 +24,7 @@ struct SATTOApp: App {
                 ContentView()
                     .preferredColorScheme(isDarkMode ? .dark: .light)
                     .environmentObject(authViewModel)
+                    .environment(\.dependencyContainer, appEnvironment.container)
                     .alert("네트워크 오류", isPresented: $authViewModel.networkErrorAlert) {
                         Button("OK", role: .cancel) {
                             // 강제 로그아웃
@@ -34,6 +40,7 @@ struct SATTOApp: App {
                     .preferredColorScheme(isDarkMode ? .dark: .light)
                     .environmentObject(LoginNavigationPathFinder.shared)
                     .environmentObject(authViewModel)
+                    .environment(\.dependencyContainer, appEnvironment.container)
                     .alert("네트워크 오류", isPresented: $authViewModel.networkErrorAlert) {
                         Button("OK", role: .cancel) {
                         }

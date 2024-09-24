@@ -24,7 +24,6 @@ struct TimetableModifyView: View {
     @State private var showingBackAlert = false
     @State private var showingConfirmAlert = false
     
-    @Binding var timetableId: Int
     var body: some View {
         ZStack {
             Color.backgroundDefault
@@ -86,7 +85,7 @@ struct TimetableModifyView: View {
             }
         }
         .onAppear {
-            selectedValues.selectedSubjects = timetableMainViewModel.timetableInfo
+            selectedValues.selectedSubjects = timetableMainViewModel.currentTimetable?.lectures ?? []
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -116,7 +115,8 @@ struct TimetableModifyView: View {
             Button("취소", role: .cancel, action: {})
             Button("확인") {
                 Task {
-                    await timetableMainViewModel.patchTimetableInfo(timetableId: timetableMainViewModel.timetableId, codeSectionList: selectedValues.selectedSubjects)
+                    guard let timetableId = timetableMainViewModel.currentTimetable?.id else { return }
+                    await timetableMainViewModel.patchTimetableInfo(timetableId: timetableId, codeSectionList: selectedValues.selectedSubjects)
                 }
                 stackPath.removeLast()
             }
@@ -124,6 +124,6 @@ struct TimetableModifyView: View {
     }
 }
 
-#Preview {
-    TimetableModifyView(stackPath: .constant([.timetableModify]), timetableMainViewModel: TimetableMainViewModel(), timetableId: .constant(0))
-}
+//#Preview {
+//    TimetableModifyView(stackPath: .constant([.timetableModify]), timetableMainViewModel: TimetableMainViewModel())
+//}

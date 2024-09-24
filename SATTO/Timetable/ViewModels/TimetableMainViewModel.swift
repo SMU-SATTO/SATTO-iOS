@@ -5,38 +5,51 @@
 //  Created by yeongjoon on 6/21/24.
 //
 
+import Combine
 import Foundation
 
-final class TimetableMainViewModel: ObservableObject {
-    private let timetableService = TimetableService(
-        timetableRepository: TimetableRepository()
-    )
+class TimetableMainViewModel: BaseViewModel, ObservableObject {
+    @Published var currentTimetable: TimetableModel?
+    @Published var timetableList: [TimetableListModel]?
     
-    /// -1: 맵핑 실패         -2: fetch실패
-    /// 0보다 작으면 대표시간표가 없는 것으로 간주
-    @Published var timetableId: Int = -1 //MainView에 띄워지는 시간표의 id
-    @Published var semesterYear: String = "2024학년도 2학기"
-    @Published var timetableName: String = "시간표"
-    @Published var timetableInfo: [SubjectModel] = []
+    private var cancellables = Set<AnyCancellable>()
+    
+    override init(container: DIContainer) {
+        super.init(container: container)
+        
+        appState.timetable.$currentTimetable
+            .assign(to: \.currentTimetable, on: self)
+            .store(in: &cancellables)
+        
+        appState.timetable.$timetableList
+                .assign(to: \.timetableList, on: self)
+                .store(in: &cancellables)
+    }
+
+    private var timetableService: TimetableServiceProtocol {
+        services.timetableService
+    }
+    
+    private var timetableState: TimetableState {
+        appState.timetable
+    }
     
     func fetchUserTimetable(id: Int?) async {
         do {
-            let result = try await timetableService.fetchUserTimetable(id: id)
-            
-            await MainActor.run {
-                self.timetableId = result.timetableId ?? -1
-                self.semesterYear = result.semesterYear ?? "2024학년도 2학기"
-                self.timetableName = result.timeTableName ?? "시간표"
-                self.timetableInfo = result.subjectModels
-            }
+            let timetableModel = try await timetableService.fetchUserTimetable(id: id)
+            timetableState.updateCurrentTimetable(timetableModel)
         } catch {
-            await MainActor.run {
-                self.timetableId = -2
-                self.semesterYear = "2024학년도 2학기"
-                self.timetableName = "시간표"
-                self.timetableInfo = []
-            }
-            print("시간표 불러오기에 실패했습니다. 대표시간표가 있는지 확인해주세요!")
+            timetableState.resetTimetableState()
+            print("시간표 불러오기에 실패했습니다.")
+        }
+    }
+    
+    func fetchTimetableList() async {
+        do {
+            let timetableList = try await timetableService.fetchTimetableList()
+            timetableState.updateTimetableList(timetableList)
+        } catch {
+            print("시간표 목록을 불러오는데 실패했어요.")
         }
     }
     
@@ -49,7 +62,7 @@ final class TimetableMainViewModel: ObservableObject {
         }
     }
     
-    func patchTimetableRepresent(timeTableId: Int, isRepresent: Bool) async {
+    func patchTimetableRepresent(timetableId: Int, isRepresent: Bool) async {
         do {
             try await timetableService
                 .patchTimetableRepresent(timetableId: timetableId, isRepresent: isRepresent)
@@ -77,18 +90,12 @@ final class TimetableMainViewModel: ObservableObject {
         }
     }
     
-    func deleteTimetable(timetableID: Int) async {
+    func deleteTimetable(timetableId: Int) async {
         do {
-            let timetable = try await timetableService
-                .deleteTimetable(timetableId: timetableId)
-            await MainActor.run {
-                self.timetableId = timetable.timetableId ?? -1
-                self.semesterYear = timetable.semesterYear ?? "2024학년도 2학기"
-                self.timetableName = timetable.timeTableName ?? "시간표"
-                self.timetableInfo = timetable.subjectModels
-            }
+            let timetable = try await timetableService.deleteTimetable(timetableId: timetableId)
+            timetableState.updateCurrentTimetable(timetable)
         } catch {
-            print("시간표 삭제에 실패했어요")
+            print("시간표 삭제에 실패했어요.")
         }
     }
 }
