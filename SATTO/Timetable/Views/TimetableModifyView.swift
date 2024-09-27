@@ -10,8 +10,8 @@ import SwiftUI
 struct TimetableModifyView: View {
     @Binding var stackPath: [TimetableRoute]
     
-    @StateObject var selectedValues = SelectedValues()
-    @StateObject var bottomSheetViewModel = BottomSheetViewModel()
+    @ObservedObject var constraintsViewModel: ConstraintsViewModel
+    @ObservedObject var lectureSearchViewModel: LectureSearchViewModel
     
     @ObservedObject var timetableMainViewModel: TimetableMainViewModel
     
@@ -53,14 +53,14 @@ struct TimetableModifyView: View {
                     }
                 }
                 .padding(.horizontal, 30)
-                TimetableView(timetableBaseArray: selectedValues.selectedSubjects)
+                TimetableView(timetableBaseArray: constraintsViewModel.selectedSubjects)
                     .onTapGesture {
                         isShowBottomSheet = true
                     }
                     .sheet(isPresented: $isShowBottomSheet, content: {
-                        BottomSheetTabView(
-                            selectedValues: selectedValues,
-                            bottomSheetViewModel: bottomSheetViewModel,
+                        LectureSheetTabView(
+                            constraintsViewModel: constraintsViewModel,
+                            lectureSearchViewModel: lectureSearchViewModel,
                             selectedSubviews: $selectedSubviews,
                             alreadySelectedSubviews: $alreadySelectedSubviews,
                             showResultAction: {isShowBottomSheet = false}
@@ -85,7 +85,7 @@ struct TimetableModifyView: View {
             }
         }
         .onAppear {
-            selectedValues.selectedSubjects = timetableMainViewModel.currentTimetable?.lectures ?? []
+            constraintsViewModel.selectedSubjects = timetableMainViewModel.currentTimetable?.lectures ?? []
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -116,7 +116,7 @@ struct TimetableModifyView: View {
             Button("확인") {
                 Task {
                     guard let timetableId = timetableMainViewModel.currentTimetable?.id else { return }
-                    await timetableMainViewModel.patchTimetableInfo(timetableId: timetableId, codeSectionList: selectedValues.selectedSubjects)
+                    await timetableMainViewModel.patchTimetableInfo(timetableId: timetableId, codeSectionList: constraintsViewModel.selectedSubjects)
                 }
                 stackPath.removeLast()
             }
@@ -124,6 +124,6 @@ struct TimetableModifyView: View {
     }
 }
 
-//#Preview {
-//    TimetableModifyView(stackPath: .constant([.timetableModify]), timetableMainViewModel: TimetableMainViewModel())
-//}
+#Preview {
+    TimetableModifyView(stackPath: .constant([.timetableModify]), constraintsViewModel: ConstraintsViewModel(container: .preview), lectureSearchViewModel: LectureSearchViewModel(container: .preview), timetableMainViewModel: TimetableMainViewModel(container: .preview))
+}

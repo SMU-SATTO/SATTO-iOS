@@ -9,7 +9,7 @@ import SwiftUI
 import PopupView
 
 struct FinalTimetableSelectorView: View {
-    @ObservedObject var selectedValues: SelectedValues
+    @ObservedObject var viewModel: ConstraintsViewModel
     
     @Environment(\.colorScheme) var colorScheme
     
@@ -24,12 +24,12 @@ struct FinalTimetableSelectorView: View {
     var body: some View {
         ScrollView {
             LazyVStack {
-                if selectedValues.timetableList.isEmpty {
+                if viewModel.timetableList.isEmpty {
                     emptyTimetableView
                 }
                 else {
                     timetableTabView
-                    CustomPageIndicator(currIndex: $currIndex, totalIndex: selectedValues.timetableList.count)
+                    CustomPageIndicator(currIndex: $currIndex, totalIndex: viewModel.timetableList.count)
                 }
             }
         }
@@ -94,15 +94,15 @@ struct FinalTimetableSelectorView: View {
     
     private var timetableTabView: some View {
         LazyVStack {
-            Text("\(selectedValues.timetableList.count)개의 시간표가 만들어졌어요!")
+            Text("\(viewModel.timetableList.count)개의 시간표가 만들어졌어요!")
                 .font(.sb14)
                 .multilineTextAlignment(.center)
             Text("좌우로 스크롤하고 시간표를 클릭해 \n 원하는 시간표를 등록해요.")
                 .font(.sb16)
                 .multilineTextAlignment(.center)
             TabView(selection: $currIndex) {
-                ForEach(selectedValues.timetableList.indices, id: \.self) { index in
-                    TimetableView(timetableBaseArray: selectedValues.timetableList[index])
+                ForEach(viewModel.timetableList.indices, id: \.self) { index in
+                    TimetableView(timetableBaseArray: viewModel.timetableList[index])
                         .onTapGesture {
                             timetableIndex = index
                             showingPopup.toggle()
@@ -120,28 +120,29 @@ struct FinalTimetableSelectorView: View {
     
     private func fetchAllTimetables() {
         isProgressing = true
-        selectedValues.fetchFinalTimetableList(
-            isRaw: true,
-            GPA: selectedValues.credit,
-            requiredLect: selectedValues.selectedSubjects,
-            majorCount: selectedValues.majorNum,
-            cyberCount: selectedValues.ELearnNum,
-            impossibleTimeZone: selectedValues.selectedTimes,
-            majorList: selectedValues.selectedMajorCombs) { result in
-                switch result {
-                case .success:
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        isProgressing = false
-                        isRawChecked = true
-                    }
-                case .failure(let error):
-                    print("Error: \(error)")
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        isProgressing = false
-                        errorPopup = true
-                    }
+        Task {
+            do {
+                await viewModel.fetchFinalTimetableList(
+                    isRaw: true,
+                    GPA: viewModel.credit, // Optional 처리
+                    requiredLect: viewModel.selectedSubjects,
+                    majorCount: viewModel.majorNum,
+                    cyberCount: viewModel.ELearnNum,
+                    impossibleTimeZone: viewModel.selectedTimes,
+                    majorList: viewModel.selectedMajorCombs
+                )
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    isProgressing = false
+                    isRawChecked = true
+                }
+            } catch {
+                print("Error: \(error)")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    isProgressing = false
+                    errorPopup = true
                 }
             }
+        }
     }
 }
 

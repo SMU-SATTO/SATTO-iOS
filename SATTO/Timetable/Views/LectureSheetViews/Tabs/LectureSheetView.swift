@@ -1,5 +1,5 @@
 //
-//  DefaultSheetView.swift
+//  LectureSheetView.swift
 //  SATTO
 //
 //  Created by 김영준 on 3/17/24.
@@ -8,11 +8,11 @@
 import SwiftUI
 import PopupView
 
-struct SubjectSheetView: View {
+struct LectureSheetView: View {
     @Environment(\.colorScheme) var colorScheme
-    ///서버에서 받아온 bottomSheetViewModel
-    @ObservedObject var bottomSheetViewModel: BottomSheetViewModel
-    @ObservedObject var selectedValues: SelectedValues
+    
+    @ObservedObject var lectureSearchViewModel: LectureSearchViewModel
+    @ObservedObject var constraintsViewModel: ConstraintsViewModel
     
     @State private var expandedSubjectIndex: Int?
     @State private var showFloater: Bool = false
@@ -45,26 +45,26 @@ struct SubjectSheetView: View {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack {
-                    ForEach(bottomSheetViewModel.subjectDetailDataList.indices, id: \.self) { index in
-                        let subjectDetail = bottomSheetViewModel.subjectDetailDataList[index]
+                    ForEach(lectureSearchViewModel.lectureList.indices, id: \.self) { index in
+                        let subjectDetail = lectureSearchViewModel.lectureList[index]
                         subjectCardView(subjectDetail, at: index, containerSize: containerSize)
                             .padding(.horizontal, 10)
-                            .onAppear {
-                                if index == bottomSheetViewModel.subjectDetailDataList.count - 1 {
-                                    bottomSheetViewModel.loadMoreSubjects()
+                            .task {
+                                if index == lectureSearchViewModel.lectureList.count - 1 {
+                                    await lectureSearchViewModel.loadMoreSubjects()
                                 }
                             }
                     }
                     .padding(EdgeInsets(top: 10, leading: 10, bottom: 20, trailing: 10))
-                    if bottomSheetViewModel.isLoading {
+                    if lectureSearchViewModel.isLoading {
                         ProgressView()
                             .padding()
                     }
                 }
             }
-            .onAppear {
-                if bottomSheetViewModel.subjectDetailDataList.isEmpty {
-                    bottomSheetViewModel.fetchCurrentLectureList(page: 0)
+            .task {
+                if lectureSearchViewModel.lectureList.isEmpty {
+                    await lectureSearchViewModel.fetchCurrentLectureList()
                 }
             }
         }
@@ -79,7 +79,7 @@ struct SubjectSheetView: View {
         }
         .background(
             RoundedRectangle(cornerRadius: 10)
-                .foregroundStyle(selectedValues.isSelected(subject: subjectDetail) ? Color.subjectCardSelected : Color.subjectCardBackground)
+                .foregroundStyle(constraintsViewModel.isSelected(subject: subjectDetail) ? Color.subjectCardSelected : Color.subjectCardBackground)
                 .shadow(color: colorScheme == .light ? Color(red: 0.65, green: 0.65, blue: 0.65).opacity(0.65) : Color.clear, radius: 6.23, x: 0, y: 1.22)
             //MARK: - 추후 개발 예정
 //                .onTapGesture {
@@ -96,7 +96,7 @@ struct SubjectSheetView: View {
         VStack(alignment: .leading) {
             subjectMajorView(subjectDetail)
             subjectInfoView(subjectDetail)
-            //MARK: - 담은 인원 백엔드 이슈로 빼기로 결정
+            //MARK: - 추후 개발 예정
 //            subjectEnrollmentView(subjectDetail)
             if isExpanded(at: index) {
                 subjectChartView(subjectDetail, containerSize: containerSize)
@@ -171,12 +171,12 @@ struct SubjectSheetView: View {
             HStack {
                 Spacer()
                 Button(action: {
-                    let selectionSuccess = selectedValues.toggleSelection(subject: subjectDetail)
+                    let selectionSuccess = constraintsViewModel.toggleSelection(subject: subjectDetail)
                     if !selectionSuccess {
                         showFloater = true
                     }
                 }) {
-                    Image(systemName: selectedValues.isSelected(subject: subjectDetail) ? "checkmark.circle.fill" : "plus.circle.fill")
+                    Image(systemName: constraintsViewModel.isSelected(subject: subjectDetail) ? "checkmark.circle.fill" : "plus.circle.fill")
                         .resizable()
                         .frame(width: 25, height: 25)
                         .foregroundStyle(Color(red: 0.063, green: 0.51, blue: 0.788))
@@ -188,7 +188,7 @@ struct SubjectSheetView: View {
     }
     
     private func subjectCardBorder(_ subjectDetail: SubjectDetailModel) -> some View {
-        selectedValues.isSelected(subject: subjectDetail) ?
+        constraintsViewModel.isSelected(subject: subjectDetail) ?
         RoundedRectangle(cornerRadius: 10)
             .stroke(Color.subjectCardBorder, lineWidth: 1)
         : nil
@@ -196,7 +196,7 @@ struct SubjectSheetView: View {
     
     private var selectedSubjectsView: some View {
         VStack(spacing: 0) {
-            if !selectedValues.isSelectedSubjectsEmpty() {
+            if !constraintsViewModel.isSelectedSubjectsEmpty() {
                 selectedSubjectsHeaderView
                 selectedSubjectsListView
                 selectedSubjectsActionsView
@@ -220,7 +220,7 @@ struct SubjectSheetView: View {
     private var selectedSubjectsListView: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 15) {
-                ForEach(selectedValues.selectedSubjects, id: \.sbjDivcls) { subject in
+                ForEach(constraintsViewModel.selectedSubjects, id: \.sbjDivcls) { subject in
                     selectedSubjectItemView(subject)
                 }
             }
@@ -232,7 +232,7 @@ struct SubjectSheetView: View {
             Text(subject.sbjName)
                 .font(.m14)
             Button(action: {
-                selectedValues.removeSubject(subject)
+                constraintsViewModel.removeSubject(subject)
             }) {
                 Image(systemName: "xmark.circle")
                     .resizable()
@@ -261,7 +261,7 @@ struct SubjectSheetView: View {
     private var clearSelectionButton: some View {
         GeometryReader { geometry in
             Button(action: {
-                selectedValues.clear()
+                constraintsViewModel.clear()
             }) {
                 Text("선택 초기화")
                     .font(.sb14)
@@ -282,7 +282,7 @@ struct SubjectSheetView: View {
             Button(action: {
                 showResultAction()
             }) {
-                Text("\(selectedValues.selectedSubjects.count)개 결과 보기")
+                Text("\(constraintsViewModel.selectedSubjects.count)개 결과 보기")
                     .font(.sb14)
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -324,6 +324,6 @@ struct SubjectSheetView: View {
 }
 
 #Preview {
-    SubjectSheetView(bottomSheetViewModel: BottomSheetViewModel(), selectedValues: SelectedValues(), showResultAction: {})
+    LectureSheetView(lectureSearchViewModel: LectureSearchViewModel(container: .preview), constraintsViewModel: ConstraintsViewModel(container: .preview), showResultAction: {})
         .preferredColorScheme(.light)
 }

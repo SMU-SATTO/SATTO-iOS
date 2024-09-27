@@ -23,7 +23,12 @@ struct ContentView: View {
                     Image(selectedTab == Tab.home ? "home.fill" : "home")
                     Text("홈")
                 }.tag(Tab.home)
-                TimetableMainView(timetableMainViewModel: TimetableMainViewModel(container: container)).tabItem {
+                TimetableMainView(
+                    timetableMainViewModel: TimetableMainViewModel(container: container),
+                    lectureSearchViewModel: LectureSearchViewModel(container: container),
+                    constraintsViewModel: ConstraintsViewModel(container: container)
+                )
+                .tabItem {
                     Image(selectedTab == Tab.timeTable ? "timeTable.fill" : "timeTable")
                     Text("시간표")
                 }.tag(Tab.timeTable)

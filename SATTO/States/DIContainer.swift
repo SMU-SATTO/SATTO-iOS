@@ -16,3 +16,12 @@ struct DIContainer {
         self.services = services
     }
 }
+
+#if DEBUG
+    extension DIContainer {
+        @MainActor static var preview: Self {
+            let appState: AppState = .preview
+            return .init(appState: appState, services: .preview(appState: appState))
+        }
+    }
+#endif

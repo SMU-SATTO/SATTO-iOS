@@ -105,7 +105,7 @@ struct MidCheckPopup: View {
 }
 
 struct FinalSelectPopup: View {
-    @ObservedObject var selectedValues: SelectedValues
+    @ObservedObject var viewModel: ConstraintsViewModel
     
     @Binding var finalSelectPopup: Bool
     @Binding var completionPopup: Bool
@@ -125,7 +125,7 @@ struct FinalSelectPopup: View {
                 .foregroundStyle(Color.red)
                 .overlay(
                     VStack(spacing: 0) {
-                        TimetableView(timetableBaseArray: selectedValues.timetableList[timetableIndex])
+                        TimetableView(timetableBaseArray: viewModel.timetableList[timetableIndex])
                             .padding()
                         Text("이 시간표를 이번 학기 시간표로\n등록하시겠어요?")
                             .font(.sb16)
@@ -188,30 +188,31 @@ struct FinalSelectPopup: View {
             HStack {
                 Button("취소", role: .cancel, action: {})
                 Button("확인") {
-                    saveTimetable()
+                    Task {
+                        await saveTimetable()
+                    }
                 }
             }
         }
     }
     
-    private func saveTimetable() {
-        let dispatchGroup = DispatchGroup()
-
-        dispatchGroup.enter()
-        selectedValues.postSelectedTimetable(timetableIndex: timetableIndex, semesterYear: "2024학년도 2학기", timeTableName: timeTableName, isPublic: true, isRepresented: false) { success in
-            DispatchQueue.main.async {
-                isRegisterSuccess = success
-                if success {
-                    registeredTimetableList.insert(timetableIndex)
-                }
-                finalSelectPopup = false
-                dispatchGroup.leave()
-            }
+    private func saveTimetable() async {
+        do {
+            try await viewModel.saveTimetable(
+                timetableIndex: timetableIndex,
+                semesterYear: "2024학년도 2학기",
+                timeTableName: timeTableName,
+                isPublic: true,
+                isRepresented: false
+            )
+            isRegisterSuccess = true
+            registeredTimetableList.insert(timetableIndex)
+            finalSelectPopup = false
+        } catch {
+            print("시간표 저장에 실패했어요")
+            isRegisterSuccess = false
         }
-
-        dispatchGroup.notify(queue: .main) {
-            completionPopup = true
-        }
+        completionPopup = true
     }
 }
 
@@ -314,7 +315,7 @@ struct FinishMakingTimetablePopup: View {
 
 #Preview {
     FinalSelectPopup(
-        selectedValues: SelectedValues(),
+        viewModel: ConstraintsViewModel(container: .preview),
         finalSelectPopup: .constant(true),
         completionPopup: .constant(false),
         isRegisterSuccess: .constant(false),

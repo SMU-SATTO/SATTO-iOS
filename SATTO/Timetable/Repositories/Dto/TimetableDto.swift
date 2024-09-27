@@ -8,9 +8,9 @@
 import Foundation
 
 struct MajorCombResponseDto: Decodable {
-    let isSuccess: Bool
-    let code, message: String
-    let result: [MajorCombDto]
+    let isSuccess: Bool?
+    let code, message: String?
+    let result: [MajorCombDto]?
 }
 
 struct MajorCombDto: Decodable {
@@ -23,9 +23,9 @@ struct CombinationDto: Decodable {
 
 //MARK: - TimetableAutoResponse
 struct FinalTimetableListResponseDto: Decodable {
-    let isSuccess: Bool
-    let code, message: String
-    let result: [FinalTimetableListDto]
+    let isSuccess: Bool?
+    let code, message: String?
+    let result: [FinalTimetableListDto]?
 }
 
 struct FinalTimetableListDto: Decodable {
@@ -76,10 +76,9 @@ struct LectDto: Decodable {
     let credit: Int?
 }
 
-//MARK: - TimetableSelectDto
-struct TimetableSelectResponseDto: Decodable {
-    let isSuccess: Bool
-    let code, message, result: String
+struct CreateTimetableResponseDto: Decodable {
+    let isSuccess: Bool?
+    let code, message, result: String?
 }
 
 //MARK: - PatchTimetablePrivateResponseDto

@@ -22,8 +22,8 @@ class TimetableMainViewModel: BaseViewModel, ObservableObject {
             .store(in: &cancellables)
         
         appState.timetable.$timetableList
-                .assign(to: \.timetableList, on: self)
-                .store(in: &cancellables)
+            .assign(to: \.timetableList, on: self)
+            .store(in: &cancellables)
     }
 
     private var timetableService: TimetableServiceProtocol {
@@ -34,20 +34,25 @@ class TimetableMainViewModel: BaseViewModel, ObservableObject {
         appState.timetable
     }
     
-    func fetchUserTimetable(id: Int?) async {
+    func fetchRepresentTimetable() async {
         do {
-            let timetableModel = try await timetableService.fetchUserTimetable(id: id)
-            timetableState.updateCurrentTimetable(timetableModel)
+            try await timetableService.fetchCurrentTimetable(id: nil)
         } catch {
-            timetableState.resetTimetableState()
+            print("시간표 불러오기에 실패했습니다.")
+        }
+    }
+    
+    func fetchTimetable(id: Int?) async {
+        do {
+            try await timetableService.fetchCurrentTimetable(id: id)
+        } catch {
             print("시간표 불러오기에 실패했습니다.")
         }
     }
     
     func fetchTimetableList() async {
         do {
-            let timetableList = try await timetableService.fetchTimetableList()
-            timetableState.updateTimetableList(timetableList)
+            try await timetableService.fetchTimetableList()
         } catch {
             print("시간표 목록을 불러오는데 실패했어요.")
         }
@@ -92,8 +97,7 @@ class TimetableMainViewModel: BaseViewModel, ObservableObject {
     
     func deleteTimetable(timetableId: Int) async {
         do {
-            let timetable = try await timetableService.deleteTimetable(timetableId: timetableId)
-            timetableState.updateCurrentTimetable(timetable)
+            try await timetableService.deleteTimetable(timetableId: timetableId)
         } catch {
             print("시간표 삭제에 실패했어요.")
         }

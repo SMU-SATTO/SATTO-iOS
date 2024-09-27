@@ -23,6 +23,8 @@ struct TimetableMainView: View {
     @State var stackPath = [TimetableRoute]()
     
     @ObservedObject var timetableMainViewModel: TimetableMainViewModel
+    @ObservedObject var lectureSearchViewModel: LectureSearchViewModel
+    @ObservedObject var constraintsViewModel: ConstraintsViewModel
     
     @State private var selectedTab = "시간표"
     @State private var currSelectedOption = "총 이수학점"
@@ -196,15 +198,15 @@ struct TimetableMainView: View {
             .navigationDestination(for: TimetableRoute.self) { route in
                 switch route {
                 case .timetableMake:
-                    TimetableMakeView(stackPath: $stackPath)
+                    TimetableMakeView(stackPath: $stackPath, constraintsViewModel: constraintsViewModel, lectureSearchViewModel: lectureSearchViewModel)
                 case .timetableList:
                     TimetableListView(stackPath: $stackPath, timetableMainViewModel: timetableMainViewModel)
                 case .timetableOption:
                     TimetableOptionView(stackPath: $stackPath)
                 case .timetableCustom:
-                    TimetableCustom(stackPath: $stackPath)
+                    TimetableCustom(stackPath: $stackPath, constraintsViewModel: constraintsViewModel, lectureSearchViewModel: lectureSearchViewModel)
                 case .timetableModify:
-                    TimetableModifyView(stackPath: $stackPath, timetableMainViewModel: timetableMainViewModel)
+                    TimetableModifyView(stackPath: $stackPath, constraintsViewModel: constraintsViewModel, lectureSearchViewModel: lectureSearchViewModel, timetableMainViewModel: timetableMainViewModel)
                 }
             }
             .onChange(of: stackPath) { _ in
@@ -310,24 +312,6 @@ struct TimetableMainView: View {
                     Text("\(currentTimetable.semester) \(currentTimetable.name)")
                         .font(.b14)
                         .padding(.leading, 30)
-//                        .onAppear {
-//                            //MARK: - 대표시간표 기본적으로 불러오는 방식 수정 필요 + onappear .task로 변경 필요
-//                            if currentTimetable.id <= 0 {
-//                                print("초기 대표시간표 불러오기")
-//                                Task {
-//                                    await timetableMainViewModel.fetchUserTimetable(id: nil)
-//                                }
-//                            } else {
-//                                Task {
-//                                    await timetableMainViewModel.fetchUserTimetable(id: currentTimetable.id)
-//                                }
-//                            }
-//                        }
-//                        .onChange(of: currentTimetable.lectures) { _ in
-//                            Task {
-//                                await timetableMainViewModel.fetchUserTimetable(id: timetableMainViewModel.currentTimetable?.id)
-//                            }
-//                        }
                 }
                 Spacer()
                 Group {
@@ -354,6 +338,11 @@ struct TimetableMainView: View {
                         .foregroundStyle(Color.blackWhite)
                 }
                 .padding(.trailing, 20)
+            }
+            .task {
+                if timetableMainViewModel.currentTimetable?.id == nil  {
+                    await timetableMainViewModel.fetchRepresentTimetable()
+                }
             }
             .padding(.top, 10)
             if let currentTimetable = timetableMainViewModel.currentTimetable {

@@ -12,7 +12,7 @@ class TimetableState: ObservableObject {
     @Published var currentTimetable: TimetableModel?
     @Published var timetableList: [TimetableListModel]?
     
-    func updateCurrentTimetable(_ timetable: TimetableModel) {
+    func fetchCurrentTimetable(_ timetable: TimetableModel) {
         self.currentTimetable = timetable
     }
     
@@ -20,7 +20,7 @@ class TimetableState: ObservableObject {
         self.currentTimetable = TimetableModel(id: -1, semester: "", name: "", lectures: [], isPublic: false, isRepresented: false)
     }
     
-    func updateTimetableList(_ timetableList: [TimetableListModel]) {
+    func fetchTimetableList(_ timetableList: [TimetableListModel]) {
         self.timetableList = timetableList
     }
 }

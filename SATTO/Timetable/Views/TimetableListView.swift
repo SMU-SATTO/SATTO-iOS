@@ -126,7 +126,7 @@ struct TimetableListRec: View {
                 let timetable = timetableList[index]
                 Button(action: {
                     Task {
-                        await timetableMainViewModel.fetchUserTimetable(id: timetable.id)
+                        await timetableMainViewModel.fetchTimetable(id: timetable.id)
                     }
 //                    timetableMainViewModel.timetableId = timetable.id
                     stackPath.removeLast()

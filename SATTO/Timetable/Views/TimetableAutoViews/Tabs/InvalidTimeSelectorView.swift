@@ -9,7 +9,7 @@ import SwiftUI
 
 // MARK: - 불가능한 시간대 선택
 struct InvalidTimeSelectorView: View {
-    @ObservedObject var selectedValues: SelectedValues
+    @ObservedObject var constraintsViewModel: ConstraintsViewModel
     
     @Binding var selectedSubviews: Set<Int>
     @Binding var alreadySelectedSubviews: Set<Int>
@@ -17,9 +17,9 @@ struct InvalidTimeSelectorView: View {
     
     var body: some View {
         ScrollView {
-            TimeSelectorView(viewModel: selectedValues,
+            TimeSelectorView(viewModel: constraintsViewModel,
                              title: "불가능한 시간대가 있으면\n선택해 주세요.",
-                             preselectedSlots: selectedValues.parsePreselectedSlots(),
+                             preselectedSlots: constraintsViewModel.parsePreselectedSlots(),
                              selectedSubviews: $selectedSubviews,
                              alreadySelectedSubviews: $alreadySelectedSubviews, invalidPopup: $invalidPopup)
             .padding(.horizontal, 15)
@@ -29,5 +29,5 @@ struct InvalidTimeSelectorView: View {
 
 
 #Preview {
-    InvalidTimeSelectorView(selectedValues: SelectedValues(), selectedSubviews: .constant([]), alreadySelectedSubviews: .constant([]), invalidPopup: .constant(false))
+    InvalidTimeSelectorView(constraintsViewModel: ConstraintsViewModel(container: .preview), selectedSubviews: .constant([]), alreadySelectedSubviews: .constant([]), invalidPopup: .constant(false))
 }

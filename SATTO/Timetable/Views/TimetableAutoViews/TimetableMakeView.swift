@@ -14,8 +14,8 @@ struct TimetableMakeView: View {
 
     @Binding var stackPath: [TimetableRoute]
     
-    @StateObject var selectedValues = SelectedValues()
-    @StateObject var bottomSheetViewModel = BottomSheetViewModel()
+    @ObservedObject var constraintsViewModel: ConstraintsViewModel
+    @ObservedObject var lectureSearchViewModel: LectureSearchViewModel
     
     @State private var selectedView: SelectedView = .creditPicker
     
@@ -86,7 +86,7 @@ struct TimetableMakeView: View {
                 .backgroundColor(.black.opacity(0.5))
         })
         .popup(isPresented: $finalSelectPopup, view: {
-            FinalSelectPopup(selectedValues: selectedValues, finalSelectPopup: $finalSelectPopup, completionPopup: $completionPopup, isRegisterSuccess: $isRegisterSuccess, timetableIndex: $timetableIndex, registeredTimetableList: $registeredTimetableList)
+            FinalSelectPopup(viewModel: constraintsViewModel, finalSelectPopup: $finalSelectPopup, completionPopup: $completionPopup, isRegisterSuccess: $isRegisterSuccess, timetableIndex: $timetableIndex, registeredTimetableList: $registeredTimetableList)
         }, customize: {
             $0
                 .position(.center)
@@ -183,11 +183,11 @@ struct TimetableMakeView: View {
     private var tabViewNavigationButtons: some View {
         HStack(spacing: 20) {
             //majorCombination 생성에 실패하면 뒤로가기 가능
-            if selectedView != .creditPicker && (selectedView != .majorCombination || selectedValues.majorCombinations.count == 0) {
+            if selectedView != .creditPicker && (selectedView != .majorCombination || constraintsViewModel.majorCombinations.count == 0) {
                 backButton
             }
             if selectedView == .majorCombination {
-                if selectedValues.majorCombinations.count > 0 {
+                if constraintsViewModel.majorCombinations.count > 0 {
                     VStack(spacing: 0) {
                         nextButton
                         Text("시간표 생성은 5초에 한 번씩 가능해요.")
@@ -254,11 +254,11 @@ struct TimetableMakeView: View {
             }
             .background(
                 RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(isButtonDisabled || selectedView == .majorCombination && selectedValues.selectedMajorCombs.isEmpty ? Color.gray : Color.buttonBlue)
+                    .foregroundStyle(isButtonDisabled || selectedView == .majorCombination && constraintsViewModel.selectedMajorCombs.isEmpty ? Color.gray : Color.buttonBlue)
             )
             .frame(width: geometry.size.width, height: geometry.size.height)
             .disabled(isButtonDisabled)
-            .disabled(selectedView == .majorCombination && selectedValues.selectedMajorCombs.isEmpty)
+            .disabled(selectedView == .majorCombination && constraintsViewModel.selectedMajorCombs.isEmpty)
         }
         .frame(height: 45)
     }
@@ -307,31 +307,31 @@ struct TimetableMakeView: View {
         case .majorCombination:
             isProgressing = true
             isButtonDisabled = true
-            selectedValues.fetchFinalTimetableList(
-                isRaw: false,
-                GPA: selectedValues.credit,
-                requiredLect: selectedValues.selectedSubjects,
-                majorCount: selectedValues.majorNum,
-                cyberCount: selectedValues.ELearnNum,
-                impossibleTimeZone: selectedValues.selectedTimes,
-                majorList: selectedValues.selectedMajorCombs
-            ) { result in
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success:
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            self.isProgressing = false
-                            selectedView = .finalTimetable
-                        }
-                    case .failure:
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            self.isProgressing = false
-                            self.errorPopup = true
-                        }
-                    }
+            Task {
+                do {
+                    await constraintsViewModel.fetchFinalTimetableList(
+                        isRaw: false,
+                        GPA: constraintsViewModel.credit, // Optional 처리
+                        requiredLect: constraintsViewModel.selectedSubjects,
+                        majorCount: constraintsViewModel.majorNum,
+                        cyberCount: constraintsViewModel.ELearnNum,
+                        impossibleTimeZone: constraintsViewModel.selectedTimes,
+                        majorList: constraintsViewModel.selectedMajorCombs
+                    )
+
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        self.isButtonDisabled = false
+                        self.isProgressing = false
+                        selectedView = .finalTimetable
                     }
+                } catch {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        self.isProgressing = false
+                        self.errorPopup = true
+                    }
+                }
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    self.isButtonDisabled = false
                 }
             }
         case .finalTimetable:
@@ -349,22 +349,21 @@ struct TimetableMakeView: View {
     func tabViewContent(for view: SelectedView) -> AnyView {
         switch view {
         case .creditPicker:
-            return AnyView(CreditPickerView(selectedValues: selectedValues))
+            return AnyView(CreditPickerView(constraintsViewModel: constraintsViewModel))
         case .essentialClasses:
-            return AnyView(EssentialClassesSelectorView(selectedValues: selectedValues, bottomSheetViewModel: bottomSheetViewModel))
+            return AnyView(EssentialClassesSelectorView(constraintsViewModel: constraintsViewModel, lectureSearchViewModel: lectureSearchViewModel))
         case .invalidTime:
-            return AnyView(InvalidTimeSelectorView(selectedValues: selectedValues, selectedSubviews: $selectedSubviews, alreadySelectedSubviews: $alreadySelectedSubviews, invalidPopup: $invalidPopup))
+            return AnyView(InvalidTimeSelectorView(constraintsViewModel: constraintsViewModel, selectedSubviews: $selectedSubviews, alreadySelectedSubviews: $alreadySelectedSubviews, invalidPopup: $invalidPopup))
         case .midCheck:
-            return AnyView(MidCheckView(selectedValues: selectedValues))
+            return AnyView(MidCheckView(viewModel: constraintsViewModel))
         case .majorCombination:
-            return AnyView(MajorCombSelectorView(selectedValues: selectedValues))
+            return AnyView(MajorCombSelectorView(viewModel: constraintsViewModel))
         case .finalTimetable:
-            return AnyView(FinalTimetableSelectorView(selectedValues: selectedValues, showingPopup: $finalSelectPopup, timetableIndex: $timetableIndex))
+            return AnyView(FinalTimetableSelectorView(viewModel: constraintsViewModel, showingPopup: $finalSelectPopup, timetableIndex: $timetableIndex))
         }
     }
 }
 
 #Preview {
-    TimetableMakeView(stackPath: .constant([.timetableMake]))
-        .preferredColorScheme(.light)
+    TimetableMakeView(stackPath: .constant([.timetableMake]), constraintsViewModel: ConstraintsViewModel(container: .preview), lectureSearchViewModel: LectureSearchViewModel(container: .preview))
 }

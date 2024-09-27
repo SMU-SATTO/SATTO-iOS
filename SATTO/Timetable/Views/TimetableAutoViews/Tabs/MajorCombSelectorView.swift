@@ -9,12 +9,12 @@ import SwiftUI
 
 struct MajorCombSelectorView: View {
     @Environment(\.colorScheme) var colorScheme
-    @ObservedObject var selectedValues: SelectedValues
+    @ObservedObject var viewModel: ConstraintsViewModel
     
     var body: some View {
         ScrollView {
             VStack {
-                if selectedValues.majorCombinations.count == 0 {
+                if viewModel.majorCombinations.count == 0 {
                     VStack(spacing: 10) {
                         Text("설정하신 조건으로는 시간표를 생성할 수 없었어요.")
                         Text("입력된 조건 중 충돌하는 조건이 있었거나,")
@@ -31,7 +31,7 @@ struct MajorCombSelectorView: View {
                     HStack {
                         VStack(spacing: 5) {
                             HStack(spacing: 0) {
-                                Text("\(selectedValues.majorCombinations.count)개의 전공 조합")
+                                Text("\(viewModel.majorCombinations.count)개의 전공 조합")
                                     .font(.sb16)
                                     .foregroundStyle(Color.accentText)
                                 Text("이 만들어졌어요!")
@@ -64,21 +64,21 @@ struct MajorCombSelectorView: View {
                     }
                     .font(.sb14)
                 }
-                ForEach(selectedValues.majorCombinations.indices, id: \.self) { index in
-                    majorRectangle(combination: selectedValues.majorCombinations[index])
+                ForEach(viewModel.majorCombinations.indices, id: \.self) { index in
+                    majorRectangle(combination: viewModel.majorCombinations[index])
                 }
                 .padding(.horizontal, 20)
             }
         }
-        .onAppear {
-            selectedValues.fetchMajorCombinations(GPA: selectedValues.credit, requiredLect: selectedValues.selectedSubjects, majorCount: selectedValues.majorNum, cyberCount: selectedValues.ELearnNum, impossibleTimeZone: selectedValues.selectedTimes)
+        .task {
+            await viewModel.fetchMajorCombinations(GPA: viewModel.credit, requiredLect: viewModel.selectedSubjects, majorCount: viewModel.majorNum, cyberCount: viewModel.ELearnNum, impossibleTimeZone: viewModel.selectedTimes)
         }
     }
     
     @ViewBuilder
     private func majorRectangle(combination: MajorComb) -> some View {
         Button(action: {
-            selectedValues.toggleSelection(combination)
+            viewModel.toggleSelection(combination)
         }) {
             VStack(spacing: 3) {
                 ForEach(combination.combination.indices, id: \.self) { index in
@@ -90,11 +90,11 @@ struct MajorCombSelectorView: View {
             }
             .background(
                 RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(selectedValues.isSelected(combination) ? Color.subjectCardSelected : Color.subjectCardBackground)
+                    .foregroundStyle(viewModel.isSelected(combination) ? Color.subjectCardSelected : Color.subjectCardBackground)
                     .shadow(color: colorScheme == .light ? Color(red: 0.65, green: 0.65, blue: 0.65).opacity(0.65) : Color.clear, radius: 6.23, x: 0, y: 1.22)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(selectedValues.isSelected(combination) ? Color.subjectCardBorder : Color.clear, lineWidth: 1)
+                            .stroke(viewModel.isSelected(combination) ? Color.subjectCardBorder : Color.clear, lineWidth: 1)
                     )
                     .frame(width: 300)
                     .padding(.vertical, -10)
@@ -106,6 +106,6 @@ struct MajorCombSelectorView: View {
 }
 
 #Preview {
-    MajorCombSelectorView(selectedValues: SelectedValues())
+    MajorCombSelectorView(viewModel: ConstraintsViewModel(container: .preview))
         .preferredColorScheme(.dark)
 }

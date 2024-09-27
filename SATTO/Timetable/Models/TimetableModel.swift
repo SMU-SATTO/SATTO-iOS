@@ -19,3 +19,13 @@ struct TimetableModel {
 extension TimetableModel {
     
 }
+
+#if DEBUG
+    extension TimetableModel {
+        static var preview: TimetableModel {
+            return .init(
+                id: 0, semester: "2024-2", name: "시간표", lectures: [], isPublic: false, isRepresented: false
+            )
+        }
+    }
+#endif

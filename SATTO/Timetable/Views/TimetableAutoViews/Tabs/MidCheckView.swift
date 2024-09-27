@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MidCheckView: View {
-    @ObservedObject var selectedValues: SelectedValues
+    @ObservedObject var viewModel: ConstraintsViewModel
     
     var body: some View {
         ScrollView {
@@ -37,32 +37,32 @@ struct MidCheckView: View {
                     selectedOptionInfo(
                         header: "선택한 학점",
                         headerColor: Color.blackWhite200,
-                        content: "\(selectedValues.credit)학점"
+                        content: "\(viewModel.credit)학점"
                     )
                     selectedOptionInfo(
                         header: "이번 학기에 들을 전공 개수",
                         headerColor: Color.blackWhite200,
-                        content: "\(selectedValues.majorNum)개"
+                        content: "\(viewModel.majorNum)개"
                     )
                     selectedOptionInfo(
                         header: "이번 학기에 들을 이러닝 개수",
                         headerColor: Color.blackWhite200,
-                        content: "\(selectedValues.ELearnNum)개"
+                        content: "\(viewModel.ELearnNum)개"
                     )
                     selectedOptionInfo(
                         header: "필수로 들을 과목",
                         headerColor: Color.blackWhite200,
-                        content: selectedValues.selectedSubjects.isEmpty
+                        content: viewModel.selectedSubjects.isEmpty
                         ? "선택된 과목이 없어요"
-                        : selectedValues.selectedSubjects.map { $0.sbjName }.joined(separator: ", ")
+                        : viewModel.selectedSubjects.map { $0.sbjName }.joined(separator: ", ")
                     )
                     //MARK: - String값 model에 업데이트 필요
                     selectedOptionInfo(
                         header: "제외된 시간대",
                         headerColor: Color(red: 0.87, green: 0.34, blue: 0.34),
-                        content: selectedValues.selectedTimes.isEmpty
+                        content: viewModel.selectedTimes.isEmpty
                             ? "선택된 불가능한 시간이 없어요"
-                            : selectedValues.selectedTimes
+                            : viewModel.selectedTimes
                                 .split(separator: " ")
                                 .map { String($0) }
                                 .joined(separator: ", ")
@@ -89,6 +89,5 @@ struct MidCheckView: View {
 }
 
 #Preview {
-    MidCheckView(selectedValues: SelectedValues())
-        .preferredColorScheme(.dark)
+    MidCheckView(viewModel: ConstraintsViewModel(container: .preview))
 }

@@ -1,5 +1,5 @@
 //
-//  BottomSheetTabView.swift
+//  LectureSheetTabView.swift
 //  SATTO
 //
 //  Created by 김영준 on 3/6/24.
@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct BottomSheetTabView: View {
-    @ObservedObject var selectedValues: SelectedValues
-    @ObservedObject var bottomSheetViewModel: BottomSheetViewModel
+struct LectureSheetTabView: View {
+    @ObservedObject var constraintsViewModel: ConstraintsViewModel
+    @ObservedObject var lectureSearchViewModel: LectureSearchViewModel
     
     @Binding var selectedSubviews: Set<Int>
     @Binding var alreadySelectedSubviews: Set<Int>
@@ -67,13 +67,13 @@ struct BottomSheetTabView: View {
         
         switch category {
         case "학년":
-            isCategorySelected = bottomSheetViewModel.isGradeSelected()
+            isCategorySelected = lectureSearchViewModel.isGradeSelected()
         case "교양":
-            isCategorySelected = bottomSheetViewModel.isGESelected()
+            isCategorySelected = lectureSearchViewModel.isGESelected()
         case "e-러닝":
-            isCategorySelected = bottomSheetViewModel.isELOptionSelected()
+            isCategorySelected = lectureSearchViewModel.isELOptionSelected()
         case "시간":
-            isCategorySelected = bottomSheetViewModel.isTimeSelected()
+            isCategorySelected = lectureSearchViewModel.isTimeSelected()
         default:
             isCategorySelected = false
         }
@@ -106,20 +106,24 @@ struct BottomSheetTabView: View {
                             .frame(width: 19, height: 19)
                             .foregroundStyle(Color.searchbarText)
                             .padding(.leading, 15)
-                        TextField("듣고 싶은 과목을 입력해 주세요", text: $bottomSheetViewModel.searchText)
+                        TextField("듣고 싶은 과목을 입력해 주세요", text: $lectureSearchViewModel.searchText)
                             .font(.sb14)
                             .autocorrectionDisabled()
                             .foregroundStyle(Color.searchbarText)
                             .padding(.leading, 5)
                             .submitLabel(.search)
                             .onSubmit {
-                                bottomSheetViewModel.resetCurrPage()
-                                bottomSheetViewModel.fetchCurrentLectureList(page: bottomSheetViewModel.currentPage)
+                                lectureSearchViewModel.resetCurrPage()
+                                Task {
+                                    await lectureSearchViewModel.fetchCurrentLectureList()
+                                }
                             }
                         Button(action: {
-                            bottomSheetViewModel.searchText.removeAll()
-                            bottomSheetViewModel.resetCurrPage()
-                            bottomSheetViewModel.fetchCurrentLectureList(page: bottomSheetViewModel.currentPage)
+                            lectureSearchViewModel.searchText.removeAll()
+                            lectureSearchViewModel.resetCurrPage()
+                            Task {
+                                await lectureSearchViewModel.fetchCurrentLectureList()
+                            }
                         }) {
                             Image(systemName: "xmark.circle.fill")
                                 .foregroundStyle(Color.searchbarText)
@@ -135,32 +139,42 @@ struct BottomSheetTabView: View {
     private var selectedTabView: some View {
         switch selectedTab {
         case "학년":
-            OptionSheetView(options: gradeOptions, selectedOptions: $bottomSheetViewModel.selectedGrades, allowsDuplicates: true) {
-                bottomSheetViewModel.resetCurrPage()
-                bottomSheetViewModel.fetchCurrentLectureList(page: bottomSheetViewModel.currentPage)
+            OptionSheetView(options: gradeOptions, selectedOptions: $lectureSearchViewModel.selectedGrades, allowsDuplicates: true) {
+                lectureSearchViewModel.resetCurrPage()
+                Task {
+                    await lectureSearchViewModel.fetchCurrentLectureList()
+                }
             }
         case "교양":
-            OptionSheetView(options: GEOptions, selectedOptions: $bottomSheetViewModel.selectedGE, allowsDuplicates: true) {
-                bottomSheetViewModel.resetCurrPage()
-                bottomSheetViewModel.fetchCurrentLectureList(page: bottomSheetViewModel.currentPage)
+            OptionSheetView(options: GEOptions, selectedOptions: $lectureSearchViewModel.selectedGE, allowsDuplicates: true) {
+                lectureSearchViewModel.resetCurrPage()
+                Task {
+                    await lectureSearchViewModel.fetchCurrentLectureList()
+                }
             }
-            if bottomSheetViewModel.selectedGE.contains("균형교양") {
-                OptionSheetView(options: BGEOptions, selectedOptions: $bottomSheetViewModel.selectedBGE, allowsDuplicates: true) {
-                    bottomSheetViewModel.resetCurrPage()
-                    bottomSheetViewModel.fetchCurrentLectureList(page: bottomSheetViewModel.currentPage)
+            if lectureSearchViewModel.selectedGE.contains("균형교양") {
+                OptionSheetView(options: BGEOptions, selectedOptions: $lectureSearchViewModel.selectedBGE, allowsDuplicates: true) {
+                    lectureSearchViewModel.resetCurrPage()
+                    Task {
+                        await lectureSearchViewModel.fetchCurrentLectureList()
+                    }
                 }
             }
         case "e-러닝":
-            OptionSheetView(options: eLearnOptions, selectedOptions: $bottomSheetViewModel.selectedELOption, allowsDuplicates: false) {
-                bottomSheetViewModel.resetCurrPage()
-                bottomSheetViewModel.fetchCurrentLectureList(page: bottomSheetViewModel.currentPage)
+            OptionSheetView(options: eLearnOptions, selectedOptions: $lectureSearchViewModel.selectedELOption, allowsDuplicates: false) {
+                lectureSearchViewModel.resetCurrPage()
+                Task {
+                   await lectureSearchViewModel.fetchCurrentLectureList()
+                }
             }
         case "시간":
-            TimeSheetView(bottomSheetViewModel: bottomSheetViewModel, selectedSubviews: $selectedSubviews, alreadySelectedSubviews: $alreadySelectedSubviews) 
+            TimeSheetView(viewModel: lectureSearchViewModel, selectedSubviews: $selectedSubviews, alreadySelectedSubviews: $alreadySelectedSubviews)
                 .padding(.top, 10)
                 .onDisappear {
-                    bottomSheetViewModel.resetCurrPage()
-                    bottomSheetViewModel.fetchCurrentLectureList(page: bottomSheetViewModel.currentPage)
+                    lectureSearchViewModel.resetCurrPage()
+                    Task {
+                       await lectureSearchViewModel.fetchCurrentLectureList()
+                    }
                 }
         default:
             EmptyView()
@@ -170,13 +184,13 @@ struct BottomSheetTabView: View {
     // MARK: - Subject Sheet View
     private var subjectSheetView: some View {
         VStack {
-            SubjectSheetView(bottomSheetViewModel: bottomSheetViewModel, selectedValues: selectedValues, showResultAction: showResultAction)
+            LectureSheetView(lectureSearchViewModel: lectureSearchViewModel, constraintsViewModel: constraintsViewModel, showResultAction: showResultAction)
                 .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
         }
     }
 }
 
 #Preview {
-    BottomSheetTabView(selectedValues: SelectedValues(), bottomSheetViewModel: BottomSheetViewModel(), selectedSubviews: .constant([]), alreadySelectedSubviews: .constant([]), showResultAction: {})
+    LectureSheetTabView(constraintsViewModel: ConstraintsViewModel(container: .preview), lectureSearchViewModel: LectureSearchViewModel(container: .preview), selectedSubviews: .constant([]), alreadySelectedSubviews: .constant([]), showResultAction: {})
         .preferredColorScheme(.dark)
 }

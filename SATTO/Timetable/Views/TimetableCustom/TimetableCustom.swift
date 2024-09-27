@@ -10,8 +10,8 @@ import SwiftUI
 struct TimetableCustom: View {
     @Binding var stackPath: [TimetableRoute]
     
-    @StateObject var selectedValues = SelectedValues()
-    @StateObject var bottomSheetViewModel = BottomSheetViewModel()
+    @ObservedObject var constraintsViewModel: ConstraintsViewModel
+    @ObservedObject var lectureSearchViewModel: LectureSearchViewModel
     
     @State private var selectedSubviews = Set<Int>()
     @State private var alreadySelectedSubviews = Set<Int>()
@@ -50,14 +50,14 @@ struct TimetableCustom: View {
                     }
                 }
                 .padding(.horizontal, 30)
-                TimetableView(timetableBaseArray: selectedValues.selectedSubjects)
+                TimetableView(timetableBaseArray: constraintsViewModel.selectedSubjects)
                     .onTapGesture {
                         isShowBottomSheet = true
                     }
                     .sheet(isPresented: $isShowBottomSheet, content: {
-                        BottomSheetTabView(
-                            selectedValues: selectedValues,
-                            bottomSheetViewModel: bottomSheetViewModel,
+                        LectureSheetTabView(
+                            constraintsViewModel: constraintsViewModel,
+                            lectureSearchViewModel: lectureSearchViewModel,
                             selectedSubviews: $selectedSubviews,
                             alreadySelectedSubviews: $alreadySelectedSubviews,
                             showResultAction: {isShowBottomSheet = false}
@@ -113,14 +113,18 @@ struct TimetableCustom: View {
     }
     
     private func saveTimetable() {
-        selectedValues.postCustomTimetable(codeSectionList: selectedValues.selectedSubjects.map { $0.sbjDivcls }, semesterYear: "2024학년도 2학기", timeTableName: timetableName, isPublic: true, isRepresented: false) { success in
-            DispatchQueue.main.async {
+        Task {
+            do {
+                await constraintsViewModel.saveCustomTimetable(codeSectionList: constraintsViewModel.selectedSubjects.map { $0.sbjDivcls }, semesterYear: "2024학년도 2학기", timeTableName: timetableName, isPublic: true, isRepresented: false)
                 stackPath.removeLast()
+            }
+            catch {
+                print("Error: \(error)")
             }
         }
     }
 }
 
 #Preview {
-    TimetableCustom(stackPath: .constant([.timetableCustom]))
+    TimetableCustom(stackPath: .constant([.timetableCustom]), constraintsViewModel: ConstraintsViewModel(container: .preview), lectureSearchViewModel: LectureSearchViewModel(container: .preview))
 }

@@ -262,7 +262,7 @@ struct TimeCellRectangle: View {
     }
 }
 
-#Preview {
-    TimeSelectorView(viewModel: SelectedValues(), selectedSubviews: .constant([0, 1, 2, 3, 4, 5, 6, 7, 16, 17, 18]), alreadySelectedSubviews: .constant([]), invalidPopup: .constant(false))
-        .preferredColorScheme(.light)
-}
+//#Preview {
+//    TimeSelectorView(viewModel: constraintsViewModel(), selectedSubviews: .constant([0, 1, 2, 3, 4, 5, 6, 7, 16, 17, 18]), alreadySelectedSubviews: .constant([]), invalidPopup: .constant(false))
+//        .preferredColorScheme(.light)
+//}
