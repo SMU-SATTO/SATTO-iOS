@@ -122,15 +122,7 @@ struct FinalTimetableSelectorView: View {
         isProgressing = true
         Task {
             do {
-                await viewModel.fetchFinalTimetableList(
-                    isRaw: true,
-                    GPA: viewModel.credit, // Optional 처리
-                    requiredLect: viewModel.selectedSubjects,
-                    majorCount: viewModel.majorNum,
-                    cyberCount: viewModel.ELearnNum,
-                    impossibleTimeZone: viewModel.selectedTimes,
-                    majorList: viewModel.selectedMajorCombs
-                )
+                await viewModel.fetchFinalTimetableList(isRaw: true)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     isProgressing = false
                     isRawChecked = true

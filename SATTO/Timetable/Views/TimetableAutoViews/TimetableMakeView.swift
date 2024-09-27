@@ -309,16 +309,7 @@ struct TimetableMakeView: View {
             isButtonDisabled = true
             Task {
                 do {
-                    await constraintsViewModel.fetchFinalTimetableList(
-                        isRaw: false,
-                        GPA: constraintsViewModel.credit, // Optional 처리
-                        requiredLect: constraintsViewModel.selectedSubjects,
-                        majorCount: constraintsViewModel.majorNum,
-                        cyberCount: constraintsViewModel.ELearnNum,
-                        impossibleTimeZone: constraintsViewModel.selectedTimes,
-                        majorList: constraintsViewModel.selectedMajorCombs
-                    )
-
+                    await constraintsViewModel.fetchFinalTimetableList(isRaw: false)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                         self.isProgressing = false
                         selectedView = .finalTimetable

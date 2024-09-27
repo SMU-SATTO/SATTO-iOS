@@ -9,10 +9,10 @@ import Foundation
 
 @MainActor
 protocol ConstraintServiceProtocol: Sendable {
-    func getMajorComb(GPA: Int, requiredLect: [SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String) async throws
-    func getFinalTimetableList(isRaw: Bool, GPA: Int, requiredLect: [SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [MajorComb]) async throws
-    func saveTimetable(timetableIndex: Int, semesterYear: String, timeTableName: String, isPublic: Bool, isRepresented: Bool) async throws
-    func saveCustomTimetable(codeSectionList: [String], semesterYear: String, timeTableName: String, isPublic: Bool, isRepresented: Bool) async throws
+    func getMajorComb() async throws
+    func getFinalTimetableList(isRaw: Bool) async throws
+    func saveTimetable(timetableIndex: Int, timetableName: String) async throws
+    func saveCustomTimetable(codeSectionList: [String], timeTableName: String) async throws
 }
 
 struct ConstraintService: ConstraintServiceProtocol {
@@ -23,11 +23,11 @@ struct ConstraintService: ConstraintServiceProtocol {
         webRepositories.constraintRepository
     }
 
-    func getMajorComb(GPA: Int, requiredLect: [SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String) async throws {
-        let requiredLectStrings = requiredLect.map { $0.sbjDivcls }
+    func getMajorComb() async throws {
+        let requiredLectStrings = appState.constraint.selectedSubjects.map { $0.sbjDivcls }
         let adjustedRequiredLect = requiredLectStrings.isEmpty ? [""] : requiredLectStrings
         
-        let dto = try await constraintRepository.getMajorComb(GPA: GPA, requiredLect: adjustedRequiredLect, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: impossibleTimeZone)
+        let dto = try await constraintRepository.getMajorComb(GPA: appState.constraint.credit, requiredLect: adjustedRequiredLect, majorCount: appState.constraint.majorNum, cyberCount: appState.constraint.eLearnNum, impossibleTimeZone: appState.constraint.selectedTimes)
         
         guard let majorCombDtos = dto.result else { return }
         
@@ -39,11 +39,11 @@ struct ConstraintService: ConstraintServiceProtocol {
         appState.constraint.fetchMajorCombs(majorComb)
     }
     
-    func getFinalTimetableList(isRaw: Bool, GPA: Int, requiredLect: [SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [MajorComb]) async throws {
-        let adjustedRequiredLect = requiredLect.isEmpty ? [""] : requiredLect.map { $0.sbjDivcls }
-        let adjustedMajorList = impossibleTimeZone.isEmpty ? [[""]] : majorList.map { $0.combination.map { $0.code } }
+    func getFinalTimetableList(isRaw: Bool) async throws {
+        let adjustedRequiredLect = appState.constraint.selectedSubjects.isEmpty ? [""] : appState.constraint.selectedSubjects.map { $0.sbjDivcls }
+        let adjustedMajorList = appState.constraint.selectedTimes.isEmpty ? [[""]] : appState.constraint.selectedMajorCombs.map { $0.combination.map { $0.code } }
         
-        let dto = try await constraintRepository.getFinalTimetableList(isRaw: isRaw, GPA: GPA, requiredLect: adjustedRequiredLect, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: impossibleTimeZone, majorList: adjustedMajorList)
+        let dto = try await constraintRepository.getFinalTimetableList(isRaw: isRaw, GPA: appState.constraint.credit, requiredLect: adjustedRequiredLect, majorCount: appState.constraint.majorNum, cyberCount: appState.constraint.eLearnNum, impossibleTimeZone: appState.constraint.selectedTimes, majorList: adjustedMajorList)
         
         guard let finalTimetableListsDto = dto.result else { return }
         
@@ -56,20 +56,21 @@ struct ConstraintService: ConstraintServiceProtocol {
         appState.constraint.fetchFinalTimetableList(subjectModels)
     }
     
-    func saveTimetable(timetableIndex: Int, semesterYear: String, timeTableName: String, isPublic: Bool, isRepresented: Bool) async throws {
+    func saveTimetable(timetableIndex: Int, timetableName: String) async throws {
         guard let timetableList = appState.constraint.finalTimetableList else { return }
         let codeSectionList = timetableList[timetableIndex].map { $0.sbjDivcls }
         
-        try await constraintRepository.saveTimetable(codeSectionList: codeSectionList, semesterYear: semesterYear, timeTableName: timeTableName, isPublic: isPublic, isRepresented: isRepresented)
+        try await constraintRepository.saveTimetable(codeSectionList: codeSectionList, semesterYear: appState.constraint.semesterYear, timeTableName: timetableName, isPublic: true, isRepresented: false)
     }
-    func saveCustomTimetable(codeSectionList: [String], semesterYear: String, timeTableName: String, isPublic: Bool, isRepresented: Bool) async throws {
-        try await constraintRepository.saveTimetable(codeSectionList: codeSectionList, semesterYear: semesterYear, timeTableName: timeTableName, isPublic: isPublic, isRepresented: isRepresented)
+    
+    func saveCustomTimetable(codeSectionList: [String], timeTableName: String) async throws {
+        try await constraintRepository.saveTimetable(codeSectionList: codeSectionList, semesterYear: appState.constraint.semesterYear, timeTableName: timeTableName, isPublic: true, isRepresented: false)
     }
 }
 
 struct FakeConstraintService: ConstraintServiceProtocol {
-    func getMajorComb(GPA: Int, requiredLect: [any SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String) async throws { }
-    func getFinalTimetableList(isRaw: Bool, GPA: Int, requiredLect: [any SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [MajorComb]) async throws { }
-    func saveTimetable(timetableIndex: Int, semesterYear: String, timeTableName: String, isPublic: Bool, isRepresented: Bool) async throws { }
-    func saveCustomTimetable(codeSectionList: [String], semesterYear: String, timeTableName: String, isPublic: Bool, isRepresented: Bool) async throws { }
+    func getMajorComb() async throws { }
+    func getFinalTimetableList(isRaw: Bool) async throws { }
+    func saveTimetable(timetableIndex: Int, timetableName: String) async throws { }
+    func saveCustomTimetable(codeSectionList: [String], timeTableName: String) async throws { }
 }

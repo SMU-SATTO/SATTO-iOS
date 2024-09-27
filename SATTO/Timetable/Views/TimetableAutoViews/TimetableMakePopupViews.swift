@@ -115,7 +115,7 @@ struct FinalSelectPopup: View {
     @Binding var registeredTimetableList: Set<Int>
     
     @State private var showingAlert = false
-    @State private var timeTableName = "시간표"
+    @State private var timetableName = "시간표"
     
     var body: some View {
         VStack {
@@ -183,36 +183,21 @@ struct FinalSelectPopup: View {
     
     private var alertContent: some View {
         VStack {
-            TextField("시간표 이름", text: $timeTableName)
+            TextField("시간표 이름", text: $timetableName)
                 .autocorrectionDisabled()
             HStack {
                 Button("취소", role: .cancel, action: {})
                 Button("확인") {
                     Task {
-                        await saveTimetable()
+                        await viewModel.saveTimetable(timetableIndex: timetableIndex, timetableName: timetableName)
+                        isRegisterSuccess = true
+                        registeredTimetableList.insert(timetableIndex)
+                        finalSelectPopup = false
                     }
+                    completionPopup = true
                 }
             }
         }
-    }
-    
-    private func saveTimetable() async {
-        do {
-            try await viewModel.saveTimetable(
-                timetableIndex: timetableIndex,
-                semesterYear: "2024학년도 2학기",
-                timeTableName: timeTableName,
-                isPublic: true,
-                isRepresented: false
-            )
-            isRegisterSuccess = true
-            registeredTimetableList.insert(timetableIndex)
-            finalSelectPopup = false
-        } catch {
-            print("시간표 저장에 실패했어요")
-            isRegisterSuccess = false
-        }
-        completionPopup = true
     }
 }
 

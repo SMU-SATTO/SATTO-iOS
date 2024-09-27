@@ -446,9 +446,6 @@
 		AA7752A22C2024D300778870 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				AACAD6282CA0A421005C2F26 /* TimetableState.swift */,
-				AACAD6372CA42240005C2F26 /* ConstraintState.swift */,
-				AACAD6392CA62152005C2F26 /* LectureSearchState.swift */,
 				AAA9503A2BA5C380004E16C8 /* Components */,
 				AAA950612BA5C39B004E16C8 /* TimetableMainView.swift */,
 				AA65E5FF2C25AC8900655856 /* TimetableModifyView.swift */,
@@ -552,6 +549,7 @@
 		AAA950652BA5C39B004E16C8 /* Timetable */ = {
 			isa = PBXGroup;
 			children = (
+				AACAD6452CA774B5005C2F26 /* States */,
 				AA7752A22C2024D300778870 /* Views */,
 				AA7752A32C2024DD00778870 /* Models */,
 				AA7752A42C2024E200778870 /* ViewModels */,
@@ -598,6 +596,16 @@
 				AACAD6312CA34915005C2F26 /* AppState.swift */,
 				AACAD62F2CA348AB005C2F26 /* DIContainer.swift */,
 				AACAD6352CA34FBB005C2F26 /* BaseViewModel.swift */,
+			);
+			path = States;
+			sourceTree = "<group>";
+		};
+		AACAD6452CA774B5005C2F26 /* States */ = {
+			isa = PBXGroup;
+			children = (
+				AACAD6282CA0A421005C2F26 /* TimetableState.swift */,
+				AACAD6372CA42240005C2F26 /* ConstraintState.swift */,
+				AACAD6392CA62152005C2F26 /* LectureSearchState.swift */,
 			);
 			path = States;
 			sourceTree = "<group>";

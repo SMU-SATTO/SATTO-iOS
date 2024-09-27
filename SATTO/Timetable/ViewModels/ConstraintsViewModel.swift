@@ -46,7 +46,7 @@ class ConstraintsViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
             .assign(to: \.majorNum, on: self)
             .store(in: &cancellables)
         
-        appState.constraint.$ELearnNum
+        appState.constraint.$eLearnNum
             .assign(to: \.ELearnNum, on: self)
             .store(in: &cancellables)
         
@@ -136,33 +136,33 @@ class ConstraintsViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
         return selectedMajorCombs.contains(where: { $0.combination == combination.combination })
     }
 
-    func fetchMajorCombinations(GPA: Int, requiredLect: [SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String) async {
+    func fetchMajorCombinations() async {
         do {
-            try await constraintService.getMajorComb(GPA: GPA, requiredLect: requiredLect, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: impossibleTimeZone)
+            try await constraintService.getMajorComb()
         } catch {
             print("전공조합을 가져오는데 실패했어요.")
         }
     }
     
-    func fetchFinalTimetableList(isRaw: Bool, GPA: Int, requiredLect: [SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [MajorComb]) async {
+    func fetchFinalTimetableList(isRaw: Bool) async {
         do {
-            try await constraintService.getFinalTimetableList(isRaw: isRaw, GPA: GPA, requiredLect: requiredLect, majorCount: majorCount, cyberCount: cyberCount, impossibleTimeZone: impossibleTimeZone, majorList: majorList)
+            try await constraintService.getFinalTimetableList(isRaw: isRaw)
         } catch {
             print("최종 시간표 목록을 가져오는데 실패했어요.")
         }
     }
     
-    func saveTimetable(timetableIndex: Int, semesterYear: String, timeTableName: String, isPublic: Bool, isRepresented: Bool) async {
+    func saveTimetable(timetableIndex: Int, timetableName: String) async {
         do {
-            try await constraintService.saveTimetable(timetableIndex: timetableIndex, semesterYear: semesterYear, timeTableName: timeTableName, isPublic: isPublic, isRepresented: isRepresented)
+            try await constraintService.saveTimetable(timetableIndex: timetableIndex, timetableName: timetableName)
         } catch {
             print("시간표 저장에 실패했어요")
         }
     }
     
-    func saveCustomTimetable(codeSectionList: [String], semesterYear: String, timeTableName: String, isPublic: Bool, isRepresented: Bool) async {
+    func saveCustomTimetable(codeSectionList: [String], timeTableName: String) async {
         do {
-            try await constraintService.saveCustomTimetable(codeSectionList: codeSectionList, semesterYear: semesterYear, timeTableName: timeTableName, isPublic: isPublic, isRepresented: isRepresented)
+            try await constraintService.saveCustomTimetable(codeSectionList: codeSectionList, timeTableName: timeTableName)
         } catch {
             print("시간표 저장에 실패했어요")
         }

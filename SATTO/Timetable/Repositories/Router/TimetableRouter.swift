@@ -10,6 +10,7 @@ import Moya
 
 enum TimetableRouter {
     case postMajorComb(GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String)
+    ///isRaw: false일 경우 필터링O (기본 설정), isRaw: true일 경우 필터링X
     case postFinalTimetableList(isRaw: Bool, GPA: Int, requiredLect: [String], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [[String]])
     case getTimetableList
     case getMainTimetable

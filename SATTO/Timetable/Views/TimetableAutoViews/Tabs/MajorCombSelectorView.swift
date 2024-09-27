@@ -71,7 +71,7 @@ struct MajorCombSelectorView: View {
             }
         }
         .task {
-            await viewModel.fetchMajorCombinations(GPA: viewModel.credit, requiredLect: viewModel.selectedSubjects, majorCount: viewModel.majorNum, cyberCount: viewModel.ELearnNum, impossibleTimeZone: viewModel.selectedTimes)
+            await viewModel.fetchMajorCombinations()
         }
     }
     

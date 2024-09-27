@@ -88,7 +88,10 @@ struct TimetableCustom: View {
                 HStack {
                     Button("취소", role: .cancel, action: {})
                     Button("확인") {
-                        saveTimetable()
+                        Task {
+                            await constraintsViewModel.saveCustomTimetable(codeSectionList: constraintsViewModel.selectedSubjects.map { $0.sbjDivcls }, timeTableName: timetableName)
+                            stackPath.removeLast()
+                        }
                     }
                 }
             }
@@ -108,18 +111,6 @@ struct TimetableCustom: View {
                         .foregroundStyle(Color.blackWhite)
                     }
                 }
-            }
-        }
-    }
-    
-    private func saveTimetable() {
-        Task {
-            do {
-                await constraintsViewModel.saveCustomTimetable(codeSectionList: constraintsViewModel.selectedSubjects.map { $0.sbjDivcls }, semesterYear: "2024학년도 2학기", timeTableName: timetableName, isPublic: true, isRepresented: false)
-                stackPath.removeLast()
-            }
-            catch {
-                print("Error: \(error)")
             }
         }
     }

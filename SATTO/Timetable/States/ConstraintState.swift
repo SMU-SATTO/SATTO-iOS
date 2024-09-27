@@ -11,7 +11,7 @@ import SwiftUI
 class ConstraintState: ObservableObject {
     @Published var credit: Int = 18                          //GPA
     @Published var majorNum: Int = 3                         //majorcount
-    @Published var ELearnNum: Int = 0                        //cybercount
+    @Published var eLearnNum: Int = 0                        //cybercount
     @Published var selectedSubjects: [SubjectModelBase] = [] //requiredLect
     @Published var selectedTimes: String = ""                //impossibleTimeZone
     
@@ -21,6 +21,11 @@ class ConstraintState: ObservableObject {
     //서버에서 준 과목 조합 리스트
     @Published var majorCombs: [MajorComb]?
     @Published var finalTimetableList: [[SubjectModelBase]]?
+    
+    @Published private var _semesterYear: String = "2024학년도 2학기"
+    var semesterYear: String {
+        get { _semesterYear }
+    }
     
     func fetchMajorCombs(_ majorCombs: [MajorComb]) {
         self.majorCombs = majorCombs
