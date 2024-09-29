@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-class LectureSearchViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
+class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     @Published var searchText: String = ""
     ///["전체", "1학년", "2학년", "3학년", "4학년"]
     @Published var selectedGrades: [String] = ["전체"]
@@ -23,6 +23,12 @@ class LectureSearchViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     @Published private var _subjectDetailDataList: [SubjectDetailModel]?
     var lectureList: [SubjectDetailModel] {
         get { _subjectDetailDataList ?? [] }
+    }
+    
+    @Published private var _selectedLectures: [SubjectModelBase] = []
+    var selectedLectures: [SubjectModelBase] {
+        get { _selectedLectures }
+        set { services.lectureSearchService.setSelectedLectures(newValue) }
     }
     
     @Published var currentPage: Int?
@@ -61,6 +67,10 @@ class LectureSearchViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
         
         appState.lectureSearch.$subjectDetailDataList
             .assign(to: \._subjectDetailDataList, on: self)
+            .store(in: &cancellables)
+        
+        appState.lectureSearch.$selectedLectures
+            .assign(to: \._selectedLectures, on: self)
             .store(in: &cancellables)
         
         appState.lectureSearch.$currentPage
@@ -123,6 +133,52 @@ class LectureSearchViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     // 시간 선택 여부 확인
     func isTimeSelected() -> Bool {
         return !selectedTimes.isEmpty
+    }
+    
+    func isSelectedSubjectsEmpty() -> Bool {
+        return selectedLectures.isEmpty
+    }
+    
+    func isSelected(subject: SubjectModelBase) -> Bool {
+        return selectedLectures.contains(where: { $0.sbjDivcls == subject.sbjDivcls })
+    }
+    
+    func clear() {
+        selectedLectures.removeAll()
+    }
+    
+    func removeSubject(_ subject: SubjectModelBase) {
+        if let index = selectedLectures.firstIndex(where: { $0.sbjDivcls == subject.sbjDivcls }) {
+            selectedLectures.remove(at: index)
+        }
+    }
+    
+    func toggleSelection(subject: SubjectModelBase) -> Bool {
+        if let index = selectedLectures.firstIndex(where: { $0.sbjDivcls == subject.sbjDivcls }) {
+            selectedLectures.remove(at: index)
+            return true
+        } else if !selectedLectures.contains(where: { $0.sbjNo == subject.sbjNo }) && !isTimeOverlapping(subject) {
+            selectedLectures.append(subject)
+            return true
+        }
+        return false
+    }
+    
+    func isTimeOverlapping(_ subject: SubjectModelBase) -> Bool {
+        let newSubjectTimes = parseTimes(subject)
+        for existingSubject in selectedLectures {
+            let existingSubjectTimes = parseTimes(existingSubject)
+            if newSubjectTimes.contains(where: { newTime in
+                existingSubjectTimes.contains(where: { $0 == newTime })
+            }) {
+                return true
+            }
+        }
+        return false
+    }
+    
+    private func parseTimes(_ subject: SubjectModelBase) -> [String] {
+        return subject.time.components(separatedBy: " ")
     }
     
     func fetchCurrentLectureList() async {

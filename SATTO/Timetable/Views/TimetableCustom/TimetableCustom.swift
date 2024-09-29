@@ -11,7 +11,7 @@ struct TimetableCustom: View {
     @Binding var stackPath: [TimetableRoute]
     
     @ObservedObject var constraintsViewModel: ConstraintsViewModel
-    @ObservedObject var lectureSearchViewModel: LectureSearchViewModel
+    @ObservedObject var lectureSheetViewModel: LectureSheetViewModel
     
     @State private var selectedSubviews = Set<Int>()
     @State private var alreadySelectedSubviews = Set<Int>()
@@ -57,7 +57,7 @@ struct TimetableCustom: View {
                     .sheet(isPresented: $isShowBottomSheet, content: {
                         LectureSheetTabView(
                             constraintsViewModel: constraintsViewModel,
-                            lectureSearchViewModel: lectureSearchViewModel,
+                            lectureSheetViewModel: lectureSheetViewModel,
                             selectedSubviews: $selectedSubviews,
                             alreadySelectedSubviews: $alreadySelectedSubviews,
                             showResultAction: {isShowBottomSheet = false}
@@ -117,5 +117,5 @@ struct TimetableCustom: View {
 }
 
 #Preview {
-    TimetableCustom(stackPath: .constant([.timetableCustom]), constraintsViewModel: ConstraintsViewModel(container: .preview), lectureSearchViewModel: LectureSearchViewModel(container: .preview))
+    TimetableCustom(stackPath: .constant([.timetableCustom]), constraintsViewModel: ConstraintsViewModel(container: .preview), lectureSheetViewModel: LectureSheetViewModel(container: .preview))
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LectureSheetTabView: View {
     @ObservedObject var constraintsViewModel: ConstraintsViewModel
-    @ObservedObject var lectureSearchViewModel: LectureSearchViewModel
+    @ObservedObject var lectureSheetViewModel: LectureSheetViewModel
     
     @Binding var selectedSubviews: Set<Int>
     @Binding var alreadySelectedSubviews: Set<Int>
@@ -67,13 +67,13 @@ struct LectureSheetTabView: View {
         
         switch category {
         case "학년":
-            isCategorySelected = lectureSearchViewModel.isGradeSelected()
+            isCategorySelected = lectureSheetViewModel.isGradeSelected()
         case "교양":
-            isCategorySelected = lectureSearchViewModel.isGESelected()
+            isCategorySelected = lectureSheetViewModel.isGESelected()
         case "e-러닝":
-            isCategorySelected = lectureSearchViewModel.isELOptionSelected()
+            isCategorySelected = lectureSheetViewModel.isELOptionSelected()
         case "시간":
-            isCategorySelected = lectureSearchViewModel.isTimeSelected()
+            isCategorySelected = lectureSheetViewModel.isTimeSelected()
         default:
             isCategorySelected = false
         }
@@ -106,23 +106,23 @@ struct LectureSheetTabView: View {
                             .frame(width: 19, height: 19)
                             .foregroundStyle(Color.searchbarText)
                             .padding(.leading, 15)
-                        TextField("듣고 싶은 과목을 입력해 주세요", text: $lectureSearchViewModel.searchText)
+                        TextField("듣고 싶은 과목을 입력해 주세요", text: $lectureSheetViewModel.searchText)
                             .font(.sb14)
                             .autocorrectionDisabled()
                             .foregroundStyle(Color.searchbarText)
                             .padding(.leading, 5)
                             .submitLabel(.search)
                             .onSubmit {
-                                lectureSearchViewModel.resetCurrPage()
+                                lectureSheetViewModel.resetCurrPage()
                                 Task {
-                                    await lectureSearchViewModel.fetchCurrentLectureList()
+                                    await lectureSheetViewModel.fetchCurrentLectureList()
                                 }
                             }
                         Button(action: {
-                            lectureSearchViewModel.searchText.removeAll()
-                            lectureSearchViewModel.resetCurrPage()
+                            lectureSheetViewModel.searchText.removeAll()
+                            lectureSheetViewModel.resetCurrPage()
                             Task {
-                                await lectureSearchViewModel.fetchCurrentLectureList()
+                                await lectureSheetViewModel.fetchCurrentLectureList()
                             }
                         }) {
                             Image(systemName: "xmark.circle.fill")
@@ -139,41 +139,41 @@ struct LectureSheetTabView: View {
     private var selectedTabView: some View {
         switch selectedTab {
         case "학년":
-            OptionSheetView(options: gradeOptions, selectedOptions: $lectureSearchViewModel.selectedGrades, allowsDuplicates: true) {
-                lectureSearchViewModel.resetCurrPage()
+            OptionSheetView(options: gradeOptions, selectedOptions: $lectureSheetViewModel.selectedGrades, allowsDuplicates: true) {
+                lectureSheetViewModel.resetCurrPage()
                 Task {
-                    await lectureSearchViewModel.fetchCurrentLectureList()
+                    await lectureSheetViewModel.fetchCurrentLectureList()
                 }
             }
         case "교양":
-            OptionSheetView(options: GEOptions, selectedOptions: $lectureSearchViewModel.selectedGE, allowsDuplicates: true) {
-                lectureSearchViewModel.resetCurrPage()
+            OptionSheetView(options: GEOptions, selectedOptions: $lectureSheetViewModel.selectedGE, allowsDuplicates: true) {
+                lectureSheetViewModel.resetCurrPage()
                 Task {
-                    await lectureSearchViewModel.fetchCurrentLectureList()
+                    await lectureSheetViewModel.fetchCurrentLectureList()
                 }
             }
-            if lectureSearchViewModel.selectedGE.contains("균형교양") {
-                OptionSheetView(options: BGEOptions, selectedOptions: $lectureSearchViewModel.selectedBGE, allowsDuplicates: true) {
-                    lectureSearchViewModel.resetCurrPage()
+            if lectureSheetViewModel.selectedGE.contains("균형교양") {
+                OptionSheetView(options: BGEOptions, selectedOptions: $lectureSheetViewModel.selectedBGE, allowsDuplicates: true) {
+                    lectureSheetViewModel.resetCurrPage()
                     Task {
-                        await lectureSearchViewModel.fetchCurrentLectureList()
+                        await lectureSheetViewModel.fetchCurrentLectureList()
                     }
                 }
             }
         case "e-러닝":
-            OptionSheetView(options: eLearnOptions, selectedOptions: $lectureSearchViewModel.selectedELOption, allowsDuplicates: false) {
-                lectureSearchViewModel.resetCurrPage()
+            OptionSheetView(options: eLearnOptions, selectedOptions: $lectureSheetViewModel.selectedELOption, allowsDuplicates: false) {
+                lectureSheetViewModel.resetCurrPage()
                 Task {
-                   await lectureSearchViewModel.fetchCurrentLectureList()
+                   await lectureSheetViewModel.fetchCurrentLectureList()
                 }
             }
         case "시간":
-            TimeSheetView(viewModel: lectureSearchViewModel, selectedSubviews: $selectedSubviews, alreadySelectedSubviews: $alreadySelectedSubviews)
+            TimeSheetView(viewModel: lectureSheetViewModel, selectedSubviews: $selectedSubviews, alreadySelectedSubviews: $alreadySelectedSubviews)
                 .padding(.top, 10)
                 .onDisappear {
-                    lectureSearchViewModel.resetCurrPage()
+                    lectureSheetViewModel.resetCurrPage()
                     Task {
-                       await lectureSearchViewModel.fetchCurrentLectureList()
+                       await lectureSheetViewModel.fetchCurrentLectureList()
                     }
                 }
         default:
@@ -184,13 +184,13 @@ struct LectureSheetTabView: View {
     // MARK: - Subject Sheet View
     private var subjectSheetView: some View {
         VStack {
-            LectureSheetView(lectureSearchViewModel: lectureSearchViewModel, constraintsViewModel: constraintsViewModel, showResultAction: showResultAction)
+            LectureSheetView(lectureSheetViewModel: lectureSheetViewModel, constraintsViewModel: constraintsViewModel, showResultAction: showResultAction)
                 .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
         }
     }
 }
 
 #Preview {
-    LectureSheetTabView(constraintsViewModel: ConstraintsViewModel(container: .preview), lectureSearchViewModel: LectureSearchViewModel(container: .preview), selectedSubviews: .constant([]), alreadySelectedSubviews: .constant([]), showResultAction: {})
+    LectureSheetTabView(constraintsViewModel: ConstraintsViewModel(container: .preview), lectureSheetViewModel: LectureSheetViewModel(container: .preview), selectedSubviews: .constant([]), alreadySelectedSubviews: .constant([]), showResultAction: {})
         .preferredColorScheme(.dark)
 }

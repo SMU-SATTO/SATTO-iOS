@@ -9,6 +9,7 @@ import Foundation
 
 @MainActor
 protocol LectureSearchServiceProtocol: Sendable {
+    func setSelectedLectures(_ value: [SubjectModelBase])
     func fetchCurrentLectureList() async throws
     func fetchCurrentLectureList(page: Int) async throws
 }
@@ -19,6 +20,10 @@ struct LectureSearchService: LectureSearchServiceProtocol {
     
     var lectureSearchRepository: LectureSearchRepositoryProtocol {
         webRepositories.lectureSearchRepository
+    }
+    
+    func setSelectedLectures(_ value: [SubjectModelBase]) {
+        appState.lectureSearch.selectedLectures = value
     }
     
     func fetchCurrentLectureList() async throws {
@@ -107,6 +112,7 @@ struct LectureSearchService: LectureSearchServiceProtocol {
 }
 
 struct FakeLectureSearchService: LectureSearchServiceProtocol {
+    func setSelectedLectures(_ value: [SubjectModelBase]) { }
     func fetchCurrentLectureList() async throws { }
     func fetchCurrentLectureList(page: Int) async throws { }
 }

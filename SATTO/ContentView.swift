@@ -25,7 +25,7 @@ struct ContentView: View {
                 }.tag(Tab.home)
                 TimetableMainView(
                     timetableMainViewModel: TimetableMainViewModel(container: container),
-                    lectureSearchViewModel: LectureSearchViewModel(container: container),
+                    lectureSheetViewModel: LectureSheetViewModel(container: container),
                     constraintsViewModel: ConstraintsViewModel(container: container)
                 )
                 .tabItem {

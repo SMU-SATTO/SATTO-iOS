@@ -11,7 +11,7 @@ import JHTimeTable
 //MARK: - 필수로 들어야 할 과목 선택
 struct EssentialClassesSelectorView: View {
     @ObservedObject var constraintsViewModel: ConstraintsViewModel
-    @ObservedObject var lectureSearchViewModel: LectureSearchViewModel
+    @ObservedObject var lectureSheetViewModel: LectureSheetViewModel
     
     @State private var selectedSubviews = Set<Int>()
     @State private var alreadySelectedSubviews = Set<Int>()
@@ -61,7 +61,7 @@ struct EssentialClassesSelectorView: View {
                 .sheet(isPresented: $isShowBottomSheet, content: {
                     LectureSheetTabView(
                         constraintsViewModel: constraintsViewModel,
-                        lectureSearchViewModel: lectureSearchViewModel,
+                        lectureSheetViewModel: lectureSheetViewModel,
                         selectedSubviews: $selectedSubviews,
                         alreadySelectedSubviews: $alreadySelectedSubviews,
                         showResultAction: {isShowBottomSheet = false}
@@ -73,5 +73,5 @@ struct EssentialClassesSelectorView: View {
 }
 
 #Preview {
-    EssentialClassesSelectorView(constraintsViewModel: ConstraintsViewModel(container: .preview), lectureSearchViewModel: LectureSearchViewModel(container: .preview))
+    EssentialClassesSelectorView(constraintsViewModel: ConstraintsViewModel(container: .preview), lectureSheetViewModel: LectureSheetViewModel(container: .preview))
 }

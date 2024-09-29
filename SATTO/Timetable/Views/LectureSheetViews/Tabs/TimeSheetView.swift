@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TimeSheetView: View {
-    @ObservedObject var viewModel: LectureSearchViewModel
+    @ObservedObject var viewModel: LectureSheetViewModel
     
     @Binding var selectedSubviews: Set<Int>
     @Binding var alreadySelectedSubviews: Set<Int>
@@ -26,5 +26,5 @@ struct TimeSheetView: View {
 }
 
 #Preview {
-    TimeSheetView(viewModel: LectureSearchViewModel(container: .preview), selectedSubviews: .constant([]), alreadySelectedSubviews: .constant([]))
+    TimeSheetView(viewModel: LectureSheetViewModel(container: .preview), selectedSubviews: .constant([]), alreadySelectedSubviews: .constant([]))
 }

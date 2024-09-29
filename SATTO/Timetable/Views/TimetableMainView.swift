@@ -23,7 +23,7 @@ struct TimetableMainView: View {
     @State var stackPath = [TimetableRoute]()
     
     @ObservedObject var timetableMainViewModel: TimetableMainViewModel
-    @ObservedObject var lectureSearchViewModel: LectureSearchViewModel
+    @ObservedObject var lectureSheetViewModel: LectureSheetViewModel
     @ObservedObject var constraintsViewModel: ConstraintsViewModel
     
     @State private var selectedTab = "시간표"
@@ -198,15 +198,15 @@ struct TimetableMainView: View {
             .navigationDestination(for: TimetableRoute.self) { route in
                 switch route {
                 case .timetableMake:
-                    TimetableMakeView(stackPath: $stackPath, constraintsViewModel: constraintsViewModel, lectureSearchViewModel: lectureSearchViewModel)
+                    TimetableMakeView(stackPath: $stackPath, constraintsViewModel: constraintsViewModel, lectureSheetViewModel: lectureSheetViewModel)
                 case .timetableList:
                     TimetableListView(stackPath: $stackPath, timetableMainViewModel: timetableMainViewModel)
                 case .timetableOption:
                     TimetableOptionView(stackPath: $stackPath)
                 case .timetableCustom:
-                    TimetableCustom(stackPath: $stackPath, constraintsViewModel: constraintsViewModel, lectureSearchViewModel: lectureSearchViewModel)
+                    TimetableCustom(stackPath: $stackPath, constraintsViewModel: constraintsViewModel, lectureSheetViewModel: lectureSheetViewModel)
                 case .timetableModify:
-                    TimetableModifyView(stackPath: $stackPath, constraintsViewModel: constraintsViewModel, lectureSearchViewModel: lectureSearchViewModel, timetableMainViewModel: timetableMainViewModel)
+                    TimetableModifyView(stackPath: $stackPath, constraintsViewModel: constraintsViewModel, lectureSheetViewModel: lectureSheetViewModel, timetableMainViewModel: timetableMainViewModel)
                 }
             }
             .onChange(of: stackPath) { _ in

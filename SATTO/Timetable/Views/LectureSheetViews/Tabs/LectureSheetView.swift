@@ -11,7 +11,7 @@ import PopupView
 struct LectureSheetView: View {
     @Environment(\.colorScheme) var colorScheme
     
-    @ObservedObject var lectureSearchViewModel: LectureSearchViewModel
+    @ObservedObject var lectureSheetViewModel: LectureSheetViewModel
     @ObservedObject var constraintsViewModel: ConstraintsViewModel
     
     @State private var expandedSubjectIndex: Int?
@@ -26,7 +26,7 @@ struct LectureSheetView: View {
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 5) {
-                subjectListView(containerSize: geometry.size)
+                lectureListView(containerSize: geometry.size)
                 selectedSubjectsView
             }
             .popup(isPresented: $showFloater) {
@@ -41,30 +41,30 @@ struct LectureSheetView: View {
         }
     }
 
-    private func subjectListView(containerSize: CGSize) -> some View {
+    private func lectureListView(containerSize: CGSize) -> some View {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack {
-                    ForEach(lectureSearchViewModel.lectureList.indices, id: \.self) { index in
-                        let subjectDetail = lectureSearchViewModel.lectureList[index]
+                    ForEach(lectureSheetViewModel.lectureList.indices, id: \.self) { index in
+                        let subjectDetail = lectureSheetViewModel.lectureList[index]
                         subjectCardView(subjectDetail, at: index, containerSize: containerSize)
                             .padding(.horizontal, 10)
                             .task {
-                                if index == lectureSearchViewModel.lectureList.count - 1 {
-                                    await lectureSearchViewModel.loadMoreSubjects()
+                                if index == lectureSheetViewModel.lectureList.count - 1 {
+                                    await lectureSheetViewModel.loadMoreSubjects()
                                 }
                             }
                     }
                     .padding(EdgeInsets(top: 10, leading: 10, bottom: 20, trailing: 10))
-                    if lectureSearchViewModel.isLoading {
+                    if lectureSheetViewModel.isLoading {
                         ProgressView()
                             .padding()
                     }
                 }
             }
             .task {
-                if lectureSearchViewModel.lectureList.isEmpty {
-                    await lectureSearchViewModel.fetchCurrentLectureList()
+                if lectureSheetViewModel.lectureList.isEmpty {
+                    await lectureSheetViewModel.fetchCurrentLectureList()
                 }
             }
         }
@@ -96,11 +96,10 @@ struct LectureSheetView: View {
         VStack(alignment: .leading) {
             subjectMajorView(subjectDetail)
             subjectInfoView(subjectDetail)
-            //MARK: - 추후 개발 예정
 //            subjectEnrollmentView(subjectDetail)
-            if isExpanded(at: index) {
-                subjectChartView(subjectDetail, containerSize: containerSize)
-            }
+//            if isExpanded(at: index) {
+//                subjectChartView(subjectDetail, containerSize: containerSize)
+//            }
         }
     }
     
@@ -188,8 +187,8 @@ struct LectureSheetView: View {
     }
     
     private func subjectCardBorder(_ subjectDetail: SubjectDetailModel) -> some View {
-        constraintsViewModel.isSelected(subject: subjectDetail) ?
-        RoundedRectangle(cornerRadius: 10)
+        constraintsViewModel.isSelected(subject: subjectDetail) 
+        ? RoundedRectangle(cornerRadius: 10)
             .stroke(Color.subjectCardBorder, lineWidth: 1)
         : nil
     }
@@ -324,6 +323,6 @@ struct LectureSheetView: View {
 }
 
 #Preview {
-    LectureSheetView(lectureSearchViewModel: LectureSearchViewModel(container: .preview), constraintsViewModel: ConstraintsViewModel(container: .preview), showResultAction: {})
+    LectureSheetView(lectureSheetViewModel: LectureSheetViewModel(container: .preview), constraintsViewModel: ConstraintsViewModel(container: .preview), showResultAction: {})
         .preferredColorScheme(.light)
 }

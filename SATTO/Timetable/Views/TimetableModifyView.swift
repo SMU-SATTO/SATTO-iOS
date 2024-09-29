@@ -11,7 +11,7 @@ struct TimetableModifyView: View {
     @Binding var stackPath: [TimetableRoute]
     
     @ObservedObject var constraintsViewModel: ConstraintsViewModel
-    @ObservedObject var lectureSearchViewModel: LectureSearchViewModel
+    @ObservedObject var lectureSheetViewModel: LectureSheetViewModel
     @ObservedObject var timetableMainViewModel: TimetableMainViewModel
     
     @State private var tempTimetable: [SubjectModelBase] = []
@@ -61,7 +61,7 @@ struct TimetableModifyView: View {
                     .sheet(isPresented: $isShowBottomSheet, content: {
                         LectureSheetTabView(
                             constraintsViewModel: constraintsViewModel,
-                            lectureSearchViewModel: lectureSearchViewModel,
+                            lectureSheetViewModel: lectureSheetViewModel,
                             selectedSubviews: $selectedSubviews,
                             alreadySelectedSubviews: $alreadySelectedSubviews,
                             showResultAction: {isShowBottomSheet = false}
@@ -126,5 +126,5 @@ struct TimetableModifyView: View {
 }
 
 #Preview {
-    TimetableModifyView(stackPath: .constant([.timetableModify]), constraintsViewModel: ConstraintsViewModel(container: .preview), lectureSearchViewModel: LectureSearchViewModel(container: .preview), timetableMainViewModel: TimetableMainViewModel(container: .preview))
+    TimetableModifyView(stackPath: .constant([.timetableModify]), constraintsViewModel: ConstraintsViewModel(container: .preview), lectureSheetViewModel: LectureSheetViewModel(container: .preview), timetableMainViewModel: TimetableMainViewModel(container: .preview))
 }

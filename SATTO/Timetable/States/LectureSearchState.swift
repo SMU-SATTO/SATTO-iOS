@@ -22,6 +22,8 @@ class LectureSearchState: ObservableObject {
     
     @Published var subjectDetailDataList: [SubjectDetailModel]?
     
+    @Published var selectedLectures: [SubjectModelBase] = []
+    
     @Published var currentPage: Int?
     @Published var totalPage: Int? = 0
     @Published var isLoading: Bool = false
