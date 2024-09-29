@@ -85,11 +85,10 @@ class TimetableMainViewModel: BaseViewModel, ObservableObject {
         }
     }
     
-    func patchTimetableInfo(timetableId: Int, codeSectionList: [SubjectModelBase]) async {
-        let adjustedCodeSectionList = codeSectionList.map { $0.sbjDivcls }
+    func patchTimetableInfo() async {
         do {
             try await timetableService
-                .patchTimetableInfo(timetableId: timetableId, codeSectionList: adjustedCodeSectionList)
+                .patchTimetableInfo()
         } catch {
             print("시간표 수정에 실패했어요.")
         }

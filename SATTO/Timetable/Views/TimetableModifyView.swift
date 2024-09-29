@@ -12,8 +12,9 @@ struct TimetableModifyView: View {
     
     @ObservedObject var constraintsViewModel: ConstraintsViewModel
     @ObservedObject var lectureSearchViewModel: LectureSearchViewModel
-    
     @ObservedObject var timetableMainViewModel: TimetableMainViewModel
+    
+    @State private var tempTimetable: [SubjectModelBase] = []
     
     @State private var selectedSubviews = Set<Int>()
     @State private var alreadySelectedSubviews = Set<Int>()
@@ -115,8 +116,8 @@ struct TimetableModifyView: View {
             Button("취소", role: .cancel, action: {})
             Button("확인") {
                 Task {
-                    guard let timetableId = timetableMainViewModel.currentTimetable?.id else { return }
-                    await timetableMainViewModel.patchTimetableInfo(timetableId: timetableId, codeSectionList: constraintsViewModel.selectedSubjects)
+                    await timetableMainViewModel.patchTimetableInfo()
+                    await timetableMainViewModel.fetchRepresentTimetable()
                 }
                 stackPath.removeLast()
             }

@@ -9,6 +9,7 @@ import Foundation
 
 @MainActor
 protocol ConstraintServiceProtocol: Sendable {
+    func setSelectedSubjects(_ value: [SubjectModelBase])
     func getMajorComb() async throws
     func getFinalTimetableList(isRaw: Bool) async throws
     func saveTimetable(timetableIndex: Int, timetableName: String) async throws
@@ -21,6 +22,10 @@ struct ConstraintService: ConstraintServiceProtocol {
     
     var constraintRepository: ConstraintRepositoryProtocol {
         webRepositories.constraintRepository
+    }
+    
+    func setSelectedSubjects(_ value: [SubjectModelBase]) {
+        appState.constraint.selectedSubjects = value
     }
 
     func getMajorComb() async throws {
@@ -69,6 +74,7 @@ struct ConstraintService: ConstraintServiceProtocol {
 }
 
 struct FakeConstraintService: ConstraintServiceProtocol {
+    func setSelectedSubjects(_ value: [SubjectModelBase]) { }
     func getMajorComb() async throws { }
     func getFinalTimetableList(isRaw: Bool) async throws { }
     func saveTimetable(timetableIndex: Int, timetableName: String) async throws { }

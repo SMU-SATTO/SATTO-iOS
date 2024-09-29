@@ -14,7 +14,7 @@ protocol TimetableServiceProtocol: Sendable {
     func patchTimetablePrivate(timetableId: Int, isPublic: Bool) async throws
     func patchTimetableRepresent(timetableId: Int, isRepresent: Bool) async throws
     func patchTimetableName(timetableId: Int, timetableName: String) async throws
-    func patchTimetableInfo(timetableId: Int, codeSectionList: [String]) async throws
+    func patchTimetableInfo() async throws
     func deleteTimetable(timetableId: Int) async throws
     func fetchTimetableList() async throws
 }
@@ -90,8 +90,10 @@ struct TimetableService: TimetableServiceProtocol {
         try await timetableRepository.patchTimetableName(timetableId: timetableId, timetableName: timetableName)
     }
     
-    func patchTimetableInfo(timetableId: Int, codeSectionList: [String]) async throws {
-        try await timetableRepository.patchTimetableInfo(timetableId: timetableId, codeSectionList: codeSectionList)
+    func patchTimetableInfo() async throws {
+        guard let timetableId = appState.timetable.currentTimetable?.id else { return }
+        let adjustedCodeSectionList = appState.constraint.selectedSubjects.map { $0.sbjDivcls }
+        try await timetableRepository.patchTimetableInfo(timetableId: timetableId, codeSectionList: adjustedCodeSectionList)
     }
     
     func deleteTimetable(timetableId: Int) async throws {
@@ -108,7 +110,7 @@ struct FakeTimetableService: TimetableServiceProtocol {
     func patchTimetablePrivate(timetableId: Int, isPublic: Bool) async throws { }
     func patchTimetableRepresent(timetableId: Int, isRepresent: Bool) async throws { }
     func patchTimetableName(timetableId: Int, timetableName: String) async throws { }
-    func patchTimetableInfo(timetableId: Int, codeSectionList: [String]) async throws { }
+    func patchTimetableInfo() async throws { }
     func fetchTimetableList() async throws { }
     func fetchFinalTimetableList(isRaw: Bool, GPA: Int, requiredLect: [SubjectModelBase], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [MajorComb]) async throws { }
     func createTimetable(timetableIndex: Int, semesterYear: String, timeTableName: String, isPublic: Bool, isRepresented: Bool) async throws { }

@@ -16,7 +16,11 @@ class ConstraintsViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     @Published var credit: Int = 18                          //GPA
     @Published var majorNum: Int = 3                         //majorcount
     @Published var ELearnNum: Int = 0                        //cybercount
-    @Published var selectedSubjects: [SubjectModelBase] = [] //requiredLect
+    @Published private var _selectedSubjects: [SubjectModelBase] = [] //requiredLect
+    var selectedSubjects: [SubjectModelBase] {
+        get { _selectedSubjects }
+        set { services.constraintService.setSelectedSubjects(newValue) }
+    }
     @Published var selectedTimes: String = ""                //impossibleTimeZone
     
     //request할 때 보낼 과목 조합 리스트
@@ -51,7 +55,7 @@ class ConstraintsViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
             .store(in: &cancellables)
         
         appState.constraint.$selectedSubjects
-            .assign(to: \.selectedSubjects, on: self)
+            .assign(to: \._selectedSubjects, on: self)
             .store(in: &cancellables)
         appState.constraint.$selectedTimes
             .assign(to: \.selectedTimes, on: self)
