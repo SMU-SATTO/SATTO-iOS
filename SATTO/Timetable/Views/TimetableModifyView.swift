@@ -117,7 +117,7 @@ struct TimetableModifyView: View {
             Button("확인") {
                 Task {
                     await timetableMainViewModel.patchTimetableInfo()
-                    await timetableMainViewModel.fetchRepresentTimetable()
+                    await timetableMainViewModel.fetchTimetable(id: timetableMainViewModel.currentTimetable?.id)
                 }
                 stackPath.removeLast()
             }
