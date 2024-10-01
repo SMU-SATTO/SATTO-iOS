@@ -9,7 +9,11 @@ import Combine
 import Foundation
 
 class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
-    @Published var searchText: String = ""
+    @Published var _searchText: String = ""
+    var searchText: String {
+        get { _searchText }
+        set { services.lectureSearchService.setSearchText(newValue) }
+    }
     ///["전체", "1학년", "2학년", "3학년", "4학년"]
     @Published var selectedGrades: [String] = ["전체"]
     ///["전체", "일반교양", "균형교양", "교양필수"]

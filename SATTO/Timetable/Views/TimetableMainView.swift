@@ -202,7 +202,7 @@ struct TimetableMainView: View {
                 case .timetableList:
                     TimetableListView(stackPath: $stackPath, timetableMainViewModel: timetableMainViewModel)
                 case .timetableOption:
-                    TimetableOptionView(stackPath: $stackPath)
+                    TimetableOptionView(stackPath: $stackPath, constraintsViewModel: constraintsViewModel)
                 case .timetableCustom:
                     TimetableCustom(stackPath: $stackPath, constraintsViewModel: constraintsViewModel, lectureSheetViewModel: lectureSheetViewModel)
                 case .timetableModify:
