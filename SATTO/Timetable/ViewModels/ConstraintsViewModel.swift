@@ -8,11 +8,11 @@
 import Combine
 import Foundation
 
-protocol TimeSelectorViewModelProtocol: ObservableObject {
-    var selectedTimes: String { get set }
-}
-
 class ConstraintsViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
+    var selectedBlocks: Set<Int> = []
+    var tempDragBlocks: Set<Int> = []
+    var preSelectedBlocks: Set<Int> = []
+    
     @Published var credit: Int = 18                          //GPA
     @Published var majorNum: Int = 3                         //majorcount
     @Published var ELearnNum: Int = 0                        //cybercount

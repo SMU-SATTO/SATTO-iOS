@@ -9,6 +9,10 @@ import Combine
 import Foundation
 
 class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
+    var selectedBlocks: Set<Int> = []
+    var tempDragBlocks: Set<Int> = []
+    var preSelectedBlocks: Set<Int> = []
+    
     @Published var _searchText: String = ""
     var searchText: String {
         get { _searchText }
