@@ -139,32 +139,6 @@ struct LectureSheetView: View {
         .padding(.leading, 10)
     }
     
-    private func subjectEnrollmentView(_ subjectDetail: SubjectDetailModel) -> some View {
-        VStack(alignment: .leading) {
-            Rectangle()
-                .foregroundStyle(Color(red: 0.67, green: 0.75, blue: 0.94))
-                .frame(width: 260, height: 1)
-                .padding(.leading, 10)
-            HStack {
-                Text("수강정원")
-                Text("\(subjectDetail.enrollmentCapacity)")
-                Text("담은인원")
-                Text("\(subjectDetail.enrolledStudents)")
-            }
-            .font(.m16)
-            .padding(.leading, 10)
-        }
-    }
-    
-    private func subjectChartView(_ subjectDetail: SubjectDetailModel, containerSize: CGSize) -> some View {
-        HStack {
-            Spacer()
-            SubjectChartView(todayEnrolledData: subjectDetail.enrolledStudents, yesterdayEnrolledData: subjectDetail.yesterdayEnrolledData, threeDaysAgoEnrolledData: subjectDetail.threeDaysAgoEnrolledData)
-            Spacer()
-        }
-        .padding(.bottom, 10)
-    }
-    
     private func subjectCardButton(_ subjectDetail: SubjectDetailModel) -> some View {
         VStack {
             HStack {

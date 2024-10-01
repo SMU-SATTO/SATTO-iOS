@@ -10,6 +10,7 @@ import Foundation
 @MainActor
 protocol LectureSearchServiceProtocol: Sendable {
     func setSelectedLectures(_ value: [SubjectModelBase])
+    func setSearchText(_ value: String)
     func fetchCurrentLectureList() async throws
     func fetchCurrentLectureList(page: Int) async throws
 }
@@ -24,6 +25,10 @@ struct LectureSearchService: LectureSearchServiceProtocol {
     
     func setSelectedLectures(_ value: [SubjectModelBase]) {
         appState.lectureSearch.selectedLectures = value
+    }
+    
+    func setSearchText(_ value: String) {
+        appState.lectureSearch.searchText = value
     }
     
     func fetchCurrentLectureList() async throws {
@@ -92,11 +97,7 @@ struct LectureSearchService: LectureSearchServiceProtocol {
                 sbjName: $0.lectName ?? "Error",
                 prof: $0.professor ?? "Error",
                 time: $0.lectTime?.trimmingCharacters(in: .whitespaces) ?? "일10",
-                credit: $0.credit ?? 0,
-                enrollmentCapacity: 0,
-                enrolledStudents: 0,
-                yesterdayEnrolledData: 0,
-                threeDaysAgoEnrolledData: 0
+                credit: $0.credit ?? 0
             )
         }
         if appState.lectureSearch.currentPage == 0 {
@@ -113,6 +114,7 @@ struct LectureSearchService: LectureSearchServiceProtocol {
 
 struct FakeLectureSearchService: LectureSearchServiceProtocol {
     func setSelectedLectures(_ value: [SubjectModelBase]) { }
+    func setSearchText(_ value: String) { }
     func fetchCurrentLectureList() async throws { }
     func fetchCurrentLectureList(page: Int) async throws { }
 }

@@ -49,15 +49,14 @@ extension SubjectModel {
 
 
 //MARK: - SubjectDetailModel
-///  SubjectDetailModel(major: "전공", "sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", sbjName: "과목명", prof: "교수명", "time: "목4 목5 목6 ", enrollmentCapacity: 200, enrolledStudents: 230)
+///  SubjectDetailModel(major: "전공", "sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", sbjName: "과목명", prof: "교수명", "time: "목4 목5 목6 ")
 struct SubjectDetailModel: SubjectModelBase {
     let major: String
     let sbjDivcls, sbjNo, sbjName, prof, time: String
-    let credit, enrollmentCapacity, enrolledStudents: Int
-    let yesterdayEnrolledData, threeDaysAgoEnrolledData: Int
+    let credit: Int
     
     
-    init(major: String = "Unknown", sbjDivcls: String = "Unknown", sbjNo: String = "Unknown", sbjName: String = "Unknown", prof: String = "Unknown", time: String = "Unknown", credit: Int = 0, enrollmentCapacity: Int = 0, enrolledStudents: Int = 0, yesterdayEnrolledData: Int = 0, threeDaysAgoEnrolledData: Int = 0) {
+    init(major: String = "Unknown", sbjDivcls: String = "Unknown", sbjNo: String = "Unknown", sbjName: String = "Unknown", prof: String = "Unknown", time: String = "Unknown", credit: Int = 0) {
         self.major = major
         self.sbjDivcls = sbjDivcls
         self.sbjNo = sbjNo
@@ -65,10 +64,6 @@ struct SubjectDetailModel: SubjectModelBase {
         self.prof = prof
         self.time = time
         self.credit = credit
-        self.enrollmentCapacity = enrollmentCapacity
-        self.enrolledStudents = enrolledStudents
-        self.yesterdayEnrolledData = yesterdayEnrolledData
-        self.threeDaysAgoEnrolledData = threeDaysAgoEnrolledData
     }
 }
 
