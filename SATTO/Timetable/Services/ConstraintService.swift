@@ -9,7 +9,7 @@ import Foundation
 
 @MainActor
 protocol ConstraintServiceProtocol: Sendable {
-    func setSelectedSubjects(_ value: [LectureModelProtocol])
+    func setSelectedLectures(_ value: [LectureModel])
     func setSelectedBlocks(_ value: Set<String>)
     func setPreSelectedBlocks(_ value: Set<String>)
     func convertSetToString(_ set: Set<String>) -> String
@@ -27,8 +27,8 @@ struct ConstraintService: ConstraintServiceProtocol {
         webRepositories.constraintRepository
     }
     
-    func setSelectedSubjects(_ value: [LectureModelProtocol]) {
-        appState.constraint.selectedSubjects = value
+    func setSelectedLectures(_ value: [LectureModel]) {
+        appState.constraint.selectedLectures = value
     }
     
     func setSelectedBlocks(_ value: Set<String>) {
@@ -62,7 +62,7 @@ struct ConstraintService: ConstraintServiceProtocol {
     }
 
     func getMajorComb() async throws {
-        let requiredLectStrings = appState.constraint.selectedSubjects.map { $0.sbjDivcls }
+        let requiredLectStrings = appState.constraint.selectedLectures.map { $0.sbjDivcls }
         let adjRequiredLect = requiredLectStrings.isEmpty ? [""] : requiredLectStrings
         let adjInvalidTime = convertSetToString(appState.constraint.selectedBlocks)
         
@@ -79,7 +79,7 @@ struct ConstraintService: ConstraintServiceProtocol {
     }
     
     func getFinalTimetableList(isRaw: Bool) async throws {
-        let adjustedRequiredLect = appState.constraint.selectedSubjects.isEmpty ? [""] : appState.constraint.selectedSubjects.map { $0.sbjDivcls }
+        let adjustedRequiredLect = appState.constraint.selectedLectures.isEmpty ? [""] : appState.constraint.selectedLectures.map { $0.sbjDivcls }
         let adjustedMajorList = appState.constraint.selectedBlocks.isEmpty ? [[""]] : appState.constraint.selectedMajorCombs.map { $0.combination.map { $0.code } }
         let adjInvalidTime = convertSetToString(appState.constraint.selectedBlocks)
         
@@ -87,13 +87,13 @@ struct ConstraintService: ConstraintServiceProtocol {
         
         guard let finalTimetableListsDto = dto.result else { return }
         
-        let subjectModels: [[LectureModel]] = finalTimetableListsDto.map { dto in
+        let lectureModels: [[LectureModel]] = finalTimetableListsDto.map { dto in
             dto.timeTable.map { finalTimetableDto in
-                LectureModel(sbjDivcls: finalTimetableDto.codeSection, sbjNo: finalTimetableDto.code, sbjName: finalTimetableDto.lectName, time: finalTimetableDto.lectTime)
+                LectureModel(sbjDivcls: finalTimetableDto.codeSection, sbjNo: finalTimetableDto.code, sbjName: finalTimetableDto.lectName, time: finalTimetableDto.lectTime, prof: finalTimetableDto.professor, major: finalTimetableDto.cmpDiv, credit: finalTimetableDto.credit)
             }
         }
         
-        appState.constraint.fetchFinalTimetableList(subjectModels)
+        appState.constraint.fetchFinalTimetableList(lectureModels)
     }
     
     func saveTimetable(timetableIndex: Int, timetableName: String) async throws {
@@ -109,7 +109,7 @@ struct ConstraintService: ConstraintServiceProtocol {
 }
 
 struct FakeConstraintService: ConstraintServiceProtocol {
-    func setSelectedSubjects(_ value: [LectureModelProtocol]) { }
+    func setSelectedLectures(_ value: [LectureModel]) { }
     func setSelectedBlocks(_ value: Set<String>) { }
     func setPreSelectedBlocks(_ value: Set<String>) { }
     func convertSetToString(_ set: Set<String>) -> String { "" }

@@ -13,7 +13,7 @@ struct LectureSelectionList: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            if !lectureSheetViewModel.isSelectedSubjectsEmpty() {
+            if !lectureSheetViewModel.isSelectedLecturesEmpty() {
                 HStack {
                     Text("선택한 과목")
                         .font(.sb14)
@@ -23,12 +23,12 @@ struct LectureSelectionList: View {
                 }
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 15) {
-                        ForEach(lectureSheetViewModel.selectedLectures, id: \.sbjDivcls) { subject in
+                        ForEach(lectureSheetViewModel.selectedLectures, id: \.sbjDivcls) { Lecture in
                             HStack {
-                                Text(subject.sbjName)
+                                Text(Lecture.sbjName)
                                     .font(.m14)
                                 Button(action: {
-                                    lectureSheetViewModel.removeSubject(subject)
+                                    lectureSheetViewModel.removeLecture(Lecture)
                                 }) {
                                     Image(systemName: "xmark.circle")
                                         .resizable()

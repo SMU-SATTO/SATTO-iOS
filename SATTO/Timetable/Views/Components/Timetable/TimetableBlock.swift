@@ -15,6 +15,7 @@ struct TimetableBlock: View {
 
     var body: some View {
         ZStack {
+            Spacer()
             ForEach(lectures, id: \.sbjDivcls) { lecture in
                 let times = parseTimeString(lecture.time)
                 ForEach(times.indices, id: \.self) { index in
@@ -134,8 +135,8 @@ struct TimetableBlock: View {
 
 #Preview {
     let sampleLectures = [
-        LectureModel(sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", sbjName: "컴퓨터네트워크", time: "목4 목5 목7"),
-        LectureModel(sbjDivcls: "MATH001-1", sbjNo: "MATH001", sbjName: "이름이 긴 강의명 이름이 긴 강의명 이름이 긴 강의명", time: "월1 월3 월4 ")
+        LectureModel(sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", sbjName: "컴퓨터네트워크", time: "목0 목5 금7", prof: "교수명", major: "전공", credit: 3),
+        LectureModel(sbjDivcls: "MATH001-1", sbjNo: "MATH001", sbjName: "수학", time: "일1 월3 월4", prof: "교수명", major: "전공", credit: 3),
     ]
     
     let timetableModel = TimetableModel(

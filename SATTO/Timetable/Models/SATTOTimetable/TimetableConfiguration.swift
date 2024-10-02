@@ -18,22 +18,15 @@ struct TimetableConfiguration: Codable {
     public struct TimeConfig: Codable, Sendable {
         public var startAt: SATTOTimetableTime
         public var endAt: SATTOTimetableTime
-        
-        public init(starAt: SATTOTimetableTime = .init(hour: 9, minute: 0),
-                    endAt: SATTOTimetableTime = .init(hour: 18, minute: 0)) {
-            self.startAt = starAt
-            self.endAt = endAt
-        }
+
+        public static let `default`: TimeConfig = TimeConfig(
+            startAt: SATTOTimetableTime(hour: 9, minute: 0), endAt: SATTOTimetableTime(hour: 21, minute: 0)
+        )
     }
     
     public struct BarConfig: Codable, Sendable {
-        public var height: CGFloat
         public var width: CGFloat
-        
-        public init(height: CGFloat = 0, width: CGFloat = 0) {
-            self.height = height
-            self.width = width
-        }
+        public var height: CGFloat
     }
     
     public struct VisibilityOptions: Codable, OptionSet {
@@ -48,9 +41,9 @@ struct TimetableConfiguration: Codable {
     }
     
     public init(weeks: [Weekdays] = [.mon, .tue, .wed, .thu, .fri],
-                time: TimeConfig = TimeConfig(),
-                timebar: BarConfig = BarConfig(width: 20),
-                weekbar: BarConfig = BarConfig(height: 20),
+                time: TimeConfig = .default,
+                timebar: BarConfig = BarConfig(width: 20, height: 0),
+                weekbar: BarConfig = BarConfig(width: 0, height: 20),
                 visibilityOptions: VisibilityOptions = .default) {
         self.weeks = weeks
         self.time = time
@@ -64,9 +57,9 @@ extension TimetableConfiguration {
     static let defaultConfig = TimetableConfiguration()
     static let timeSelectConfig = TimetableConfiguration(
         weeks: [.mon, .tue, .wed, .thu, .fri, .sat, .sun],
-        time: TimeConfig(starAt: SATTOTimetableTime(hour: 8, minute: 0), endAt: SATTOTimetableTime(hour: 22, minute: 0)),
-        timebar: BarConfig(width: 20),
-        weekbar: BarConfig(height: 20)
+        time: TimeConfig(startAt: SATTOTimetableTime(hour: 8, minute: 0), endAt: SATTOTimetableTime(hour: 22, minute: 0)),
+        timebar: BarConfig(width: 20, height: 0),
+        weekbar: BarConfig(width: 0, height: 20)
     )
 }
 

@@ -14,7 +14,6 @@ struct TimetableCustom: View {
     @ObservedObject var lectureSheetViewModel: LectureSheetViewModel
     
     @State private var isShowBottomSheet = false
-    @State private var isUsingSelectedSubjects = true
     @State private var showingAlert = false
     @State private var timetableName = ""
     
@@ -84,7 +83,7 @@ struct TimetableCustom: View {
                     Button("취소", role: .cancel, action: {})
                     Button("확인") {
                         Task {
-                            await constraintsViewModel.saveCustomTimetable(codeSectionList: constraintsViewModel.selectedSubjects.map { $0.sbjDivcls }, timeTableName: timetableName)
+                            await constraintsViewModel.saveCustomTimetable(codeSectionList: constraintsViewModel.selectedLectures.map { $0.sbjDivcls }, timeTableName: timetableName)
                             stackPath.removeLast()
                         }
                     }

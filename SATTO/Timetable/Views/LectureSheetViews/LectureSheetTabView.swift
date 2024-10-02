@@ -40,7 +40,7 @@ struct LectureSheetTabView: View {
                     .padding(.horizontal, 10)
                 
                 if selectedTab != "시간" {
-                    subjectSheetView
+                    lectureSheetView
                     Spacer()
                 } else {
                     Spacer()
@@ -178,8 +178,7 @@ struct LectureSheetTabView: View {
         }
     }
     
-    // MARK: - Subject Sheet View
-    private var subjectSheetView: some View {
+    private var lectureSheetView: some View {
         VStack {
             LectureSheetView(lectureSheetViewModel: lectureSheetViewModel, constraintsViewModel: constraintsViewModel, showResultAction: showResultAction)
                 .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))

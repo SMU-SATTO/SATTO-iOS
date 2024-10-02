@@ -25,45 +25,22 @@ struct Combination: Equatable {
     }
 }
 
-protocol LectureModelProtocol: Codable {
-    var sbjDivcls: String { get }
-    var sbjNo: String { get }
-    var sbjName: String { get }
-    var time: String { get }
-}
-
-// MARK: - LectureModel
-/// LectureModel(sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", name: "컴퓨터네트워크", time: "목4 목5 목6 ")
-struct LectureModel: LectureModelProtocol, Equatable {
-    let sbjDivcls, sbjNo, sbjName, time: String
-}
-
-extension LectureModel {
-    static func ==(lhs: Self, rhs: Self) -> Bool {
-        return lhs.sbjDivcls == rhs.sbjDivcls &&
-               lhs.sbjNo == rhs.sbjNo &&
-               lhs.sbjName == rhs.sbjName &&
-               lhs.time == rhs.time
-    }
-}
-
-
-//MARK: - LectureDetailModel
-///  LectureDetailModel(major: "전공", "sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", sbjName: "과목명", prof: "교수명", "time: "목4 목5 목6 ")
-struct LectureDetailModel: LectureModelProtocol {
+//MARK: - LectureModel
+///  LectureModel(major: "전공", "sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", sbjName: "과목명", prof: "교수명", "time: "목4 목5 목6 ")
+struct LectureModel: Codable {
     let sbjDivcls, sbjNo, sbjName, time: String
     let prof: String
     let major: String
     let credit: Int
     
     
-    init(major: String = "Unknown", sbjDivcls: String = "Unknown", sbjNo: String = "Unknown", sbjName: String = "Unknown", prof: String = "Unknown", time: String = "Unknown", credit: Int = 0) {
-        self.major = major
+    init(sbjDivcls: String = "Unknown", sbjNo: String = "Unknown", sbjName: String = "Unknown", time: String = "Unknown", prof: String = "Unknown", major: String = "Unknown", credit: Int = 0) {
         self.sbjDivcls = sbjDivcls
         self.sbjNo = sbjNo
         self.sbjName = sbjName
-        self.prof = prof
         self.time = time
+        self.prof = prof
+        self.major = major
         self.credit = credit
     }
 }

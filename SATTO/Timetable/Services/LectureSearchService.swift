@@ -9,7 +9,7 @@ import Foundation
 
 @MainActor
 protocol LectureSearchServiceProtocol: Sendable {
-    func setSelectedLectures(_ value: [LectureModelProtocol])
+    func setSelectedLectures(_ value: [LectureModel])
     func setSearchText(_ value: String)
     func setSelectedBlocks(_ value: Set<String>)
     func setPreSelectedBlocks(_ value: Set<String>)
@@ -25,7 +25,7 @@ struct LectureSearchService: LectureSearchServiceProtocol {
         webRepositories.lectureSearchRepository
     }
     
-    func setSelectedLectures(_ value: [LectureModelProtocol]) {
+    func setSelectedLectures(_ value: [LectureModel]) {
         appState.lectureSearch.selectedLectures = value
     }
     
@@ -96,25 +96,19 @@ struct LectureSearchService: LectureSearchServiceProtocol {
         let dto = try await lectureSearchRepository.fetchCurrentLectureList(request: lectureRequest, page: page)
         
         guard let currentLectureLists = dto.result else {
-            appState.lectureSearch.subjectDetailDataList = []
+            appState.lectureSearch.lectureList = []
             return
         }
-        let subjectDetailModels: [LectureDetailModel] = currentLectureLists.currentLectureResponseDTOList.map {
-            LectureDetailModel(
-                major: $0.cmpDiv ?? "Error",
-                sbjDivcls: $0.codeSection ?? "Error",
-                sbjNo: $0.code ?? "Error",
-                sbjName: $0.lectName ?? "Error",
-                prof: $0.professor ?? "Error",
-                time: $0.lectTime?.trimmingCharacters(in: .whitespaces) ?? "일10",
-                credit: $0.credit ?? 0
+        let lectureModels: [LectureModel] = currentLectureLists.currentLectureResponseDTOList.map {
+            LectureModel(
+                sbjDivcls: $0.codeSection ?? "Error", sbjNo: $0.code ?? "Error", sbjName: $0.lectName ?? "Error", time: $0.lectTime?.trimmingCharacters(in: .whitespaces) ?? "일10", prof: $0.professor ?? "Error", major: $0.cmpDiv ?? "Error", credit: $0.credit ?? 0
             )
         }
         if appState.lectureSearch.currentPage == 0 {
-            appState.lectureSearch.subjectDetailDataList = subjectDetailModels
+            appState.lectureSearch.lectureList = lectureModels
         }
         else {
-            appState.lectureSearch.subjectDetailDataList?.append(contentsOf: subjectDetailModels)
+            appState.lectureSearch.lectureList?.append(contentsOf: lectureModels)
         }
         appState.lectureSearch.totalPage = currentLectureLists.totalPage
         appState.lectureSearch.hasMorePages = appState.lectureSearch.currentPage ?? 0 < (appState.lectureSearch.totalPage ?? 0) - 1
@@ -123,7 +117,7 @@ struct LectureSearchService: LectureSearchServiceProtocol {
 }
 
 struct FakeLectureSearchService: LectureSearchServiceProtocol {
-    func setSelectedLectures(_ value: [LectureModelProtocol]) { }
+    func setSelectedLectures(_ value: [LectureModel]) { }
     func setSearchText(_ value: String) { }
     func setSelectedBlocks(_ value: Set<String>) { }
     func setPreSelectedBlocks(_ value: Set<String>) { }

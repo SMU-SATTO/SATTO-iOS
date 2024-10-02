@@ -38,21 +38,25 @@ struct TimetableService: TimetableServiceProtocol {
                 return
             }
             
-            let subjectModels = lects.compactMap { lect -> LectureModel? in
+            let lectureModels = lects.compactMap { lect -> LectureModel? in
                 guard let sbjDivcls = lect.codeSection,
                       let sbjNo = lect.code,
                       let sbjName = lect.lectName,
-                      let time = lect.lectTime else {
+                      let time = lect.lectTime,
+                      let prof = lect.professor,
+                      let major = lect.cmpDiv,
+                      let credit = lect.credit
+                else {
                     return nil
                 }
-                return LectureModel(sbjDivcls: sbjDivcls, sbjNo: sbjNo, sbjName: sbjName, time: time)
+                return LectureModel(sbjDivcls: sbjDivcls, sbjNo: sbjNo, sbjName: sbjName, time: time, prof: prof, major: major, credit: credit)
             }
             
             let timetableModel = TimetableModel(
                 id: userTimetableDto.result?.timeTableId ?? 0,
                 semester: userTimetableDto.result?.semesterYear ?? "2024학년도 2학기",
                 name: userTimetableDto.result?.timeTableName ?? "시간표",
-                lectures: subjectModels,
+                lectures: lectureModels,
                 isPublic: userTimetableDto.result?.isPublic ?? false,
                 isRepresented: userTimetableDto.result?.isRepresented ?? false
             )
@@ -92,7 +96,7 @@ struct TimetableService: TimetableServiceProtocol {
     
     func patchTimetableInfo() async throws {
         guard let timetableId = appState.timetable.currentTimetable?.id else { return }
-        let adjustedCodeSectionList = appState.constraint.selectedSubjects.map { $0.sbjDivcls }
+        let adjustedCodeSectionList = appState.constraint.selectedLectures.map { $0.sbjDivcls }
         try await timetableRepository.patchTimetableInfo(timetableId: timetableId, codeSectionList: adjustedCodeSectionList)
     }
     
@@ -103,7 +107,7 @@ struct TimetableService: TimetableServiceProtocol {
 }
 
 struct FakeTimetableService: TimetableServiceProtocol {
-    func postMajorComb(GPA: Int, requiredLect: [any LectureModelProtocol], majorCount: Int, cyberCount: Int, impossibleTimeZone: String) async throws { }
+    func postMajorComb(GPA: Int, requiredLect: [LectureModel], majorCount: Int, cyberCount: Int, impossibleTimeZone: String) async throws { }
     func fetchCurrentTimetable(id: Int?) async throws { }
     func deleteTimetable(timetableId: Int) async throws { }
     func fetchUserTimetable(id: Int?) async throws { }
@@ -112,6 +116,6 @@ struct FakeTimetableService: TimetableServiceProtocol {
     func patchTimetableName(timetableId: Int, timetableName: String) async throws { }
     func patchTimetableInfo() async throws { }
     func fetchTimetableList() async throws { }
-    func fetchFinalTimetableList(isRaw: Bool, GPA: Int, requiredLect: [LectureModelProtocol], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [MajorComb]) async throws { }
+    func fetchFinalTimetableList(isRaw: Bool, GPA: Int, requiredLect: [LectureModel], majorCount: Int, cyberCount: Int, impossibleTimeZone: String, majorList: [MajorComb]) async throws { }
     func createTimetable(timetableIndex: Int, semesterYear: String, timeTableName: String, isPublic: Bool, isRepresented: Bool) async throws { }
 }

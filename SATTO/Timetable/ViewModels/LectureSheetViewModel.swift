@@ -23,13 +23,13 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     ///["전체", "E러닝만 보기", "E러닝 빼고 보기"]
     @Published var selectedELOption: [String] = ["전체"]
     
-    @Published private var _subjectDetailDataList: [LectureDetailModel]?
-    var lectureList: [LectureDetailModel] {
-        get { _subjectDetailDataList ?? [] }
+    @Published private var _lectureList: [LectureModel]?
+    var lectureList: [LectureModel] {
+        get { _lectureList ?? [] }
     }
     
-    @Published private var _selectedLectures: [LectureModelProtocol] = []
-    var selectedLectures: [LectureModelProtocol] {
+    @Published private var _selectedLectures: [LectureModel] = []
+    var selectedLectures: [LectureModel] {
         get { _selectedLectures }
         set { services.lectureSearchService.setSelectedLectures(newValue) }
     }
@@ -88,8 +88,8 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
             .assign(to: \._preSelectedBlocks, on: self)
             .store(in: &cancellables)
         
-        appState.lectureSearch.$subjectDetailDataList
-            .assign(to: \._subjectDetailDataList, on: self)
+        appState.lectureSearch.$lectureList
+            .assign(to: \._lectureList, on: self)
             .store(in: &cancellables)
         
         appState.lectureSearch.$selectedLectures
@@ -158,41 +158,41 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
         return !selectedBlocks.isEmpty
     }
     
-    func isSelectedSubjectsEmpty() -> Bool {
+    func isSelectedLecturesEmpty() -> Bool {
         return selectedLectures.isEmpty
     }
     
-    func isSelected(subject: LectureModelProtocol) -> Bool {
-        return selectedLectures.contains(where: { $0.sbjDivcls == subject.sbjDivcls })
+    func isSelected(Lecture: LectureModel) -> Bool {
+        return selectedLectures.contains(where: { $0.sbjDivcls == Lecture.sbjDivcls })
     }
     
     func clear() {
         selectedLectures.removeAll()
     }
     
-    func removeSubject(_ subject: LectureModelProtocol) {
-        if let index = selectedLectures.firstIndex(where: { $0.sbjDivcls == subject.sbjDivcls }) {
+    func removeLecture(_ Lecture: LectureModel) {
+        if let index = selectedLectures.firstIndex(where: { $0.sbjDivcls == Lecture.sbjDivcls }) {
             selectedLectures.remove(at: index)
         }
     }
     
-    func toggleSelection(subject: LectureModelProtocol) -> Bool {
-        if let index = selectedLectures.firstIndex(where: { $0.sbjDivcls == subject.sbjDivcls }) {
+    func toggleSelection(lecture: LectureModel) -> Bool {
+        if let index = selectedLectures.firstIndex(where: { $0.sbjDivcls == lecture.sbjDivcls }) {
             selectedLectures.remove(at: index)
             return true
-        } else if !selectedLectures.contains(where: { $0.sbjNo == subject.sbjNo }) && !isTimeOverlapping(subject) {
-            selectedLectures.append(subject)
+        } else if !selectedLectures.contains(where: { $0.sbjNo == lecture.sbjNo }) && !isTimeOverlapping(lecture) {
+            selectedLectures.append(lecture)
             return true
         }
         return false
     }
     
-    func isTimeOverlapping(_ subject: LectureModelProtocol) -> Bool {
-        let newSubjectTimes = parseTimes(subject)
-        for existingSubject in selectedLectures {
-            let existingSubjectTimes = parseTimes(existingSubject)
-            if newSubjectTimes.contains(where: { newTime in
-                existingSubjectTimes.contains(where: { $0 == newTime })
+    func isTimeOverlapping(_ Lecture: LectureModel) -> Bool {
+        let newLectureTimes = parseTimes(Lecture)
+        for existingLecture in selectedLectures {
+            let existingLectureTimes = parseTimes(existingLecture)
+            if newLectureTimes.contains(where: { newTime in
+                existingLectureTimes.contains(where: { $0 == newTime })
             }) {
                 return true
             }
@@ -200,8 +200,8 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
         return false
     }
     
-    private func parseTimes(_ subject: LectureModelProtocol) -> [String] {
-        return subject.time.components(separatedBy: " ")
+    private func parseTimes(_ Lecture: LectureModel) -> [String] {
+        return Lecture.time.components(separatedBy: " ")
     }
     
     func fetchCurrentLectureList() async {
@@ -212,7 +212,7 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
         }
     }
     
-    func loadMoreSubjects() async {
+    func loadMoreLectures() async {
         guard let hasMorePages = hasMorePages, hasMorePages && isLoading != true else { return }
         appState.lectureSearch.addCurrentPage()
         do {

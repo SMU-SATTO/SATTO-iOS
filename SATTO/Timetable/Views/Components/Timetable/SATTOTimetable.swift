@@ -70,7 +70,7 @@ struct SATTOTimetable: View {
     
     private func extractTimeRange(from lectures: [LectureModel]) -> TimetableConfiguration.TimeConfig {
         var earliestStartHour = 9
-        var latestEndHour = 18
+        var latestEndHour = 21
         
         for lecture in lectures {
             let timeComponents = lecture.time
@@ -81,8 +81,6 @@ struct SATTOTimetable: View {
                 if let hour = Int(component.dropFirst()) {
                     if hour == 0 {
                         earliestStartHour = 8  // 0교시가 포함되면 시작 시간을 8시로 설정
-                    } else if hour >= 10 && hour <= 12 {
-                        latestEndHour = max(latestEndHour, 21)  // 10, 11, 12교시 포함되면 종료 시간을 21시로 확장
                     } else if hour >= 13 && hour <= 15 {
                         latestEndHour = max(latestEndHour, 24)  // 13, 14, 15교시 포함되면 종료 시간을 24시로 확장
                     }
@@ -91,7 +89,7 @@ struct SATTOTimetable: View {
         }
         
         return TimetableConfiguration.TimeConfig(
-            starAt: SATTOTimetableTime(hour: earliestStartHour, minute: 0),
+            startAt: SATTOTimetableTime(hour: earliestStartHour, minute: 0),
             endAt: SATTOTimetableTime(hour: latestEndHour, minute: 0)
         )
     }
@@ -107,7 +105,7 @@ extension SATTOTimetable {
     func withTimeRange(startAt: Int, endAt: Int) -> SATTOTimetable {
         var new = self
         new.config.time = TimetableConfiguration.TimeConfig(
-            starAt: SATTOTimetableTime(hour: startAt, minute: 0),
+            startAt: SATTOTimetableTime(hour: startAt, minute: 0),
             endAt: SATTOTimetableTime(hour: endAt, minute: 0)
         )
         return new
@@ -205,9 +203,9 @@ struct TimeBar: View {
 
 #Preview {
     let sampleLectures = [
-        LectureModel(sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", sbjName: "컴퓨터네트워크", time: "목0 목5 금7"),
-        LectureModel(sbjDivcls: "MATH001-1", sbjNo: "MATH001", sbjName: "수학", time: "일1 월3 월4"),
-        LectureModel(sbjDivcls: "SCI001-2", sbjNo: "MATH002", sbjName: "과학", time: "월2 월13 화10")
+        LectureModel(sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", sbjName: "컴퓨터네트워크", time: "목0 목5 금7", prof: "교수명", major: "전공", credit: 3),
+        LectureModel(sbjDivcls: "MATH001-1", sbjNo: "MATH001", sbjName: "수학", time: "일1 월3 월4", prof: "교수명", major: "전공", credit: 3),
+        LectureModel(sbjDivcls: "SCI001-2", sbjNo: "MATH002", sbjName: "과학", time: "월2 월13 화10", prof: "교수명", major: "전공", credit: 3)
     ]
     
     let timetableModel = TimetableModel(

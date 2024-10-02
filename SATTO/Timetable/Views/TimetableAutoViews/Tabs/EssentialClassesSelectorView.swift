@@ -14,10 +14,9 @@ struct EssentialClassesSelectorView: View {
     @ObservedObject var lectureSheetViewModel: LectureSheetViewModel
 
     @State private var isShowBottomSheet = false
-    @State private var usingSelectedSubjects = true
     
     var body: some View {
-        ScrollView {
+        VStack {
             HStack {
                 VStack (alignment: .leading, spacing: 2) {
                     Text("이번 학기에 필수로 들어야 할\n과목을 선택해 주세요.")
@@ -51,18 +50,16 @@ struct EssentialClassesSelectorView: View {
             }
             .padding(.horizontal, 30)
             
-//            TimetableView(timetableBaseArray: constraintsViewModel.selectedSubjects)
-//                .onTapGesture {
-//                    isShowBottomSheet = true
-//                }
-//                .sheet(isPresented: $isShowBottomSheet, content: {
-//                    LectureSheetTabView(
-//                        constraintsViewModel: constraintsViewModel,
-//                        lectureSheetViewModel: lectureSheetViewModel,
-//                        showResultAction: {isShowBottomSheet = false}
-//                    )
-//                    .presentationDetents([.medium, .large])
-//                })
+            SATTOTimetable(timetable: TimetableModel(id: -1, semester: "", name: "", lectures: constraintsViewModel.selectedLectures, isPublic: false, isRepresented: false))
+                .sheet(isPresented: $isShowBottomSheet, content: {
+                    LectureSheetTabView(
+                        constraintsViewModel: constraintsViewModel,
+                        lectureSheetViewModel: lectureSheetViewModel,
+                        showResultAction: {isShowBottomSheet = false}
+                    )
+                    .presentationDetents([.medium, .large])
+                })
+                .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
         }
     }
 }

@@ -14,10 +14,9 @@ struct TimetableModifyView: View {
     @ObservedObject var lectureSheetViewModel: LectureSheetViewModel
     @ObservedObject var timetableMainViewModel: TimetableMainViewModel
     
-    @State private var tempTimetable: [LectureModelProtocol] = []
+    @State private var tempTimetable: [LectureModel] = []
     
     @State private var isShowBottomSheet = false
-    @State private var isUsingSelectedSubjects = true
     
     @State private var showingBackAlert = false
     @State private var showingConfirmAlert = false
@@ -81,7 +80,7 @@ struct TimetableModifyView: View {
             }
         }
         .onAppear {
-            constraintsViewModel.selectedSubjects = timetableMainViewModel.currentTimetable?.lectures ?? []
+            constraintsViewModel.selectedLectures = timetableMainViewModel.currentTimetable?.lectures ?? []
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {

@@ -52,9 +52,9 @@ struct MidCheckView: View {
                     selectedOptionInfo(
                         header: "필수로 들을 과목",
                         headerColor: Color.blackWhite200,
-                        content: viewModel.selectedSubjects.isEmpty
+                        content: viewModel.selectedLectures.isEmpty
                         ? "선택된 과목이 없어요"
-                        : viewModel.selectedSubjects.map { $0.sbjName }.joined(separator: ", ")
+                        : viewModel.selectedLectures.map { $0.sbjName }.joined(separator: ", ")
                     )
                     selectedOptionInfo(
                         header: "제외된 시간대",

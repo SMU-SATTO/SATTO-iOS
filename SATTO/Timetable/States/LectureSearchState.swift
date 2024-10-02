@@ -20,9 +20,9 @@ class LectureSearchState: ObservableObject {
     @Published var selectedELOption: [String] = ["전체"]
     @Published var selectedTimes: String = ""
     
-    @Published var subjectDetailDataList: [LectureDetailModel]?
+    @Published var lectureList: [LectureModel]?
     
-    @Published var selectedLectures: [LectureModelProtocol] = []
+    @Published var selectedLectures: [LectureModel] = []
     
     @Published var currentPage: Int?
     @Published var totalPage: Int? = 0
@@ -33,7 +33,7 @@ class LectureSearchState: ObservableObject {
     @Published var preSelectedBlocks: Set<String> = []
     
     func resetState() {
-        subjectDetailDataList = []
+        lectureList = []
         currentPage = 0
         totalPage = 0
         isLoading = false

@@ -10,7 +10,7 @@ import SwiftUI
 struct LectureCardView: View {
     @ObservedObject var lectureSheetViewModel: LectureSheetViewModel
     @Binding var showFloater: Bool
-    var lectureDetail: LectureDetailModel
+    var lectureDetail: LectureModel
     var index: Int
     var containerSize: CGSize
     
@@ -53,12 +53,12 @@ struct LectureCardView: View {
                 HStack {
                     Spacer()
                     Button(action: {
-                        let selectionSuccess = lectureSheetViewModel.toggleSelection(subject: lectureDetail)
+                        let selectionSuccess = lectureSheetViewModel.toggleSelection(lecture: lectureDetail)
                         if !selectionSuccess {
                             showFloater = true
                         }
                     }) {
-                        Image(systemName: lectureSheetViewModel.isSelected(subject: lectureDetail) ? "checkmark.circle.fill" : "plus.circle.fill")
+                        Image(systemName: lectureSheetViewModel.isSelected(Lecture: lectureDetail) ? "checkmark.circle.fill" : "plus.circle.fill")
                             .resizable()
                             .frame(width: 25, height: 25)
                             .foregroundStyle(Color(red: 0.063, green: 0.51, blue: 0.788))
@@ -67,14 +67,14 @@ struct LectureCardView: View {
                 }
                 Spacer()
             }
-            lectureSheetViewModel.isSelected(subject: lectureDetail)
+            lectureSheetViewModel.isSelected(Lecture: lectureDetail)
             ? RoundedRectangle(cornerRadius: 10)
                 .stroke(Color.subjectCardBorder, lineWidth: 1)
             : nil
         }
         .background(
             RoundedRectangle(cornerRadius: 10)
-                .foregroundStyle(lectureSheetViewModel.isSelected(subject: lectureDetail) ? Color.subjectCardSelected : Color.subjectCardBackground)
+                .foregroundStyle(lectureSheetViewModel.isSelected(Lecture: lectureDetail) ? Color.subjectCardSelected : Color.subjectCardBackground)
                 .shadow(color: colorScheme == .light ? Color(red: 0.65, green: 0.65, blue: 0.65).opacity(0.65) : Color.clear, radius: 6.23, x: 0, y: 1.22)
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: -10, trailing: 0))
         )

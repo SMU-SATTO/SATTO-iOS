@@ -14,7 +14,6 @@ struct LectureSheetView: View {
     @ObservedObject var lectureSheetViewModel: LectureSheetViewModel
     @ObservedObject var constraintsViewModel: ConstraintsViewModel
     
-    @State private var expandedSubjectIndex: Int?
     @State private var showFloater: Bool = false
     
     var showResultAction: () -> Void
@@ -27,7 +26,7 @@ struct LectureSheetView: View {
         GeometryReader { geometry in
             VStack(spacing: 5) {
                 lectureListView(containerSize: geometry.size)
-                selectedSubjectsView
+                selectedLecturesView
             }
             .popup(isPresented: $showFloater) {
                 floaterView
@@ -46,12 +45,12 @@ struct LectureSheetView: View {
             ScrollView {
                 LazyVStack {
                     ForEach(lectureSheetViewModel.lectureList.indices, id: \.self) { index in
-                        let subjectDetail = lectureSheetViewModel.lectureList[index]
-                        subjectCardView(subjectDetail, at: index, containerSize: containerSize)
+                        let lectureDetail = lectureSheetViewModel.lectureList[index]
+                        lectureCardView(lectureDetail, at: index, containerSize: containerSize)
                             .padding(.horizontal, 10)
                             .task {
                                 if index == lectureSheetViewModel.lectureList.count - 1 {
-                                    await lectureSheetViewModel.loadMoreSubjects()
+                                    await lectureSheetViewModel.loadMoreLectures()
                                 }
                             }
                     }
@@ -70,67 +69,57 @@ struct LectureSheetView: View {
         }
     }
     
-    private func subjectCardView(_ subjectDetail: LectureDetailModel, at index: Int, containerSize: CGSize) -> some View {
+    private func lectureCardView(_ lectureDetail: LectureModel, at index: Int, containerSize: CGSize) -> some View {
         ZStack {
-            subjectCardContent(subjectDetail, at: index, containerSize: containerSize)
-            subjectCardButton(subjectDetail)
-            subjectCardBorder(subjectDetail)
+            lectureCardContent(lectureDetail, at: index, containerSize: containerSize)
+            lectureCardButton(lectureDetail)
+            lectureCardBorder(lectureDetail)
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: -10, trailing: 0))
         }
         .background(
             RoundedRectangle(cornerRadius: 10)
-                .foregroundStyle(constraintsViewModel.isSelected(subject: subjectDetail) ? Color.subjectCardSelected : Color.subjectCardBackground)
+                .foregroundStyle(constraintsViewModel.isSelected(Lecture: lectureDetail) ? Color.subjectCardSelected : Color.subjectCardBackground)
                 .shadow(color: colorScheme == .light ? Color(red: 0.65, green: 0.65, blue: 0.65).opacity(0.65) : Color.clear, radius: 6.23, x: 0, y: 1.22)
-            //MARK: - 추후 개발 예정
-//                .onTapGesture {
-//                    withAnimation {
-//                        toggleExpansion(at: index)
-//                    }
-//                }
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: -10, trailing: 0))
         )
         .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
     }
     
-    private func subjectCardContent(_ subjectDetail: LectureDetailModel, at index: Int, containerSize: CGSize) -> some View {
+    private func lectureCardContent(_ lectureDetail: LectureModel, at index: Int, containerSize: CGSize) -> some View {
         VStack(alignment: .leading) {
-            subjectMajorView(subjectDetail)
-            subjectInfoView(subjectDetail)
-//            subjectEnrollmentView(subjectDetail)
-//            if isExpanded(at: index) {
-//                subjectChartView(subjectDetail, containerSize: containerSize)
-//            }
+            lectureMajorView(lectureDetail)
+            lectureInfoView(lectureDetail)
         }
     }
     
-    private func subjectMajorView(_ subjectDetail: LectureDetailModel) -> some View {
+    private func lectureMajorView(_ lectureDetail: LectureModel) -> some View {
         RoundedRectangle(cornerRadius: 20)
             .foregroundStyle(Color.subjectMajorBackground)
             .frame(width: 50, height: 20)
             .overlay(
-                Text(subjectDetail.major)
+                Text(lectureDetail.major)
                     .foregroundStyle(Color.subjectMajorText)
                     .font(.sb12)
             )
             .padding([.leading, .top], 10)
     }
     
-    private func subjectInfoView(_ subjectDetail: LectureDetailModel) -> some View {
+    private func lectureInfoView(_ lectureDetail: LectureModel) -> some View {
         VStack(spacing: 3) {
             HStack {
                 VStack(alignment: .leading) {
-                    Text(subjectDetail.sbjName)
+                    Text(lectureDetail.sbjName)
                         .font(.sb16)
                         .padding(.trailing, 30)
-                    Text(subjectDetail.prof)
+                    Text(lectureDetail.prof)
                         .font(.m14)
                 }
                 Spacer()
             }
             HStack {
-                Text(subjectDetail.time)
+                Text(lectureDetail.time)
                     .font(.m12)
-                Text(subjectDetail.sbjDivcls)
+                Text(lectureDetail.sbjDivcls)
                     .font(.m12)
                 Spacer()
             }
@@ -139,17 +128,17 @@ struct LectureSheetView: View {
         .padding(.leading, 10)
     }
     
-    private func subjectCardButton(_ subjectDetail: LectureDetailModel) -> some View {
+    private func lectureCardButton(_ lectureDetail: LectureModel) -> some View {
         VStack {
             HStack {
                 Spacer()
                 Button(action: {
-                    let selectionSuccess = constraintsViewModel.toggleSelection(subject: subjectDetail)
+                    let selectionSuccess = constraintsViewModel.toggleSelection(Lecture: lectureDetail)
                     if !selectionSuccess {
                         showFloater = true
                     }
                 }) {
-                    Image(systemName: constraintsViewModel.isSelected(subject: subjectDetail) ? "checkmark.circle.fill" : "plus.circle.fill")
+                    Image(systemName: constraintsViewModel.isSelected(Lecture: lectureDetail) ? "checkmark.circle.fill" : "plus.circle.fill")
                         .resizable()
                         .frame(width: 25, height: 25)
                         .foregroundStyle(Color(red: 0.063, green: 0.51, blue: 0.788))
@@ -160,19 +149,19 @@ struct LectureSheetView: View {
         }
     }
     
-    private func subjectCardBorder(_ subjectDetail: LectureDetailModel) -> some View {
-        constraintsViewModel.isSelected(subject: subjectDetail) 
+    private func lectureCardBorder(_ lectureDetail: LectureModel) -> some View {
+        constraintsViewModel.isSelected(Lecture: lectureDetail) 
         ? RoundedRectangle(cornerRadius: 10)
             .stroke(Color.subjectCardBorder, lineWidth: 1)
         : nil
     }
     
-    private var selectedSubjectsView: some View {
+    private var selectedLecturesView: some View {
         VStack(spacing: 0) {
-            if !constraintsViewModel.isSelectedSubjectsEmpty() {
-                selectedSubjectsHeaderView
-                selectedSubjectsListView
-                selectedSubjectsActionsView
+            if !constraintsViewModel.isSelectedLecturesEmpty() {
+                selectedLecturesHeaderView
+                selectedLecturesListView
+                selectedLecturesActionsView
             } else {
                 EmptyView()
             }
@@ -180,7 +169,7 @@ struct LectureSheetView: View {
         .padding(.horizontal, 20)
     }
     
-    private var selectedSubjectsHeaderView: some View {
+    private var selectedLecturesHeaderView: some View {
         HStack {
             Text("선택한 과목")
                 .font(.sb14)
@@ -190,22 +179,22 @@ struct LectureSheetView: View {
         }
     }
     
-    private var selectedSubjectsListView: some View {
+    private var selectedLecturesListView: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 15) {
-                ForEach(constraintsViewModel.selectedSubjects, id: \.sbjDivcls) { subject in
-                    selectedSubjectItemView(subject)
+                ForEach(constraintsViewModel.selectedLectures, id: \.sbjDivcls) { Lecture in
+                    selectedLectureItemView(Lecture)
                 }
             }
         }
     }
     
-    private func selectedSubjectItemView(_ subject: LectureModelProtocol) -> some View {
+    private func selectedLectureItemView(_ Lecture: LectureModel) -> some View {
         HStack {
-            Text(subject.sbjName)
+            Text(Lecture.sbjName)
                 .font(.m14)
             Button(action: {
-                constraintsViewModel.removeSubject(subject)
+                constraintsViewModel.removeLecture(Lecture)
             }) {
                 Image(systemName: "xmark.circle")
                     .resizable()
@@ -224,7 +213,7 @@ struct LectureSheetView: View {
         .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5))
     }
     
-    private var selectedSubjectsActionsView: some View {
+    private var selectedLecturesActionsView: some View {
         HStack {
             clearSelectionButton
             showResultButton
@@ -255,7 +244,7 @@ struct LectureSheetView: View {
             Button(action: {
                 showResultAction()
             }) {
-                Text("\(constraintsViewModel.selectedSubjects.count)개 결과 보기")
+                Text("\(constraintsViewModel.selectedLectures.count)개 결과 보기")
                     .font(.sb14)
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -278,21 +267,6 @@ struct LectureSheetView: View {
                 Text("시간대나 과목이 겹쳐요!")
                     .font(.sb16)
             )
-    }
-    
-    private func isExpanded(at index: Int) -> Bool {
-        guard let expandedSubjectIndex = expandedSubjectIndex else {
-            return false
-        }
-        return index == expandedSubjectIndex
-    }
-    
-    private func toggleExpansion(at index: Int) {
-        if isExpanded(at: index) {
-            expandedSubjectIndex = nil
-        } else {
-            expandedSubjectIndex = index
-        }
     }
 }
 

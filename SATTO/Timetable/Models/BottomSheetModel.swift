@@ -17,7 +17,7 @@ struct BottomSheetModel: Codable {
 }
 
 //MARK: - 바텀시트 수강인원 그래프 모델
-struct ValuePerSubjectCategory {
+struct ValuePerLectureCategory {
     var category: String
     var value: Int
     var date: String

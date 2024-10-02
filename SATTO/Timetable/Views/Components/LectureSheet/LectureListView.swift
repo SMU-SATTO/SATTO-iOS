@@ -17,12 +17,12 @@ struct LectureListView: View {
             ScrollView {
                 LazyVStack {
                     ForEach(lectureSheetViewModel.lectureList.indices, id: \.self) { index in
-                        let subjectDetail = lectureSheetViewModel.lectureList[index]
-                        LectureCardView(lectureSheetViewModel: lectureSheetViewModel, showFloater: $showFloater, lectureDetail: subjectDetail, index: index, containerSize: containerSize)
+                        let lecture = lectureSheetViewModel.lectureList[index]
+                        LectureCardView(lectureSheetViewModel: lectureSheetViewModel, showFloater: $showFloater, lectureDetail: lecture, index: index, containerSize: containerSize)
                             .padding(.horizontal, 10)
                             .task {
                                 if index == lectureSheetViewModel.lectureList.count - 1 {
-                                    await lectureSheetViewModel.loadMoreSubjects()
+                                    await lectureSheetViewModel.loadMoreLectures()
                                 }
                             }
                     }

@@ -12,7 +12,7 @@ class ConstraintState: ObservableObject {
     @Published var credit: Int = 18                          //GPA
     @Published var majorNum: Int = 3                         //majorcount
     @Published var eLearnNum: Int = 0                        //cybercount
-    @Published var selectedSubjects: [LectureModelProtocol] = [] //requiredLect
+    @Published var selectedLectures: [LectureModel] = [] //requiredLect
     @Published var selectedBlocks: Set<String> = []             //impossibleTimeZone
     @Published var preSelectedBlocks: Set<String> = []
     
@@ -21,7 +21,7 @@ class ConstraintState: ObservableObject {
     
     //서버에서 준 과목 조합 리스트
     @Published var majorCombs: [MajorComb]?
-    @Published var finalTimetableList: [[LectureModelProtocol]]?
+    @Published var finalTimetableList: [[LectureModel]]?
     
     @Published private var _semesterYear: String = "2024학년도 2학기"
     var semesterYear: String {
@@ -32,7 +32,7 @@ class ConstraintState: ObservableObject {
         self.majorCombs = majorCombs
     }
     
-    func fetchFinalTimetableList(_ finalTimetableList: [[LectureModelProtocol]]) {
+    func fetchFinalTimetableList(_ finalTimetableList: [[LectureModel]]) {
         self.finalTimetableList = finalTimetableList
     }
     

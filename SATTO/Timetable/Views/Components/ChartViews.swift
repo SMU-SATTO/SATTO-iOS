@@ -157,8 +157,8 @@ struct RadarChartView: View {
     }
 }
 
-struct SubjectChartView: View {
-    let subjectChartData: [ValuePerSubjectCategory]
+struct LectureChartView: View {
+    let lectureChartData: [ValuePerLectureCategory]
     
     var todayEnrolledData: Int
     var yesterdayEnrolledData: Int
@@ -174,7 +174,7 @@ struct SubjectChartView: View {
         dateFormatter.dateFormat = "MM/dd"
         
         let currentDate = Date()
-        subjectChartData = [
+        lectureChartData = [
             .init(category: "2 days ago", value: threeDaysAgoEnrolledData, date: dateFormatter.string(from: Calendar.current.date(byAdding: .day, value: -2, to: currentDate)!)),
             .init(category: "Yesterday", value: yesterdayEnrolledData, date: dateFormatter.string(from: Calendar.current.date(byAdding: .day, value: -1, to: currentDate)!)),
             .init(category: "Today", value: todayEnrolledData, date: dateFormatter.string(from: currentDate))
@@ -183,7 +183,7 @@ struct SubjectChartView: View {
     
     var body: some View {
         VStack {
-            Chart(subjectChartData, id: \.category) { item in
+            Chart(lectureChartData, id: \.category) { item in
                 BarMark(
                     x: .value("Date", item.date),
                     y: .value("Value", item.value)
@@ -206,7 +206,7 @@ struct SubjectChartView: View {
             (name: "상명핵심역량교양", value: 85),
             (name: "균형교양", value: 75)
         ])
-        SubjectChartView(todayEnrolledData: 50, yesterdayEnrolledData: 40, threeDaysAgoEnrolledData: 30)
+        LectureChartView(todayEnrolledData: 50, yesterdayEnrolledData: 40, threeDaysAgoEnrolledData: 30)
     }
     .preferredColorScheme(.dark)
 }
