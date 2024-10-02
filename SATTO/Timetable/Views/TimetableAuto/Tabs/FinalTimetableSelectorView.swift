@@ -102,7 +102,8 @@ struct FinalTimetableSelectorView: View {
                 .multilineTextAlignment(.center)
             TabView(selection: $currIndex) {
                 ForEach(viewModel.timetableList.indices, id: \.self) { index in
-                    TimetableView(timetable: TimetableModel(id: -1, semester: "", name: "", lectures: viewModel.timetableList[timetableIndex], isPublic: false, isRepresented: false))
+                    TimetableView(timetable: TimetableModel(id: -1, semester: "", name: "", lectures: viewModel.timetableList[index], isPublic: false, isRepresented: false))
+                        .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
                         .onTapGesture {
                             timetableIndex = index
                             showingPopup.toggle()
