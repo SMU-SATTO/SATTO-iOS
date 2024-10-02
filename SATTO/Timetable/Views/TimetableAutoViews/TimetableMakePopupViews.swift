@@ -125,8 +125,8 @@ struct FinalSelectPopup: View {
                 .foregroundStyle(Color.red)
                 .overlay(
                     VStack(spacing: 0) {
-//                        TimetableView(timetableBaseArray: viewModel.timetableList[timetableIndex])
-//                            .padding()
+                        TimetableView(timetable: TimetableModel(id: -1, semester: "", name: "", lectures: viewModel.timetableList[timetableIndex], isPublic: false, isRepresented: false))
+                            .padding()
                         Text("이 시간표를 이번 학기 시간표로\n등록하시겠어요?")
                             .font(.sb16)
                             .foregroundStyle(Color.blackWhite200)

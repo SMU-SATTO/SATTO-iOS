@@ -9,8 +9,14 @@ import Combine
 import Foundation
 
 class TimetableMainViewModel: BaseViewModel, ObservableObject {
-    @Published var currentTimetable: TimetableModel?
-    @Published var timetableList: [TimetableListModel]?
+    @Published private var _currentTimetable: TimetableModel?
+    var currentTimetable: TimetableModel? {
+        get { _currentTimetable }
+    }
+    @Published private var _timetableList: [TimetableListModel]?
+    var timetableList: [TimetableListModel]? {
+        get { _timetableList }
+    }
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -18,11 +24,11 @@ class TimetableMainViewModel: BaseViewModel, ObservableObject {
         super.init(container: container)
         
         appState.timetable.$currentTimetable
-            .assign(to: \.currentTimetable, on: self)
+            .assign(to: \._currentTimetable, on: self)
             .store(in: &cancellables)
         
         appState.timetable.$timetableList
-            .assign(to: \.timetableList, on: self)
+            .assign(to: \._timetableList, on: self)
             .store(in: &cancellables)
     }
 

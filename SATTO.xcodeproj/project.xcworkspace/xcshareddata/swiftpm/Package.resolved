@@ -1,5 +1,5 @@
 {
-  "originHash" : "0b1509cb099c30285facbd492c0a7a48e01541abe4f9ffb320e6eb4cfcc71034",
+  "originHash" : "6f2d135801ad6e4f060a1c0a907db9225342d374cc7bb0eb022b0520619c9ec0",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -8,15 +8,6 @@
       "state" : {
         "revision" : "f455c2975872ccd2d9c81594c658af65716e9b9a",
         "version" : "5.9.1"
-      }
-    },
-    {
-      "identity" : "jhtimetable",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/jaeho0718/JHTimeTable",
-      "state" : {
-        "revision" : "791ab732dfa35997d8a0db3ba1e7bbc7885f84bb",
-        "version" : "3.0.0"
       }
     },
     {

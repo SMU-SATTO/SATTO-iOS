@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import JHTimeTable
 
 // MARK: - 불가능한 시간대 선택
 struct InvalidTimeSelectorView: View {

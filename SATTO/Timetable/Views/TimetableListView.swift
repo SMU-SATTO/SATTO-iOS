@@ -128,7 +128,6 @@ struct TimetableListRec: View {
                     Task {
                         await timetableMainViewModel.fetchTimetable(id: timetable.id)
                     }
-//                    timetableMainViewModel.timetableId = timetable.id
                     stackPath.removeLast()
                 }) {
                     HStack {

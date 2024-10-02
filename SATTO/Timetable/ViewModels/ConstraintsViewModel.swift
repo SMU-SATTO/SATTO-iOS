@@ -9,34 +9,50 @@ import Combine
 import Foundation
 
 class ConstraintsViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
-    @Published var credit: Int = 18        //GPA
-    @Published var majorNum: Int = 3       //majorcount
-    @Published var ELearnNum: Int = 0      //cybercount
+    @Published var _credit: Int = 18        //GPA
+    var credit: Int {
+        get { _credit }
+        set { constraintService.set(\.credit, to: newValue) }
+    }
+    @Published var _majorNum: Int = 3       //majorcount
+    var majorNum: Int {
+        get { _majorNum }
+        set { constraintService.set(\.majorNum, to: newValue) }
+    }
+    @Published var _eLearnNum: Int = 0      //cybercount
+    var eLearnNum: Int {
+        get { _eLearnNum }
+        set { constraintService.set(\.eLearnNum, to: newValue) }
+    }
     @Published private var _selectedLectures: [LectureModel] = [] //requiredLect
     var selectedLectures: [LectureModel] {
         get { _selectedLectures }
-        set { services.constraintService.setSelectedLectures(newValue) }
+        set { constraintService.set(\.selectedLectures, to: newValue) }
     }
     
     ///`TimetableSelector`설정
     @Published private var _selectedBlocks: Set<String> = []
     var selectedBlocks: Set<String> {
         get { _selectedBlocks }
-        set { services.constraintService.setSelectedBlocks(newValue) }
+        set { constraintService.set(\.selectedBlocks, to: newValue) }
     }
     var sortedSelectedBlocks: String {
-        return services.constraintService.convertSetToString(_selectedBlocks)
+        return constraintService.convertSetToString(_selectedBlocks)
             .replacingOccurrences(of: " ", with: ", ")
     }
     @Published private var _preSelectedBlocks: Set<String> = []
     var preSelectedBlocks: Set<String> {
         get { _preSelectedBlocks }
-        set { services.constraintService.setPreSelectedBlocks(newValue)}
+        set { constraintService.set(\.preSelectedBlocks, to: newValue) }
     }
     var tempDragBlocks: Set<String> = []
     
     //request할 때 보낼 과목 조합 리스트
-    @Published var selectedMajorCombs: [MajorComb] = []      //majorList
+    @Published var _selectedMajorCombs: [MajorComb] = []      //majorList
+    var selectedMajorCombs: [MajorComb] {
+        get { _selectedMajorCombs }
+        set {constraintService.set(\.selectedMajorCombs, to: newValue) }
+    }
     
     //서버에서 준 과목 조합 리스트
     @Published private var _majorCombinations: [MajorComb]? = []
@@ -54,39 +70,39 @@ class ConstraintsViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     override init (container: DIContainer) {
         super.init(container: container)
         
-        appState.constraint.$credit
-            .assign(to: \.credit, on: self)
+        constraintState.$credit
+            .assign(to: \._credit, on: self)
             .store(in: &cancellables)
         
-        appState.constraint.$majorNum
-            .assign(to: \.majorNum, on: self)
+        constraintState.$majorNum
+            .assign(to: \._majorNum, on: self)
             .store(in: &cancellables)
         
-        appState.constraint.$eLearnNum
-            .assign(to: \.ELearnNum, on: self)
+        constraintState.$eLearnNum
+            .assign(to: \._eLearnNum, on: self)
             .store(in: &cancellables)
         
-        appState.constraint.$selectedLectures
+        constraintState.$selectedLectures
             .assign(to: \._selectedLectures, on: self)
             .store(in: &cancellables)
         
-        appState.constraint.$selectedBlocks
+        constraintState.$selectedBlocks
             .assign(to: \._selectedBlocks, on: self)
             .store(in: &cancellables)
         
-        appState.constraint.$preSelectedBlocks
+        constraintState.$preSelectedBlocks
             .assign(to: \._preSelectedBlocks, on: self)
             .store(in: &cancellables)
         
-        appState.constraint.$selectedMajorCombs
-            .assign(to: \.selectedMajorCombs, on: self)
+        constraintState.$selectedMajorCombs
+            .assign(to: \._selectedMajorCombs, on: self)
             .store(in: &cancellables)
         
-        appState.constraint.$majorCombs
+        constraintState.$majorCombs
             .assign(to: \._majorCombinations, on: self)
             .store(in: &cancellables)
         
-        appState.constraint.$finalTimetableList
+        constraintState.$finalTimetableList
             .assign(to: \._timetableList, on: self)
             .store(in: &cancellables)
     }

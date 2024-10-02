@@ -32,9 +32,6 @@ struct TimetableService: TimetableServiceProtocol {
             let userTimetableDto = try await timetableRepository.getUserTimetable(id: id)
             
             guard let lects = userTimetableDto.result?.lects else {
-                appState.timetable.fetchCurrentTimetable(
-                    TimetableModel(id: -1, semester: "", name: "", lectures: [], isPublic: false, isRepresented: false)
-                )
                 return
             }
             

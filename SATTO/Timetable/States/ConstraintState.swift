@@ -32,10 +32,6 @@ class ConstraintState: ObservableObject {
         self.majorCombs = majorCombs
     }
     
-    func fetchFinalTimetableList(_ finalTimetableList: [[LectureModel]]) {
-        self.finalTimetableList = finalTimetableList
-    }
-    
     func toggleSelection(_ combination: MajorComb) {
         if selectedMajorCombs.contains(where: { $0.combination == combination.combination }) {
             selectedMajorCombs.removeAll(where: { $0.combination == combination.combination })

@@ -102,11 +102,11 @@ struct FinalTimetableSelectorView: View {
                 .multilineTextAlignment(.center)
             TabView(selection: $currIndex) {
                 ForEach(viewModel.timetableList.indices, id: \.self) { index in
-//                    TimetableView(timetableBaseArray: viewModel.timetableList[index])
-//                        .onTapGesture {
-//                            timetableIndex = index
-//                            showingPopup.toggle()
-//                        }
+                    TimetableView(timetable: TimetableModel(id: -1, semester: "", name: "", lectures: viewModel.timetableList[timetableIndex], isPublic: false, isRepresented: false))
+                        .onTapGesture {
+                            timetableIndex = index
+                            showingPopup.toggle()
+                        }
                 }
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))

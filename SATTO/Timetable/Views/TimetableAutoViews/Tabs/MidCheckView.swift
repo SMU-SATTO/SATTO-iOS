@@ -47,7 +47,7 @@ struct MidCheckView: View {
                     selectedOptionInfo(
                         header: "이번 학기에 들을 이러닝 개수",
                         headerColor: Color.blackWhite200,
-                        content: "\(viewModel.ELearnNum)개"
+                        content: "\(viewModel.eLearnNum)개"
                     )
                     selectedOptionInfo(
                         header: "필수로 들을 과목",

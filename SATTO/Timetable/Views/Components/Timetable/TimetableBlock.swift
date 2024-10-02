@@ -148,7 +148,7 @@ struct TimetableBlock: View {
         isRepresented: false
     )
 
-    SATTOTimetable(timetable: timetableModel)
+    TimetableView(timetable: timetableModel)
         .withWeekdays(.mon, .tue, .wed, .thu, .fri)
         .withTimeRange(startAt: 8, endAt: 20)
         .aspectRatio(7/10, contentMode: .fit)

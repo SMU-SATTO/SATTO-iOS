@@ -17,7 +17,7 @@ class TimetableState: ObservableObject {
     }
     
     func resetTimetableState() {
-        self.currentTimetable = TimetableModel(id: -1, semester: "", name: "", lectures: [], isPublic: false, isRepresented: false)
+        self.currentTimetable = nil
     }
     
     func fetchTimetableList(_ timetableList: [TimetableListModel]) {

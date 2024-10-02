@@ -7,7 +7,6 @@
 
 import SwiftUI
 import PopupView
-import JHTimeTable
 
 enum TimetableRoute: Hashable {
     case timetableMake
@@ -52,15 +51,11 @@ struct TimetableMainView: View {
             ZStack {
                 Color.backgroundDefault
                     .ignoresSafeArea(.all)
-                ScrollView {
-                    VStack {
-                        headerView
-                        tabContentView
-                        Spacer()
-                    }
+                VStack {
+                    headerView
+                    tabContentView
+                    Spacer()
                 }
-                .scrollIndicators(.hidden)
-                .frame(maxHeight: .infinity)
             }
             .sheet(isPresented: $bottomSheetPresented, content: {
                 ZStack {
@@ -346,8 +341,8 @@ struct TimetableMainView: View {
             }
             .padding(.top, 10)
             if let currentTimetable = timetableMainViewModel.currentTimetable {
-//                TimetableView(timetableBaseArray: currentTimetable.lectures)
-//                    .padding(.horizontal, 15)
+                TimetableView(timetable: currentTimetable)
+                    .padding(.horizontal, 15)
             }
             else {
                 Text("대표시간표가 없어요.\n시간표를 생성하고, 시간표를 선택한 다음\n톱니바퀴 버튼을 눌러 대표시간표를 등록해 주세요!")

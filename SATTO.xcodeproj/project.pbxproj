@@ -47,7 +47,7 @@
 		3BF1F4AB2C538B3100B32C66 /* FollowingSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF1F4AA2C538B3100B32C66 /* FollowingSearchView.swift */; };
 		3BF1F4AE2C5B15E300B32C66 /* EventAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF1F4AD2C5B15E300B32C66 /* EventAPI.swift */; };
 		AA068F052CAB316C003F5750 /* TimetableUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA068F042CAB316C003F5750 /* TimetableUtil.swift */; };
-		AA068F072CAB329D003F5750 /* SATTOTimetable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA068F062CAB3294003F5750 /* SATTOTimetable.swift */; };
+		AA068F072CAB329D003F5750 /* TimetableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA068F062CAB3294003F5750 /* TimetableView.swift */; };
 		AA068F092CAB34C5003F5750 /* TimetableConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA068F082CAB34C5003F5750 /* TimetableConfiguration.swift */; };
 		AA068F0C2CAB41A1003F5750 /* SATTOTimetableModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA068F0B2CAB41A1003F5750 /* SATTOTimetableModels.swift */; };
 		AA068F0F2CAB9786003F5750 /* TimetableBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA068F0E2CAB977D003F5750 /* TimetableBlock.swift */; };
@@ -93,7 +93,6 @@
 		AAA9506F2BA5C39B004E16C8 /* ConstraintsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950622BA5C39B004E16C8 /* ConstraintsViewModel.swift */; };
 		AAA950702BA5C39B004E16C8 /* TimetableMakeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950632BA5C39B004E16C8 /* TimetableMakeView.swift */; };
 		AAA950712BA5C39B004E16C8 /* TimetableListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950642BA5C39B004E16C8 /* TimetableListView.swift */; };
-		AAA950742BA5C484004E16C8 /* JHTimeTable in Frameworks */ = {isa = PBXBuildFile; productRef = AAA950732BA5C484004E16C8 /* JHTimeTable */; };
 		AAA9507C2BA5C498004E16C8 /* PopupView in Frameworks */ = {isa = PBXBuildFile; productRef = AAA9507B2BA5C498004E16C8 /* PopupView */; };
 		AAA950812BA5E7A5004E16C8 /* TimetableOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950802BA5E7A5004E16C8 /* TimetableOptionView.swift */; };
 		AAA950832BA722EF004E16C8 /* LectureSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950822BA722EF004E16C8 /* LectureSheetView.swift */; };
@@ -186,7 +185,7 @@
 		3BF1F4AA2C538B3100B32C66 /* FollowingSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingSearchView.swift; sourceTree = "<group>"; };
 		3BF1F4AD2C5B15E300B32C66 /* EventAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventAPI.swift; sourceTree = "<group>"; };
 		AA068F042CAB316C003F5750 /* TimetableUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableUtil.swift; sourceTree = "<group>"; };
-		AA068F062CAB3294003F5750 /* SATTOTimetable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SATTOTimetable.swift; sourceTree = "<group>"; };
+		AA068F062CAB3294003F5750 /* TimetableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableView.swift; sourceTree = "<group>"; };
 		AA068F082CAB34C5003F5750 /* TimetableConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableConfiguration.swift; sourceTree = "<group>"; };
 		AA068F0B2CAB41A1003F5750 /* SATTOTimetableModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SATTOTimetableModels.swift; sourceTree = "<group>"; };
 		AA068F0E2CAB977D003F5750 /* TimetableBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableBlock.swift; sourceTree = "<group>"; };
@@ -271,7 +270,6 @@
 				3B56A3562C09B9F40034B25B /* KeychainSwift in Frameworks */,
 				AAA9507C2BA5C498004E16C8 /* PopupView in Frameworks */,
 				AA9E802F2B498DB400D51447 /* Moya in Frameworks */,
-				AAA950742BA5C484004E16C8 /* JHTimeTable in Frameworks */,
 				AA9E802D2B498DB400D51447 /* CombineMoya in Frameworks */,
 				AA9E80332B498DB400D51447 /* RxMoya in Frameworks */,
 				AA9E80312B498DB400D51447 /* ReactiveMoya in Frameworks */,
@@ -398,7 +396,7 @@
 			isa = PBXGroup;
 			children = (
 				AA068F122CABDF34003F5750 /* SATTOTimeSelector.swift */,
-				AA068F062CAB3294003F5750 /* SATTOTimetable.swift */,
+				AA068F062CAB3294003F5750 /* TimetableView.swift */,
 				AA068F0E2CAB977D003F5750 /* TimetableBlock.swift */,
 				AA068F042CAB316C003F5750 /* TimetableUtil.swift */,
 			);
@@ -739,7 +737,6 @@
 				AA9E802E2B498DB400D51447 /* Moya */,
 				AA9E80302B498DB400D51447 /* ReactiveMoya */,
 				AA9E80322B498DB400D51447 /* RxMoya */,
-				AAA950732BA5C484004E16C8 /* JHTimeTable */,
 				AAA9507B2BA5C498004E16C8 /* PopupView */,
 				3B56A3552C09B9F40034B25B /* KeychainSwift */,
 				3B82D8862C2264D6008E0138 /* SwiftKeychainWrapper */,
@@ -774,7 +771,6 @@
 			mainGroup = AACB4BC32B40712D00169C52;
 			packageReferences = (
 				AA9E802B2B498DB300D51447 /* XCRemoteSwiftPackageReference "Moya" */,
-				AAA950722BA5C484004E16C8 /* XCRemoteSwiftPackageReference "JHTimeTable" */,
 				AAA9507A2BA5C498004E16C8 /* XCRemoteSwiftPackageReference "PopupView" */,
 				3B56A3542C09B9F40034B25B /* XCRemoteSwiftPackageReference "keychain-swift" */,
 				3B82D8852C2264D6008E0138 /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */,
@@ -872,7 +868,7 @@
 				3B82D8BD2C3A3737008E0138 /* FriendModel.swift in Sources */,
 				AAA950672BA5C39B004E16C8 /* MajorCombSelectorView.swift in Sources */,
 				AAF9775F2C386E8300672090 /* TimetableMakePopupViews.swift in Sources */,
-				AA068F072CAB329D003F5750 /* SATTOTimetable.swift in Sources */,
+				AA068F072CAB329D003F5750 /* TimetableView.swift in Sources */,
 				3B82D88C2C2268A0008E0138 /* KeyChainManager.swift in Sources */,
 				AAA950682BA5C39B004E16C8 /* CreditPickerView.swift in Sources */,
 				AA068F0F2CAB9786003F5750 /* TimetableBlock.swift in Sources */,
@@ -1064,7 +1060,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.SMU.SATTO-exh";
+				PRODUCT_BUNDLE_IDENTIFIER = com.SMU.SATTO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1094,7 +1090,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.SMU.SATTO-exh";
+				PRODUCT_BUNDLE_IDENTIFIER = com.SMU.SATTO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1150,14 +1146,6 @@
 				minimumVersion = 15.0.3;
 			};
 		};
-		AAA950722BA5C484004E16C8 /* XCRemoteSwiftPackageReference "JHTimeTable" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/jaeho0718/JHTimeTable";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.0.0;
-			};
-		};
 		AAA9507A2BA5C498004E16C8 /* XCRemoteSwiftPackageReference "PopupView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/exyte/PopupView";
@@ -1198,11 +1186,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = AA9E802B2B498DB300D51447 /* XCRemoteSwiftPackageReference "Moya" */;
 			productName = RxMoya;
-		};
-		AAA950732BA5C484004E16C8 /* JHTimeTable */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = AAA950722BA5C484004E16C8 /* XCRemoteSwiftPackageReference "JHTimeTable" */;
-			productName = JHTimeTable;
 		};
 		AAA9507B2BA5C498004E16C8 /* PopupView */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -18,7 +18,7 @@ struct CreditPickerView: View {
             SectionView(title: "전공 개수", pickerRange: 0...(constraintsViewModel.credit / 3), selection: $constraintsViewModel.majorNum)
                 .padding(.top, 20)
             
-            SectionView(title: "E-러닝 개수", pickerRange: 0...2, selection: $constraintsViewModel.ELearnNum)
+            SectionView(title: "E-러닝 개수", pickerRange: 0...2, selection: $constraintsViewModel.eLearnNum)
                 .padding(.top, 20)
         }
     }

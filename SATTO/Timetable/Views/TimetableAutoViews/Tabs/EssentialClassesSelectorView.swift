@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import JHTimeTable
 
 //MARK: - 필수로 들어야 할 과목 선택
 struct EssentialClassesSelectorView: View {
@@ -22,6 +21,8 @@ struct EssentialClassesSelectorView: View {
                     Text("이번 학기에 필수로 들어야 할\n과목을 선택해 주세요.")
                         .font(.sb18)
                         .lineSpacing(5)
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.7)
                     Text("ex) 재수강, 교양필수, 전공필수")
                         .font(.m12)
                         .foregroundStyle(.gray400)
@@ -50,7 +51,7 @@ struct EssentialClassesSelectorView: View {
             }
             .padding(.horizontal, 30)
             
-            SATTOTimetable(timetable: TimetableModel(id: -1, semester: "", name: "", lectures: constraintsViewModel.selectedLectures, isPublic: false, isRepresented: false))
+            TimetableView(timetable: TimetableModel(id: -1, semester: "", name: "", lectures: constraintsViewModel.selectedLectures, isPublic: false, isRepresented: false))
                 .sheet(isPresented: $isShowBottomSheet, content: {
                     LectureSheetTabView(
                         constraintsViewModel: constraintsViewModel,

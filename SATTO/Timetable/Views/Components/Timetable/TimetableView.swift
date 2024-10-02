@@ -1,5 +1,5 @@
 //
-//  SATTOTimetable.swift
+//  TimetableView.swift
 //  SATTO
 //
 //  Created by yeongjoon on 10/1/24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SATTOTimetable: View {
+struct TimetableView: View {
     let timetable: TimetableModel
     var config = TimetableConfiguration.defaultConfig
     
@@ -70,7 +70,7 @@ struct SATTOTimetable: View {
     
     private func extractTimeRange(from lectures: [LectureModel]) -> TimetableConfiguration.TimeConfig {
         var earliestStartHour = 9
-        var latestEndHour = 21
+        var latestEndHour = 18
         
         for lecture in lectures {
             let timeComponents = lecture.time
@@ -81,6 +81,8 @@ struct SATTOTimetable: View {
                 if let hour = Int(component.dropFirst()) {
                     if hour == 0 {
                         earliestStartHour = 8  // 0교시가 포함되면 시작 시간을 8시로 설정
+                    } else if hour >= 10 && hour <= 12 {
+                        latestEndHour = max(latestEndHour, 21)  // 10, 11, 12교시 포함되면 종료 시간을 21시로 확장
                     } else if hour >= 13 && hour <= 15 {
                         latestEndHour = max(latestEndHour, 24)  // 13, 14, 15교시 포함되면 종료 시간을 24시로 확장
                     }
@@ -95,14 +97,14 @@ struct SATTOTimetable: View {
     }
 }
 
-extension SATTOTimetable {
-    func withWeekdays(_ weeks: Weekdays...) -> SATTOTimetable {
+extension TimetableView {
+    func withWeekdays(_ weeks: Weekdays...) -> TimetableView {
         var new = self
         new.config.weeks = weeks
         return new
     }
     
-    func withTimeRange(startAt: Int, endAt: Int) -> SATTOTimetable {
+    func withTimeRange(startAt: Int, endAt: Int) -> TimetableView {
         var new = self
         new.config.time = TimetableConfiguration.TimeConfig(
             startAt: SATTOTimetableTime(hour: startAt, minute: 0),
@@ -217,7 +219,7 @@ struct TimeBar: View {
         isRepresented: false
     )
 
-    SATTOTimetable(timetable: timetableModel)
+    TimetableView(timetable: timetableModel)
         .aspectRatio(7/10, contentMode: .fit)
         .frame(maxWidth: 350, maxHeight: 500)
 }

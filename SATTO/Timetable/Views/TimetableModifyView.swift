@@ -50,18 +50,18 @@ struct TimetableModifyView: View {
                     }
                 }
                 .padding(.horizontal, 30)
-//                TimetableView(timetableBaseArray: constraintsViewModel.selectedSubjects)
-//                    .onTapGesture {
-//                        isShowBottomSheet = true
-//                    }
-//                    .sheet(isPresented: $isShowBottomSheet, content: {
-//                        LectureSheetTabView(
-//                            constraintsViewModel: constraintsViewModel,
-//                            lectureSheetViewModel: lectureSheetViewModel,
-//                            showResultAction: {isShowBottomSheet = false}
-//                        )
-//                        .presentationDetents([.medium, .large])
-//                    })
+                if let currentTimetable = timetableMainViewModel.currentTimetable {
+                    TimetableView(timetable: currentTimetable)
+                        .sheet(isPresented: $isShowBottomSheet, content: {
+                            LectureSheetTabView(
+                                constraintsViewModel: constraintsViewModel,
+                                lectureSheetViewModel: lectureSheetViewModel,
+                                showResultAction: {isShowBottomSheet = false}
+                            )
+                            .presentationDetents([.medium, .large])
+                        })
+                        .padding(.horizontal, 15)
+                }
                 Button(action: {
                     showingConfirmAlert = true
                 }) {
