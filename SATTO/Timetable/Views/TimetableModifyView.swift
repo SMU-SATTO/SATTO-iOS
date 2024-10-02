@@ -16,9 +16,6 @@ struct TimetableModifyView: View {
     
     @State private var tempTimetable: [SubjectModelBase] = []
     
-    @State private var selectedSubviews = Set<Int>()
-    @State private var alreadySelectedSubviews = Set<Int>()
-    
     @State private var isShowBottomSheet = false
     @State private var isUsingSelectedSubjects = true
     
@@ -62,8 +59,6 @@ struct TimetableModifyView: View {
                         LectureSheetTabView(
                             constraintsViewModel: constraintsViewModel,
                             lectureSheetViewModel: lectureSheetViewModel,
-                            selectedSubviews: $selectedSubviews,
-                            alreadySelectedSubviews: $alreadySelectedSubviews,
                             showResultAction: {isShowBottomSheet = false}
                         )
                         .presentationDetents([.medium, .large])

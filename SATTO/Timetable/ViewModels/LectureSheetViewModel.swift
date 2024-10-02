@@ -9,10 +9,6 @@ import Combine
 import Foundation
 
 class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
-    var selectedBlocks: Set<Int> = []
-    var tempDragBlocks: Set<Int> = []
-    var preSelectedBlocks: Set<Int> = []
-    
     @Published var _searchText: String = ""
     var searchText: String {
         get { _searchText }
@@ -26,7 +22,6 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     @Published var selectedBGE: [String] = ["전체"]
     ///["전체", "E러닝만 보기", "E러닝 빼고 보기"]
     @Published var selectedELOption: [String] = ["전체"]
-    @Published var selectedTimes: String = ""
     
     @Published private var _subjectDetailDataList: [SubjectDetailModel]?
     var lectureList: [SubjectDetailModel] {
@@ -44,13 +39,29 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     @Published var isLoading: Bool = false
     @Published var hasMorePages: Bool?
     
+    @Published private var _selectedBlocks: Set<String> = []
+    var selectedBlocks: Set<String> {
+        get { _selectedBlocks }
+        set { services.lectureSearchService.setSelectedBlocks(newValue) }
+    }
+    var sortedSelectedBlocks: String {
+        return services.constraintService.convertSetToString(_selectedBlocks)
+            .replacingOccurrences(of: " ", with: ", ")
+    }
+    @Published private var _preSelectedBlocks: Set<String> = []
+    var preSelectedBlocks: Set<String> {
+        get { _preSelectedBlocks }
+        set { services.lectureSearchService.setPreSelectedBlocks(newValue)}
+    }
+    var tempDragBlocks: Set<String> = []
+    
     private var cancellables = Set<AnyCancellable>()
     
     override init(container: DIContainer) {
         super.init(container: container)
         
         appState.lectureSearch.$searchText
-            .assign(to: \.searchText, on: self)
+            .assign(to: \._searchText, on: self)
             .store(in: &cancellables)
         
         appState.lectureSearch.$selectedGrades
@@ -69,8 +80,12 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
             .assign(to: \.selectedELOption, on: self)
             .store(in: &cancellables)
         
-        appState.lectureSearch.$selectedTimes
-            .assign(to: \.selectedTimes, on: self)
+        appState.lectureSearch.$selectedBlocks
+            .assign(to: \._selectedBlocks, on: self)
+            .store(in: &cancellables)
+        
+        appState.lectureSearch.$preSelectedBlocks
+            .assign(to: \._preSelectedBlocks, on: self)
             .store(in: &cancellables)
         
         appState.lectureSearch.$subjectDetailDataList
@@ -140,7 +155,7 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     
     // 시간 선택 여부 확인
     func isTimeSelected() -> Bool {
-        return !selectedTimes.isEmpty
+        return !selectedBlocks.isEmpty
     }
     
     func isSelectedSubjectsEmpty() -> Bool {

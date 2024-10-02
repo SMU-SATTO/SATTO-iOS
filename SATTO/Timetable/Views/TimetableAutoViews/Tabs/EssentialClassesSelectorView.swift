@@ -12,10 +12,7 @@ import JHTimeTable
 struct EssentialClassesSelectorView: View {
     @ObservedObject var constraintsViewModel: ConstraintsViewModel
     @ObservedObject var lectureSheetViewModel: LectureSheetViewModel
-    
-    @State private var selectedSubviews = Set<Int>()
-    @State private var alreadySelectedSubviews = Set<Int>()
-    
+
     @State private var isShowBottomSheet = false
     @State private var usingSelectedSubjects = true
     
@@ -62,8 +59,6 @@ struct EssentialClassesSelectorView: View {
                     LectureSheetTabView(
                         constraintsViewModel: constraintsViewModel,
                         lectureSheetViewModel: lectureSheetViewModel,
-                        selectedSubviews: $selectedSubviews,
-                        alreadySelectedSubviews: $alreadySelectedSubviews,
                         showResultAction: {isShowBottomSheet = false}
                     )
                     .presentationDetents([.medium, .large])

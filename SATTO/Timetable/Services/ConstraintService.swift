@@ -10,6 +10,9 @@ import Foundation
 @MainActor
 protocol ConstraintServiceProtocol: Sendable {
     func setSelectedSubjects(_ value: [SubjectModelBase])
+    func setSelectedBlocks(_ value: Set<String>)
+    func setPreSelectedBlocks(_ value: Set<String>)
+    func convertSetToString(_ set: Set<String>) -> String
     func getMajorComb() async throws
     func getFinalTimetableList(isRaw: Bool) async throws
     func saveTimetable(timetableIndex: Int, timetableName: String) async throws
@@ -27,12 +30,43 @@ struct ConstraintService: ConstraintServiceProtocol {
     func setSelectedSubjects(_ value: [SubjectModelBase]) {
         appState.constraint.selectedSubjects = value
     }
+    
+    func setSelectedBlocks(_ value: Set<String>) {
+        appState.constraint.selectedBlocks = value
+    }
+    
+    func setPreSelectedBlocks(_ value: Set<String>) {
+        appState.constraint.preSelectedBlocks = value
+    }
+    
+    func convertSetToString(_ set: Set<String>) -> String {
+        let weekdaysOrder = ["월", "화", "수", "목", "금", "토", "일"]
+        
+        let sortedSet = set.sorted {
+            let firstDay = String($0.prefix(1))
+            let secondDay = String($1.prefix(1))
+            
+            // 요일 순서에 맞춰 정렬
+            if let firstIndex = weekdaysOrder.firstIndex(of: firstDay),
+               let secondIndex = weekdaysOrder.firstIndex(of: secondDay) {
+                if firstIndex == secondIndex {
+                    // 같은 요일일 경우 시간 순서로 정렬
+                    return $0.compare($1, options: .numeric) == .orderedAscending
+                }
+                return firstIndex < secondIndex
+            }
+            return false
+        }
+        
+        return sortedSet.joined(separator: " ")
+    }
 
     func getMajorComb() async throws {
         let requiredLectStrings = appState.constraint.selectedSubjects.map { $0.sbjDivcls }
-        let adjustedRequiredLect = requiredLectStrings.isEmpty ? [""] : requiredLectStrings
+        let adjRequiredLect = requiredLectStrings.isEmpty ? [""] : requiredLectStrings
+        let adjInvalidTime = convertSetToString(appState.constraint.selectedBlocks)
         
-        let dto = try await constraintRepository.getMajorComb(GPA: appState.constraint.credit, requiredLect: adjustedRequiredLect, majorCount: appState.constraint.majorNum, cyberCount: appState.constraint.eLearnNum, impossibleTimeZone: appState.constraint.selectedTimes)
+        let dto = try await constraintRepository.getMajorComb(GPA: appState.constraint.credit, requiredLect: adjRequiredLect, majorCount: appState.constraint.majorNum, cyberCount: appState.constraint.eLearnNum, impossibleTimeZone: adjInvalidTime)
         
         guard let majorCombDtos = dto.result else { return }
         
@@ -46,9 +80,10 @@ struct ConstraintService: ConstraintServiceProtocol {
     
     func getFinalTimetableList(isRaw: Bool) async throws {
         let adjustedRequiredLect = appState.constraint.selectedSubjects.isEmpty ? [""] : appState.constraint.selectedSubjects.map { $0.sbjDivcls }
-        let adjustedMajorList = appState.constraint.selectedTimes.isEmpty ? [[""]] : appState.constraint.selectedMajorCombs.map { $0.combination.map { $0.code } }
+        let adjustedMajorList = appState.constraint.selectedBlocks.isEmpty ? [[""]] : appState.constraint.selectedMajorCombs.map { $0.combination.map { $0.code } }
+        let adjInvalidTime = convertSetToString(appState.constraint.selectedBlocks)
         
-        let dto = try await constraintRepository.getFinalTimetableList(isRaw: isRaw, GPA: appState.constraint.credit, requiredLect: adjustedRequiredLect, majorCount: appState.constraint.majorNum, cyberCount: appState.constraint.eLearnNum, impossibleTimeZone: appState.constraint.selectedTimes, majorList: adjustedMajorList)
+        let dto = try await constraintRepository.getFinalTimetableList(isRaw: isRaw, GPA: appState.constraint.credit, requiredLect: adjustedRequiredLect, majorCount: appState.constraint.majorNum, cyberCount: appState.constraint.eLearnNum, impossibleTimeZone: adjInvalidTime, majorList: adjustedMajorList)
         
         guard let finalTimetableListsDto = dto.result else { return }
         
@@ -75,6 +110,9 @@ struct ConstraintService: ConstraintServiceProtocol {
 
 struct FakeConstraintService: ConstraintServiceProtocol {
     func setSelectedSubjects(_ value: [SubjectModelBase]) { }
+    func setSelectedBlocks(_ value: Set<String>) { }
+    func setPreSelectedBlocks(_ value: Set<String>) { }
+    func convertSetToString(_ set: Set<String>) -> String { "" }
     func getMajorComb() async throws { }
     func getFinalTimetableList(isRaw: Bool) async throws { }
     func saveTimetable(timetableIndex: Int, timetableName: String) async throws { }

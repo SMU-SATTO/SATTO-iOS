@@ -9,19 +9,31 @@ import Combine
 import Foundation
 
 class ConstraintsViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
-    var selectedBlocks: Set<Int> = []
-    var tempDragBlocks: Set<Int> = []
-    var preSelectedBlocks: Set<Int> = []
-    
-    @Published var credit: Int = 18                          //GPA
-    @Published var majorNum: Int = 3                         //majorcount
-    @Published var ELearnNum: Int = 0                        //cybercount
+    @Published var credit: Int = 18        //GPA
+    @Published var majorNum: Int = 3       //majorcount
+    @Published var ELearnNum: Int = 0      //cybercount
     @Published private var _selectedSubjects: [SubjectModelBase] = [] //requiredLect
     var selectedSubjects: [SubjectModelBase] {
         get { _selectedSubjects }
         set { services.constraintService.setSelectedSubjects(newValue) }
     }
-    @Published var selectedTimes: String = ""                //impossibleTimeZone
+    
+    ///`TimetableSelector`설정
+    @Published private var _selectedBlocks: Set<String> = []
+    var selectedBlocks: Set<String> {
+        get { _selectedBlocks }
+        set { services.constraintService.setSelectedBlocks(newValue) }
+    }
+    var sortedSelectedBlocks: String {
+        return services.constraintService.convertSetToString(_selectedBlocks)
+            .replacingOccurrences(of: " ", with: ", ")
+    }
+    @Published private var _preSelectedBlocks: Set<String> = []
+    var preSelectedBlocks: Set<String> {
+        get { _preSelectedBlocks }
+        set { services.constraintService.setPreSelectedBlocks(newValue)}
+    }
+    var tempDragBlocks: Set<String> = []
     
     //request할 때 보낼 과목 조합 리스트
     @Published var selectedMajorCombs: [MajorComb] = []      //majorList
@@ -57,8 +69,13 @@ class ConstraintsViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
         appState.constraint.$selectedSubjects
             .assign(to: \._selectedSubjects, on: self)
             .store(in: &cancellables)
-        appState.constraint.$selectedTimes
-            .assign(to: \.selectedTimes, on: self)
+        
+        appState.constraint.$selectedBlocks
+            .assign(to: \._selectedBlocks, on: self)
+            .store(in: &cancellables)
+        
+        appState.constraint.$preSelectedBlocks
+            .assign(to: \._preSelectedBlocks, on: self)
             .store(in: &cancellables)
         
         appState.constraint.$selectedMajorCombs
@@ -95,9 +112,13 @@ class ConstraintsViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     func toggleSelection(subject: SubjectModelBase) -> Bool {
         if let index = selectedSubjects.firstIndex(where: { $0.sbjDivcls == subject.sbjDivcls }) {
             selectedSubjects.remove(at: index)
+            let timesToRemove = parseTimes(for: subject)
+            _preSelectedBlocks.subtract(timesToRemove)
             return true
         } else if !selectedSubjects.contains(where: { $0.sbjNo == subject.sbjNo }) && !isTimeOverlapping(for: subject) {
             selectedSubjects.append(subject)
+            let newTimes = parseTimes(for: subject)
+            _preSelectedBlocks.formUnion(newTimes)
             return true
         }
         return false

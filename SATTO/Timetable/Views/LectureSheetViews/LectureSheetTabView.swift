@@ -11,9 +11,6 @@ struct LectureSheetTabView: View {
     @ObservedObject var constraintsViewModel: ConstraintsViewModel
     @ObservedObject var lectureSheetViewModel: LectureSheetViewModel
     
-    @Binding var selectedSubviews: Set<Int>
-    @Binding var alreadySelectedSubviews: Set<Int>
-    
     @State private var selectedTab = ""
     @State private var selectedCategories: [String] = []
     
@@ -168,7 +165,7 @@ struct LectureSheetTabView: View {
                 }
             }
         case "시간":
-            TimeSheetView(viewModel: lectureSheetViewModel, selectedSubviews: $selectedSubviews, alreadySelectedSubviews: $alreadySelectedSubviews)
+            TimeSheetView(viewModel: lectureSheetViewModel)
                 .padding(.top, 10)
                 .onDisappear {
                     lectureSheetViewModel.resetCurrPage()
@@ -191,6 +188,6 @@ struct LectureSheetTabView: View {
 }
 
 #Preview {
-    LectureSheetTabView(constraintsViewModel: ConstraintsViewModel(container: .preview), lectureSheetViewModel: LectureSheetViewModel(container: .preview), selectedSubviews: .constant([]), alreadySelectedSubviews: .constant([]), showResultAction: {})
+    LectureSheetTabView(constraintsViewModel: ConstraintsViewModel(container: .preview), lectureSheetViewModel: LectureSheetViewModel(container: .preview), showResultAction: {})
         .preferredColorScheme(.dark)
 }

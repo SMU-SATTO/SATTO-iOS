@@ -8,20 +8,16 @@
 import Foundation
 
 protocol TimeSelectorViewModelProtocol: ObservableObject {
-    var selectedTimes: String { get set }
-    
     ///drag로 선택한 블록
-    var selectedBlocks: Set<Int> { get set }
+    var selectedBlocks: Set<String> { get set }
     ///한 번의 드래그 중 앞서 선택된 블록을 임시로 저장
-    var tempDragBlocks: Set<Int> { get set }
+    var tempDragBlocks: Set<String> { get set }
     ///이미 선택된 시간대
-    var preSelectedBlocks: Set<Int> { get }
+    var preSelectedBlocks: Set<String> { get }
 }
 
-class TimeSelectorViewModel: TimeSelectorViewModelProtocol {
-    @Published var selectedTimes: String = ""
-    
-    @Published var selectedBlocks: Set<Int> = []
-    @Published var tempDragBlocks: Set<Int> = []
-    @Published var preSelectedBlocks: Set<Int> = [1, 5, 0]
+class TimeSelectorViewModel: TimeSelectorViewModelProtocol {   
+    @Published var selectedBlocks: Set<String> = []
+    @Published var tempDragBlocks: Set<String> = []
+    @Published var preSelectedBlocks: Set<String> = []
 }

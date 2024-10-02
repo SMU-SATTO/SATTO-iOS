@@ -51,8 +51,6 @@ struct TimetableConfiguration: Codable {
                 time: TimeConfig = TimeConfig(),
                 timebar: BarConfig = BarConfig(width: 20),
                 weekbar: BarConfig = BarConfig(height: 20),
-                autoFit: Bool = true,
-                compactMode: Bool = false,
                 visibilityOptions: VisibilityOptions = .default) {
         self.weeks = weeks
         self.time = time
@@ -66,7 +64,9 @@ extension TimetableConfiguration {
     static let defaultConfig = TimetableConfiguration()
     static let timeSelectConfig = TimetableConfiguration(
         weeks: [.mon, .tue, .wed, .thu, .fri, .sat, .sun],
-        time: TimeConfig(starAt: SATTOTimetableTime(hour: 8, minute: 0), endAt: SATTOTimetableTime(hour: 21, minute: 0))
+        time: TimeConfig(starAt: SATTOTimetableTime(hour: 8, minute: 0), endAt: SATTOTimetableTime(hour: 22, minute: 0)),
+        timebar: BarConfig(width: 20),
+        weekbar: BarConfig(height: 20)
     )
 }
 

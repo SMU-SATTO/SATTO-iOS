@@ -56,18 +56,13 @@ struct MidCheckView: View {
                         ? "선택된 과목이 없어요"
                         : viewModel.selectedSubjects.map { $0.sbjName }.joined(separator: ", ")
                     )
-                    //MARK: - String값 model에 업데이트 필요
                     selectedOptionInfo(
                         header: "제외된 시간대",
                         headerColor: Color(red: 0.87, green: 0.34, blue: 0.34),
-                        content: viewModel.selectedTimes.isEmpty
-                            ? "선택된 불가능한 시간이 없어요"
-                            : viewModel.selectedTimes
-                                .split(separator: " ")
-                                .map { String($0) }
-                                .joined(separator: ", ")
+                        content: viewModel.selectedBlocks.isEmpty
+                        ? "선택된 불가능한 시간이 없어요"
+                        : viewModel.sortedSelectedBlocks
                     )
-
                 }
                 .padding(.leading, 50)
                 Spacer()

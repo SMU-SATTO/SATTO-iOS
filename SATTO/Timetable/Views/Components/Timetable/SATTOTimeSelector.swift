@@ -31,6 +31,7 @@ struct SATTOTimeSelector<VM>: View where VM: TimeSelectorViewModelProtocol {
                     .stroke(Color(UIColor.quaternaryLabel.withAlphaComponent(0.1)))
             }
         }
+        .frame(minWidth: 210, minHeight: 300)
     }
 }
 
@@ -45,11 +46,14 @@ struct SelectableTimeBlock<VM>: View where VM: TimeSelectorViewModelProtocol {
             ForEach(0..<config.time.endAt.hour - config.time.startAt.hour, id: \.self) { time in
                 HStack(spacing: 0) {
                     ForEach(0..<config.weeks.count, id: \.self) { week in
-                        let index = week * (config.time.endAt.hour - config.time.startAt.hour) + time
+                        let weekTimeString = "\(config.weeks[week].shortSymbolKor)\(time)"
                         Rectangle()
-                            .foregroundStyle(viewModel.preSelectedBlocks.contains(index) ? .red : viewModel.selectedBlocks.contains(index) ? .timeselectorCellSelected : .timeselectorCellUnselected)
+                            .foregroundStyle(viewModel.preSelectedBlocks.contains(weekTimeString)
+                                             ? .red
+                                             : viewModel.selectedBlocks.contains(weekTimeString)
+                                             ? .timeselectorCellSelected
+                                             : .timeselectorCellUnselected)
                             .frame(width: cellWidth, height: cellHeight)
-                            
                     }
                 }
             }
@@ -61,8 +65,8 @@ struct SelectableTimeBlock<VM>: View where VM: TimeSelectorViewModelProtocol {
         DragGesture(minimumDistance: 0)
             .onChanged { value in
                 let dragLocation = value.location
-                if let index = findBlockIndex(at: dragLocation) {
-                    updateSelectedViews(for: index)
+                if let weekTimeString = findBlockWeekTimeString(at: dragLocation) {
+                    updateSelectedViews(for: weekTimeString)
                 }
             }
             .onEnded { _ in
@@ -70,27 +74,28 @@ struct SelectableTimeBlock<VM>: View where VM: TimeSelectorViewModelProtocol {
             }
     }
     
-    private func findBlockIndex(at location: CGPoint) -> Int? {
+    private func findBlockWeekTimeString(at location: CGPoint) -> String? {
         let week = Int(location.x / cellWidth)
         let time = Int(location.y / cellHeight)
         
         guard week >= 0 && week < config.weeks.count else { return nil }
         guard time >= 0 && time < config.time.endAt.hour - config.time.startAt.hour else { return nil }
         
-        let index = week * (config.time.endAt.hour - config.time.startAt.hour) + time
-        return index
+        return "\(config.weeks[week].shortSymbolKor)\(time)"
     }
     
-    private func updateSelectedViews(for index: Int) {
-        guard !viewModel.tempDragBlocks.contains(index),
-              !viewModel.preSelectedBlocks.contains(index) else { return }
+    private func updateSelectedViews(for weekTimeString: String) {
+        guard !viewModel.preSelectedBlocks.contains(weekTimeString),
+              !viewModel.tempDragBlocks.contains(weekTimeString) else { return }
         
-        viewModel.tempDragBlocks.insert(index)
-        
-        if viewModel.selectedBlocks.contains(index) {
-            viewModel.selectedBlocks.remove(index)
-        } else {
-            viewModel.selectedBlocks.insert(index)
+        withAnimation(.easeInOut(duration: 0.2)) {
+            viewModel.tempDragBlocks.insert(weekTimeString)
+            
+            if viewModel.selectedBlocks.contains(weekTimeString) {
+                viewModel.selectedBlocks.remove(weekTimeString)
+            } else {
+                viewModel.selectedBlocks.insert(weekTimeString)
+            }
         }
     }
 }

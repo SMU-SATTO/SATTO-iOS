@@ -6,28 +6,30 @@
 //
 
 import SwiftUI
+import JHTimeTable
 
 // MARK: - 불가능한 시간대 선택
 struct InvalidTimeSelectorView: View {
     @ObservedObject var constraintsViewModel: ConstraintsViewModel
-    
-    @Binding var selectedSubviews: Set<Int>
-    @Binding var alreadySelectedSubviews: Set<Int>
-    @Binding var invalidPopup: Bool
-    
+
     var body: some View {
-        ScrollView {
-            TimeSelectorView(viewModel: constraintsViewModel,
-                             title: "불가능한 시간대가 있으면\n선택해 주세요.",
-                             preselectedSlots: constraintsViewModel.parsePreselectedSlots(),
-                             selectedSubviews: $selectedSubviews,
-                             alreadySelectedSubviews: $alreadySelectedSubviews, invalidPopup: $invalidPopup)
-            .padding(.horizontal, 15)
+        VStack(spacing: 0) {
+            VStack(spacing: 5) {
+                Text("불가능한 시간대를 선택해주세요.")
+                    .font(.sb18)
+                    .frame(width: 320, alignment: .topLeading)
+                Text("드래그로 선택할 수 있어요.")
+                    .font(.sb12)
+                    .foregroundStyle(.gray)
+                    .frame(width: 320, alignment: .topLeading)
+            }
+            SATTOTimeSelector(viewModel: constraintsViewModel)
+                .padding(EdgeInsets(top: 15, leading: 20, bottom: 10, trailing: 20))
         }
     }
 }
 
 
 #Preview {
-    InvalidTimeSelectorView(constraintsViewModel: ConstraintsViewModel(container: .preview), selectedSubviews: .constant([]), alreadySelectedSubviews: .constant([]), invalidPopup: .constant(false))
+    InvalidTimeSelectorView(constraintsViewModel: ConstraintsViewModel(container: .preview))
 }

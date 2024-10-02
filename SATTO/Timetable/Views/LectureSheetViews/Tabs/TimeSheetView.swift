@@ -10,21 +10,23 @@ import SwiftUI
 struct TimeSheetView: View {
     @ObservedObject var viewModel: LectureSheetViewModel
     
-    @Binding var selectedSubviews: Set<Int>
-    @Binding var alreadySelectedSubviews: Set<Int>
-    
     var body: some View {
-        ScrollView {
-            TimeSelectorView(viewModel: viewModel,
-                             title: "보고싶은 시간대를 선택해주세요.",
-                             preselectedSlots: [],
-                             selectedSubviews: $selectedSubviews,
-                             alreadySelectedSubviews: $alreadySelectedSubviews, invalidPopup: .constant(false))
-            .padding(.horizontal, 10)
+        VStack(spacing: 0) {
+            VStack(spacing: 5) {
+                Text("불가능한 시간대를 선택해주세요.")
+                    .font(.sb18)
+                    .frame(width: 320, alignment: .topLeading)
+                Text("드래그로 선택할 수 있어요.")
+                    .font(.sb12)
+                    .foregroundStyle(.gray)
+                    .frame(width: 320, alignment: .topLeading)
+            }
+            SATTOTimeSelector(viewModel: viewModel)
+                .padding(EdgeInsets(top: 15, leading: 10, bottom: 0, trailing: 10))
         }
     }
 }
 
 #Preview {
-    TimeSheetView(viewModel: LectureSheetViewModel(container: .preview), selectedSubviews: .constant([]), alreadySelectedSubviews: .constant([]))
+    TimeSheetView(viewModel: LectureSheetViewModel(container: .preview))
 }

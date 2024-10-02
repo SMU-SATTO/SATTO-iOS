@@ -13,7 +13,8 @@ class ConstraintState: ObservableObject {
     @Published var majorNum: Int = 3                         //majorcount
     @Published var eLearnNum: Int = 0                        //cybercount
     @Published var selectedSubjects: [SubjectModelBase] = [] //requiredLect
-    @Published var selectedTimes: String = ""                //impossibleTimeZone
+    @Published var selectedBlocks: Set<String> = []             //impossibleTimeZone
+    @Published var preSelectedBlocks: Set<String> = []
     
     //request할 때 보낼 과목 조합 리스트
     @Published var selectedMajorCombs: [MajorComb] = []      //majorList

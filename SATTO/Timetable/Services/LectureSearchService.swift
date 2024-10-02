@@ -11,6 +11,8 @@ import Foundation
 protocol LectureSearchServiceProtocol: Sendable {
     func setSelectedLectures(_ value: [SubjectModelBase])
     func setSearchText(_ value: String)
+    func setSelectedBlocks(_ value: Set<String>)
+    func setPreSelectedBlocks(_ value: Set<String>)
     func fetchCurrentLectureList() async throws
     func fetchCurrentLectureList(page: Int) async throws
 }
@@ -29,6 +31,14 @@ struct LectureSearchService: LectureSearchServiceProtocol {
     
     func setSearchText(_ value: String) {
         appState.lectureSearch.searchText = value
+    }
+    
+    func setSelectedBlocks(_ value: Set<String>) {
+        appState.lectureSearch.selectedBlocks = value
+    }
+    
+    func setPreSelectedBlocks(_ value: Set<String>) {
+        appState.lectureSearch.preSelectedBlocks = value
     }
     
     func fetchCurrentLectureList() async throws {
@@ -115,6 +125,8 @@ struct LectureSearchService: LectureSearchServiceProtocol {
 struct FakeLectureSearchService: LectureSearchServiceProtocol {
     func setSelectedLectures(_ value: [SubjectModelBase]) { }
     func setSearchText(_ value: String) { }
+    func setSelectedBlocks(_ value: Set<String>) { }
+    func setPreSelectedBlocks(_ value: Set<String>) { }
     func fetchCurrentLectureList() async throws { }
     func fetchCurrentLectureList(page: Int) async throws { }
 }
