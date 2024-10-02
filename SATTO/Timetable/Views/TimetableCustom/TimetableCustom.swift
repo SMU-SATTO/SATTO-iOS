@@ -47,18 +47,18 @@ struct TimetableCustom: View {
                     }
                 }
                 .padding(.horizontal, 30)
-                TimetableView(timetableBaseArray: constraintsViewModel.selectedSubjects)
-                    .onTapGesture {
-                        isShowBottomSheet = true
-                    }
-                    .sheet(isPresented: $isShowBottomSheet, content: {
-                        LectureSheetTabView(
-                            constraintsViewModel: constraintsViewModel,
-                            lectureSheetViewModel: lectureSheetViewModel,
-                            showResultAction: {isShowBottomSheet = false}
-                        )
-                        .presentationDetents([.medium, .large])
-                    })
+//                TimetableView(timetableBaseArray: constraintsViewModel.selectedSubjects)
+//                    .onTapGesture {
+//                        isShowBottomSheet = true
+//                    }
+//                    .sheet(isPresented: $isShowBottomSheet, content: {
+//                        LectureSheetTabView(
+//                            constraintsViewModel: constraintsViewModel,
+//                            lectureSheetViewModel: lectureSheetViewModel,
+//                            showResultAction: {isShowBottomSheet = false}
+//                        )
+//                        .presentationDetents([.medium, .large])
+//                    })
                 Button(action: {
                     showingAlert = true
                 }) {

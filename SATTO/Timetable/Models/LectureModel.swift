@@ -1,5 +1,5 @@
 //
-//  SubjectModel.swift
+//  LectureModel.swift
 //  SATTO
 //
 //  Created by yeongjoon on 4/28/24.
@@ -25,20 +25,20 @@ struct Combination: Equatable {
     }
 }
 
-protocol SubjectModelBase: Codable {
+protocol LectureModelProtocol: Codable {
     var sbjDivcls: String { get }
     var sbjNo: String { get }
     var sbjName: String { get }
     var time: String { get }
 }
 
-// MARK: - SubjectModel
-/// SubjectModel(sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", name: "컴퓨터네트워크", time: "목4 목5 목6 ")
-struct SubjectModel: SubjectModelBase, Equatable {
+// MARK: - LectureModel
+/// LectureModel(sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", name: "컴퓨터네트워크", time: "목4 목5 목6 ")
+struct LectureModel: LectureModelProtocol, Equatable {
     let sbjDivcls, sbjNo, sbjName, time: String
 }
 
-extension SubjectModel {
+extension LectureModel {
     static func ==(lhs: Self, rhs: Self) -> Bool {
         return lhs.sbjDivcls == rhs.sbjDivcls &&
                lhs.sbjNo == rhs.sbjNo &&
@@ -48,11 +48,12 @@ extension SubjectModel {
 }
 
 
-//MARK: - SubjectDetailModel
-///  SubjectDetailModel(major: "전공", "sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", sbjName: "과목명", prof: "교수명", "time: "목4 목5 목6 ")
-struct SubjectDetailModel: SubjectModelBase {
+//MARK: - LectureDetailModel
+///  LectureDetailModel(major: "전공", "sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", sbjName: "과목명", prof: "교수명", "time: "목4 목5 목6 ")
+struct LectureDetailModel: LectureModelProtocol {
+    let sbjDivcls, sbjNo, sbjName, time: String
+    let prof: String
     let major: String
-    let sbjDivcls, sbjNo, sbjName, prof, time: String
     let credit: Int
     
     
@@ -70,7 +71,7 @@ struct SubjectDetailModel: SubjectModelBase {
 ////MARK: - TimetableMain에서 사용하는 구조체
 //struct TimetableMainInfoModel {
 //    let timetableId: Int?
-//    let subjectModels: [SubjectModel]
+//    let subjectModels: [LectureModel]
 //    let semesterYear: String?
 //    let timeTableName: String?
 //}
@@ -84,7 +85,7 @@ struct TimetableListModel {
     let isRepresent: Bool
 }
 
-struct LectureModel: Identifiable {
+struct OldLectureModel: Identifiable {
     var id = UUID()
     var title: String
     var color: Color
@@ -93,17 +94,17 @@ struct LectureModel: Identifiable {
     var endAt: LectureTableTime
 }
 
-extension LectureModel {
-    static let examples: [LectureModel] = [
-        LectureModel(title: "Lecture1", color: .red,
+extension OldLectureModel {
+    static let examples: [OldLectureModel] = [
+        OldLectureModel(title: "Lecture1", color: .red,
                      week: .mon,
                      startAt: .init(hour: 9, minute: 0),
                      endAt: .init(hour: 11, minute: 0)),
-        LectureModel(title: "Lecture2", color: .blue,
+        OldLectureModel(title: "Lecture2", color: .blue,
                      week: .tue,
                      startAt: .init(hour: 15, minute: 0),
                      endAt: .init(hour: 17, minute: 0)),
-        LectureModel(title: "Lecture3", color: .gray,
+        OldLectureModel(title: "Lecture3", color: .gray,
                      week: .thu,
                      startAt: .init(hour: 11, minute: 0),
                      endAt: .init(hour: 13, minute: 0))

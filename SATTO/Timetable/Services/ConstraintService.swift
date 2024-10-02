@@ -9,7 +9,7 @@ import Foundation
 
 @MainActor
 protocol ConstraintServiceProtocol: Sendable {
-    func setSelectedSubjects(_ value: [SubjectModelBase])
+    func setSelectedSubjects(_ value: [LectureModelProtocol])
     func setSelectedBlocks(_ value: Set<String>)
     func setPreSelectedBlocks(_ value: Set<String>)
     func convertSetToString(_ set: Set<String>) -> String
@@ -27,7 +27,7 @@ struct ConstraintService: ConstraintServiceProtocol {
         webRepositories.constraintRepository
     }
     
-    func setSelectedSubjects(_ value: [SubjectModelBase]) {
+    func setSelectedSubjects(_ value: [LectureModelProtocol]) {
         appState.constraint.selectedSubjects = value
     }
     
@@ -87,9 +87,9 @@ struct ConstraintService: ConstraintServiceProtocol {
         
         guard let finalTimetableListsDto = dto.result else { return }
         
-        let subjectModels: [[SubjectModel]] = finalTimetableListsDto.map { dto in
+        let subjectModels: [[LectureModel]] = finalTimetableListsDto.map { dto in
             dto.timeTable.map { finalTimetableDto in
-                SubjectModel(sbjDivcls: finalTimetableDto.codeSection, sbjNo: finalTimetableDto.code, sbjName: finalTimetableDto.lectName, time: finalTimetableDto.lectTime)
+                LectureModel(sbjDivcls: finalTimetableDto.codeSection, sbjNo: finalTimetableDto.code, sbjName: finalTimetableDto.lectName, time: finalTimetableDto.lectTime)
             }
         }
         
@@ -109,7 +109,7 @@ struct ConstraintService: ConstraintServiceProtocol {
 }
 
 struct FakeConstraintService: ConstraintServiceProtocol {
-    func setSelectedSubjects(_ value: [SubjectModelBase]) { }
+    func setSelectedSubjects(_ value: [LectureModelProtocol]) { }
     func setSelectedBlocks(_ value: Set<String>) { }
     func setPreSelectedBlocks(_ value: Set<String>) { }
     func convertSetToString(_ set: Set<String>) -> String { "" }

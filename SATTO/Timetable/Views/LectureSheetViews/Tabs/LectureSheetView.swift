@@ -70,7 +70,7 @@ struct LectureSheetView: View {
         }
     }
     
-    private func subjectCardView(_ subjectDetail: SubjectDetailModel, at index: Int, containerSize: CGSize) -> some View {
+    private func subjectCardView(_ subjectDetail: LectureDetailModel, at index: Int, containerSize: CGSize) -> some View {
         ZStack {
             subjectCardContent(subjectDetail, at: index, containerSize: containerSize)
             subjectCardButton(subjectDetail)
@@ -92,7 +92,7 @@ struct LectureSheetView: View {
         .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
     }
     
-    private func subjectCardContent(_ subjectDetail: SubjectDetailModel, at index: Int, containerSize: CGSize) -> some View {
+    private func subjectCardContent(_ subjectDetail: LectureDetailModel, at index: Int, containerSize: CGSize) -> some View {
         VStack(alignment: .leading) {
             subjectMajorView(subjectDetail)
             subjectInfoView(subjectDetail)
@@ -103,7 +103,7 @@ struct LectureSheetView: View {
         }
     }
     
-    private func subjectMajorView(_ subjectDetail: SubjectDetailModel) -> some View {
+    private func subjectMajorView(_ subjectDetail: LectureDetailModel) -> some View {
         RoundedRectangle(cornerRadius: 20)
             .foregroundStyle(Color.subjectMajorBackground)
             .frame(width: 50, height: 20)
@@ -115,7 +115,7 @@ struct LectureSheetView: View {
             .padding([.leading, .top], 10)
     }
     
-    private func subjectInfoView(_ subjectDetail: SubjectDetailModel) -> some View {
+    private func subjectInfoView(_ subjectDetail: LectureDetailModel) -> some View {
         VStack(spacing: 3) {
             HStack {
                 VStack(alignment: .leading) {
@@ -139,7 +139,7 @@ struct LectureSheetView: View {
         .padding(.leading, 10)
     }
     
-    private func subjectCardButton(_ subjectDetail: SubjectDetailModel) -> some View {
+    private func subjectCardButton(_ subjectDetail: LectureDetailModel) -> some View {
         VStack {
             HStack {
                 Spacer()
@@ -160,7 +160,7 @@ struct LectureSheetView: View {
         }
     }
     
-    private func subjectCardBorder(_ subjectDetail: SubjectDetailModel) -> some View {
+    private func subjectCardBorder(_ subjectDetail: LectureDetailModel) -> some View {
         constraintsViewModel.isSelected(subject: subjectDetail) 
         ? RoundedRectangle(cornerRadius: 10)
             .stroke(Color.subjectCardBorder, lineWidth: 1)
@@ -200,7 +200,7 @@ struct LectureSheetView: View {
         }
     }
     
-    private func selectedSubjectItemView(_ subject: SubjectModelBase) -> some View {
+    private func selectedSubjectItemView(_ subject: LectureModelProtocol) -> some View {
         HStack {
             Text(subject.sbjName)
                 .font(.m14)

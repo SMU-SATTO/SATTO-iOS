@@ -11,7 +11,7 @@ struct TimetableModel {
     let id: Int
     let semester: String
     let name: String
-    let lectures: [SubjectModel]
+    let lectures: [LectureModel]
     let isPublic: Bool
     let isRepresented: Bool
 }

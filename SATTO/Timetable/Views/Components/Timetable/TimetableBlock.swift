@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TimetableBlock: View {
     let config: TimetableConfiguration
-    let lectures: [SubjectModel]
+    let lectures: [LectureModel]
     let blockRadius: CGFloat = 8
     let containerSize: CGSize
 
@@ -134,8 +134,8 @@ struct TimetableBlock: View {
 
 #Preview {
     let sampleLectures = [
-        SubjectModel(sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", sbjName: "컴퓨터네트워크", time: "목4 목5 목7"),
-        SubjectModel(sbjDivcls: "MATH001-1", sbjNo: "MATH001", sbjName: "이름이 긴 강의명 이름이 긴 강의명 이름이 긴 강의명", time: "월1 월3 월4 ")
+        LectureModel(sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", sbjName: "컴퓨터네트워크", time: "목4 목5 목7"),
+        LectureModel(sbjDivcls: "MATH001-1", sbjNo: "MATH001", sbjName: "이름이 긴 강의명 이름이 긴 강의명 이름이 긴 강의명", time: "월1 월3 월4 ")
     ]
     
     let timetableModel = TimetableModel(

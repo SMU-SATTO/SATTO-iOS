@@ -12,8 +12,8 @@ class ConstraintsViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     @Published var credit: Int = 18        //GPA
     @Published var majorNum: Int = 3       //majorcount
     @Published var ELearnNum: Int = 0      //cybercount
-    @Published private var _selectedSubjects: [SubjectModelBase] = [] //requiredLect
-    var selectedSubjects: [SubjectModelBase] {
+    @Published private var _selectedSubjects: [LectureModelProtocol] = [] //requiredLect
+    var selectedSubjects: [LectureModelProtocol] {
         get { _selectedSubjects }
         set { services.constraintService.setSelectedSubjects(newValue) }
     }
@@ -44,8 +44,8 @@ class ConstraintsViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
         get { _majorCombinations ?? [] }
     }
     
-    @Published private var _timetableList: [[SubjectModelBase]]? = []
-    var timetableList: [[SubjectModelBase]] {
+    @Published private var _timetableList: [[LectureModelProtocol]]? = []
+    var timetableList: [[LectureModelProtocol]] {
         get { _timetableList ?? []}
     }
     
@@ -103,13 +103,13 @@ class ConstraintsViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
         return selectedSubjects.isEmpty
     }
 
-    func removeSubject(_ subject: SubjectModelBase) {
+    func removeSubject(_ subject: LectureModelProtocol) {
         if let index = selectedSubjects.firstIndex(where: { $0.sbjDivcls == subject.sbjDivcls }) {
             selectedSubjects.remove(at: index)
         }
     }
     
-    func toggleSelection(subject: SubjectModelBase) -> Bool {
+    func toggleSelection(subject: LectureModelProtocol) -> Bool {
         if let index = selectedSubjects.firstIndex(where: { $0.sbjDivcls == subject.sbjDivcls }) {
             selectedSubjects.remove(at: index)
             let timesToRemove = parseTimes(for: subject)
@@ -124,11 +124,11 @@ class ConstraintsViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
         return false
     }
     
-    func isSelected(subject: SubjectModelBase) -> Bool {
+    func isSelected(subject: LectureModelProtocol) -> Bool {
         return selectedSubjects.contains(where: { $0.sbjDivcls == subject.sbjDivcls })
     }
     
-    func isTimeOverlapping(for subject: SubjectModelBase) -> Bool {
+    func isTimeOverlapping(for subject: LectureModelProtocol) -> Bool {
         let newSubjectTimes = parseTimes(for: subject)
         for existingSubject in selectedSubjects {
             let existingSubjectTimes = parseTimes(for: existingSubject)
@@ -149,7 +149,7 @@ class ConstraintsViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
         selectedSubjects.removeAll()
     }
     
-    private func parseTimes(for subject: SubjectModelBase) -> [String] {
+    private func parseTimes(for subject: LectureModelProtocol) -> [String] {
         return subject.time.components(separatedBy: " ")
     }
     

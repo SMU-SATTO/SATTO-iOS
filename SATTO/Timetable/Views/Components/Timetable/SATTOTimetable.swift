@@ -45,7 +45,7 @@ struct SATTOTimetable: View {
         }
     }
     
-    private func extractWeekdays(from lectures: [SubjectModel]) -> [Weekdays] {
+    private func extractWeekdays(from lectures: [LectureModel]) -> [Weekdays] {
         let baseWeekdays: [Weekdays] = [.mon, .tue, .wed, .thu, .fri]
         let fullWeekdays: [Weekdays] = [.mon, .tue, .wed, .thu, .fri, .sat, .sun]
         
@@ -68,7 +68,7 @@ struct SATTOTimetable: View {
         return baseWeekdays
     }
     
-    private func extractTimeRange(from lectures: [SubjectModel]) -> TimetableConfiguration.TimeConfig {
+    private func extractTimeRange(from lectures: [LectureModel]) -> TimetableConfiguration.TimeConfig {
         var earliestStartHour = 9
         var latestEndHour = 18
         
@@ -205,9 +205,9 @@ struct TimeBar: View {
 
 #Preview {
     let sampleLectures = [
-        SubjectModel(sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", sbjName: "컴퓨터네트워크", time: "목0 목5 금7"),
-        SubjectModel(sbjDivcls: "MATH001-1", sbjNo: "MATH001", sbjName: "수학", time: "일1 월3 월4"),
-        SubjectModel(sbjDivcls: "SCI001-2", sbjNo: "MATH002", sbjName: "과학", time: "월2 월13 화10")
+        LectureModel(sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", sbjName: "컴퓨터네트워크", time: "목0 목5 금7"),
+        LectureModel(sbjDivcls: "MATH001-1", sbjNo: "MATH001", sbjName: "수학", time: "일1 월3 월4"),
+        LectureModel(sbjDivcls: "SCI001-2", sbjNo: "MATH002", sbjName: "과학", time: "월2 월13 화10")
     ]
     
     let timetableModel = TimetableModel(

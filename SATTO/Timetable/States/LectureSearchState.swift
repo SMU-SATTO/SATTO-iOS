@@ -20,9 +20,9 @@ class LectureSearchState: ObservableObject {
     @Published var selectedELOption: [String] = ["전체"]
     @Published var selectedTimes: String = ""
     
-    @Published var subjectDetailDataList: [SubjectDetailModel]?
+    @Published var subjectDetailDataList: [LectureDetailModel]?
     
-    @Published var selectedLectures: [SubjectModelBase] = []
+    @Published var selectedLectures: [LectureModelProtocol] = []
     
     @Published var currentPage: Int?
     @Published var totalPage: Int? = 0

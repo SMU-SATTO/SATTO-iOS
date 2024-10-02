@@ -58,8 +58,7 @@
 		AA0DFC982C0F63B4002ED3C9 /* TimetableDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0DFC972C0F63B4002ED3C9 /* TimetableDto.swift */; };
 		AA0DFC9A2C0F63E6002ED3C9 /* TimetableRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0DFC992C0F63E6002ED3C9 /* TimetableRouter.swift */; };
 		AA1018A22BDE812A009E6804 /* TimetableCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1018A12BDE812A009E6804 /* TimetableCustom.swift */; };
-		AA1018A92BDE882C009E6804 /* SubjectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1018A82BDE882C009E6804 /* SubjectModel.swift */; };
-		AA51CDFE2BE3AD87003799CB /* TimetableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA51CDFD2BE3AD87003799CB /* TimetableView.swift */; };
+		AA1018A92BDE882C009E6804 /* LectureModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1018A82BDE882C009E6804 /* LectureModel.swift */; };
 		AA65E6002C25AC8900655856 /* TimetableModifyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA65E5FF2C25AC8900655856 /* TimetableModifyView.swift */; };
 		AA65E6022C25B1AB00655856 /* TimetableMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA65E6012C25B1AB00655856 /* TimetableMainViewModel.swift */; };
 		AA65E60A2C3019E800655856 /* LectureDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA65E6092C3019E800655856 /* LectureDto.swift */; };
@@ -198,9 +197,8 @@
 		AA0DFC972C0F63B4002ED3C9 /* TimetableDto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimetableDto.swift; sourceTree = "<group>"; };
 		AA0DFC992C0F63E6002ED3C9 /* TimetableRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimetableRouter.swift; sourceTree = "<group>"; };
 		AA1018A12BDE812A009E6804 /* TimetableCustom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableCustom.swift; sourceTree = "<group>"; };
-		AA1018A82BDE882C009E6804 /* SubjectModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectModel.swift; sourceTree = "<group>"; };
+		AA1018A82BDE882C009E6804 /* LectureModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureModel.swift; sourceTree = "<group>"; };
 		AA1018AA2BDE9C80009E6804 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		AA51CDFD2BE3AD87003799CB /* TimetableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableView.swift; sourceTree = "<group>"; };
 		AA65E5FF2C25AC8900655856 /* TimetableModifyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableModifyView.swift; sourceTree = "<group>"; };
 		AA65E6012C25B1AB00655856 /* TimetableMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableMainViewModel.swift; sourceTree = "<group>"; };
 		AA65E6092C3019E800655856 /* LectureDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureDto.swift; sourceTree = "<group>"; };
@@ -506,7 +504,7 @@
 			children = (
 				AA068F0D2CAB43CA003F5750 /* SATTOTimetable */,
 				AACAD62A2CA0AD42005C2F26 /* TimetableModel.swift */,
-				AA1018A82BDE882C009E6804 /* SubjectModel.swift */,
+				AA1018A82BDE882C009E6804 /* LectureModel.swift */,
 				AA0DFC6C2C0CE660002ED3C9 /* BottomSheetModel.swift */,
 			);
 			path = Models;
@@ -528,7 +526,6 @@
 			children = (
 				AA068F0A2CAB3728003F5750 /* Timetable */,
 				AACAD6492CA9CA96005C2F26 /* LectureSheet */,
-				AA51CDFD2BE3AD87003799CB /* TimetableView.swift */,
 				AA7752A52C2151EF00778870 /* ChartViews.swift */,
 			);
 			name = Components;
@@ -853,7 +850,6 @@
 				3B82D85A2C211641008E0138 /* AuthViewModel.swift in Sources */,
 				3B742B7C2BBE7C570000399F /* CompareTimeTableView.swift in Sources */,
 				3B82D8A42C2BB513008E0138 /* FriendAPI.swift in Sources */,
-				AA51CDFE2BE3AD87003799CB /* TimetableView.swift in Sources */,
 				3BD5322D2BF06AEB00152A77 /* EventViewModel.swift in Sources */,
 				3BF1F4972C464C5700B32C66 /* CustomBackButton.swift in Sources */,
 				3B82D8922C23E06F008E0138 /* UserModel.swift in Sources */,
@@ -872,7 +868,7 @@
 				AA0B714E2C07C77100216A32 /* TimetableProgressView.swift in Sources */,
 				AA7752A62C2151EF00778870 /* ChartViews.swift in Sources */,
 				AA66001E2C21D6EB0055557C /* TimetableRepository.swift in Sources */,
-				AA1018A92BDE882C009E6804 /* SubjectModel.swift in Sources */,
+				AA1018A92BDE882C009E6804 /* LectureModel.swift in Sources */,
 				3B82D8BD2C3A3737008E0138 /* FriendModel.swift in Sources */,
 				AAA950672BA5C39B004E16C8 /* MajorCombSelectorView.swift in Sources */,
 				AAF9775F2C386E8300672090 /* TimetableMakePopupViews.swift in Sources */,

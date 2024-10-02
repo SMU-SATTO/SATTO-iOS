@@ -9,7 +9,7 @@ import Foundation
 
 @MainActor
 protocol LectureSearchServiceProtocol: Sendable {
-    func setSelectedLectures(_ value: [SubjectModelBase])
+    func setSelectedLectures(_ value: [LectureModelProtocol])
     func setSearchText(_ value: String)
     func setSelectedBlocks(_ value: Set<String>)
     func setPreSelectedBlocks(_ value: Set<String>)
@@ -25,7 +25,7 @@ struct LectureSearchService: LectureSearchServiceProtocol {
         webRepositories.lectureSearchRepository
     }
     
-    func setSelectedLectures(_ value: [SubjectModelBase]) {
+    func setSelectedLectures(_ value: [LectureModelProtocol]) {
         appState.lectureSearch.selectedLectures = value
     }
     
@@ -99,8 +99,8 @@ struct LectureSearchService: LectureSearchServiceProtocol {
             appState.lectureSearch.subjectDetailDataList = []
             return
         }
-        let subjectDetailModels: [SubjectDetailModel] = currentLectureLists.currentLectureResponseDTOList.map {
-            SubjectDetailModel(
+        let subjectDetailModels: [LectureDetailModel] = currentLectureLists.currentLectureResponseDTOList.map {
+            LectureDetailModel(
                 major: $0.cmpDiv ?? "Error",
                 sbjDivcls: $0.codeSection ?? "Error",
                 sbjNo: $0.code ?? "Error",
@@ -123,7 +123,7 @@ struct LectureSearchService: LectureSearchServiceProtocol {
 }
 
 struct FakeLectureSearchService: LectureSearchServiceProtocol {
-    func setSelectedLectures(_ value: [SubjectModelBase]) { }
+    func setSelectedLectures(_ value: [LectureModelProtocol]) { }
     func setSearchText(_ value: String) { }
     func setSelectedBlocks(_ value: Set<String>) { }
     func setPreSelectedBlocks(_ value: Set<String>) { }

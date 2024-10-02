@@ -14,7 +14,7 @@ struct TimetableModifyView: View {
     @ObservedObject var lectureSheetViewModel: LectureSheetViewModel
     @ObservedObject var timetableMainViewModel: TimetableMainViewModel
     
-    @State private var tempTimetable: [SubjectModelBase] = []
+    @State private var tempTimetable: [LectureModelProtocol] = []
     
     @State private var isShowBottomSheet = false
     @State private var isUsingSelectedSubjects = true
@@ -51,18 +51,18 @@ struct TimetableModifyView: View {
                     }
                 }
                 .padding(.horizontal, 30)
-                TimetableView(timetableBaseArray: constraintsViewModel.selectedSubjects)
-                    .onTapGesture {
-                        isShowBottomSheet = true
-                    }
-                    .sheet(isPresented: $isShowBottomSheet, content: {
-                        LectureSheetTabView(
-                            constraintsViewModel: constraintsViewModel,
-                            lectureSheetViewModel: lectureSheetViewModel,
-                            showResultAction: {isShowBottomSheet = false}
-                        )
-                        .presentationDetents([.medium, .large])
-                    })
+//                TimetableView(timetableBaseArray: constraintsViewModel.selectedSubjects)
+//                    .onTapGesture {
+//                        isShowBottomSheet = true
+//                    }
+//                    .sheet(isPresented: $isShowBottomSheet, content: {
+//                        LectureSheetTabView(
+//                            constraintsViewModel: constraintsViewModel,
+//                            lectureSheetViewModel: lectureSheetViewModel,
+//                            showResultAction: {isShowBottomSheet = false}
+//                        )
+//                        .presentationDetents([.medium, .large])
+//                    })
                 Button(action: {
                     showingConfirmAlert = true
                 }) {

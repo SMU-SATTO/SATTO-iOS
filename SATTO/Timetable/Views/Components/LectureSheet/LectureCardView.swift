@@ -10,7 +10,7 @@ import SwiftUI
 struct LectureCardView: View {
     @ObservedObject var lectureSheetViewModel: LectureSheetViewModel
     @Binding var showFloater: Bool
-    var lectureDetail: SubjectDetailModel
+    var lectureDetail: LectureDetailModel
     var index: Int
     var containerSize: CGSize
     

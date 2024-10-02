@@ -346,8 +346,8 @@ struct TimetableMainView: View {
             }
             .padding(.top, 10)
             if let currentTimetable = timetableMainViewModel.currentTimetable {
-                TimetableView(timetableBaseArray: currentTimetable.lectures)
-                    .padding(.horizontal, 15)
+//                TimetableView(timetableBaseArray: currentTimetable.lectures)
+//                    .padding(.horizontal, 15)
             }
             else {
                 Text("대표시간표가 없어요.\n시간표를 생성하고, 시간표를 선택한 다음\n톱니바퀴 버튼을 눌러 대표시간표를 등록해 주세요!")
