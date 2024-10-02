@@ -43,6 +43,7 @@ struct TimetableView: View {
                 }
             }
         }
+        .frame(minWidth: 210, minHeight: 300)
     }
     
     private func extractWeekdays(from lectures: [LectureModel]) -> [Weekdays] {

@@ -47,6 +47,7 @@ struct TimetableCustom: View {
                 }
                 .padding(.horizontal, 30)
                 TimetableView(timetable: TimetableModel(id: -1, semester: "", name: "", lectures: constraintsViewModel.selectedLectures, isPublic: false, isRepresented: false) )
+                    .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
                     .sheet(isPresented: $isShowBottomSheet, content: {
                         LectureSheetTabView(
                             constraintsViewModel: constraintsViewModel,
