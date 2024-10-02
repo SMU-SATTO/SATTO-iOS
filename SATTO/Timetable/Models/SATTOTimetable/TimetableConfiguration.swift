@@ -16,11 +16,11 @@ struct TimetableConfiguration: Codable {
     public var visibilityOptions: VisibilityOptions
     
     public struct TimeConfig: Codable, Sendable {
-        public var startAt: SATTOTimetableTime
-        public var endAt: SATTOTimetableTime
+        public var startAt: TimetableTime
+        public var endAt: TimetableTime
 
         public static let `default`: TimeConfig = TimeConfig(
-            startAt: SATTOTimetableTime(hour: 9, minute: 0), endAt: SATTOTimetableTime(hour: 21, minute: 0)
+            startAt: TimetableTime(hour: 9, minute: 0), endAt: TimetableTime(hour: 21, minute: 0)
         )
     }
     
@@ -57,7 +57,7 @@ extension TimetableConfiguration {
     static let defaultConfig = TimetableConfiguration()
     static let timeSelectConfig = TimetableConfiguration(
         weeks: [.mon, .tue, .wed, .thu, .fri, .sat, .sun],
-        time: TimeConfig(startAt: SATTOTimetableTime(hour: 8, minute: 0), endAt: SATTOTimetableTime(hour: 22, minute: 0)),
+        time: TimeConfig(startAt: TimetableTime(hour: 8, minute: 0), endAt: TimetableTime(hour: 22, minute: 0)),
         timebar: BarConfig(width: 20, height: 0),
         weekbar: BarConfig(width: 0, height: 20)
     )

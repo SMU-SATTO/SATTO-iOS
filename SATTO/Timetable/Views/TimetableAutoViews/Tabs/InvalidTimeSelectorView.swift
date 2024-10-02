@@ -22,7 +22,7 @@ struct InvalidTimeSelectorView: View {
                     .foregroundStyle(.gray)
                     .frame(width: 320, alignment: .topLeading)
             }
-            SATTOTimeSelector(viewModel: constraintsViewModel)
+            TimeSelectorView(viewModel: constraintsViewModel)
                 .padding(EdgeInsets(top: 15, leading: 20, bottom: 10, trailing: 20))
         }
     }

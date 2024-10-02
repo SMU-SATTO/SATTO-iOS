@@ -1,5 +1,5 @@
 //
-//  SATTOTimeSelector.swift
+//  TimeSelectorView.swift
 //  SATTO
 //
 //  Created by yeongjoon on 10/1/24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SATTOTimeSelector<VM>: View where VM: TimeSelectorViewModelProtocol {
+struct TimeSelectorView<VM>: View where VM: TimeSelectorViewModelProtocol {
     @ObservedObject var viewModel: VM
     
     var config = TimetableConfiguration.timeSelectConfig
@@ -27,7 +27,7 @@ struct SATTOTimeSelector<VM>: View where VM: TimeSelectorViewModelProtocol {
                         SelectableTimeBlock(viewModel: viewModel, config: config, cellWidth: cellWidth, cellHeight: cellHeight)
                     }
                 }
-                SATTOGrid(weekCount: config.weeks.count, hourCount: config.time.endAt.hour - config.time.startAt.hour, config: config)
+                TimetableGrid(weekCount: config.weeks.count, hourCount: config.time.endAt.hour - config.time.startAt.hour, config: config)
                     .stroke(Color(UIColor.quaternaryLabel.withAlphaComponent(0.1)))
             }
         }
@@ -102,7 +102,7 @@ struct SelectableTimeBlock<VM>: View where VM: TimeSelectorViewModelProtocol {
 
 
 #Preview {
-    SATTOTimeSelector(viewModel: TimeSelectorViewModel())
+    TimeSelectorView(viewModel: TimeSelectorViewModel())
         .aspectRatio(7/10, contentMode: .fit)
         .frame(maxWidth: 350, maxHeight: 500)
 }

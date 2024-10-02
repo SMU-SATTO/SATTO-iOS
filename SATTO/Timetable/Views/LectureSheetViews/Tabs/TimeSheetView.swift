@@ -21,7 +21,7 @@ struct TimeSheetView: View {
                     .foregroundStyle(.gray)
                     .frame(width: 320, alignment: .topLeading)
             }
-            SATTOTimeSelector(viewModel: viewModel)
+            TimeSelectorView(viewModel: viewModel)
                 .padding(EdgeInsets(top: 15, leading: 10, bottom: 0, trailing: 10))
         }
     }

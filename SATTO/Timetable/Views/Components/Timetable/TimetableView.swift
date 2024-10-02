@@ -27,7 +27,7 @@ struct TimetableView: View {
             let cellWidth = (geometry.size.width - config.timebar.width) / CGFloat(config.weeks.count)
             let cellHeight = (geometry.size.height - config.weekbar.height) / CGFloat(config.time.endAt.hour - config.time.startAt.hour)
             ZStack {
-                SATTOGrid(weekCount: config.weeks.count, hourCount: config.time.endAt.hour - config.time.startAt.hour, config: config)
+                TimetableGrid(weekCount: config.weeks.count, hourCount: config.time.endAt.hour - config.time.startAt.hour, config: config)
                     .stroke(Color(UIColor.quaternaryLabel.withAlphaComponent(0.1)))
                 VStack(spacing: 0) {
                     HStack(spacing: 0) {
@@ -91,8 +91,8 @@ struct TimetableView: View {
         }
         
         return TimetableConfiguration.TimeConfig(
-            startAt: SATTOTimetableTime(hour: earliestStartHour, minute: 0),
-            endAt: SATTOTimetableTime(hour: latestEndHour, minute: 0)
+            startAt: TimetableTime(hour: earliestStartHour, minute: 0),
+            endAt: TimetableTime(hour: latestEndHour, minute: 0)
         )
     }
 }
@@ -107,14 +107,14 @@ extension TimetableView {
     func withTimeRange(startAt: Int, endAt: Int) -> TimetableView {
         var new = self
         new.config.time = TimetableConfiguration.TimeConfig(
-            startAt: SATTOTimetableTime(hour: startAt, minute: 0),
-            endAt: SATTOTimetableTime(hour: endAt, minute: 0)
+            startAt: TimetableTime(hour: startAt, minute: 0),
+            endAt: TimetableTime(hour: endAt, minute: 0)
         )
         return new
     }
 }
 
-struct SATTOGrid: Shape {
+struct TimetableGrid: Shape {
     var weekCount: Int
     var hourCount: Int
     var config: TimetableConfiguration

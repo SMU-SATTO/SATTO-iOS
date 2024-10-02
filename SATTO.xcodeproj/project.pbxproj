@@ -51,7 +51,7 @@
 		AA068F092CAB34C5003F5750 /* TimetableConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA068F082CAB34C5003F5750 /* TimetableConfiguration.swift */; };
 		AA068F0C2CAB41A1003F5750 /* SATTOTimetableModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA068F0B2CAB41A1003F5750 /* SATTOTimetableModels.swift */; };
 		AA068F0F2CAB9786003F5750 /* TimetableBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA068F0E2CAB977D003F5750 /* TimetableBlock.swift */; };
-		AA068F132CABDF3E003F5750 /* SATTOTimeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA068F122CABDF34003F5750 /* SATTOTimeSelector.swift */; };
+		AA068F132CABDF3E003F5750 /* TimeSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA068F122CABDF34003F5750 /* TimeSelectorView.swift */; };
 		AA0B714E2C07C77100216A32 /* TimetableProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0B714D2C07C77100216A32 /* TimetableProgressView.swift */; };
 		AA0DFC6D2C0CE660002ED3C9 /* BottomSheetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0DFC6C2C0CE660002ED3C9 /* BottomSheetModel.swift */; };
 		AA0DFC6F2C0CEAD7002ED3C9 /* OptionSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0DFC6E2C0CEAD7002ED3C9 /* OptionSheetView.swift */; };
@@ -189,7 +189,7 @@
 		AA068F082CAB34C5003F5750 /* TimetableConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableConfiguration.swift; sourceTree = "<group>"; };
 		AA068F0B2CAB41A1003F5750 /* SATTOTimetableModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SATTOTimetableModels.swift; sourceTree = "<group>"; };
 		AA068F0E2CAB977D003F5750 /* TimetableBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableBlock.swift; sourceTree = "<group>"; };
-		AA068F122CABDF34003F5750 /* SATTOTimeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SATTOTimeSelector.swift; sourceTree = "<group>"; };
+		AA068F122CABDF34003F5750 /* TimeSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSelectorView.swift; sourceTree = "<group>"; };
 		AA0B714D2C07C77100216A32 /* TimetableProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableProgressView.swift; sourceTree = "<group>"; };
 		AA0DFC6C2C0CE660002ED3C9 /* BottomSheetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetModel.swift; sourceTree = "<group>"; };
 		AA0DFC6E2C0CEAD7002ED3C9 /* OptionSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionSheetView.swift; sourceTree = "<group>"; };
@@ -395,7 +395,7 @@
 		AA068F0A2CAB3728003F5750 /* Timetable */ = {
 			isa = PBXGroup;
 			children = (
-				AA068F122CABDF34003F5750 /* SATTOTimeSelector.swift */,
+				AA068F122CABDF34003F5750 /* TimeSelectorView.swift */,
 				AA068F062CAB3294003F5750 /* TimetableView.swift */,
 				AA068F0E2CAB977D003F5750 /* TimetableBlock.swift */,
 				AA068F042CAB316C003F5750 /* TimetableUtil.swift */,
@@ -901,7 +901,7 @@
 				AAA9504D2BA5C396004E16C8 /* Font.swift in Sources */,
 				AA068F0C2CAB41A1003F5750 /* SATTOTimetableModels.swift in Sources */,
 				AA0DFC982C0F63B4002ED3C9 /* TimetableDto.swift in Sources */,
-				AA068F132CABDF3E003F5750 /* SATTOTimeSelector.swift in Sources */,
+				AA068F132CABDF3E003F5750 /* TimeSelectorView.swift in Sources */,
 				AACAD6362CA34FBB005C2F26 /* BaseViewModel.swift in Sources */,
 				AACAD6342CA34B06005C2F26 /* AppEnvironment.swift in Sources */,
 				AAA522782C7C72100056C9B7 /* SATTOError.swift in Sources */,

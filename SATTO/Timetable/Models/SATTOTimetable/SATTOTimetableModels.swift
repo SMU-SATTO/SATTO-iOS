@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct SATTOTimetableTime: Codable, Comparable, Sendable, Identifiable {
+public struct TimetableTime: Codable, Comparable, Sendable, Identifiable {
     public var id: Int { hour*60 + minute }
     public var hour: Int
     public var minute: Int
@@ -23,7 +23,7 @@ public struct SATTOTimetableTime: Codable, Comparable, Sendable, Identifiable {
         self.minute = calendar.component(.minute, from: date)
     }
     
-    public static func < (lhs: SATTOTimetableTime, rhs: SATTOTimetableTime) -> Bool {
+    public static func < (lhs: TimetableTime, rhs: TimetableTime) -> Bool {
         lhs.hour*60+lhs.minute < rhs.hour*60+rhs.minute
     }
 }
