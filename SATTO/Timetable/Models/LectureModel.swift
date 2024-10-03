@@ -43,13 +43,3 @@ struct LectureModel: Codable {
         self.credit = credit
     }
 }
-
-//MARK: - TimetableListModel
-struct TimetableListModel {
-    let id: Int
-    let timetableName: String
-    let semesterYear: String
-    let isPublic: Bool
-    let isRepresent: Bool
-}
-

@@ -12,7 +12,6 @@ struct LectureCardView: View {
     @Binding var showFloater: Bool
     var lectureDetail: LectureModel
     var index: Int
-    var containerSize: CGSize
     
     @Environment(\.colorScheme) var colorScheme
     

@@ -93,6 +93,7 @@ struct TimetableCustom: View {
             ToolbarItem(placement: .topBarLeading) {
                 HStack {
                     Button(action: {
+                        constraintsViewModel.resetSelectedLectures()
                         stackPath.removeLast()
                     }) {
                         HStack {

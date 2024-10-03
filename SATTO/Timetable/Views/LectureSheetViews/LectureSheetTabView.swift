@@ -33,7 +33,7 @@ struct LectureSheetTabView: View {
                     .padding(.top, 20)
                 
                 if selectedTab != "시간" {
-                    searchBar
+                    LectureSearchBar(viewModel: lectureSheetViewModel)
                         .padding(.horizontal, 20)
                 }
                 selectedTabView
@@ -87,48 +87,6 @@ struct LectureSheetTabView: View {
                         .padding(EdgeInsets(top: -5, leading: -15, bottom: -5, trailing: -15))
                 )
                 .padding(EdgeInsets(top: 5, leading: 15, bottom: 5, trailing: 15))
-        }
-    }
-    
-    private var searchBar: some View {
-        VStack {
-            RoundedRectangle(cornerRadius: 30)
-                .foregroundStyle(Color.searchbarBackground)
-                .frame(height: 40)
-                .overlay(
-                    HStack {
-                        Image(systemName: "magnifyingglass")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 19, height: 19)
-                            .foregroundStyle(Color.searchbarText)
-                            .padding(.leading, 15)
-                        TextField("듣고 싶은 과목을 입력해 주세요", text: $lectureSheetViewModel.searchText)
-                            .font(.sb14)
-                            .autocorrectionDisabled()
-                            .foregroundStyle(Color.searchbarText)
-                            .padding(.leading, 5)
-                            .submitLabel(.search)
-                            .onSubmit {
-                                lectureSheetViewModel.resetCurrPage()
-                                Task {
-                                    await lectureSheetViewModel.fetchCurrentLectureList()
-                                }
-                            }
-                        Button(action: {
-                            lectureSheetViewModel.searchText.removeAll()
-                            lectureSheetViewModel.resetCurrPage()
-                            Task {
-                                await lectureSheetViewModel.fetchCurrentLectureList()
-                            }
-                        }) {
-                            Image(systemName: "xmark.circle.fill")
-                                .foregroundStyle(Color.searchbarText)
-                        }
-                        .padding(.trailing, 3)
-                        Spacer()
-                    }
-                )
         }
     }
     

@@ -9,6 +9,22 @@ import Combine
 import Foundation
 
 class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
+    @Published var _lectureFilter: LectureFilterModel?
+    var lectureFilter: LectureFilterModel? {
+        get { _lectureFilter }
+        set { lectureService.set(\.lectureFilter, to: newValue) }
+    }
+    let categories = ["학년", "교양", "e-러닝", "시간"]
+    let gradeSubCategories = ["1학년", "2학년", "3학년", "4학년"]
+    let electiveSubCategories = ["일반교양", "균형교양", "교양필수"]
+    let balanceSubCategories = ["인문", "사회", "자연", "공학", "예술"]
+    let eLearnSubCategories = ["E러닝만 보기", "E러닝 빼고 보기"]
+    
+    @Published var selectedGradeCategories: [Bool] = [false, false, false, false]
+    @Published var selectedElectiveCategories: [Bool] = [false, false, false]
+    @Published var selectedBalanceCategories: [Bool] = [false, false, false, false, false]
+    @Published var selectedELearnCategories: [Bool] = [false, false]
+    
     @Published var _searchText: String = ""
     var searchText: String {
         get { _searchText }
@@ -59,6 +75,10 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     
     override init(container: DIContainer) {
         super.init(container: container)
+        
+        appState.lectureSearch.$lectureFilter
+            .assign(to: \._lectureFilter, on: self)
+            .store(in: &cancellables)
         
         appState.lectureSearch.$searchText
             .assign(to: \._searchText, on: self)
@@ -119,6 +139,101 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     
     private var lectureSearchState: LectureSearchState {
         appState.lectureSearch
+    }
+
+    func resetSearchText() {
+        searchText.removeAll()
+    }
+    
+    func updateGrade(_ selection: [Bool]?) {
+        guard let selection = selection else {
+            lectureFilter?.category.grade = []
+            return
+        }
+        
+        let grades = [1, 2, 3, 4]
+        
+        let selectedGrades = selection.enumerated().compactMap { index, isSelected in
+            return isSelected ? grades[index] : nil
+        }
+        
+        lectureFilter?.category.grade = selectedGrades
+    }
+    
+    func updateElective(_ selection: [Bool]?) {
+        guard selection != nil else {
+            lectureFilter?.category.elective = ElectiveModel(normal: false, balance: BalanceElectiveModel(), essential: false)
+            return
+        }
+    }
+    
+    func updateBalanceElective(_ selection: [Bool]?) {
+        
+    }
+    
+    func updateELearn(_ selection: [Bool]?) {
+        guard selection != nil else {
+            lectureFilter?.category.eLearn = 0
+            return
+        }
+    }
+    
+    func isSubCategorySelected(for category: String) -> Bool {
+        switch category {
+        case "학년":
+            return selectedGradeCategories.contains(true)
+        case "교양":
+            return selectedElectiveCategories.contains(true)
+        case "e-러닝":
+            return selectedELearnCategories.contains(true)
+        case "시간":
+            return !selectedBlocks.isEmpty
+        default:
+            return false
+        }
+    }
+    
+    // 서브 카테고리 선택 로직 처리
+    func toggleSubCategorySelection(for category: String, at index: Int, allowDuplicates: Bool) {
+        switch category {
+        case "학년":
+            handleSelection(for: &selectedGradeCategories, at: index, allowDuplicates: allowDuplicates)
+        case "교양":
+            handleSelection(for: &selectedElectiveCategories, at: index, allowDuplicates: allowDuplicates)
+        case "균형교양":
+            handleSelection(for: &selectedBalanceCategories, at: index, allowDuplicates: allowDuplicates)
+        case "e-러닝":
+            handleSelection(for: &selectedELearnCategories, at: index, allowDuplicates: allowDuplicates)
+        default:
+            break
+        }
+    }
+
+        // 서브 카테고리 선택 처리 함수
+    private func handleSelection(for categories: inout [Bool], at index: Int, allowDuplicates: Bool) {
+        if allowDuplicates {
+            categories[index].toggle()
+        } else {
+            for i in categories.indices {
+                categories[i] = (i == index)
+            }
+        }
+    }
+    
+    func resetSubCategory(for category: String) {
+        switch category {
+        case "학년":
+            selectedGradeCategories = Array(repeating: false, count: selectedGradeCategories.count)
+        case "교양":
+            selectedElectiveCategories = Array(repeating: false, count: selectedElectiveCategories.count)
+            selectedBalanceCategories = Array(repeating: false, count: selectedBalanceCategories.count)
+        case "균형교양":
+            selectedBalanceCategories = Array(repeating: false, count: selectedBalanceCategories.count)
+        case "e-러닝":
+            selectedELearnCategories = Array(repeating: false, count: selectedELearnCategories.count)
+        default:
+            break
+        }
     }
     
     // 선택된 학년이 있는지 확인

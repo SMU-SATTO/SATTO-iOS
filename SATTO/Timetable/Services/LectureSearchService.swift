@@ -9,6 +9,7 @@ import Foundation
 
 @MainActor
 protocol LectureSearchServiceProtocol: Sendable {
+    func set<Value>(_ keyPath: WritableKeyPath<LectureSearchState, Value>, to value: Value)
     func setSelectedLectures(_ value: [LectureModel])
     func setSearchText(_ value: String)
     func setSelectedBlocks(_ value: Set<String>)
@@ -23,6 +24,10 @@ struct LectureSearchService: LectureSearchServiceProtocol {
     
     var lectureSearchRepository: LectureSearchRepositoryProtocol {
         webRepositories.lectureSearchRepository
+    }
+    
+    func set<Value>(_ keyPath: WritableKeyPath<LectureSearchState, Value>, to value: Value) {
+        appState.lectureSearch[keyPath: keyPath] = value
     }
     
     func setSelectedLectures(_ value: [LectureModel]) {
@@ -117,6 +122,7 @@ struct LectureSearchService: LectureSearchServiceProtocol {
 }
 
 struct FakeLectureSearchService: LectureSearchServiceProtocol {
+    func set<Value>(_ keyPath: WritableKeyPath<LectureSearchState, Value>, to value: Value) { }
     func setSelectedLectures(_ value: [LectureModel]) { }
     func setSearchText(_ value: String) { }
     func setSelectedBlocks(_ value: Set<String>) { }

@@ -9,6 +9,8 @@ import Foundation
 
 @MainActor
 class LectureSearchState: ObservableObject {
+    @Published var lectureFilter: LectureFilterModel?
+    
     @Published var searchText: String = ""
     ///["전체", "1학년", "2학년", "3학년", "4학년"]
     @Published var selectedGrades: [String] = ["전체"]

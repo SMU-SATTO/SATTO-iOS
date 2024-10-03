@@ -118,6 +118,10 @@ class ConstraintsViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     func isSelectedLecturesEmpty() -> Bool {
         return selectedLectures.isEmpty
     }
+    
+    func resetSelectedLectures() {
+        selectedLectures.removeAll()
+    }
 
     func removeLecture(_ Lecture: LectureModel) {
         if let index = selectedLectures.firstIndex(where: { $0.sbjDivcls == Lecture.sbjDivcls }) {
