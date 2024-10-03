@@ -9,7 +9,7 @@ import Combine
 import Foundation
 
 class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
-    @Published var _lectureFilter: LectureFilterModel?
+    @Published private var _lectureFilter: LectureFilterModel?
     var lectureFilter: LectureFilterModel? {
         get { _lectureFilter }
         set { lectureService.set(\.lectureFilter, to: newValue) }
@@ -20,10 +20,37 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     let balanceSubCategories = ["인문", "사회", "자연", "공학", "예술"]
     let eLearnSubCategories = ["E러닝만 보기", "E러닝 빼고 보기"]
     
-    @Published var selectedGradeCategories: [Bool] = [false, false, false, false]
-    @Published var selectedElectiveCategories: [Bool] = [false, false, false]
-    @Published var selectedBalanceCategories: [Bool] = [false, false, false, false, false]
-    @Published var selectedELearnCategories: [Bool] = [false, false]
+    @Published private var _selectedGradeCategories: [Bool] = [false, false, false, false]
+    var selectedGradeCategories: [Bool] {
+        get { _selectedGradeCategories }
+        set { lectureService.set(\.selectedGradeCategories, to: newValue)}
+    }
+    @Published private var _selectedElectiveCategories: [Bool] = [false, false, false]
+    var selectedElectiveCategories: [Bool] {
+        get { _selectedElectiveCategories }
+        set { lectureService.set(\.selectedElectiveCategories, to: newValue) }
+    }
+    @Published private var _selectedBalanceCategories: [Bool] = [false, false, false, false, false]
+    var selectedBalanceCategories: [Bool] {
+        get { _selectedBalanceCategories }
+        set { lectureService.set(\.selectedBalanceCategories, to: newValue) }
+    }
+    @Published private var _selectedELearnCategories: [Bool] = [false, false]
+    var selectedELearnCategories: [Bool] {
+        get { _selectedELearnCategories }
+        set { lectureService.set(\.selectedELearnCategories, to: newValue) }
+    }
+    
+    @Published private var _lectureList: [LectureModel]?
+    var lectureList: [LectureModel] {
+        get { _lectureList ?? [] }
+    }
+    
+    @Published private var _selectedLectures: [LectureModel] = []
+    var selectedLectures: [LectureModel] {
+        get { _selectedLectures }
+        set { services.lectureSearchService.setSelectedLectures(newValue) }
+    }
     
     @Published var _searchText: String = ""
     var searchText: String {
@@ -39,16 +66,6 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     ///["전체", "E러닝만 보기", "E러닝 빼고 보기"]
     @Published var selectedELOption: [String] = ["전체"]
     
-    @Published private var _lectureList: [LectureModel]?
-    var lectureList: [LectureModel] {
-        get { _lectureList ?? [] }
-    }
-    
-    @Published private var _selectedLectures: [LectureModel] = []
-    var selectedLectures: [LectureModel] {
-        get { _selectedLectures }
-        set { services.lectureSearchService.setSelectedLectures(newValue) }
-    }
     
     @Published var currentPage: Int?
     @Published var totalPage: Int? = 0
@@ -78,6 +95,22 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
         
         appState.lectureSearch.$lectureFilter
             .assign(to: \._lectureFilter, on: self)
+            .store(in: &cancellables)
+        
+        lectureSearchState.$selectedGradeCategories
+            .assign(to: \._selectedGradeCategories, on: self)
+            .store(in: &cancellables)
+        
+        lectureSearchState.$selectedElectiveCategories
+            .assign(to: \._selectedElectiveCategories, on: self)
+            .store(in: &cancellables)
+        
+        lectureSearchState.$selectedBalanceCategories
+            .assign(to: \._selectedBalanceCategories, on: self)
+            .store(in: &cancellables)
+        
+        lectureSearchState.$selectedELearnCategories
+            .assign(to: \._selectedELearnCategories, on: self)
             .store(in: &cancellables)
         
         appState.lectureSearch.$searchText
@@ -150,32 +183,61 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
             lectureFilter?.category.grade = []
             return
         }
-        
-        let grades = [1, 2, 3, 4]
-        
+
+        let gradeStrings = ["1학년", "2학년", "3학년", "4학년"]
+
         let selectedGrades = selection.enumerated().compactMap { index, isSelected in
-            return isSelected ? grades[index] : nil
+            isSelected ? gradeStrings[index] : nil
         }
-        
+
         lectureFilter?.category.grade = selectedGrades
     }
     
     func updateElective(_ selection: [Bool]?) {
-        guard selection != nil else {
-            lectureFilter?.category.elective = ElectiveModel(normal: false, balance: BalanceElectiveModel(), essential: false)
+        guard let selection = selection else {
+            lectureFilter?.category.elective = ElectiveModel(
+                normal: false,
+                balance: BalanceElectiveModel(),
+                essential: false
+            )
             return
         }
+        
+        let previousBalance = lectureFilter?.category.elective.balance ?? BalanceElectiveModel()
+        
+        lectureFilter?.category.elective = ElectiveModel(
+            normal: selection[0],
+            balance: selection[1] ? previousBalance : BalanceElectiveModel(),
+            essential: selection[2]
+        )
     }
     
     func updateBalanceElective(_ selection: [Bool]?) {
+        guard let selection = selection else {
+            lectureFilter?.category.elective.balance = BalanceElectiveModel()
+            return
+        }
         
+        let selectedBalances = selection.enumerated().compactMap { index, isSelected in
+            isSelected ? index : nil
+        }
+        
+        lectureFilter?.category.elective.balance = BalanceElectiveModel(
+            humanity: selectedBalances.contains(0),
+            society: selectedBalances.contains(1),
+            nature: selectedBalances.contains(2),
+            engineering: selectedBalances.contains(3),
+            art: selectedBalances.contains(4)
+        )
     }
     
     func updateELearn(_ selection: [Bool]?) {
-        guard selection != nil else {
-            lectureFilter?.category.eLearn = 0
+        guard let selection = selection else {
+            lectureFilter?.category.eLearn = "전체"
             return
         }
+
+        lectureFilter?.category.eLearn = selection[0] ? "E러닝만 보기" : "E러닝 빼고 보기"
     }
     
     func isSubCategorySelected(for category: String) -> Bool {

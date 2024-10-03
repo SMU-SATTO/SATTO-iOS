@@ -29,14 +29,14 @@ struct LectureFilterModel: Codable  {
 }
 
 struct LectureCategoryModel: Codable {
-    var grade: [Int]
+    var grade: [String]
     var elective: ElectiveModel
-    var eLearn: Int /// 0: 전체, 1: E러닝만 보기, 2: E러닝 빼고 보기
+    var eLearn: String /// 0: 전체, 1: E러닝만 보기, 2: E러닝 빼고 보기
     var time: String?
     
     func isCategorySelected() -> Bool {
         return grade != [] ||
-               eLearn != 0 ||
+               eLearn != "전체" ||
                time != nil ||
                elective.isAnyElectiveSelected()
     }
@@ -50,7 +50,7 @@ struct LectureCategoryModel: Codable {
     }
     
     func isELearnSelected() -> Bool {
-        return eLearn != 0
+        return eLearn != "전체"
     }
     
     func isTimeSelected() -> Bool {
