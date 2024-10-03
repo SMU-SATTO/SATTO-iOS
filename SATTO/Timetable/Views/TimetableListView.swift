@@ -127,8 +127,8 @@ struct TimetableListRec: View {
                 Button(action: {
                     Task {
                         await timetableMainViewModel.fetchTimetable(id: timetable.id)
+                        stackPath.removeLast()
                     }
-                    stackPath.removeLast()
                 }) {
                     HStack {
                         Image(systemName: timetable.isPublic ? "lock.open" : "lock")
