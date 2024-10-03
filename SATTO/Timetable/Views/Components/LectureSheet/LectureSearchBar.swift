@@ -22,7 +22,7 @@ struct LectureSearchBar: View {
                     .frame(width: 19, height: 19)
                     .foregroundStyle(Color.searchbarText)
                     .padding(.leading, 15)
-                TextField("듣고 싶은 과목을 입력해 주세요", text: $viewModel.searchText)
+                TextField("듣고 싶은 과목을 입력해 주세요", text: $viewModel.lectureFilter.searchText)
                     .font(.sb14)
                     .autocorrectionDisabled()
                     .foregroundStyle(Color.searchbarText)
@@ -31,35 +31,38 @@ struct LectureSearchBar: View {
                     .onSubmit {
                         viewModel.resetCurrPage()
                         Task {
-                            await viewModel.fetchCurrentLectureList()
+                            await viewModel.searchLecture()
                         }
                     }
-                Button(action: {
-                    viewModel.resetSearchText()
-                    viewModel.resetCurrPage()
-                    Task {
-                        await viewModel.fetchCurrentLectureList()
+                if !viewModel.lectureFilter.searchText.isEmpty {
+                    Button(action: {
+                        viewModel.resetSearchText()
+                    }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundStyle(Color.searchbarText)
                     }
-                }) {
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(Color.searchbarText)
                 }
-                .padding(.trailing, 3)
                 Button(action: {
                     viewModel.resetCurrPage()
                     Task {
-                        await viewModel.fetchCurrentLectureList()
+                        await viewModel.searchLecture()
                     }
                 }) {
-                    Image(systemName: "magnifyingglass")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 19, height: 19)
-                        .foregroundStyle(Color.searchbarText)
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 20)
+                            .foregroundStyle(.white)
+                            .frame(width: 25, height: 25)
+                        Image(systemName: "magnifyingglass")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 15, height: 15)
+                            .foregroundStyle(Color.searchbarText)
+                    }
                 }
                 Spacer()
             }
         }
+        .frame(height: 40)
     }
 }
 

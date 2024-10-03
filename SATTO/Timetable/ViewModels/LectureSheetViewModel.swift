@@ -175,7 +175,7 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     }
 
     func resetSearchText() {
-        searchText.removeAll()
+        lectureFilter.searchText = ""
     }
     
     func updateGrade(_ selection: [Bool]?) {
@@ -396,6 +396,14 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
             try await lectureService.fetchCurrentLectureList(page: currentPage ?? 0)
         } catch {
             print("강의 더 불러오기에 실패했어요")
+        }
+    }
+    
+    func searchLecture() async {
+        do {
+            try await lectureService.searchLecture()
+        } catch {
+            print("현재 강의 목록 불러오기에 실패했어요.")
         }
     }
     
