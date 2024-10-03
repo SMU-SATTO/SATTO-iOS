@@ -9,8 +9,8 @@ import Combine
 import Foundation
 
 class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
-    @Published private var _lectureFilter: LectureFilterModel?
-    var lectureFilter: LectureFilterModel? {
+    @Published private var _lectureFilter: LectureFilterModel = LectureFilterModel()
+    var lectureFilter: LectureFilterModel {
         get { _lectureFilter }
         set { lectureService.set(\.lectureFilter, to: newValue) }
     }
@@ -180,7 +180,7 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     
     func updateGrade(_ selection: [Bool]?) {
         guard let selection = selection else {
-            lectureFilter?.category.grade = []
+            lectureFilter.category.grade = []
             return
         }
 
@@ -190,12 +190,12 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
             isSelected ? gradeStrings[index] : nil
         }
 
-        lectureFilter?.category.grade = selectedGrades
+        lectureFilter.category.grade = selectedGrades
     }
     
     func updateElective(_ selection: [Bool]?) {
         guard let selection = selection else {
-            lectureFilter?.category.elective = ElectiveModel(
+            lectureFilter.category.elective = ElectiveModel(
                 normal: false,
                 balance: BalanceElectiveModel(),
                 essential: false
@@ -203,9 +203,9 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
             return
         }
         
-        let previousBalance = lectureFilter?.category.elective.balance ?? BalanceElectiveModel()
+        let previousBalance = lectureFilter.category.elective.balance
         
-        lectureFilter?.category.elective = ElectiveModel(
+        lectureFilter.category.elective = ElectiveModel(
             normal: selection[0],
             balance: selection[1] ? previousBalance : BalanceElectiveModel(),
             essential: selection[2]
@@ -214,7 +214,7 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     
     func updateBalanceElective(_ selection: [Bool]?) {
         guard let selection = selection else {
-            lectureFilter?.category.elective.balance = BalanceElectiveModel()
+            lectureFilter.category.elective.balance = BalanceElectiveModel()
             return
         }
         
@@ -222,7 +222,7 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
             isSelected ? index : nil
         }
         
-        lectureFilter?.category.elective.balance = BalanceElectiveModel(
+        lectureFilter.category.elective.balance = BalanceElectiveModel(
             humanity: selectedBalances.contains(0),
             society: selectedBalances.contains(1),
             nature: selectedBalances.contains(2),
@@ -233,11 +233,11 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     
     func updateELearn(_ selection: [Bool]?) {
         guard let selection = selection else {
-            lectureFilter?.category.eLearn = "전체"
+            lectureFilter.category.eLearn = "전체"
             return
         }
 
-        lectureFilter?.category.eLearn = selection[0] ? "E러닝만 보기" : "E러닝 빼고 보기"
+        lectureFilter.category.eLearn = selection[0] ? "E러닝만 보기" : "E러닝 빼고 보기"
     }
     
     func isSubCategorySelected(for category: String) -> Bool {
@@ -286,13 +286,17 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
         switch category {
         case "학년":
             selectedGradeCategories = Array(repeating: false, count: selectedGradeCategories.count)
+            updateGrade(selectedGradeCategories)
         case "교양":
             selectedElectiveCategories = Array(repeating: false, count: selectedElectiveCategories.count)
             selectedBalanceCategories = Array(repeating: false, count: selectedBalanceCategories.count)
+            updateElective(selectedElectiveCategories)
         case "균형교양":
             selectedBalanceCategories = Array(repeating: false, count: selectedBalanceCategories.count)
+            updateBalanceElective(selectedBalanceCategories)
         case "e-러닝":
             selectedELearnCategories = Array(repeating: false, count: selectedELearnCategories.count)
+            updateELearn(selectedELearnCategories)
         default:
             break
         }

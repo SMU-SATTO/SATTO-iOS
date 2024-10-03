@@ -132,17 +132,7 @@ struct LectureSearchService: LectureSearchServiceProtocol {
         guard appState.lectureSearch.isLoading != true else { return }
         appState.lectureSearch.isLoading = true
         
-        let defaultFilter = LectureFilterModel(
-            searchText: "",
-            category: LectureCategoryModel(
-                grade: [],
-                elective: ElectiveModel(normal: false, balance: BalanceElectiveModel(), essential: false),
-                eLearn: "전체",
-                time: ""
-            )
-        )
-        
-        let lectureFilter = appState.lectureSearch.lectureFilter ?? defaultFilter
+        let lectureFilter = appState.lectureSearch.lectureFilter
         
         // 학년 필터 변환 로직
         let grade: [Int] = lectureFilter.category.grade.compactMap { grade in
@@ -176,7 +166,7 @@ struct LectureSearchService: LectureSearchServiceProtocol {
             engineering: lectureFilter.category.elective.balance.engineering ? 1 : 0,
             art: lectureFilter.category.elective.balance.art ? 1 : 0,
             isCyber: isCyber,
-            timeZone: lectureFilter.category.time ?? ""
+            timeZone: lectureFilter.category.time
         )
         
         let dto = try await lectureSearchRepository

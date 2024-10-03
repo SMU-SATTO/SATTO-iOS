@@ -26,18 +26,23 @@ struct ValuePerLectureCategory {
 struct LectureFilterModel: Codable  {
     var searchText: String
     var category: LectureCategoryModel
+    
+    init(searchText: String = "", category: LectureCategoryModel = LectureCategoryModel()) {
+        self.searchText = searchText
+        self.category = category
+    }
 }
 
 struct LectureCategoryModel: Codable {
     var grade: [String]
     var elective: ElectiveModel
     var eLearn: String /// 0: 전체, 1: E러닝만 보기, 2: E러닝 빼고 보기
-    var time: String?
+    var time: String
     
     func isCategorySelected() -> Bool {
         return grade != [] ||
                eLearn != "전체" ||
-               time != nil ||
+               time != "" ||
                elective.isAnyElectiveSelected()
     }
     
@@ -54,7 +59,14 @@ struct LectureCategoryModel: Codable {
     }
     
     func isTimeSelected() -> Bool {
-        return time != nil
+        return time != ""
+    }
+    
+    init(grade: [String] = [], elective: ElectiveModel = ElectiveModel(), eLearn: String = "", time: String = "") {
+        self.grade = grade
+        self.elective = elective
+        self.eLearn = eLearn
+        self.time = time
     }
 }
 
@@ -77,6 +89,12 @@ struct ElectiveModel: Codable {
     
     func isEssentialSelected() -> Bool {
         return essential
+    }
+    
+    init(normal: Bool = false, balance: BalanceElectiveModel = BalanceElectiveModel(), essential: Bool = false) {
+        self.normal = normal
+        self.balance = balance
+        self.essential = essential
     }
 }
 

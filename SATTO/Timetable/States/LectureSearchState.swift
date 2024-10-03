@@ -9,7 +9,7 @@ import Foundation
 
 @MainActor
 class LectureSearchState: ObservableObject {
-    @Published var lectureFilter: LectureFilterModel?
+    @Published var lectureFilter: LectureFilterModel = LectureFilterModel()
     
     @Published var selectedGradeCategories: [Bool] = [false, false, false, false]
     @Published var selectedElectiveCategories: [Bool] = [false, false, false]

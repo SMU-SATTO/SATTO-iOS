@@ -68,27 +68,27 @@ struct LectureSubCategory: View {
     var body: some View {
         HStack(spacing: 8) {
             SubCategoryButton(
-                action: { viewModel.resetSubCategory(for: currCategory) },
+                action: {
+                    Task {
+                        viewModel.resetSubCategory(for: currCategory)
+                        await viewModel.searchLecture()
+                    }
+                },
                 subCategoryText: "전체",
                 index: -1,
                 isSelected: isSubCategorySelected.allSatisfy { !$0 })
             ForEach(subCategories.indices, id: \.self) { index in
                 SubCategoryButton(
-                    action: { viewModel.toggleSubCategorySelection(for: currCategory, at: index, allowDuplicates: allowDuplicates) },
+                    action: {
+                        Task {
+                            viewModel.toggleSubCategorySelection(for: currCategory, at: index, allowDuplicates: allowDuplicates)
+                            action()
+                            await viewModel.searchLecture()
+                        }
+                    },
                     subCategoryText: subCategories[index],
                     index: index,
                     isSelected: isSubCategorySelected[index])
-            }
-        }
-    }
-    
-    private func handleSelection(_ index: Int) {
-        if allowDuplicates {
-            isSubCategorySelected[index].toggle()
-        }
-        else {
-            for i in subCategories.indices {
-                isSubCategorySelected[i] = (i == index)
             }
         }
     }
