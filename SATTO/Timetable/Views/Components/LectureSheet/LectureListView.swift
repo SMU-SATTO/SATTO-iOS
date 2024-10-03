@@ -32,11 +32,6 @@ struct LectureListView: View {
                     }
                 }
             }
-            .task {
-                if viewModel.lectureList.isEmpty {
-                    await viewModel.fetchCurrentLectureList()
-                }
-            }
         }
     }
 }

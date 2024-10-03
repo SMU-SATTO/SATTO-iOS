@@ -17,37 +17,38 @@ struct LectureCardView: View {
     
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 20)
-                .foregroundStyle(Color.subjectMajorBackground)
-                .frame(width: 50, height: 20)
-                .overlay(
-                    Text(lectureDetail.major)
-                        .foregroundStyle(Color.subjectMajorText)
-                        .font(.sb12)
-                )
-                .padding([.leading, .top], 10)
-            VStack(spacing: 3) {
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text(lectureDetail.sbjName)
-                            .font(.sb16)
-                            .padding(.trailing, 30)
-                        Text(lectureDetail.prof)
-                            .font(.m14)
+            VStack(alignment: .leading) {
+                RoundedRectangle(cornerRadius: 20)
+                    .foregroundStyle(Color.subjectMajorBackground)
+                    .frame(width: 50, height: 20)
+                    .overlay(
+                        Text(lectureDetail.major)
+                            .foregroundStyle(Color.subjectMajorText)
+                            .font(.sb12)
+                    )
+                    .padding([.leading, .top], 10)
+                VStack(spacing: 3) {
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text(lectureDetail.sbjName)
+                                .font(.sb16)
+                                .padding(.trailing, 30)
+                            Text(lectureDetail.prof)
+                                .font(.m14)
+                        }
+                        Spacer()
                     }
-                    Spacer()
+                    HStack {
+                        Text(lectureDetail.time)
+                            .font(.m12)
+                        Text(lectureDetail.sbjDivcls)
+                            .font(.m12)
+                        Spacer()
+                    }
+                    .foregroundStyle(.gray400)
                 }
-                HStack {
-                    Text(lectureDetail.time)
-                        .font(.m12)
-                    Text(lectureDetail.sbjDivcls)
-                        .font(.m12)
-                    Spacer()
-                }
-                .foregroundStyle(.gray400)
+                .padding(.leading, 10)
             }
-            .padding(.leading, 10)
-            
             VStack {
                 HStack {
                     Spacer()
@@ -66,10 +67,13 @@ struct LectureCardView: View {
                 }
                 Spacer()
             }
-            lectureSheetViewModel.isSelected(Lecture: lectureDetail)
-            ? RoundedRectangle(cornerRadius: 10)
-                .stroke(Color.subjectCardBorder, lineWidth: 1)
-            : nil
+            Group {
+                lectureSheetViewModel.isSelected(Lecture: lectureDetail)
+                ? RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.subjectCardBorder, lineWidth: 1)
+                : nil
+            }
+            .padding(EdgeInsets(top: 0, leading: 0, bottom: -10, trailing: 0))
         }
         .background(
             RoundedRectangle(cornerRadius: 10)
@@ -78,4 +82,9 @@ struct LectureCardView: View {
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: -10, trailing: 0))
         )
     }
+}
+
+#Preview {
+    @Environment(\.colorScheme) var colorScheme
+    LectureCardView(lectureSheetViewModel: LectureSheetViewModel(container: .preview), showFloater: .constant(false), lectureDetail: LectureModel(), index: 0, colorScheme: _colorScheme)
 }

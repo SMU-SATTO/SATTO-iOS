@@ -9,12 +9,13 @@ import SwiftUI
 
 struct LectureFilterView: View {
     @ObservedObject var viewModel: LectureSheetViewModel
-    @State var currCategory: String?
+    @Binding var currCategory: String?
     
     var body: some View {
-        VStack {
+        VStack(spacing: 15) {
             LectureCategory(viewModel: viewModel, currCategory: $currCategory)
             LectureSearchBar(viewModel: viewModel)
+                .padding(.horizontal, 20)
             switch currCategory {
             case "학년":
                 LectureSubCategory(
@@ -64,5 +65,5 @@ struct LectureFilterView: View {
 }
 
 #Preview {
-    LectureFilterView(viewModel: LectureSheetViewModel(container: .preview))
+    LectureFilterView(viewModel: LectureSheetViewModel(container: .preview), currCategory: .constant("학년"))
 }

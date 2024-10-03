@@ -14,6 +14,8 @@ struct SATTOLectureSheetView: View {
     
     @State private var selectedTab = ""
     
+    @State var currCategory: String?
+    
     var showResultAction: () -> Void
     
     var body: some View {
@@ -22,22 +24,33 @@ struct SATTOLectureSheetView: View {
                 .ignoresSafeArea(.all)
             VStack(spacing: 15) {
                 VStack {
-                    LectureFilterView(viewModel: viewModel)
-                    VStack(spacing: 5) {
-                        LectureListView(
-                            viewModel: viewModel,
-                            showFloater: $showFloater
-                        )
-                        LectureSelectionList(lectureSheetViewModel: viewModel, showResultAction: showResultAction)
-                    }
-                    .popup(isPresented: $showFloater) {
-                        floaterView
-                    } customize: {
-                        $0.type(.floater())
-                            .position(.bottom)
-                            .animation(.spring())
-                            .closeOnTapOutside(true)
-                            .autohideIn(1.5)
+                    LectureFilterView(viewModel: viewModel, currCategory: $currCategory)
+                        .padding(.top, 20)
+                    if currCategory != "시간" {
+                        Group {
+                            VStack(spacing: 5) {
+                                LectureListView(
+                                    viewModel: viewModel,
+                                    showFloater: $showFloater
+                                )
+                                LectureSelectionList(lectureSheetViewModel: viewModel, showResultAction: showResultAction)
+                            }
+                            .popup(isPresented: $showFloater) {
+                                floaterView
+                            } customize: {
+                                $0.type(.floater())
+                                    .position(.bottom)
+                                    .animation(.spring())
+                                    .closeOnTapOutside(true)
+                                    .autohideIn(1.5)
+                            }
+                            .task {
+                                if viewModel.lectureList.isEmpty {
+                                    await viewModel.searchLecture()
+                                }
+                            }
+                        }
+                        .padding(.horizontal, 10)
                     }
                 }
             }
@@ -54,4 +67,8 @@ struct SATTOLectureSheetView: View {
                     .font(.sb16)
             )
     }
+}
+
+#Preview {
+    SATTOLectureSheetView(viewModel: LectureSheetViewModel(container: .preview), showResultAction: {})
 }
