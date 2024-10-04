@@ -9,7 +9,6 @@ import SwiftUI
 
 struct TimetableOptionView: View {
     @Binding var stackPath: [TimetableRoute]
-    @ObservedObject var constraintsViewModel: ConstraintsViewModel
     
     @State private var isAutoSelected = false
     @State private var isCustomSelected = false
@@ -26,7 +25,6 @@ struct TimetableOptionView: View {
                     optionButton(imageName: "Auto", title: "자동으로 생성하기", isSelected: $isAutoSelected) {
                         isAutoSelected = true
                         isCustomSelected = false
-                        constraintsViewModel.clear()
                     }
                     
                     optionButton(imageName: "Custom", title: "커스텀 생성하기", isSelected: $isCustomSelected) {
@@ -102,6 +100,6 @@ struct TimetableOptionView: View {
 }
 
 //#Preview {
-//    TimetableOptionView(stackPath: .constant([.timetableAuto]), constraintViewModel: .preview)
+//    TimetableOptionView(stackPath: .constant([.timetableAuto]))
 //        .preferredColorScheme(.dark)
 //}
