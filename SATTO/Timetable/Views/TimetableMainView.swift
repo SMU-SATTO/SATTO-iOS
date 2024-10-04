@@ -9,7 +9,7 @@ import SwiftUI
 import PopupView
 
 enum TimetableRoute: Hashable {
-    case timetableMake
+    case timetableAuto
     case timetableList
     case timetableOption
     case timetableCustom
@@ -192,8 +192,8 @@ struct TimetableMainView: View {
             }
             .navigationDestination(for: TimetableRoute.self) { route in
                 switch route {
-                case .timetableMake:
-                    TimetableMakeView(stackPath: $stackPath, constraintsViewModel: constraintsViewModel, lectureSearchViewModel: lectureSearchViewModel)
+                case .timetableAuto:
+                    TimetableAutoView(stackPath: $stackPath, constraintsViewModel: constraintsViewModel, lectureSearchViewModel: lectureSearchViewModel)
                 case .timetableList:
                     TimetableListView(stackPath: $stackPath, timetableMainViewModel: timetableMainViewModel)
                 case .timetableOption:

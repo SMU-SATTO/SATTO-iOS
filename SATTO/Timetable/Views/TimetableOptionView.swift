@@ -35,7 +35,7 @@ struct TimetableOptionView: View {
                     }
                     Button(action: {
                         if isAutoSelected {
-                            stackPath.append(TimetableRoute.timetableMake)
+                            stackPath.append(TimetableRoute.timetableAuto)
                         }
                         else if isCustomSelected {
                             stackPath.append(TimetableRoute.timetableCustom)
@@ -102,6 +102,6 @@ struct TimetableOptionView: View {
 }
 
 //#Preview {
-//    TimetableOptionView(stackPath: .constant([.timetableMake]), constraintViewModel: .preview)
+//    TimetableOptionView(stackPath: .constant([.timetableAuto]), constraintViewModel: .preview)
 //        .preferredColorScheme(.dark)
 //}

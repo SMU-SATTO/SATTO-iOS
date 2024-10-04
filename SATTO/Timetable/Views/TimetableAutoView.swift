@@ -1,5 +1,5 @@
 //
-//  TimetableMakeView.swift
+//  TimetableAutoView.swift
 //  SATTO
 //
 //  Created by 김영준 on 2/29/24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TimetableMakeView: View {
+struct TimetableAutoView: View {
     enum SelectedView: CaseIterable {
         case creditPicker, essentialClasses, invalidTime, midCheck, majorCombination, finalTimetable
     }
@@ -353,5 +353,5 @@ struct TimetableMakeView: View {
 }
 
 #Preview {
-    TimetableMakeView(stackPath: .constant([.timetableMake]), constraintsViewModel: ConstraintsViewModel(container: .preview), lectureSearchViewModel: LectureSearchViewModel(container: .preview))
+    TimetableAutoView(stackPath: .constant([.timetableAuto]), constraintsViewModel: ConstraintsViewModel(container: .preview), lectureSearchViewModel: LectureSearchViewModel(container: .preview))
 }

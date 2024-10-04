@@ -87,7 +87,7 @@
 		AAA9506B2BA5C39B004E16C8 /* FinalTimetableSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9505D2BA5C39B004E16C8 /* FinalTimetableSelectorView.swift */; };
 		AAA9506E2BA5C39B004E16C8 /* TimetableMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950612BA5C39B004E16C8 /* TimetableMainView.swift */; };
 		AAA9506F2BA5C39B004E16C8 /* ConstraintsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950622BA5C39B004E16C8 /* ConstraintsViewModel.swift */; };
-		AAA950702BA5C39B004E16C8 /* TimetableMakeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950632BA5C39B004E16C8 /* TimetableMakeView.swift */; };
+		AAA950702BA5C39B004E16C8 /* TimetableAutoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950632BA5C39B004E16C8 /* TimetableAutoView.swift */; };
 		AAA950712BA5C39B004E16C8 /* TimetableListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950642BA5C39B004E16C8 /* TimetableListView.swift */; };
 		AAA9507C2BA5C498004E16C8 /* PopupView in Frameworks */ = {isa = PBXBuildFile; productRef = AAA9507B2BA5C498004E16C8 /* PopupView */; };
 		AAA950812BA5E7A5004E16C8 /* TimetableOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA950802BA5E7A5004E16C8 /* TimetableOptionView.swift */; };
@@ -121,7 +121,7 @@
 		AAD5D6AD2C80FEAA005FB52A /* 본인 명의 동의.html in Resources */ = {isa = PBXBuildFile; fileRef = AAD5D6AC2C80FEAA005FB52A /* 본인 명의 동의.html */; };
 		AAD5D6AF2C810C89005FB52A /* SATTO 서비스 이용약관.html in Resources */ = {isa = PBXBuildFile; fileRef = AAD5D6AE2C810C89005FB52A /* SATTO 서비스 이용약관.html */; };
 		AAF9775D2C386E4300672090 /* PageControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF9775C2C386E4300672090 /* PageControls.swift */; };
-		AAF9775F2C386E8300672090 /* TimetableMakePopupViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF9775E2C386E8300672090 /* TimetableMakePopupViews.swift */; };
+		AAF9775F2C386E8300672090 /* TimetablePopupViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF9775E2C386E8300672090 /* TimetablePopupViews.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -216,7 +216,7 @@
 		AAA9505D2BA5C39B004E16C8 /* FinalTimetableSelectorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FinalTimetableSelectorView.swift; sourceTree = "<group>"; };
 		AAA950612BA5C39B004E16C8 /* TimetableMainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimetableMainView.swift; sourceTree = "<group>"; };
 		AAA950622BA5C39B004E16C8 /* ConstraintsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintsViewModel.swift; sourceTree = "<group>"; };
-		AAA950632BA5C39B004E16C8 /* TimetableMakeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimetableMakeView.swift; sourceTree = "<group>"; };
+		AAA950632BA5C39B004E16C8 /* TimetableAutoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimetableAutoView.swift; sourceTree = "<group>"; };
 		AAA950642BA5C39B004E16C8 /* TimetableListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimetableListView.swift; sourceTree = "<group>"; };
 		AAA950802BA5E7A5004E16C8 /* TimetableOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableOptionView.swift; sourceTree = "<group>"; };
 		AAA9508A2BA723C2004E16C8 /* LectureTimeSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureTimeSelectorView.swift; sourceTree = "<group>"; };
@@ -247,7 +247,7 @@
 		AAD5D6AC2C80FEAA005FB52A /* 본인 명의 동의.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "본인 명의 동의.html"; sourceTree = "<group>"; };
 		AAD5D6AE2C810C89005FB52A /* SATTO 서비스 이용약관.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "SATTO 서비스 이용약관.html"; sourceTree = "<group>"; };
 		AAF9775C2C386E4300672090 /* PageControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageControls.swift; sourceTree = "<group>"; };
-		AAF9775E2C386E8300672090 /* TimetableMakePopupViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableMakePopupViews.swift; sourceTree = "<group>"; };
+		AAF9775E2C386E8300672090 /* TimetablePopupViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetablePopupViews.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -386,24 +386,8 @@
 				AA068F062CAB3294003F5750 /* TimetableView.swift */,
 				AA068F0E2CAB977D003F5750 /* TimetableBlock.swift */,
 				AA068F122CABDF34003F5750 /* TimeSelectorView.swift */,
-				AA0B714D2C07C77100216A32 /* TimetableProgressView.swift */,
-				AAF9775E2C386E8300672090 /* TimetableMakePopupViews.swift */,
-				AAF9775C2C386E4300672090 /* PageControls.swift */,
 			);
 			path = Timetable;
-			sourceTree = "<group>";
-		};
-		AA0B714B2BFD994100216A32 /* Tabs */ = {
-			isa = PBXGroup;
-			children = (
-				AAA9505A2BA5C39B004E16C8 /* CreditPickerView.swift */,
-				AAA9505C2BA5C39B004E16C8 /* EssentialClassesSelectorView.swift */,
-				AAA9505B2BA5C39B004E16C8 /* InvalidTimeSelectorView.swift */,
-				AA9E219B2BC81FC800F0566A /* MidCheckView.swift */,
-				AAA950592BA5C39B004E16C8 /* MajorCombSelectorView.swift */,
-				AAA9505D2BA5C39B004E16C8 /* FinalTimetableSelectorView.swift */,
-			);
-			path = Tabs;
 			sourceTree = "<group>";
 		};
 		AA0DFC9F2C0F6A34002ED3C9 /* Router */ = {
@@ -424,14 +408,6 @@
 			path = Dto;
 			sourceTree = "<group>";
 		};
-		AA1018A02BDE8094009E6804 /* TimetableCustom */ = {
-			isa = PBXGroup;
-			children = (
-				AA1018A12BDE812A009E6804 /* TimetableCustom.swift */,
-			);
-			path = TimetableCustom;
-			sourceTree = "<group>";
-		};
 		AA66001C2C21D0230055557C /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
@@ -449,11 +425,12 @@
 			children = (
 				AAA9503A2BA5C380004E16C8 /* Components */,
 				AAA950612BA5C39B004E16C8 /* TimetableMainView.swift */,
+				AACAD6472CA9C8CB005C2F26 /* LectureSearchView.swift */,
 				AA65E5FF2C25AC8900655856 /* TimetableModifyView.swift */,
 				AAA950642BA5C39B004E16C8 /* TimetableListView.swift */,
 				AAA950802BA5E7A5004E16C8 /* TimetableOptionView.swift */,
-				AAA950602BA5C39B004E16C8 /* TimetableAuto */,
-				AA1018A02BDE8094009E6804 /* TimetableCustom */,
+				AAA950632BA5C39B004E16C8 /* TimetableAutoView.swift */,
+				AA1018A12BDE812A009E6804 /* TimetableCustom.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -483,6 +460,7 @@
 			isa = PBXGroup;
 			children = (
 				AA068F0A2CAB3728003F5750 /* Timetable */,
+				AAA950602BA5C39B004E16C8 /* TimetableAuto */,
 				AACAD6492CA9CA96005C2F26 /* LectureSearch */,
 			);
 			name = Components;
@@ -528,8 +506,15 @@
 		AAA950602BA5C39B004E16C8 /* TimetableAuto */ = {
 			isa = PBXGroup;
 			children = (
-				AAA950632BA5C39B004E16C8 /* TimetableMakeView.swift */,
-				AA0B714B2BFD994100216A32 /* Tabs */,
+				AAF9775E2C386E8300672090 /* TimetablePopupViews.swift */,
+				AAA9505A2BA5C39B004E16C8 /* CreditPickerView.swift */,
+				AAA9505C2BA5C39B004E16C8 /* EssentialClassesSelectorView.swift */,
+				AAA9505B2BA5C39B004E16C8 /* InvalidTimeSelectorView.swift */,
+				AA9E219B2BC81FC800F0566A /* MidCheckView.swift */,
+				AA0B714D2C07C77100216A32 /* TimetableProgressView.swift */,
+				AAA950592BA5C39B004E16C8 /* MajorCombSelectorView.swift */,
+				AAA9505D2BA5C39B004E16C8 /* FinalTimetableSelectorView.swift */,
+				AAF9775C2C386E4300672090 /* PageControls.swift */,
 			);
 			path = TimetableAuto;
 			sourceTree = "<group>";
@@ -600,7 +585,6 @@
 		AACAD6492CA9CA96005C2F26 /* LectureSearch */ = {
 			isa = PBXGroup;
 			children = (
-				AACAD6472CA9C8CB005C2F26 /* LectureSearchView.swift */,
 				AACAD64A2CA9CAB3005C2F26 /* LectureListView.swift */,
 				AACAD64C2CA9CB07005C2F26 /* LectureCardView.swift */,
 				AACAD64E2CA9DB16005C2F26 /* LectureSelectionList.swift */,
@@ -807,7 +791,7 @@
 				AA1018A92BDE882C009E6804 /* LectureModel.swift in Sources */,
 				3B82D8BD2C3A3737008E0138 /* FriendModel.swift in Sources */,
 				AAA950672BA5C39B004E16C8 /* MajorCombSelectorView.swift in Sources */,
-				AAF9775F2C386E8300672090 /* TimetableMakePopupViews.swift in Sources */,
+				AAF9775F2C386E8300672090 /* TimetablePopupViews.swift in Sources */,
 				AA068F072CAB329D003F5750 /* TimetableView.swift in Sources */,
 				3B82D88C2C2268A0008E0138 /* KeyChainManager.swift in Sources */,
 				AAA950682BA5C39B004E16C8 /* CreditPickerView.swift in Sources */,
@@ -832,7 +816,7 @@
 				AACAD6532CA9E8CA005C2F26 /* TimeSelectorViewModel.swift in Sources */,
 				AAA9508B2BA723C2004E16C8 /* LectureTimeSelectorView.swift in Sources */,
 				3B8335C32BEA197D0008EFB5 /* UploadImageView.swift in Sources */,
-				AAA950702BA5C39B004E16C8 /* TimetableMakeView.swift in Sources */,
+				AAA950702BA5C39B004E16C8 /* TimetableAutoView.swift in Sources */,
 				AACAD64B2CA9CAB3005C2F26 /* LectureListView.swift in Sources */,
 				3B82D8A62C2BB700008E0138 /* FriendViewModel.swift in Sources */,
 				AAA9504D2BA5C396004E16C8 /* Font.swift in Sources */,

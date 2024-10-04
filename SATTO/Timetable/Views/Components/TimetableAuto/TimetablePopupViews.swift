@@ -1,5 +1,5 @@
 //
-//  TimetableMakePopupViews.swift
+//  TimetablePopupViews.swift
 //  SATTO
 //
 //  Created by yeongjoon on 7/6/24.
