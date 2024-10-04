@@ -51,22 +51,7 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
         get { _selectedLectures }
         set { lectureService.set(\.selectedLectures, to: newValue) }
     }
-    
-    @Published var _searchText: String = ""
-    var searchText: String {
-        get { _searchText }
-        set { services.lectureSearchService.setSearchText(newValue) }
-    }
-    ///["전체", "1학년", "2학년", "3학년", "4학년"]
-    @Published var selectedGrades: [String] = ["전체"]
-    ///["전체", "일반교양", "균형교양", "교양필수"]
-    @Published var selectedGE: [String] = ["전체"]
-    ///["전체", "인문", "사회", "자연", "공학", "예술"]
-    @Published var selectedBGE: [String] = ["전체"]
-    ///["전체", "E러닝만 보기", "E러닝 빼고 보기"]
-    @Published var selectedELOption: [String] = ["전체"]
-    
-    
+
     @Published var currentPage: Int?
     @Published var totalPage: Int? = 0
     @Published var isLoading: Bool = false
@@ -80,7 +65,7 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     @Published private var _preSelectedBlocks: Set<String> = []
     var preSelectedBlocks: Set<String> {
         get { _preSelectedBlocks }
-        set { services.lectureSearchService.setPreSelectedBlocks(newValue)}
+        set { services.lectureSearchService.set(\.preSelectedBlocks, to: newValue)}
     }
     var tempDragBlocks: Set<String> = []
     
@@ -107,26 +92,6 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
         
         lectureSearchState.$selectedELearnCategories
             .assign(to: \._selectedELearnCategories, on: self)
-            .store(in: &cancellables)
-        
-        appState.lectureSearch.$searchText
-            .assign(to: \._searchText, on: self)
-            .store(in: &cancellables)
-        
-        appState.lectureSearch.$selectedGrades
-            .assign(to: \.selectedGrades, on: self)
-            .store(in: &cancellables)
-        
-        appState.lectureSearch.$selectedGE
-            .assign(to: \.selectedGE, on: self)
-            .store(in: &cancellables)
-        
-        appState.lectureSearch.$selectedBGE
-            .assign(to: \.selectedBGE, on: self)
-            .store(in: &cancellables)
-        
-        appState.lectureSearch.$selectedELOption
-            .assign(to: \.selectedELOption, on: self)
             .store(in: &cancellables)
         
         appState.lectureSearch.$lectureFilter
@@ -303,43 +268,6 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
         }
     }
     
-    // 선택된 학년이 있는지 확인
-    func isGradeSelected() -> Bool {
-        if selectedGrades.isEmpty || selectedGrades.contains("전체") {
-            return false
-        }
-        return true
-    }
-    
-    // 선택된 교양이 있는지 확인
-    func isGESelected() -> Bool {
-        if selectedGE.isEmpty || selectedGE.contains("전체") {
-            return false
-        }
-        return true
-    }
-    
-    // 선택된 균형교양이 있는지 확인
-    func isBGESelected() -> Bool {
-        if selectedBGE.isEmpty {
-            return false
-        }
-        return true
-    }
-    
-    // 선택된 E러닝 옵션이 있는지 확인
-    func isELOptionSelected() -> Bool {
-        if selectedELOption.isEmpty || selectedELOption.contains("전체") {
-            return false
-        }
-        return true
-    }
-    
-    // 시간 선택 여부 확인
-    func isTimeSelected() -> Bool {
-        return !selectedBlocks.isEmpty
-    }
-    
     func isSelectedLecturesEmpty() -> Bool {
         return selectedLectures.isEmpty
     }
@@ -386,24 +314,6 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
         return Lecture.time.components(separatedBy: " ")
     }
     
-    func fetchCurrentLectureList() async {
-        do {
-            try await lectureService.fetchCurrentLectureList()
-        } catch {
-            print("현재 강의 목록 불러오기에 실패했어요.")
-        }
-    }
-    
-    func loadMoreLectures() async {
-        guard let hasMorePages = hasMorePages, hasMorePages && isLoading != true else { return }
-        appState.lectureSearch.addCurrentPage()
-        do {
-            try await lectureService.fetchCurrentLectureList(page: currentPage ?? 0)
-        } catch {
-            print("강의 더 불러오기에 실패했어요")
-        }
-    }
-    
     func searchLecture() async {
         do {
             try await lectureService.searchLecture()
@@ -412,7 +322,7 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
         }
     }
     
-    func newLoadMoreLectures() async {
+    func loadMoreLectures() async {
         guard let hasMorePages = hasMorePages, hasMorePages && isLoading != true else { return }
         appState.lectureSearch.addCurrentPage()
         do {

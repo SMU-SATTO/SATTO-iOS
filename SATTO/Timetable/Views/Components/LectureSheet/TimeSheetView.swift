@@ -13,7 +13,7 @@ struct TimeSheetView: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(spacing: 5) {
-                Text("불가능한 시간대를 선택해주세요.")
+                Text("시간대를 선택해주세요.")
                     .font(.sb18)
                     .frame(width: 320, alignment: .topLeading)
                 Text("드래그로 선택할 수 있어요.")

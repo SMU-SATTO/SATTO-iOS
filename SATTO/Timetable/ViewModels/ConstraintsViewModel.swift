@@ -9,17 +9,17 @@ import Combine
 import Foundation
 
 class ConstraintsViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
-    @Published var _credit: Int = 18        //GPA
+    @Published private var _credit: Int = 18        //GPA
     var credit: Int {
         get { _credit }
         set { constraintService.set(\.credit, to: newValue) }
     }
-    @Published var _majorNum: Int = 3       //majorcount
+    @Published private var _majorNum: Int = 3       //majorcount
     var majorNum: Int {
         get { _majorNum }
         set { constraintService.set(\.majorNum, to: newValue) }
     }
-    @Published var _eLearnNum: Int = 0      //cybercount
+    @Published private var _eLearnNum: Int = 0      //cybercount
     var eLearnNum: Int {
         get { _eLearnNum }
         set { constraintService.set(\.eLearnNum, to: newValue) }
@@ -48,14 +48,13 @@ class ConstraintsViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     var tempDragBlocks: Set<String> = []
     
     //request할 때 보낼 과목 조합 리스트
-    @Published var _selectedMajorCombs: [MajorComb] = []      //majorList
+    @Published private var _selectedMajorCombs: [MajorComb] = []      //majorList
     var selectedMajorCombs: [MajorComb] {
         get { _selectedMajorCombs }
         set {constraintService.set(\.selectedMajorCombs, to: newValue) }
     }
     
     //서버에서 준 과목 조합 리스트
-    
     @Published private var _majorCombinations: [MajorComb]? = []
     var majorCombinations: [MajorComb] {
         get { _majorCombinations ?? [] }
@@ -121,56 +120,6 @@ class ConstraintsViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     
     private var constraintState: ConstraintState {
         appState.constraint
-    }
-    
-    func isSelectedLecturesEmpty() -> Bool {
-        return selectedLectures.isEmpty
-    }
-    
-    func resetSelectedLectures() {
-        selectedLectures.removeAll()
-    }
-
-    func removeLecture(_ Lecture: LectureModel) {
-        if let index = selectedLectures.firstIndex(where: { $0.sbjDivcls == Lecture.sbjDivcls }) {
-            selectedLectures.remove(at: index)
-        }
-    }
-    
-    func toggleSelection(Lecture: LectureModel) -> Bool {
-        if let index = selectedLectures.firstIndex(where: { $0.sbjDivcls == Lecture.sbjDivcls }) {
-            selectedLectures.remove(at: index)
-            let timesToRemove = parseTimes(for: Lecture)
-            _preSelectedBlocks.subtract(timesToRemove)
-            return true
-        } else if !selectedLectures.contains(where: { $0.sbjNo == Lecture.sbjNo }) && !isTimeOverlapping(for: Lecture) {
-            selectedLectures.append(Lecture)
-            let newTimes = parseTimes(for: Lecture)
-            _preSelectedBlocks.formUnion(newTimes)
-            return true
-        }
-        return false
-    }
-    
-    func isSelected(Lecture: LectureModel) -> Bool {
-        return selectedLectures.contains(where: { $0.sbjDivcls == Lecture.sbjDivcls })
-    }
-    
-    func isTimeOverlapping(for Lecture: LectureModel) -> Bool {
-        let newLectureTimes = parseTimes(for: Lecture)
-        for existingLecture in selectedLectures {
-            let existingLectureTimes = parseTimes(for: existingLecture)
-            if newLectureTimes.contains(where: { newTime in
-                existingLectureTimes.contains(where: { $0 == newTime })
-            }) {
-                return true
-            }
-        }
-        return false
-    }
-    
-    func parsePreselectedSlots() -> [String] {
-        return selectedLectures.flatMap { parseTimes(for: $0) }
     }
     
     func clear() {

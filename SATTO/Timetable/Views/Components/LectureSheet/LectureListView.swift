@@ -21,7 +21,7 @@ struct LectureListView: View {
                             .padding(.horizontal, 10)
                             .task {
                                 if index == viewModel.lectureList.count - 1 {
-                                    await viewModel.newLoadMoreLectures()
+                                    await viewModel.loadMoreLectures()
                                 }
                             }
                     }
