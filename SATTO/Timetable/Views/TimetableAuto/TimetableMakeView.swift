@@ -15,7 +15,7 @@ struct TimetableMakeView: View {
     @Binding var stackPath: [TimetableRoute]
     
     @ObservedObject var constraintsViewModel: ConstraintsViewModel
-    @ObservedObject var lectureSheetViewModel: LectureSheetViewModel
+    @ObservedObject var lectureSearchViewModel: LectureSearchViewModel
     
     @State private var selectedView: SelectedView = .creditPicker
     
@@ -339,7 +339,7 @@ struct TimetableMakeView: View {
         case .creditPicker:
             return AnyView(CreditPickerView(constraintsViewModel: constraintsViewModel))
         case .essentialClasses:
-            return AnyView(EssentialClassesSelectorView(constraintsViewModel: constraintsViewModel, lectureSheetViewModel: lectureSheetViewModel))
+            return AnyView(EssentialClassesSelectorView(constraintsViewModel: constraintsViewModel, lectureSearchViewModel: lectureSearchViewModel))
         case .invalidTime:
             return AnyView(InvalidTimeSelectorView(constraintsViewModel: constraintsViewModel))
         case .midCheck:
@@ -353,5 +353,5 @@ struct TimetableMakeView: View {
 }
 
 #Preview {
-    TimetableMakeView(stackPath: .constant([.timetableMake]), constraintsViewModel: ConstraintsViewModel(container: .preview), lectureSheetViewModel: LectureSheetViewModel(container: .preview))
+    TimetableMakeView(stackPath: .constant([.timetableMake]), constraintsViewModel: ConstraintsViewModel(container: .preview), lectureSearchViewModel: LectureSearchViewModel(container: .preview))
 }

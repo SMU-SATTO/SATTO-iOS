@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LectureSearchView: View {
-    @ObservedObject var viewModel: LectureSheetViewModel
+    @ObservedObject var viewModel: LectureSearchViewModel
     
     @State private var showFloater: Bool = false
     
@@ -33,7 +33,7 @@ struct LectureSearchView: View {
                                     viewModel: viewModel,
                                     showFloater: $showFloater
                                 )
-                                LectureSelectionList(lectureSheetViewModel: viewModel, showResultAction: showResultAction)
+                                LectureSelectionList(lectureSearchViewModel: viewModel, showResultAction: showResultAction)
                             }
                             .popup(isPresented: $showFloater) {
                                 floaterView
@@ -70,5 +70,5 @@ struct LectureSearchView: View {
 }
 
 #Preview {
-    LectureSearchView(viewModel: LectureSheetViewModel(container: .preview), showResultAction: {})
+    LectureSearchView(viewModel: LectureSearchViewModel(container: .preview), showResultAction: {})
 }

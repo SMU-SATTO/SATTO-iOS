@@ -10,7 +10,7 @@ import SwiftUI
 //MARK: - 필수로 들어야 할 과목 선택
 struct EssentialClassesSelectorView: View {
     @ObservedObject var constraintsViewModel: ConstraintsViewModel
-    @ObservedObject var lectureSheetViewModel: LectureSheetViewModel
+    @ObservedObject var lectureSearchViewModel: LectureSearchViewModel
 
     @State private var isShowBottomSheet = false
     
@@ -51,10 +51,10 @@ struct EssentialClassesSelectorView: View {
             }
             .padding(.horizontal, 30)
             
-            TimetableView(timetable: TimetableModel(id: -1, semester: "", name: "", lectures: lectureSheetViewModel.selectedLectures, isPublic: false, isRepresented: false))
+            TimetableView(timetable: TimetableModel(id: -1, semester: "", name: "", lectures: lectureSearchViewModel.selectedLectures, isPublic: false, isRepresented: false))
                 .sheet(isPresented: $isShowBottomSheet, content: {
                     LectureSearchView(
-                        viewModel: lectureSheetViewModel,
+                        viewModel: lectureSearchViewModel,
                         showResultAction: {isShowBottomSheet = false}
                     )
                     .presentationDetents([.medium, .large])
@@ -65,5 +65,5 @@ struct EssentialClassesSelectorView: View {
 }
 
 #Preview {
-    EssentialClassesSelectorView(constraintsViewModel: ConstraintsViewModel(container: .preview), lectureSheetViewModel: LectureSheetViewModel(container: .preview))
+    EssentialClassesSelectorView(constraintsViewModel: ConstraintsViewModel(container: .preview), lectureSearchViewModel: LectureSearchViewModel(container: .preview))
 }

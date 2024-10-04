@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct LectureSelectionList: View {
-    @ObservedObject var lectureSheetViewModel: LectureSheetViewModel
+    @ObservedObject var lectureSearchViewModel: LectureSearchViewModel
     var showResultAction: () -> Void
     
     var body: some View {
         VStack(spacing: 0) {
-            if !lectureSheetViewModel.isSelectedLecturesEmpty() {
+            if !lectureSearchViewModel.isSelectedLecturesEmpty() {
                 HStack {
                     Text("선택한 과목")
                         .font(.sb14)
@@ -23,12 +23,12 @@ struct LectureSelectionList: View {
                 }
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 15) {
-                        ForEach(lectureSheetViewModel.selectedLectures, id: \.sbjDivcls) { Lecture in
+                        ForEach(lectureSearchViewModel.selectedLectures, id: \.sbjDivcls) { Lecture in
                             HStack {
                                 Text(Lecture.sbjName)
                                     .font(.m14)
                                 Button(action: {
-                                    lectureSheetViewModel.removeLecture(Lecture)
+                                    lectureSearchViewModel.removeLecture(Lecture)
                                 }) {
                                     Image(systemName: "xmark.circle")
                                         .resizable()
@@ -51,7 +51,7 @@ struct LectureSelectionList: View {
                 HStack {
                     GeometryReader { geometry in
                         Button(action: {
-                            lectureSheetViewModel.clear()
+                            lectureSearchViewModel.clear()
                         }) {
                             Text("선택 초기화")
                                 .font(.sb14)
@@ -69,7 +69,7 @@ struct LectureSelectionList: View {
                         Button(action: {
                             showResultAction()
                         }) {
-                            Text("\(lectureSheetViewModel.selectedLectures.count)개 결과 보기")
+                            Text("\(lectureSearchViewModel.selectedLectures.count)개 결과 보기")
                                 .font(.sb14)
                                 .foregroundStyle(.white)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)

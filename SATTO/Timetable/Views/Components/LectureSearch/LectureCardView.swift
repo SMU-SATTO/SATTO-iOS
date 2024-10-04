@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LectureCardView: View {
-    @ObservedObject var lectureSheetViewModel: LectureSheetViewModel
+    @ObservedObject var lectureSearchViewModel: LectureSearchViewModel
     @Binding var showFloater: Bool
     var lectureDetail: LectureModel
     var index: Int
@@ -53,12 +53,12 @@ struct LectureCardView: View {
                 HStack {
                     Spacer()
                     Button(action: {
-                        let selectionSuccess = lectureSheetViewModel.toggleSelection(lecture: lectureDetail)
+                        let selectionSuccess = lectureSearchViewModel.toggleSelection(lecture: lectureDetail)
                         if !selectionSuccess {
                             showFloater = true
                         }
                     }) {
-                        Image(systemName: lectureSheetViewModel.isSelected(Lecture: lectureDetail) ? "checkmark.circle.fill" : "plus.circle.fill")
+                        Image(systemName: lectureSearchViewModel.isSelected(Lecture: lectureDetail) ? "checkmark.circle.fill" : "plus.circle.fill")
                             .resizable()
                             .frame(width: 25, height: 25)
                             .foregroundStyle(Color(red: 0.063, green: 0.51, blue: 0.788))
@@ -68,7 +68,7 @@ struct LectureCardView: View {
                 Spacer()
             }
             Group {
-                lectureSheetViewModel.isSelected(Lecture: lectureDetail)
+                lectureSearchViewModel.isSelected(Lecture: lectureDetail)
                 ? RoundedRectangle(cornerRadius: 10)
                     .stroke(Color.subjectCardBorder, lineWidth: 1)
                 : nil
@@ -77,7 +77,7 @@ struct LectureCardView: View {
         }
         .background(
             RoundedRectangle(cornerRadius: 10)
-                .foregroundStyle(lectureSheetViewModel.isSelected(Lecture: lectureDetail) ? Color.subjectCardSelected : Color.subjectCardBackground)
+                .foregroundStyle(lectureSearchViewModel.isSelected(Lecture: lectureDetail) ? Color.subjectCardSelected : Color.subjectCardBackground)
                 .shadow(color: colorScheme == .light ? Color(red: 0.65, green: 0.65, blue: 0.65).opacity(0.65) : Color.clear, radius: 6.23, x: 0, y: 1.22)
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: -10, trailing: 0))
         )
@@ -86,5 +86,5 @@ struct LectureCardView: View {
 
 #Preview {
     @Environment(\.colorScheme) var colorScheme
-    LectureCardView(lectureSheetViewModel: LectureSheetViewModel(container: .preview), showFloater: .constant(false), lectureDetail: LectureModel(), index: 0, colorScheme: _colorScheme)
+    LectureCardView(lectureSearchViewModel: LectureSearchViewModel(container: .preview), showFloater: .constant(false), lectureDetail: LectureModel(), index: 0, colorScheme: _colorScheme)
 }

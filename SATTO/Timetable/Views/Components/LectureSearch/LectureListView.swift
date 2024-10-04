@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LectureListView: View {
-    @ObservedObject var viewModel: LectureSheetViewModel
+    @ObservedObject var viewModel: LectureSearchViewModel
     @Binding var showFloater: Bool
     
     var body: some View {
@@ -17,7 +17,7 @@ struct LectureListView: View {
                 LazyVStack {
                     ForEach(viewModel.lectureList.indices, id: \.self) { index in
                         let lecture = viewModel.lectureList[index]
-                        LectureCardView(lectureSheetViewModel: viewModel, showFloater: $showFloater, lectureDetail: lecture, index: index)
+                        LectureCardView(lectureSearchViewModel: viewModel, showFloater: $showFloater, lectureDetail: lecture, index: index)
                             .padding(.horizontal, 10)
                             .task {
                                 if index == viewModel.lectureList.count - 1 {

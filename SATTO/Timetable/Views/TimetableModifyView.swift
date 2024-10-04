@@ -10,7 +10,7 @@ import SwiftUI
 struct TimetableModifyView: View {
     @Binding var stackPath: [TimetableRoute]
     
-    @ObservedObject var lectureSheetViewModel: LectureSheetViewModel
+    @ObservedObject var lectureSearchViewModel: LectureSearchViewModel
     @ObservedObject var timetableMainViewModel: TimetableMainViewModel
     
     @State private var tempTimetable: [LectureModel] = []
@@ -50,9 +50,9 @@ struct TimetableModifyView: View {
                 }
                 .padding(.horizontal, 30)
                 if let currentTimetable = timetableMainViewModel.currentTimetable {
-                    TimetableView(timetable: TimetableModel(id: currentTimetable.id, semester: currentTimetable.semester, name: currentTimetable.name, lectures: lectureSheetViewModel.selectedLectures, isPublic: currentTimetable.isPublic, isRepresented: currentTimetable.isRepresented))
+                    TimetableView(timetable: TimetableModel(id: currentTimetable.id, semester: currentTimetable.semester, name: currentTimetable.name, lectures: lectureSearchViewModel.selectedLectures, isPublic: currentTimetable.isPublic, isRepresented: currentTimetable.isRepresented))
                         .sheet(isPresented: $isShowBottomSheet, content: {
-                            LectureSearchView(viewModel: lectureSheetViewModel, showResultAction: {isShowBottomSheet = false})
+                            LectureSearchView(viewModel: lectureSearchViewModel, showResultAction: {isShowBottomSheet = false})
                             .presentationDetents([.medium, .large])
                         })
                         .padding(.horizontal, 15)
@@ -75,7 +75,7 @@ struct TimetableModifyView: View {
             }
         }
         .onAppear {
-            lectureSheetViewModel.selectedLectures = timetableMainViewModel.currentTimetable?.lectures ?? []
+            lectureSearchViewModel.selectedLectures = timetableMainViewModel.currentTimetable?.lectures ?? []
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -115,5 +115,5 @@ struct TimetableModifyView: View {
 }
 
 #Preview {
-    TimetableModifyView(stackPath: .constant([.timetableModify]), lectureSheetViewModel: LectureSheetViewModel(container: .preview), timetableMainViewModel: TimetableMainViewModel(container: .preview))
+    TimetableModifyView(stackPath: .constant([.timetableModify]), lectureSearchViewModel: LectureSearchViewModel(container: .preview), timetableMainViewModel: TimetableMainViewModel(container: .preview))
 }

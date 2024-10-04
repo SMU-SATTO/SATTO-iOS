@@ -22,7 +22,7 @@ struct TimetableMainView: View {
     @State var stackPath = [TimetableRoute]()
     
     @ObservedObject var timetableMainViewModel: TimetableMainViewModel
-    @ObservedObject var lectureSheetViewModel: LectureSheetViewModel
+    @ObservedObject var lectureSearchViewModel: LectureSearchViewModel
     @ObservedObject var constraintsViewModel: ConstraintsViewModel
     
     @State private var selectedTab = "시간표"
@@ -193,15 +193,15 @@ struct TimetableMainView: View {
             .navigationDestination(for: TimetableRoute.self) { route in
                 switch route {
                 case .timetableMake:
-                    TimetableMakeView(stackPath: $stackPath, constraintsViewModel: constraintsViewModel, lectureSheetViewModel: lectureSheetViewModel)
+                    TimetableMakeView(stackPath: $stackPath, constraintsViewModel: constraintsViewModel, lectureSearchViewModel: lectureSearchViewModel)
                 case .timetableList:
                     TimetableListView(stackPath: $stackPath, timetableMainViewModel: timetableMainViewModel)
                 case .timetableOption:
                     TimetableOptionView(stackPath: $stackPath, constraintsViewModel: constraintsViewModel)
                 case .timetableCustom:
-                    TimetableCustom(stackPath: $stackPath, constraintsViewModel: constraintsViewModel, lectureSheetViewModel: lectureSheetViewModel)
+                    TimetableCustom(stackPath: $stackPath, constraintsViewModel: constraintsViewModel, lectureSearchViewModel: lectureSearchViewModel)
                 case .timetableModify:
-                    TimetableModifyView(stackPath: $stackPath, lectureSheetViewModel: lectureSheetViewModel, timetableMainViewModel: timetableMainViewModel)
+                    TimetableModifyView(stackPath: $stackPath, lectureSearchViewModel: lectureSearchViewModel, timetableMainViewModel: timetableMainViewModel)
                 }
             }
             .onChange(of: stackPath) { _ in

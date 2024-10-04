@@ -11,7 +11,7 @@ struct TimetableCustom: View {
     @Binding var stackPath: [TimetableRoute]
     
     @ObservedObject var constraintsViewModel: ConstraintsViewModel
-    @ObservedObject var lectureSheetViewModel: LectureSheetViewModel
+    @ObservedObject var lectureSearchViewModel: LectureSearchViewModel
     
     @State private var isShowBottomSheet = false
     @State private var showingAlert = false
@@ -46,10 +46,10 @@ struct TimetableCustom: View {
                     }
                 }
                 .padding(.horizontal, 30)
-                TimetableView(timetable: TimetableModel(id: -1, semester: "", name: "", lectures: lectureSheetViewModel.selectedLectures, isPublic: false, isRepresented: false) )
+                TimetableView(timetable: TimetableModel(id: -1, semester: "", name: "", lectures: lectureSearchViewModel.selectedLectures, isPublic: false, isRepresented: false) )
                     .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
                     .sheet(isPresented: $isShowBottomSheet, content: {
-                        LectureSearchView(viewModel: lectureSheetViewModel, showResultAction: {isShowBottomSheet = false})
+                        LectureSearchView(viewModel: lectureSearchViewModel, showResultAction: {isShowBottomSheet = false})
                         .presentationDetents([.medium, .large])
                     })
                 Button(action: {
@@ -77,7 +77,7 @@ struct TimetableCustom: View {
                     Button("취소", role: .cancel, action: {})
                     Button("확인") {
                         Task {
-                            await constraintsViewModel.saveCustomTimetable(codeSectionList: lectureSheetViewModel.selectedLectures.map { $0.sbjDivcls }, timeTableName: timetableName)
+                            await constraintsViewModel.saveCustomTimetable(codeSectionList: lectureSearchViewModel.selectedLectures.map { $0.sbjDivcls }, timeTableName: timetableName)
                             stackPath.removeLast()
                         }
                     }
@@ -105,5 +105,5 @@ struct TimetableCustom: View {
 }
 
 #Preview {
-    TimetableCustom(stackPath: .constant([.timetableCustom]), constraintsViewModel: ConstraintsViewModel(container: .preview), lectureSheetViewModel: LectureSheetViewModel(container: .preview))
+    TimetableCustom(stackPath: .constant([.timetableCustom]), constraintsViewModel: ConstraintsViewModel(container: .preview), lectureSearchViewModel: LectureSearchViewModel(container: .preview))
 }

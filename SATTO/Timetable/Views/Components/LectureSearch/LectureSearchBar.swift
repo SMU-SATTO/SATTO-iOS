@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LectureSearchBar: View {
-    @ObservedObject var viewModel: LectureSheetViewModel
+    @ObservedObject var viewModel: LectureSearchViewModel
     
     var body: some View {
         ZStack {
@@ -67,6 +67,6 @@ struct LectureSearchBar: View {
 }
 
 #Preview {
-    LectureSearchBar(viewModel: LectureSheetViewModel(container: .preview))
+    LectureSearchBar(viewModel: LectureSearchViewModel(container: .preview))
         .padding(.horizontal, 30)
 }

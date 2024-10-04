@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LectureCategory: View {
-    @ObservedObject var viewModel: LectureSheetViewModel
+    @ObservedObject var viewModel: LectureSearchViewModel
     @Binding var currCategory: String?
     
     var body: some View {
@@ -58,7 +58,7 @@ struct CategoryButton: View {
 
 /// `"전체"`는 initailizer로 분리
 struct LectureSubCategory: View {
-    @ObservedObject var viewModel: LectureSheetViewModel
+    @ObservedObject var viewModel: LectureSearchViewModel
     let action: () -> Void
     let currCategory: String
     let subCategories: [String]
@@ -132,5 +132,5 @@ struct SubCategoryButton: View {
 }
 
 #Preview {
-    LectureCategory(viewModel: LectureSheetViewModel(container: .preview), currCategory: .constant("학년"))
+    LectureCategory(viewModel: LectureSearchViewModel(container: .preview), currCategory: .constant("학년"))
 }

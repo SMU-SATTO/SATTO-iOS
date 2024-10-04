@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LectureFilterView: View {
-    @ObservedObject var viewModel: LectureSheetViewModel
+    @ObservedObject var viewModel: LectureSearchViewModel
     @Binding var currCategory: String?
     
     var body: some View {
@@ -56,7 +56,7 @@ struct LectureFilterView: View {
                     isSubCategorySelected: $viewModel.selectedELearnCategories
                 )
             case "시간":
-                LectureTimeSheetView(viewModel: viewModel)
+                LectureTimeSelectorView(viewModel: viewModel)
             default:
                 EmptyView()
             }
@@ -65,5 +65,5 @@ struct LectureFilterView: View {
 }
 
 #Preview {
-    LectureFilterView(viewModel: LectureSheetViewModel(container: .preview), currCategory: .constant("학년"))
+    LectureFilterView(viewModel: LectureSearchViewModel(container: .preview), currCategory: .constant("학년"))
 }
