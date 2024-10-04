@@ -75,11 +75,7 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     @Published private var _selectedBlocks: Set<String> = []
     var selectedBlocks: Set<String> {
         get { _selectedBlocks }
-        set { services.lectureSearchService.setSelectedBlocks(newValue) }
-    }
-    var sortedSelectedBlocks: String {
-        return services.constraintService.convertSetToString(_selectedBlocks)
-            .replacingOccurrences(of: " ", with: ", ")
+        set { lectureService.set(\.lectureFilter.category.time, to: newValue) }
     }
     @Published private var _preSelectedBlocks: Set<String> = []
     var preSelectedBlocks: Set<String> {
@@ -133,7 +129,8 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
             .assign(to: \.selectedELOption, on: self)
             .store(in: &cancellables)
         
-        appState.lectureSearch.$selectedBlocks
+        appState.lectureSearch.$lectureFilter
+            .map { $0.category.time }
             .assign(to: \._selectedBlocks, on: self)
             .store(in: &cancellables)
         
@@ -237,7 +234,11 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
             return
         }
 
-        lectureFilter.category.eLearn = selection[0] ? "E러닝만 보기" : "E러닝 빼고 보기"
+        lectureFilter.category.eLearn = selection[0] 
+        ? "E러닝만 보기"
+        : selection[1]
+        ? "E러닝 빼고 보기"
+        : "전체"
     }
     
     func isSubCategorySelected(for category: String) -> Bool {

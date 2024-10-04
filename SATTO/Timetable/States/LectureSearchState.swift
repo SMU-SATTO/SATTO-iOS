@@ -40,7 +40,6 @@ class LectureSearchState: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var hasMorePages: Bool?
     
-    @Published var selectedBlocks: Set<String> = []             //impossibleTimeZone
     @Published var preSelectedBlocks: Set<String> = []
     
     func resetState() {
