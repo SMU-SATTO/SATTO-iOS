@@ -27,14 +27,12 @@ struct TimetableAutoView: View {
     @State private var errorPopup = false
     @State private var completionPopup = false
     @State private var finishMakingPopup = false          //시간표 생성 끝낼 때 뜨는 팝업
-    @State private var showingAlert = false
+    @State private var backAlert = false
     
     @State private var isRegisterSuccess = false
     
     @State private var timetableIndex = 0
     @State private var registeredTimetableList: Set<Int> = []
-    
-    @State private var isButtonDisabled = false
     
     var body: some View {
         ZStack {
@@ -55,7 +53,7 @@ struct TimetableAutoView: View {
                 customToolBar
             }
         }
-        .alert("시간표 자동 생성을 취소하고 뒤로 가시겠어요?", isPresented: $showingAlert) {
+        .alert("시간표 자동 생성을 취소하고 뒤로 가시겠어요?", isPresented: $backAlert) {
             Button("취소", role: .cancel, action: {})
             Button("확인") {
                 lectureSearchViewModel.resetAllProperties()
@@ -73,7 +71,7 @@ struct TimetableAutoView: View {
                 .backgroundColor(.black.opacity(0.5))
         })
         .popup(isPresented: $midCheckPopup, view: {
-            MidCheckPopup(midCheckPopup: $midCheckPopup, navigateForward: navigateForward)
+            MidCheckPopup(midCheckPopup: $midCheckPopup, navigateForward: { selectedView = .majorCombination })
         }, customize: {
             $0
                 .position(.center)
@@ -129,7 +127,8 @@ struct TimetableAutoView: View {
                 .autohideIn(3)
         }
         .popup(isPresented: $finishMakingPopup) {
-            FinishMakingTimetablePopup(finishMakingTimetablePopup: $finishMakingPopup, navigateForward: navigateForward)
+            FinishMakingTimetablePopup(finishMakingTimetablePopup: $finishMakingPopup, navigateForward: { stackPath.removeAll()
+                stackPath.append(.timetableList) })
         } customize: {
             $0.type(.floater())
                 .position(.center)
@@ -144,7 +143,7 @@ struct TimetableAutoView: View {
     private var customToolBar: some View {
         HStack {
             Button(action: {
-                showingAlert = true
+                backAlert = true
             }) {
                 HStack {
                     Image(systemName: "chevron.left")
@@ -153,7 +152,6 @@ struct TimetableAutoView: View {
                 }
                 .foregroundStyle(Color.blackWhite)
             }
-            
         }
     }
     
@@ -167,10 +165,18 @@ struct TimetableAutoView: View {
     
     private var tabView: some View {
         TabView(selection: $selectedView) {
-            ForEach(SelectedView.allCases, id: \.self) { view in
-                tabViewContent(for: view)
-                    .tag(view)
-            }
+            CreditPickerView(constraintsViewModel: constraintsViewModel)
+                .tag(SelectedView.creditPicker)
+            EssentialClassesSelectorView(constraintsViewModel: constraintsViewModel, lectureSearchViewModel: lectureSearchViewModel)
+                .tag(SelectedView.essentialClasses)
+            InvalidTimeSelectorView(constraintsViewModel: constraintsViewModel)
+                .tag(SelectedView.invalidTime)
+            MidCheckView(viewModel: constraintsViewModel)
+                .tag(SelectedView.midCheck)
+            MajorCombSelectorView(viewModel: constraintsViewModel)
+                .tag(SelectedView.majorCombination)
+            FinalTimetableSelectorView(viewModel: constraintsViewModel, showingPopup: $finalSelectPopup, timetableIndex: $timetableIndex)
+                .tag(SelectedView.finalTimetable)
         }
         .onAppear {
             UIScrollView.appearance().isScrollEnabled = false //드래그제스처로 탭뷰 넘기는거 방지
@@ -180,33 +186,87 @@ struct TimetableAutoView: View {
     
     private var tabViewNavigationButtons: some View {
         HStack(spacing: 20) {
-            //majorCombination 생성에 실패하면 뒤로가기 가능
-            if selectedView != .creditPicker && (selectedView != .majorCombination || constraintsViewModel.majorCombinations.count == 0) {
-                backButton
-            }
-            if selectedView == .majorCombination {
+            switch selectedView {
+            case .creditPicker:
+                TimetableAutoNextButton(text: "다음으로", action: {
+                    selectedView = .essentialClasses
+                })
+            case .essentialClasses:
+                TimetableAutoBackButton(text: "이전으로", action: {
+                    selectedView = .creditPicker
+                })
+                TimetableAutoNextButton(text: "다음으로", action: {
+                    selectedView = .invalidTime
+                })
+            case .invalidTime:
+                TimetableAutoBackButton(text: "이전으로", action: {
+                    selectedView = .essentialClasses
+                })
+                TimetableAutoNextButton(text: "다음으로", action: {
+                    selectedView = .midCheck
+                })
+            case .midCheck:
+                TimetableAutoBackButton(text: "이전으로", action: {
+                    selectedView = .invalidTime
+                })
+                TimetableAutoNextButton(text: "시간표 생성하기", action: {
+                    midCheckPopup = true
+                })
+            case .majorCombination:
                 if constraintsViewModel.majorCombinations.count > 0 {
                     VStack(spacing: 0) {
-                        nextButton
-                        Text("시간표 생성은 5초에 한 번씩 가능해요.")
-                            .font(.m12)
-                            .foregroundStyle(.blackWhite200)
-                            .padding(.top, 5)
+                        GeometryReader { geometry in
+                            Button(action: {
+                                Task {
+                                    isProgressing = true
+                                    await constraintsViewModel.fetchFinalTimetableList(isRaw: false)
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                        self.isProgressing = false
+                                        selectedView = .finalTimetable
+                                    }
+                                }
+                            }) {
+                                Text("시간표 생성하기")
+                                    .font(.sb16)
+                                    .foregroundStyle(.white)
+                                    .frame(maxWidth: 150, maxHeight: .infinity)
+                            }
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundStyle(constraintsViewModel.selectedMajorCombs.isEmpty ? .gray : .buttonBlue)
+                            )
+                            .frame(width: geometry.size.width, height: geometry.size.height)
+                        }
+                        .frame(height: 45)
+                        .disabled(constraintsViewModel.selectedMajorCombs.isEmpty)
                     }
                 }
-            }
-            else {
-                nextButton
+            case .finalTimetable:
+                TimetableAutoBackButton(text: "전공조합 선택하기", action: {
+                    selectedView = .majorCombination
+                })
+                TimetableAutoNextButton(text: "시간표 등록 끝내기", action: {
+                    finishMakingPopup = true
+                })
             }
         }
     }
-    
-    private var backButton: some View {
+
+    // 선택된 뷰의 인덱스를 반환하는 함수
+    func selectedViewIndex() -> Int {
+        return SelectedView.allCases.firstIndex(of: selectedView)!
+    }
+}
+
+struct TimetableAutoBackButton: View {
+    let text: String
+    var action: () -> Void
+    var body: some View {
         GeometryReader { geometry in
             Button(action: {
-                navigateBack()
+                action()
             }) {
-                Text(backButtonText())
+                Text(text)
                     .font(.sb16)
                     .foregroundStyle(Color.buttonBlue)
                     .frame(maxWidth: 150, maxHeight: .infinity)
@@ -224,132 +284,28 @@ struct TimetableAutoView: View {
         }
         .frame(height: 45)
     }
-    
-    func backButtonText() -> String {
-        switch selectedView {
-        case .finalTimetable:
-            return "전공조합 선택하기"
-        default:
-            return "이전으로"
-        }
-    }
-    
-    private var nextButton: some View {
+}
+
+struct TimetableAutoNextButton: View {
+    let text: String
+    var action: () -> Void
+    var body: some View {
         GeometryReader { geometry in
             Button(action: {
-                if selectedView == .midCheck {
-                    midCheckPopup = true
-                } else if selectedView == .finalTimetable {
-                    finishMakingPopup = true
-                } else {
-                    navigateForward()
-                }
+                action()
             }) {
-                Text(nextButtonText())
+                Text(text)
                     .font(.sb16)
                     .foregroundStyle(.white)
                     .frame(maxWidth: 150, maxHeight: .infinity)
             }
             .background(
                 RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(isButtonDisabled || selectedView == .majorCombination && constraintsViewModel.selectedMajorCombs.isEmpty ? Color.gray : Color.buttonBlue)
+                    .foregroundStyle(.buttonBlue)
             )
             .frame(width: geometry.size.width, height: geometry.size.height)
-            .disabled(isButtonDisabled)
-            .disabled(selectedView == .majorCombination && constraintsViewModel.selectedMajorCombs.isEmpty)
         }
         .frame(height: 45)
-    }
-    
-    // 다음으로 버튼의 텍스트를 반환하는 함수
-    func nextButtonText() -> String {
-        switch selectedView {
-        case .midCheck:
-            return "시간표 생성하기"
-        case .majorCombination:
-            return "시간표 생성하기"
-        case .finalTimetable:
-            return "시간표 등록 끝내기"
-        default:
-            return "다음으로"
-        }
-    }
-    
-    func navigateBack() {
-        switch selectedView {
-        case .essentialClasses:
-            selectedView = .creditPicker
-        case .invalidTime:
-            selectedView = .essentialClasses
-        case .midCheck:
-            selectedView = .invalidTime
-        case .majorCombination:
-            selectedView = .midCheck
-        case .finalTimetable:
-            selectedView = .majorCombination
-        default:
-            break
-        }
-    }
-
-    func navigateForward() {
-        switch selectedView {
-        case .creditPicker:
-            selectedView = .essentialClasses
-        case .essentialClasses:
-            selectedView = .invalidTime
-        case .invalidTime:
-            selectedView = .midCheck
-        case .midCheck:
-            selectedView = .majorCombination
-        case .majorCombination:
-            isProgressing = true
-            isButtonDisabled = true
-            Task {
-                do {
-                    await constraintsViewModel.fetchFinalTimetableList(isRaw: false)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        self.isProgressing = false
-                        selectedView = .finalTimetable
-                    }
-                } catch {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        self.isProgressing = false
-                        self.errorPopup = true
-                    }
-                }
-
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    self.isButtonDisabled = false
-                }
-            }
-        case .finalTimetable:
-            stackPath.removeAll()
-            stackPath.append(.timetableList)
-        }
-    }
-
-    // 선택된 뷰의 인덱스를 반환하는 함수
-    func selectedViewIndex() -> Int {
-        return SelectedView.allCases.firstIndex(of: selectedView)!
-    }
-
-    // 뷰에 따라 해당하는 내용을 반환하는 함수
-    func tabViewContent(for view: SelectedView) -> AnyView {
-        switch view {
-        case .creditPicker:
-            return AnyView(CreditPickerView(constraintsViewModel: constraintsViewModel))
-        case .essentialClasses:
-            return AnyView(EssentialClassesSelectorView(constraintsViewModel: constraintsViewModel, lectureSearchViewModel: lectureSearchViewModel))
-        case .invalidTime:
-            return AnyView(InvalidTimeSelectorView(constraintsViewModel: constraintsViewModel))
-        case .midCheck:
-            return AnyView(MidCheckView(viewModel: constraintsViewModel))
-        case .majorCombination:
-            return AnyView(MajorCombSelectorView(viewModel: constraintsViewModel))
-        case .finalTimetable:
-            return AnyView(FinalTimetableSelectorView(viewModel: constraintsViewModel, showingPopup: $finalSelectPopup, timetableIndex: $timetableIndex))
-        }
     }
 }
 
