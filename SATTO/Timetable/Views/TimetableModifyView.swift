@@ -10,7 +10,6 @@ import SwiftUI
 struct TimetableModifyView: View {
     @Binding var stackPath: [TimetableRoute]
     
-    @ObservedObject var constraintsViewModel: ConstraintsViewModel
     @ObservedObject var lectureSheetViewModel: LectureSheetViewModel
     @ObservedObject var timetableMainViewModel: TimetableMainViewModel
     
@@ -51,13 +50,9 @@ struct TimetableModifyView: View {
                 }
                 .padding(.horizontal, 30)
                 if let currentTimetable = timetableMainViewModel.currentTimetable {
-                    TimetableView(timetable: currentTimetable)
+                    TimetableView(timetable: TimetableModel(id: currentTimetable.id, semester: currentTimetable.semester, name: currentTimetable.name, lectures: lectureSheetViewModel.selectedLectures, isPublic: currentTimetable.isPublic, isRepresented: currentTimetable.isRepresented))
                         .sheet(isPresented: $isShowBottomSheet, content: {
-                            LectureSheetTabView(
-                                constraintsViewModel: constraintsViewModel,
-                                lectureSheetViewModel: lectureSheetViewModel,
-                                showResultAction: {isShowBottomSheet = false}
-                            )
+                            SATTOLectureSheetView(viewModel: lectureSheetViewModel, showResultAction: {isShowBottomSheet = false})
                             .presentationDetents([.medium, .large])
                         })
                         .padding(.horizontal, 15)
@@ -80,7 +75,7 @@ struct TimetableModifyView: View {
             }
         }
         .onAppear {
-            constraintsViewModel.selectedLectures = timetableMainViewModel.currentTimetable?.lectures ?? []
+            lectureSheetViewModel.selectedLectures = timetableMainViewModel.currentTimetable?.lectures ?? []
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -120,5 +115,5 @@ struct TimetableModifyView: View {
 }
 
 #Preview {
-    TimetableModifyView(stackPath: .constant([.timetableModify]), constraintsViewModel: ConstraintsViewModel(container: .preview), lectureSheetViewModel: LectureSheetViewModel(container: .preview), timetableMainViewModel: TimetableMainViewModel(container: .preview))
+    TimetableModifyView(stackPath: .constant([.timetableModify]), lectureSheetViewModel: LectureSheetViewModel(container: .preview), timetableMainViewModel: TimetableMainViewModel(container: .preview))
 }

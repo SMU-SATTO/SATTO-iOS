@@ -201,7 +201,7 @@ struct TimetableMainView: View {
                 case .timetableCustom:
                     TimetableCustom(stackPath: $stackPath, constraintsViewModel: constraintsViewModel, lectureSheetViewModel: lectureSheetViewModel)
                 case .timetableModify:
-                    TimetableModifyView(stackPath: $stackPath, constraintsViewModel: constraintsViewModel, lectureSheetViewModel: lectureSheetViewModel, timetableMainViewModel: timetableMainViewModel)
+                    TimetableModifyView(stackPath: $stackPath, lectureSheetViewModel: lectureSheetViewModel, timetableMainViewModel: timetableMainViewModel)
                 }
             }
             .onChange(of: stackPath) { _ in

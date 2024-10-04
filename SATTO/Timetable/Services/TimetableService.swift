@@ -93,7 +93,7 @@ struct TimetableService: TimetableServiceProtocol {
     
     func patchTimetableInfo() async throws {
         guard let timetableId = appState.timetable.currentTimetable?.id else { return }
-        let adjustedCodeSectionList = appState.constraint.selectedLectures.map { $0.sbjDivcls }
+        let adjustedCodeSectionList = appState.lectureSearch.selectedLectures.map { $0.sbjDivcls }
         try await timetableRepository.patchTimetableInfo(timetableId: timetableId, codeSectionList: adjustedCodeSectionList)
     }
     
