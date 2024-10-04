@@ -49,7 +49,7 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     @Published private var _selectedLectures: [LectureModel] = []
     var selectedLectures: [LectureModel] {
         get { _selectedLectures }
-        set { services.lectureSearchService.setSelectedLectures(newValue) }
+        set { lectureService.set(\.selectedLectures, to: newValue) }
     }
     
     @Published var _searchText: String = ""
@@ -409,6 +409,16 @@ class LectureSheetViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
             try await lectureService.searchLecture()
         } catch {
             print("현재 강의 목록 불러오기에 실패했어요.")
+        }
+    }
+    
+    func newLoadMoreLectures() async {
+        guard let hasMorePages = hasMorePages, hasMorePages && isLoading != true else { return }
+        appState.lectureSearch.addCurrentPage()
+        do {
+            try await lectureService.searchLecture(page: currentPage ?? 0)
+        } catch {
+            print("강의 더 불러오기에 실패했어요")
         }
     }
     

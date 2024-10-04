@@ -10,9 +10,7 @@ import Foundation
 @MainActor
 protocol LectureSearchServiceProtocol: Sendable {
     func set<Value>(_ keyPath: WritableKeyPath<LectureSearchState, Value>, to value: Value)
-    func setSelectedLectures(_ value: [LectureModel])
     func setSearchText(_ value: String)
-    func setSelectedBlocks(_ value: Set<String>)
     func setPreSelectedBlocks(_ value: Set<String>)
     func fetchCurrentLectureList() async throws
     func fetchCurrentLectureList(page: Int) async throws
@@ -32,18 +30,10 @@ struct LectureSearchService: LectureSearchServiceProtocol {
         appState.lectureSearch[keyPath: keyPath] = value
     }
     
-    func setSelectedLectures(_ value: [LectureModel]) {
-        appState.lectureSearch.selectedLectures = value
-    }
-    
     func setSearchText(_ value: String) {
         appState.lectureSearch.searchText = value
     }
-    
-    func setSelectedBlocks(_ value: Set<String>) {
-        appState.lectureSearch.selectedBlocks = value
-    }
-    
+
     func setPreSelectedBlocks(_ value: Set<String>) {
         appState.lectureSearch.preSelectedBlocks = value
     }
@@ -154,6 +144,8 @@ struct LectureSearchService: LectureSearchServiceProtocol {
             }
         }()
         
+        let timeZone = convertSetToString(lectureFilter.category.time)
+        
         let lectureSearchRequest = CurrentLectureListRequest(
             searchText: lectureFilter.searchText,
             grade: grade,
@@ -166,7 +158,7 @@ struct LectureSearchService: LectureSearchServiceProtocol {
             engineering: lectureFilter.category.elective.balance.engineering ? 1 : 0,
             art: lectureFilter.category.elective.balance.art ? 1 : 0,
             isCyber: isCyber,
-            timeZone: lectureFilter.category.time
+            timeZone: timeZone
         )
         
         let dto = try await lectureSearchRepository
@@ -199,13 +191,33 @@ struct LectureSearchService: LectureSearchServiceProtocol {
         appState.lectureSearch.hasMorePages = appState.lectureSearch.currentPage ?? 0 < (appState.lectureSearch.totalPage ?? 0) - 1
         appState.lectureSearch.isLoading = false
     }
+    
+    func convertSetToString(_ set: Set<String>) -> String {
+        let weekdaysOrder = ["월", "화", "수", "목", "금", "토", "일"]
+        
+        let sortedSet = set.sorted {
+            let firstDay = String($0.prefix(1))
+            let secondDay = String($1.prefix(1))
+            
+            // 요일 순서에 맞춰 정렬
+            if let firstIndex = weekdaysOrder.firstIndex(of: firstDay),
+               let secondIndex = weekdaysOrder.firstIndex(of: secondDay) {
+                if firstIndex == secondIndex {
+                    // 같은 요일일 경우 시간 순서로 정렬
+                    return $0.compare($1, options: .numeric) == .orderedAscending
+                }
+                return firstIndex < secondIndex
+            }
+            return false
+        }
+        
+        return sortedSet.joined(separator: " ")
+    }
 }
 
 struct FakeLectureSearchService: LectureSearchServiceProtocol {
     func set<Value>(_ keyPath: WritableKeyPath<LectureSearchState, Value>, to value: Value) { }
-    func setSelectedLectures(_ value: [LectureModel]) { }
     func setSearchText(_ value: String) { }
-    func setSelectedBlocks(_ value: Set<String>) { }
     func setPreSelectedBlocks(_ value: Set<String>) { }
     func fetchCurrentLectureList() async throws { }
     func fetchCurrentLectureList(page: Int) async throws { }
