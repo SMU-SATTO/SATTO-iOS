@@ -77,7 +77,7 @@ struct TimetableCustom: View {
                     Button("취소", role: .cancel, action: {})
                     Button("확인") {
                         Task {
-                            await constraintsViewModel.saveCustomTimetable(codeSectionList: constraintsViewModel.selectedLectures.map { $0.sbjDivcls }, timeTableName: timetableName)
+                            await constraintsViewModel.saveCustomTimetable(codeSectionList: lectureSheetViewModel.selectedLectures.map { $0.sbjDivcls }, timeTableName: timetableName)
                             stackPath.removeLast()
                         }
                     }
@@ -89,7 +89,6 @@ struct TimetableCustom: View {
             ToolbarItem(placement: .topBarLeading) {
                 HStack {
                     Button(action: {
-                        constraintsViewModel.resetSelectedLectures()
                         stackPath.removeLast()
                     }) {
                         HStack {
