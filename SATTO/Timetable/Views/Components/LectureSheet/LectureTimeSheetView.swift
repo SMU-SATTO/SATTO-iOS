@@ -1,5 +1,5 @@
 //
-//  TimeSheetView.swift
+//  LectureTimeSheetView.swift
 //  SATTO
 //
 //  Created by 김영준 on 3/17/24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TimeSheetView: View {
+struct LectureTimeSheetView: View {
     @ObservedObject var viewModel: LectureSheetViewModel
     
     var body: some View {
@@ -28,5 +28,5 @@ struct TimeSheetView: View {
 }
 
 #Preview {
-    TimeSheetView(viewModel: LectureSheetViewModel(container: .preview))
+    LectureTimeSheetView(viewModel: LectureSheetViewModel(container: .preview))
 }

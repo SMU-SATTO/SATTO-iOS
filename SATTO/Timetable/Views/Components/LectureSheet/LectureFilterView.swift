@@ -56,7 +56,7 @@ struct LectureFilterView: View {
                     isSubCategorySelected: $viewModel.selectedELearnCategories
                 )
             case "시간":
-                TimeSheetView(viewModel: viewModel)
+                LectureTimeSheetView(viewModel: viewModel)
             default:
                 EmptyView()
             }

@@ -1,5 +1,5 @@
 //
-//  SATTOLectureSheetView.swift
+//  LectureSearchView.swift
 //  SATTO
 //
 //  Created by yeongjoon on 9/30/24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SATTOLectureSheetView: View {
+struct LectureSearchView: View {
     @ObservedObject var viewModel: LectureSheetViewModel
     
     @State private var showFloater: Bool = false
@@ -70,5 +70,5 @@ struct SATTOLectureSheetView: View {
 }
 
 #Preview {
-    SATTOLectureSheetView(viewModel: LectureSheetViewModel(container: .preview), showResultAction: {})
+    LectureSearchView(viewModel: LectureSheetViewModel(container: .preview), showResultAction: {})
 }

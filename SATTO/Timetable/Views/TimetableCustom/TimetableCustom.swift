@@ -49,7 +49,7 @@ struct TimetableCustom: View {
                 TimetableView(timetable: TimetableModel(id: -1, semester: "", name: "", lectures: lectureSheetViewModel.selectedLectures, isPublic: false, isRepresented: false) )
                     .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
                     .sheet(isPresented: $isShowBottomSheet, content: {
-                        SATTOLectureSheetView(viewModel: lectureSheetViewModel, showResultAction: {isShowBottomSheet = false})
+                        LectureSearchView(viewModel: lectureSheetViewModel, showResultAction: {isShowBottomSheet = false})
                         .presentationDetents([.medium, .large])
                     })
                 Button(action: {

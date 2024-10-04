@@ -53,7 +53,7 @@ struct TimetableMainView: View {
                     .ignoresSafeArea(.all)
                 VStack {
                     headerView
-                    tabContentView
+                    timetableView
                     Spacer()
                 }
             }
@@ -246,20 +246,10 @@ struct TimetableMainView: View {
     
     private var headerContent: some View {
         VStack(alignment: .leading, spacing: 15) {
-            headerTabs
             headerMessage
             createTimetableButton
         }
         .padding(.leading, 20)
-    }
-    
-    private var headerTabs: some View {
-        HStack(spacing: 20) {
-            tabButton(title: "시간표", tab: "시간표")
-            //MARK: - 추후 개발 예정
-//            tabButton(title: "이수학점", tab: "이수학점")
-            Spacer()
-        }
     }
     
     private var headerMessage: some View {
@@ -288,16 +278,6 @@ struct TimetableMainView: View {
                 )
         }
         .padding(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15))
-    }
-    
-    private var tabContentView: some View {
-        VStack {
-            if selectedTab == "시간표" {
-                timetableView
-            } else if selectedTab == "이수학점" {
-                creditsView
-            }
-        }
     }
     
     private var timetableView: some View {
@@ -350,126 +330,6 @@ struct TimetableMainView: View {
                     .multilineTextAlignment(.center)
                     .padding()
             }
-        }
-    }
-    
-    private var creditsView: some View {
-        VStack {
-            HStack {
-                Text("이수 학점")
-                    .font(.b14)
-                    .padding(.leading, 30)
-                Spacer()
-            }
-            .padding(.top, 10)
-            
-            RoundedRectangle(cornerRadius: 30)
-                .foregroundStyle(Color.pickerBackground)
-                .frame(height: 50)
-                .overlay(
-                    HStack(spacing: 5) {
-                        customPickerView(text: "총 이수학점", selectedOption: $currSelectedOption, namespace: namespace)
-                        customPickerView(text: "전공", selectedOption: $currSelectedOption, namespace: namespace)
-                        customPickerView(text: "교양필수", selectedOption: $currSelectedOption, namespace: namespace)
-                        customPickerView(text: "교양", selectedOption: $currSelectedOption, namespace: namespace)
-                    }
-                        .padding(.horizontal, 5)
-                        .animation(.spring(), value: currSelectedOption)
-                )
-                .padding(.horizontal, 20)
-            
-            if currSelectedOption == "총 이수학점" {
-                pieChart
-                    .padding(.top, 5)
-                HStack {
-                    Text("졸업까지 필요한 학점")
-                        .font(.b14)
-                        .padding(.leading, 30)
-                    Spacer()
-                }
-                .padding(.top, 10)
-                
-                RadarChartView(data: [
-                    (name: "전공선택", value: 60),
-                    (name: "전공심화", value: 70),
-                    (name: "교양", value: 50),
-                    (name: "기초교양", value: 90),
-                    (name: "상명핵심역량교양", value: 85),
-                    (name: "균형교양", value: 75)
-                ])
-                .padding(.horizontal, 60)
-                .padding(.vertical, -20)
-                
-                Text("졸업까지 18학점이 남았어요!")
-                    .font(.sb14)
-            }
-            if currSelectedOption == "전공" {
-                pieChart
-                    .padding(.top, 5)
-            }
-        }
-    }
-    
-    @ViewBuilder
-    private func customPickerView(text: String, selectedOption: Binding<String>, namespace: Namespace.ID) -> some View {
-        GeometryReader { geometry in
-            ZStack {
-                if selectedOption.wrappedValue == text {
-                    RoundedRectangle(cornerRadius: 30)
-                        .foregroundStyle(Color.pickerSelected)
-                        .frame(height: 35)
-                        .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
-                        .matchedGeometryEffect(id: "selected", in: namespace)
-                }
-                
-                Text(text)
-                    .font(selectedOption.wrappedValue == text ? .sb14 : .m14)
-                    .foregroundStyle(selectedOption.wrappedValue == text ? Color.pickerTextSelected : Color.pickerTextUnselected)
-                    .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
-            }
-            .contentShape(RoundedRectangle(cornerRadius: 30))
-            .onTapGesture {
-                selectedOption.wrappedValue = text
-            }
-        }
-    }
-    
-    private var pieChart: some View {
-        HStack {
-            PieChartView(slices: [
-                (majorCredit, Color.pieBlue),
-                (GECredit, Color.pieGreen),
-                (totalCredit - majorCredit - GECredit, Color.pieWhite)
-            ], centerText: "SampleText\n \(Int(majorCredit + GECredit)) / \(Int(totalCredit))")
-            .frame(width: 150)
-            
-            VStack {
-                HStack {
-                    Circle()
-                        .fill(Color.pieBlue)
-                        .frame(width: 12, height: 12)
-                    Text("전공 \(Int(majorCredit)) / \(majorCreditGoals)")
-                        .font(.m14)
-                }
-                HStack {
-                    Circle()
-                        .fill(Color.pieGreen)
-                        .frame(width: 12, height: 12)
-                    Text("교양 \(Int(GECredit)) / \(GECreditGoals)")
-                        .font(.m14)
-                }
-            }
-        }
-    }
-    
-    @ViewBuilder
-    private func tabButton(title: String, tab: String) -> some View {
-        Button(action: {
-            selectedTab = tab
-        }) {
-            Text(title)
-                .font(selectedTab == tab ? .sb16 : .sb14)
-                .foregroundStyle(selectedTab == tab ? Color.pickerTextSelected : Color.pickerTextUnselected)
         }
     }
 }

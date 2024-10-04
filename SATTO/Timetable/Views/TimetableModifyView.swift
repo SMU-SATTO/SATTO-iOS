@@ -52,7 +52,7 @@ struct TimetableModifyView: View {
                 if let currentTimetable = timetableMainViewModel.currentTimetable {
                     TimetableView(timetable: TimetableModel(id: currentTimetable.id, semester: currentTimetable.semester, name: currentTimetable.name, lectures: lectureSheetViewModel.selectedLectures, isPublic: currentTimetable.isPublic, isRepresented: currentTimetable.isRepresented))
                         .sheet(isPresented: $isShowBottomSheet, content: {
-                            SATTOLectureSheetView(viewModel: lectureSheetViewModel, showResultAction: {isShowBottomSheet = false})
+                            LectureSearchView(viewModel: lectureSheetViewModel, showResultAction: {isShowBottomSheet = false})
                             .presentationDetents([.medium, .large])
                         })
                         .padding(.horizontal, 15)

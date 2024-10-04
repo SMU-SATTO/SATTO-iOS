@@ -53,7 +53,7 @@ struct EssentialClassesSelectorView: View {
             
             TimetableView(timetable: TimetableModel(id: -1, semester: "", name: "", lectures: lectureSheetViewModel.selectedLectures, isPublic: false, isRepresented: false))
                 .sheet(isPresented: $isShowBottomSheet, content: {
-                    SATTOLectureSheetView(
+                    LectureSearchView(
                         viewModel: lectureSheetViewModel,
                         showResultAction: {isShowBottomSheet = false}
                     )
