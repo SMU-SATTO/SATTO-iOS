@@ -9,13 +9,9 @@ import SwiftUI
 
 struct LectureSearchView: View {
     @ObservedObject var viewModel: LectureSearchViewModel
-    
-    @State private var showFloater: Bool = false
-    
-    @State private var selectedTab = ""
-    
     @State var currCategory: String?
     
+    @State private var showFloater: Bool = false
     var showResultAction: () -> Void
     
     var body: some View {
@@ -29,11 +25,8 @@ struct LectureSearchView: View {
                     if currCategory != "시간" {
                         Group {
                             VStack(spacing: 5) {
-                                LectureListView(
-                                    viewModel: viewModel,
-                                    showFloater: $showFloater
-                                )
-                                LectureSelectionList(lectureSearchViewModel: viewModel, showResultAction: showResultAction)
+                                LectureListView(viewModel: viewModel, showFloater: $showFloater)
+                                LectureSelectionList(viewModel: viewModel, showResultAction: showResultAction)
                             }
                             .popup(isPresented: $showFloater) {
                                 floaterView

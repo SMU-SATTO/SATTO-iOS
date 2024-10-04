@@ -12,24 +12,22 @@ struct LectureListView: View {
     @Binding var showFloater: Bool
     
     var body: some View {
-        ScrollViewReader { proxy in
-            ScrollView {
-                LazyVStack {
-                    ForEach(viewModel.lectureList.indices, id: \.self) { index in
-                        let lecture = viewModel.lectureList[index]
-                        LectureCardView(lectureSearchViewModel: viewModel, showFloater: $showFloater, lectureDetail: lecture, index: index)
-                            .padding(.horizontal, 10)
-                            .task {
-                                if index == viewModel.lectureList.count - 1 {
-                                    await viewModel.loadMoreLectures()
-                                }
+        ScrollView {
+            LazyVStack {
+                ForEach(viewModel.lectureList.indices, id: \.self) { index in
+                    let lecture = viewModel.lectureList[index]
+                    LectureCardView(viewModel: viewModel, showFloater: $showFloater, lectureModel: lecture)
+                        .padding(.horizontal, 10)
+                        .task {
+                            if index == viewModel.lectureList.count - 1 {
+                                await viewModel.loadMoreLectures()
                             }
-                    }
-                    .padding(EdgeInsets(top: 10, leading: 10, bottom: 20, trailing: 10))
-                    
-                    if viewModel.isLoading {
-                        ProgressView().padding()
-                    }
+                        }
+                }
+                .padding(EdgeInsets(top: 10, leading: 10, bottom: 20, trailing: 10))
+                
+                if viewModel.isLoading {
+                    ProgressView().padding()
                 }
             }
         }

@@ -8,10 +8,9 @@
 import SwiftUI
 
 struct LectureCardView: View {
-    @ObservedObject var lectureSearchViewModel: LectureSearchViewModel
+    @ObservedObject var viewModel: LectureSearchViewModel
     @Binding var showFloater: Bool
-    var lectureDetail: LectureModel
-    var index: Int
+    var lectureModel: LectureModel
     
     @Environment(\.colorScheme) var colorScheme
     
@@ -22,7 +21,7 @@ struct LectureCardView: View {
                     .foregroundStyle(Color.subjectMajorBackground)
                     .frame(width: 50, height: 20)
                     .overlay(
-                        Text(lectureDetail.major)
+                        Text(lectureModel.major)
                             .foregroundStyle(Color.subjectMajorText)
                             .font(.sb12)
                     )
@@ -30,18 +29,18 @@ struct LectureCardView: View {
                 VStack(spacing: 3) {
                     HStack {
                         VStack(alignment: .leading) {
-                            Text(lectureDetail.sbjName)
+                            Text(lectureModel.sbjName)
                                 .font(.sb16)
                                 .padding(.trailing, 30)
-                            Text(lectureDetail.prof)
+                            Text(lectureModel.prof)
                                 .font(.m14)
                         }
                         Spacer()
                     }
                     HStack {
-                        Text(lectureDetail.time)
+                        Text(lectureModel.time)
                             .font(.m12)
-                        Text(lectureDetail.sbjDivcls)
+                        Text(lectureModel.sbjDivcls)
                             .font(.m12)
                         Spacer()
                     }
@@ -53,12 +52,12 @@ struct LectureCardView: View {
                 HStack {
                     Spacer()
                     Button(action: {
-                        let selectionSuccess = lectureSearchViewModel.toggleSelection(lecture: lectureDetail)
+                        let selectionSuccess = viewModel.toggleSelection(lecture: lectureModel)
                         if !selectionSuccess {
                             showFloater = true
                         }
                     }) {
-                        Image(systemName: lectureSearchViewModel.isSelected(Lecture: lectureDetail) ? "checkmark.circle.fill" : "plus.circle.fill")
+                        Image(systemName: viewModel.isSelected(Lecture: lectureModel) ? "checkmark.circle.fill" : "plus.circle.fill")
                             .resizable()
                             .frame(width: 25, height: 25)
                             .foregroundStyle(Color(red: 0.063, green: 0.51, blue: 0.788))
@@ -68,7 +67,7 @@ struct LectureCardView: View {
                 Spacer()
             }
             Group {
-                lectureSearchViewModel.isSelected(Lecture: lectureDetail)
+                viewModel.isSelected(Lecture: lectureModel)
                 ? RoundedRectangle(cornerRadius: 10)
                     .stroke(Color.subjectCardBorder, lineWidth: 1)
                 : nil
@@ -77,7 +76,7 @@ struct LectureCardView: View {
         }
         .background(
             RoundedRectangle(cornerRadius: 10)
-                .foregroundStyle(lectureSearchViewModel.isSelected(Lecture: lectureDetail) ? Color.subjectCardSelected : Color.subjectCardBackground)
+                .foregroundStyle(viewModel.isSelected(Lecture: lectureModel) ? Color.subjectCardSelected : Color.subjectCardBackground)
                 .shadow(color: colorScheme == .light ? Color(red: 0.65, green: 0.65, blue: 0.65).opacity(0.65) : Color.clear, radius: 6.23, x: 0, y: 1.22)
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: -10, trailing: 0))
         )
@@ -86,5 +85,5 @@ struct LectureCardView: View {
 
 #Preview {
     @Environment(\.colorScheme) var colorScheme
-    LectureCardView(lectureSearchViewModel: LectureSearchViewModel(container: .preview), showFloater: .constant(false), lectureDetail: LectureModel(), index: 0, colorScheme: _colorScheme)
+    LectureCardView(viewModel: LectureSearchViewModel(container: .preview), showFloater: .constant(false), lectureModel: LectureModel(), colorScheme: _colorScheme)
 }
