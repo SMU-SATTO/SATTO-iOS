@@ -53,6 +53,7 @@
 		AA068F172CAD3842003F5750 /* LectureSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA068F162CAD383F003F5750 /* LectureSearchBar.swift */; };
 		AA068F192CAD3B1E003F5750 /* LectureCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA068F182CAD3B1B003F5750 /* LectureCategory.swift */; };
 		AA068F1D2CAE1A65003F5750 /* LectureFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA068F1C2CAE1A61003F5750 /* LectureFilterView.swift */; };
+		AA068F202CAFC006003F5750 /* LectureButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA068F1F2CAFBFFD003F5750 /* LectureButtons.swift */; };
 		AA0B714E2C07C77100216A32 /* TimetableProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0B714D2C07C77100216A32 /* TimetableProgressView.swift */; };
 		AA0DFC982C0F63B4002ED3C9 /* TimetableDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0DFC972C0F63B4002ED3C9 /* TimetableDto.swift */; };
 		AA0DFC9A2C0F63E6002ED3C9 /* TimetableRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0DFC992C0F63E6002ED3C9 /* TimetableRouter.swift */; };
@@ -185,6 +186,7 @@
 		AA068F162CAD383F003F5750 /* LectureSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureSearchBar.swift; sourceTree = "<group>"; };
 		AA068F182CAD3B1B003F5750 /* LectureCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureCategory.swift; sourceTree = "<group>"; };
 		AA068F1C2CAE1A61003F5750 /* LectureFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureFilterView.swift; sourceTree = "<group>"; };
+		AA068F1F2CAFBFFD003F5750 /* LectureButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureButtons.swift; sourceTree = "<group>"; };
 		AA0B714D2C07C77100216A32 /* TimetableProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableProgressView.swift; sourceTree = "<group>"; };
 		AA0DFC972C0F63B4002ED3C9 /* TimetableDto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimetableDto.swift; sourceTree = "<group>"; };
 		AA0DFC992C0F63E6002ED3C9 /* TimetableRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimetableRouter.swift; sourceTree = "<group>"; };
@@ -390,6 +392,14 @@
 			path = Timetable;
 			sourceTree = "<group>";
 		};
+		AA068F1E2CAFBFF1003F5750 /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				AA068F1F2CAFBFFD003F5750 /* LectureButtons.swift */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
 		AA0DFC9F2C0F6A34002ED3C9 /* Router */ = {
 			isa = PBXGroup;
 			children = (
@@ -585,6 +595,7 @@
 		AACAD6492CA9CA96005C2F26 /* LectureSearch */ = {
 			isa = PBXGroup;
 			children = (
+				AA068F1E2CAFBFF1003F5750 /* Buttons */,
 				AACAD64A2CA9CAB3005C2F26 /* LectureListView.swift */,
 				AACAD64C2CA9CB07005C2F26 /* LectureCardView.swift */,
 				AACAD64E2CA9DB16005C2F26 /* LectureSelectionList.swift */,
@@ -780,6 +791,7 @@
 				AACAD6422CA64B08005C2F26 /* ConstraintService.swift in Sources */,
 				AA068F192CAD3B1E003F5750 /* LectureCategory.swift in Sources */,
 				AA0DFC9A2C0F63E6002ED3C9 /* TimetableRouter.swift in Sources */,
+				AA068F202CAFC006003F5750 /* LectureButtons.swift in Sources */,
 				3BF1F49D2C465EA900B32C66 /* ProfileImageCell.swift in Sources */,
 				3BF1F4992C464C7400B32C66 /* CustomNavigationTitle.swift in Sources */,
 				AACAD6402CA624CB005C2F26 /* LectureSearchService.swift in Sources */,
