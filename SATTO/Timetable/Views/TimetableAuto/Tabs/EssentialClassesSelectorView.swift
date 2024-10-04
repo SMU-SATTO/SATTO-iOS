@@ -51,11 +51,10 @@ struct EssentialClassesSelectorView: View {
             }
             .padding(.horizontal, 30)
             
-            TimetableView(timetable: TimetableModel(id: -1, semester: "", name: "", lectures: constraintsViewModel.selectedLectures, isPublic: false, isRepresented: false))
+            TimetableView(timetable: TimetableModel(id: -1, semester: "", name: "", lectures: lectureSheetViewModel.selectedLectures, isPublic: false, isRepresented: false))
                 .sheet(isPresented: $isShowBottomSheet, content: {
-                    LectureSheetTabView(
-                        constraintsViewModel: constraintsViewModel,
-                        lectureSheetViewModel: lectureSheetViewModel,
+                    SATTOLectureSheetView(
+                        viewModel: lectureSheetViewModel,
                         showResultAction: {isShowBottomSheet = false}
                     )
                     .presentationDetents([.medium, .large])

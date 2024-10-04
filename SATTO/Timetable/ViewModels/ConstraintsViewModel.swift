@@ -55,6 +55,7 @@ class ConstraintsViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     }
     
     //서버에서 준 과목 조합 리스트
+    
     @Published private var _majorCombinations: [MajorComb]? = []
     var majorCombinations: [MajorComb] {
         get { _majorCombinations ?? [] }
@@ -82,7 +83,7 @@ class ConstraintsViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
             .assign(to: \._eLearnNum, on: self)
             .store(in: &cancellables)
         
-        constraintState.$selectedLectures
+        appState.lectureSearch.$selectedLectures
             .assign(to: \._selectedLectures, on: self)
             .store(in: &cancellables)
         
@@ -90,7 +91,14 @@ class ConstraintsViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
             .assign(to: \._selectedBlocks, on: self)
             .store(in: &cancellables)
         
-        constraintState.$preSelectedBlocks
+        appState.lectureSearch.$selectedLectures
+            .map { [weak self] selectedLectures in
+                guard let self = self else { return Set<String>() }
+                let newPreSelectedBlocks = selectedLectures.flatMap { lecture in
+                    self.parseTimes(for: lecture)
+                }
+                return Set(newPreSelectedBlocks)
+            }
             .assign(to: \._preSelectedBlocks, on: self)
             .store(in: &cancellables)
         
