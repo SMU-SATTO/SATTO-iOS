@@ -276,7 +276,7 @@ class LectureSearchViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
         return selectedLectures.contains(where: { $0.sbjDivcls == Lecture.sbjDivcls })
     }
     
-    func clear() {
+    func clearSelectedLectures() {
         selectedLectures.removeAll()
     }
     
