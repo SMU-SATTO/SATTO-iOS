@@ -15,6 +15,7 @@ struct TimetableCustom: View {
     
     @State private var isShowBottomSheet = false
     @State private var showingAlert = false
+    @State private var backAlert = false
     @State private var timetableName = ""
     
     var body: some View {
@@ -84,12 +85,19 @@ struct TimetableCustom: View {
                 }
             }
         }
+        .alert("시간표 생성을 취소하고 뒤로 가시겠어요?", isPresented: $backAlert) {
+            Button("취소", role: .cancel, action: {})
+            Button("확인") {
+                lectureSearchViewModel.resetAllProperties()
+                stackPath.removeLast()
+            }
+        }
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 HStack {
                     Button(action: {
-                        stackPath.removeLast()
+                        backAlert = true
                     }) {
                         HStack {
                             Image(systemName: "chevron.left")

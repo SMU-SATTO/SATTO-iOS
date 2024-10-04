@@ -60,7 +60,7 @@ struct TimetableModifyView: View {
             lectureSearchViewModel.selectedLectures = timetableMainViewModel.currentTimetable?.lectures ?? []
         }
         .onDisappear {
-            lectureSearchViewModel.clearSelectedLectures()
+            lectureSearchViewModel.resetAllProperties()
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {

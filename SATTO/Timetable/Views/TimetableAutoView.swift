@@ -55,9 +55,10 @@ struct TimetableAutoView: View {
                 customToolBar
             }
         }
-        .alert("지금 뒤로 가면 진행상항이 사라져요!", isPresented: $showingAlert) {
+        .alert("시간표 자동 생성을 취소하고 뒤로 가시겠어요?", isPresented: $showingAlert) {
             Button("취소", role: .cancel, action: {})
             Button("확인") {
+                lectureSearchViewModel.resetAllProperties()
                 stackPath.removeLast()
             }
         }

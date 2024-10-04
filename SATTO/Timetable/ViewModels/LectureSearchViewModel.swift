@@ -135,6 +135,25 @@ class LectureSearchViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     private var lectureSearchState: LectureSearchState {
         appState.lectureSearch
     }
+    
+    func resetAllProperties() {
+        lectureFilter = LectureFilterModel()
+        
+        selectedGradeCategories = [false, false, false, false]
+        selectedElectiveCategories = [false, false, false]
+        selectedBalanceCategories = [false, false, false, false, false]
+        selectedELearnCategories = [false, false]
+        
+        selectedLectures = []
+        currentPage = nil
+        totalPage = 0
+        isLoading = false
+        hasMorePages = nil
+        
+        selectedBlocks = []
+        preSelectedBlocks = []
+        tempDragBlocks = []
+    }
 
     func resetSearchText() {
         lectureFilter.searchText = ""
@@ -276,7 +295,7 @@ class LectureSearchViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
         return selectedLectures.contains(where: { $0.sbjDivcls == Lecture.sbjDivcls })
     }
     
-    func clearSelectedLectures() {
+    func resetSelectedLectures() {
         selectedLectures.removeAll()
     }
     

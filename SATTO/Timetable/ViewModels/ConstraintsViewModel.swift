@@ -122,10 +122,6 @@ class ConstraintsViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
         appState.constraint
     }
     
-    func clear() {
-        selectedLectures.removeAll()
-    }
-    
     private func parseTimes(for Lecture: LectureModel) -> [String] {
         return Lecture.time.components(separatedBy: " ")
     }

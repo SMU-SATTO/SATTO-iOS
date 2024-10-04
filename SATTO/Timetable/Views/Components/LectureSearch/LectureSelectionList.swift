@@ -51,7 +51,7 @@ struct LectureSelectionList: View {
                 HStack {
                     GeometryReader { geometry in
                         Button(action: {
-                            viewModel.clearSelectedLectures()
+                            viewModel.resetSelectedLectures()
                         }) {
                             Text("선택 초기화")
                                 .font(.sb14)
