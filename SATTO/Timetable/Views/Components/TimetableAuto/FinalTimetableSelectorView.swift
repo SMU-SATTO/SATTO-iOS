@@ -18,7 +18,11 @@ struct FinalTimetableSelectorView: View {
     @State private var isRawChecked = false
     @State private var currIndex: Int = 0
     
-    @Binding var showingPopup: Bool
+    @State private var timetableSelectPopup: Bool = false
+    @State private var completionPopup: Bool = false
+    
+    @State private var registeredTimetableList: Set<Int> = []
+    
     @Binding var timetableIndex: Int
     
     var body: some View {
@@ -29,35 +33,19 @@ struct FinalTimetableSelectorView: View {
                 }
                 else {
                     timetableTabView
-                    CustomPageIndicator(currIndex: $currIndex, totalIndex: viewModel.timetableList.count)
+                    FinalTimetablePageIndicator(currIndex: $currIndex, totalIndex: viewModel.timetableList.count)
                 }
             }
         }
         .onAppear {
             isRawChecked = false
         }
-        .popup(isPresented: $isProgressing, view: {
+        .STPopup(isPresented: $isProgressing) {
             TimetableProgressView()
-        }, customize: {
-            $0
-                .position(.center)
-                .appearFrom(.bottom)
-                .closeOnTapOutside(false)
-                .closeOnTap(false)
-                .backgroundColor(.black.opacity(0.9))
-                .dragToDismiss(false)
-        })
-        .popup(isPresented: $errorPopup, view: {
-            ErrorPopup()
-        }, customize: {
-            $0
-                .position(.center)
-                .appearFrom(.bottom)
-                .closeOnTapOutside(false)
-                .closeOnTap(false)
-                .backgroundColor(.black.opacity(0.9))
-                .autohideIn(3)
-        })
+        }
+        .STPopup(isPresented: $timetableSelectPopup) {
+            FinalSelectPopup(viewModel: viewModel, isPresented: $timetableSelectPopup, completionPopup: $completionPopup, timetableIndex: $timetableIndex, registeredTimetableList: $registeredTimetableList)
+        }
     }
     
     private var emptyTimetableView: some View {
@@ -106,7 +94,7 @@ struct FinalTimetableSelectorView: View {
                         .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
                         .onTapGesture {
                             timetableIndex = index
-                            showingPopup.toggle()
+                            timetableSelectPopup = true
                         }
                 }
             }
@@ -122,81 +110,136 @@ struct FinalTimetableSelectorView: View {
     private func fetchAllTimetables() {
         isProgressing = true
         Task {
-            do {
-                await viewModel.fetchFinalTimetableList(isRaw: true)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    isProgressing = false
-                    isRawChecked = true
+            await viewModel.fetchFinalTimetableList(isRaw: true)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                isProgressing = false
+                isRawChecked = true
+            }
+        }
+    }
+}
+
+struct FinalSelectPopup: View {
+    @ObservedObject var viewModel: ConstraintsViewModel
+    
+    @Binding var isPresented: Bool
+    @Binding var completionPopup: Bool
+    
+    @Binding var timetableIndex: Int
+    @Binding var registeredTimetableList: Set<Int>
+    
+    @State private var showingAlert = false
+    @State private var timetableName = "시간표"
+    
+    var body: some View {
+        VStack {
+            RoundedRectangle(cornerRadius: 20)
+                .frame(width: 350, height: 600)
+                .foregroundStyle(Color.popupBackground)
+                .foregroundStyle(Color.red)
+                .overlay(
+                    VStack(spacing: 0) {
+                        TimetableView(timetable: TimetableModel(id: -1, semester: "", name: "", lectures: viewModel.timetableList[timetableIndex], isPublic: false, isRepresented: false))
+                            .padding()
+                        Text("이 시간표를 이번 학기 시간표로\n등록하시겠어요?")
+                            .font(.sb16)
+                            .foregroundStyle(Color.blackWhite200)
+                            .multilineTextAlignment(.center)
+                        acceptButton
+                        declineButton
+                    }
+                )
+                .alert("시간표 이름을 입력해주세요", isPresented: $showingAlert) {
+                    alertContent
                 }
-            } catch {
-                print("Error: \(error)")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    isProgressing = false
-                    errorPopup = true
+        }
+        .popup(isPresented: $completionPopup) {
+            TimetableSelectCompletionPopup()
+        } customize: {
+            $0.type(.floater())
+                .position(.bottom)
+                .appearFrom(.bottom)
+                .closeOnTapOutside(true)
+                .closeOnTap(true)
+                .dragToDismiss(true)
+                .backgroundColor(.black.opacity(0.5))
+                .autohideIn(3)
+        }
+    }
+    
+    private var acceptButton: some View {
+        Button(action: {
+            showingAlert = true
+        }) {
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundStyle(Color.buttonBlue)
+                .padding(.horizontal, 30)
+                .overlay(
+                    Text("네, 등록할래요")
+                        .font(.sb14)
+                        .foregroundStyle(.white)
+                )
+                .frame(maxHeight: 40)
+                .padding(.top, 10)
+        }
+    }
+    
+    private var declineButton: some View {
+        Button(action: {
+            isPresented = false
+        }) {
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundStyle(Color.clear)
+                .padding(.horizontal, 30)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.buttonBlue, lineWidth: 1.5)
+                        .padding(.horizontal, 30)
+                        .overlay(
+                            Text("아니요, 더 둘러볼래요")
+                                .font(.sb14)
+                                .foregroundStyle(Color.buttonBlue)
+                        )
+                )
+                .frame(maxHeight: 40)
+                .padding(.top, 10)
+                .padding(.bottom, 20)
+        }
+    }
+    
+    private var alertContent: some View {
+        VStack {
+            TextField("시간표 이름", text: $timetableName)
+                .autocorrectionDisabled()
+            HStack {
+                Button("취소", role: .cancel, action: {})
+                Button("확인") {
+                    Task {
+                        await viewModel.saveTimetable(timetableIndex: timetableIndex, timetableName: timetableName)
+                        registeredTimetableList.insert(timetableIndex)
+                        isPresented = false
+                        completionPopup = true
+                    }
                 }
             }
         }
     }
 }
 
-struct CustomPageIndicator: View {
-    @Binding var currIndex: Int
-    @State var totalIndex: Int
-    
+struct TimetableSelectCompletionPopup: View {
     var body: some View {
-        VStack {
-            pageIndicator
+        VStack(spacing: 20) {
+            Text("시간표 등록이 완료되었습니다.")
+                .font(.sb16)
+                .foregroundStyle(.blackWhite)
+                .multilineTextAlignment(.center)
         }
-    }
-    
-    private var pageIndicator: some View {
-        GeometryReader { geometry in
-            HStack(spacing: 8) { // 간격을 좁게 조정
-                ForEach(pageIndicatorIndices(), id: \.self) { index in
-                    Circle()
-                        .fill(index == currIndex ? Color.blue : Color.gray)
-                        .frame(width: 10, height: 10)
-                        .scaleEffect(circleScaleEffect(index: index))
-                        .animation(.easeInOut, value: currIndex)
-                        .onTapGesture {
-                            withAnimation {
-                                currIndex = index
-                            }
-                        }
-                }
-            }
-            .frame(width: geometry.size.width, alignment: .center)
-        }
-        .frame(height: 20)
-    }
-    
-    private func circleScaleEffect(index: Int) -> CGFloat {
-        let maxIndicators = 9
-        let halfMax = maxIndicators / 2
-        
-        if index == currIndex {
-            return 1.0
-        } else if (currIndex > halfMax && currIndex < totalIndex - halfMax && index == currIndex - halfMax) || (currIndex > halfMax && currIndex < totalIndex - halfMax - 1 && index == currIndex + halfMax) {
-            return 0.6
-        } else if (currIndex == halfMax && index == currIndex + halfMax) || (currIndex == totalIndex - halfMax - 1 && index == currIndex - halfMax) {
-            return 0.6
-        } else {
-            return 0.8
-        }
-    }
-
-    private func pageIndicatorIndices() -> [Int] {
-        let maxIndicators = 9
-        let halfMax = maxIndicators / 2
-        
-        if totalIndex <= maxIndicators {
-            return Array(0..<totalIndex)
-        } else if currIndex <= halfMax {
-            return Array(0..<maxIndicators)
-        } else if currIndex >= totalIndex - halfMax - 1 {
-            return Array((totalIndex - maxIndicators)..<totalIndex)
-        } else {
-            return Array((currIndex - halfMax)..<(currIndex + halfMax + 1))
-        }
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundStyle(Color.popupBackground)
+                .padding(EdgeInsets(top: -20, leading: -20, bottom: -20, trailing: -20))
+                .shadow(radius: 5)
+        )
+        .padding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20))
     }
 }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CustomPageControl: View {
+struct TimetableAutoPageControl: View {
     let totalIndex: Int
     let selectedIndex: Int
     
@@ -48,6 +48,68 @@ struct CustomPageControl: View {
                         .clipShape(RoundedRectangle(cornerRadius: rectangleRadius))
                 }
             }
+        }
+    }
+}
+
+struct FinalTimetablePageIndicator: View {
+    @Binding var currIndex: Int
+    @State var totalIndex: Int
+    
+    var body: some View {
+        VStack {
+            pageIndicator
+        }
+    }
+    
+    private var pageIndicator: some View {
+        GeometryReader { geometry in
+            HStack(spacing: 8) { // 간격을 좁게 조정
+                ForEach(pageIndicatorIndices(), id: \.self) { index in
+                    Circle()
+                        .fill(index == currIndex ? Color.blue : Color.gray)
+                        .frame(width: 10, height: 10)
+                        .scaleEffect(circleScaleEffect(index: index))
+                        .animation(.easeInOut, value: currIndex)
+                        .onTapGesture {
+                            withAnimation {
+                                currIndex = index
+                            }
+                        }
+                }
+            }
+            .frame(width: geometry.size.width, alignment: .center)
+        }
+        .frame(height: 20)
+    }
+    
+    private func circleScaleEffect(index: Int) -> CGFloat {
+        let maxIndicators = 9
+        let halfMax = maxIndicators / 2
+        
+        if index == currIndex {
+            return 1.0
+        } else if (currIndex > halfMax && currIndex < totalIndex - halfMax && index == currIndex - halfMax) || (currIndex > halfMax && currIndex < totalIndex - halfMax - 1 && index == currIndex + halfMax) {
+            return 0.6
+        } else if (currIndex == halfMax && index == currIndex + halfMax) || (currIndex == totalIndex - halfMax - 1 && index == currIndex - halfMax) {
+            return 0.6
+        } else {
+            return 0.8
+        }
+    }
+
+    private func pageIndicatorIndices() -> [Int] {
+        let maxIndicators = 9
+        let halfMax = maxIndicators / 2
+        
+        if totalIndex <= maxIndicators {
+            return Array(0..<totalIndex)
+        } else if currIndex <= halfMax {
+            return Array(0..<maxIndicators)
+        } else if currIndex >= totalIndex - halfMax - 1 {
+            return Array((totalIndex - maxIndicators)..<totalIndex)
+        } else {
+            return Array((currIndex - halfMax)..<(currIndex + halfMax + 1))
         }
     }
 }

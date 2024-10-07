@@ -1,5 +1,5 @@
 //
-//  EssentialClassesSelectorView.swift
+//  EssentialLectureSelector.swift
 //  SATTO
 //
 //  Created by 김영준 on 3/5/24.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 //MARK: - 필수로 들어야 할 과목 선택
-struct EssentialClassesSelectorView: View {
+struct EssentialLectureSelector: View {
     @ObservedObject var constraintsViewModel: ConstraintsViewModel
     @ObservedObject var lectureSearchViewModel: LectureSearchViewModel
 
@@ -65,5 +65,5 @@ struct EssentialClassesSelectorView: View {
 }
 
 #Preview {
-    EssentialClassesSelectorView(constraintsViewModel: ConstraintsViewModel(container: .preview), lectureSearchViewModel: LectureSearchViewModel(container: .preview))
+    EssentialLectureSelector(constraintsViewModel: ConstraintsViewModel(container: .preview), lectureSearchViewModel: LectureSearchViewModel(container: .preview))
 }

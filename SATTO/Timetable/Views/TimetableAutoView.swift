@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PopupView
 
 struct TimetableAutoView: View {
     enum SelectedView: CaseIterable {
@@ -22,17 +23,11 @@ struct TimetableAutoView: View {
     @State private var isProgressing = false
     
     @State private var midCheckPopup = false
-    @State private var invalidPopup = false
-    @State private var finalSelectPopup = false
     @State private var errorPopup = false
-    @State private var completionPopup = false
     @State private var finishMakingPopup = false          //시간표 생성 끝낼 때 뜨는 팝업
     @State private var backAlert = false
     
-    @State private var isRegisterSuccess = false
-    
     @State private var timetableIndex = 0
-    @State private var registeredTimetableList: Set<Int> = []
     
     var body: some View {
         ZStack {
@@ -56,87 +51,13 @@ struct TimetableAutoView: View {
         .alert("시간표 자동 생성을 취소하고 뒤로 가시겠어요?", isPresented: $backAlert) {
             Button("취소", role: .cancel, action: {})
             Button("확인") {
+                constraintsViewModel.resetAllProperties()
                 lectureSearchViewModel.resetAllProperties()
                 stackPath.removeLast()
             }
         }
-        .popup(isPresented: $invalidPopup, view: {
-            InvalidPopup(invalidPopup: $invalidPopup)
-        }, customize: {
-            $0
-                .position(.center)
-                .appearFrom(.bottom)
-                .closeOnTapOutside(false)
-                .closeOnTap(false)
-                .backgroundColor(.black.opacity(0.5))
-        })
-        .popup(isPresented: $midCheckPopup, view: {
-            MidCheckPopup(midCheckPopup: $midCheckPopup, navigateForward: { selectedView = .majorCombination })
-        }, customize: {
-            $0
-                .position(.center)
-                .appearFrom(.bottom)
-                .closeOnTapOutside(false)
-                .closeOnTap(false)
-                .dragToDismiss(false)
-                .backgroundColor(.black.opacity(0.5))
-        })
-        .popup(isPresented: $finalSelectPopup, view: {
-            FinalSelectPopup(viewModel: constraintsViewModel, finalSelectPopup: $finalSelectPopup, completionPopup: $completionPopup, isRegisterSuccess: $isRegisterSuccess, timetableIndex: $timetableIndex, registeredTimetableList: $registeredTimetableList)
-        }, customize: {
-            $0
-                .position(.center)
-                .appearFrom(.bottom)
-                .closeOnTapOutside(false)
-                .closeOnTap(false)
-                .dragToDismiss(false)
-                .backgroundColor(.black.opacity(0.5))
-        })
-        .popup(isPresented: $isProgressing, view: {
+        .STPopup(isPresented: $isProgressing) {
             TimetableProgressView()
-        }, customize: {
-            $0
-                .position(.center)
-                .appearFrom(.bottom)
-                .closeOnTapOutside(false)
-                .closeOnTap(false)
-                .backgroundColor(.black.opacity(0.9))
-                .dragToDismiss(false)
-        })
-        .popup(isPresented: $errorPopup, view: {
-            ErrorPopup()
-        }, customize: {
-            $0
-                .position(.center)
-                .appearFrom(.bottom)
-                .closeOnTapOutside(false)
-                .closeOnTap(false)
-                .backgroundColor(.black.opacity(0.9))
-                .autohideIn(3)
-        })
-        .popup(isPresented: $completionPopup) {
-            TimetableSelectCompletionPopup(completionPupop: $completionPopup, isRegisterSuccess: $isRegisterSuccess)
-        } customize: {
-            $0.type(.floater())
-                .position(.bottom)
-                .appearFrom(.bottom)
-                .closeOnTapOutside(true)
-                .closeOnTap(true)
-                .dragToDismiss(true)
-                .backgroundColor(.black.opacity(0.5))
-                .autohideIn(3)
-        }
-        .popup(isPresented: $finishMakingPopup) {
-            FinishMakingTimetablePopup(finishMakingTimetablePopup: $finishMakingPopup, navigateForward: { stackPath.removeAll()
-                stackPath.append(.timetableList) })
-        } customize: {
-            $0.type(.floater())
-                .position(.center)
-                .appearFrom(.bottom)
-                .closeOnTapOutside(false)
-                .closeOnTap(false)
-                .dragToDismiss(false)
-                .backgroundColor(.black.opacity(0.9))
         }
     }
     
@@ -157,7 +78,7 @@ struct TimetableAutoView: View {
     
     private var pageControl: some View {
         VStack {
-            CustomPageControl(totalIndex: SelectedView.allCases.count, selectedIndex: selectedViewIndex())
+            TimetableAutoPageControl(totalIndex: SelectedView.allCases.count, selectedIndex: selectedViewIndex())
                 .animation(.spring(), value: UUID())
                 .padding(.horizontal)
         }
@@ -167,16 +88,25 @@ struct TimetableAutoView: View {
         TabView(selection: $selectedView) {
             CreditPickerView(constraintsViewModel: constraintsViewModel)
                 .tag(SelectedView.creditPicker)
-            EssentialClassesSelectorView(constraintsViewModel: constraintsViewModel, lectureSearchViewModel: lectureSearchViewModel)
+            EssentialLectureSelector(constraintsViewModel: constraintsViewModel, lectureSearchViewModel: lectureSearchViewModel)
                 .tag(SelectedView.essentialClasses)
-            InvalidTimeSelectorView(constraintsViewModel: constraintsViewModel)
+            InvalidTimeSelectorView(viewModel: constraintsViewModel)
                 .tag(SelectedView.invalidTime)
             MidCheckView(viewModel: constraintsViewModel)
                 .tag(SelectedView.midCheck)
+                .STPopup(isPresented: $midCheckPopup) {
+                    MidCheckPopup(isPresented: $midCheckPopup, action: { selectedView = .majorCombination })
+                }
             MajorCombSelectorView(viewModel: constraintsViewModel)
                 .tag(SelectedView.majorCombination)
-            FinalTimetableSelectorView(viewModel: constraintsViewModel, showingPopup: $finalSelectPopup, timetableIndex: $timetableIndex)
+            FinalTimetableSelectorView(viewModel: constraintsViewModel, timetableIndex: $timetableIndex)
                 .tag(SelectedView.finalTimetable)
+                .STPopup(isPresented: $finishMakingPopup) {
+                    FinishMakingTimetablePopup(isPresented: $finishMakingPopup, action: {
+                        stackPath.removeAll()
+                        stackPath.append(.timetableList)
+                    })
+                }
         }
         .onAppear {
             UIScrollView.appearance().isScrollEnabled = false //드래그제스처로 탭뷰 넘기는거 방지
@@ -240,6 +170,11 @@ struct TimetableAutoView: View {
                         .frame(height: 45)
                         .disabled(constraintsViewModel.selectedMajorCombs.isEmpty)
                     }
+                }
+                else {
+                    TimetableAutoBackButton(text: "이전으로", action: {
+                        selectedView = .midCheck
+                    })
                 }
             case .finalTimetable:
                 TimetableAutoBackButton(text: "전공조합 선택하기", action: {
