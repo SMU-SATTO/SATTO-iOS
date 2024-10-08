@@ -7,8 +7,9 @@
 
 import SwiftUI
 
-struct TimeSelectorView<VM>: View where VM: TimeSelectorViewModelProtocol {
-    @ObservedObject var viewModel: VM
+struct TimeSelectorView: View {
+    @Binding var selectedTimes: Set<String>
+    let preSelectedTimes: Set<String>
     
     var config = TimetableConfiguration.timeSelectConfig
     var body: some View {
@@ -24,7 +25,7 @@ struct TimeSelectorView<VM>: View where VM: TimeSelectorViewModelProtocol {
                     }
                     HStack(spacing: 0) {
                         TimeBar(startTime: config.time.startAt.hour, endTime: config.time.endAt.hour, totalHeight: config.timebar.height, cellHeight: cellHeight, width: config.timebar.width)
-                        SelectableTimeBlock(viewModel: viewModel, config: config, cellWidth: cellWidth, cellHeight: cellHeight)
+                        SelectableTimeBlock(selectedTimes: $selectedTimes, preSelectedTimes: preSelectedTimes, config: config, cellWidth: cellWidth, cellHeight: cellHeight)
                     }
                 }
                 TimetableGrid(weekCount: config.weeks.count, hourCount: config.time.endAt.hour - config.time.startAt.hour, config: config)
@@ -35,8 +36,11 @@ struct TimeSelectorView<VM>: View where VM: TimeSelectorViewModelProtocol {
     }
 }
 
-struct SelectableTimeBlock<VM>: View where VM: TimeSelectorViewModelProtocol {
-    @ObservedObject var viewModel: VM
+struct SelectableTimeBlock: View {
+    @Binding var selectedTimes: Set<String>
+    let preSelectedTimes: Set<String>
+    @State var tempDragTimes: Set<String> = []
+
     let config: TimetableConfiguration
     let cellWidth: CGFloat
     let cellHeight: CGFloat
@@ -48,9 +52,9 @@ struct SelectableTimeBlock<VM>: View where VM: TimeSelectorViewModelProtocol {
                     ForEach(0..<config.weeks.count, id: \.self) { week in
                         let weekTimeString = "\(config.weeks[week].shortSymbolKor)\(time)"
                         Rectangle()
-                            .foregroundStyle(viewModel.preSelectedBlocks.contains(weekTimeString)
+                            .foregroundStyle(preSelectedTimes.contains(weekTimeString)
                                              ? .red
-                                             : viewModel.selectedBlocks.contains(weekTimeString)
+                                             : selectedTimes.contains(weekTimeString)
                                              ? .timeselectorCellSelected
                                              : .timeselectorCellUnselected)
                             .frame(width: cellWidth, height: cellHeight)
@@ -70,7 +74,7 @@ struct SelectableTimeBlock<VM>: View where VM: TimeSelectorViewModelProtocol {
                 }
             }
             .onEnded { _ in
-                viewModel.tempDragBlocks.removeAll()
+                tempDragTimes.removeAll()
             }
     }
     
@@ -85,16 +89,16 @@ struct SelectableTimeBlock<VM>: View where VM: TimeSelectorViewModelProtocol {
     }
     
     private func updateSelectedViews(for weekTimeString: String) {
-        guard !viewModel.preSelectedBlocks.contains(weekTimeString),
-              !viewModel.tempDragBlocks.contains(weekTimeString) else { return }
+        guard !preSelectedTimes.contains(weekTimeString),
+              !tempDragTimes.contains(weekTimeString) else { return }
         
         withAnimation(.easeInOut(duration: 0.2)) {
-            viewModel.tempDragBlocks.insert(weekTimeString)
+            tempDragTimes.insert(weekTimeString)
             
-            if viewModel.selectedBlocks.contains(weekTimeString) {
-                viewModel.selectedBlocks.remove(weekTimeString)
+            if selectedTimes.contains(weekTimeString) {
+                selectedTimes.remove(weekTimeString)
             } else {
-                viewModel.selectedBlocks.insert(weekTimeString)
+                selectedTimes.insert(weekTimeString)
             }
         }
     }
@@ -102,7 +106,9 @@ struct SelectableTimeBlock<VM>: View where VM: TimeSelectorViewModelProtocol {
 
 
 #Preview {
-    TimeSelectorView(viewModel: TimeSelectorViewModel())
-        .aspectRatio(7/10, contentMode: .fit)
-        .frame(maxWidth: 350, maxHeight: 500)
+    TimeSelectorView(
+        selectedTimes: .constant(Set<String>()), preSelectedTimes: []
+    )
+    .aspectRatio(7/10, contentMode: .fit)
+    .frame(maxWidth: 350, maxHeight: 500)
 }
