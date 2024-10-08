@@ -52,7 +52,7 @@ struct ConstraintService: ConstraintServiceProtocol {
     }
 
     func getMajorComb() async throws {
-        let requiredLectStrings = appState.constraint.selectedLectures.map { $0.sbjDivcls }
+        let requiredLectStrings = appState.lectureSearch.selectedLectures.map { $0.sbjDivcls }
         let adjRequiredLect = requiredLectStrings.isEmpty ? [""] : requiredLectStrings
         let adjInvalidTime = convertSetToString(appState.constraint.selectedBlocks)
         
