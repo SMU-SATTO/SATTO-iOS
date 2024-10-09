@@ -7,7 +7,6 @@
 
 import Foundation
 
-//MARK: - CurrentLectureListRequest
 struct CurrentLectureListRequest: Codable {
     let searchText: String
     let grade: [Int]
@@ -19,7 +18,6 @@ struct CurrentLectureListRequest: Codable {
     let timeZone: String
 }
 
-//MARK: - CurrentLectureListResponse
 struct CurrentLectureResponseDto: Decodable {
     let isSuccess: Bool?
     let code, message: String?

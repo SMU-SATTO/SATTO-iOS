@@ -21,7 +21,6 @@ struct CombinationDto: Decodable {
     let lectName, code: String
 }
 
-//MARK: - TimetableAutoResponse
 struct FinalTimetableListResponseDto: Decodable {
     let isSuccess: Bool?
     let code, message: String?
@@ -40,7 +39,6 @@ struct FinalTimetableDto: Decodable {
     let credit: Int
 }
 
-//MARK: - TimetableListResponse
 struct TimetableListResponseDto: Decodable {
     let code: String
     let isSuccess: Bool
@@ -56,7 +54,6 @@ struct TimetableListDto: Decodable {
     let isRepresent: Bool
 }
 
-//MARK: - TimetableInfo - get
 struct UserTimetableResponseDto: Decodable {
     let isSuccess: Bool?
     let code, message: String?
@@ -74,39 +71,4 @@ struct LectDto: Decodable {
     let code, codeSection, lectName, professor: String?
     let lectTime, cmpDiv: String?
     let credit: Int?
-}
-
-struct CreateTimetableResponseDto: Decodable {
-    let isSuccess: Bool?
-    let code, message, result: String?
-}
-
-//MARK: - PatchTimetablePrivateResponseDto
-struct PatchTimetablePrivateResponseDto: Decodable {
-    let isSuccess: Bool
-    let code, message, result: String
-}
-
-//MARK: - PatchTimetableRepresentResponseDto
-struct PatchTimetableRepresentResponseDto: Decodable {
-    let isSuccess: Bool
-    let code, message, result: String
-}
-
-//MARK: - PatchTimetableNameResponseDto
-struct PatchTimetableNameResponseDto: Decodable {
-    let isSuccess: Bool
-    let code, message, result: String
-}
-
-//MARK: - PatchTimetableInfoResponseDto
-struct PatchTimetableInfoResponseDto: Decodable {
-    let isSuccess: Bool
-    let code, message, result: String
-}
-
-//MARK: - DeleteTimetableResponseDto
-struct DeleteTimetableResponseDto: Decodable {
-    let isSuccess: Bool
-    let code, message, result: String
 }

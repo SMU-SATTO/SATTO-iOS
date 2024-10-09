@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-//MARK: - 필수로 들어야 할 과목 선택
 struct EssentialLectureSelector: View {
     @ObservedObject var viewModel: LectureSearchViewModel
 

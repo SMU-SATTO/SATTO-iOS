@@ -64,7 +64,7 @@ struct FinalTimetablePageIndicator: View {
     
     private var pageIndicator: some View {
         GeometryReader { geometry in
-            HStack(spacing: 8) { // 간격을 좁게 조정
+            HStack(spacing: 8) { 
                 ForEach(pageIndicatorIndices(), id: \.self) { index in
                     Circle()
                         .fill(index == currIndex ? Color.blue : Color.gray)

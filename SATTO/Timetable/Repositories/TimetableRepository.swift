@@ -8,7 +8,6 @@
 import Foundation
 import Moya
 
-/// 비즈니스 로직이 아닌 데이터 소스와의 상호작용을 담당. 네트워크에서 받은 DTO 반환
 protocol TimetableRepositoryProtocol {
     func getUserTimetable(id: Int?) async throws -> UserTimetableResponseDto
     func patchTimetablePrivate(timetableId: Int, isPublic: Bool) async throws

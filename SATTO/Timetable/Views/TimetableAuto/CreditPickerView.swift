@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-//MARK: - 학점 범위 선택
 struct CreditPickerView: View {
     @Binding var credit: Int
     @Binding var majorCount: Int

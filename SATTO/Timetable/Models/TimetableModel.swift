@@ -16,7 +16,6 @@ struct TimetableModel {
     let isRepresented: Bool
 }
 
-//MARK: - TimetableListModel
 struct TimetableListModel {
     let id: Int
     let timetableName: String

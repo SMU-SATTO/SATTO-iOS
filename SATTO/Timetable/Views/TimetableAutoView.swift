@@ -187,7 +187,6 @@ struct TimetableAutoView: View {
         }
     }
 
-    // 선택된 뷰의 인덱스를 반환하는 함수
     func selectedViewIndex() -> Int {
         return SelectedView.allCases.firstIndex(of: selectedView)!
     }

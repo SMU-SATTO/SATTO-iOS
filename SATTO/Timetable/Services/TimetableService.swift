@@ -7,7 +7,6 @@
 
 import Foundation
 
-///비즈니스 로직 처리. repository에서 DTO를 받아 사용할 수 있는 도메인 모델로 변환과 같은 작업을 한다.
 @MainActor
 protocol TimetableServiceProtocol: Sendable {
     func fetchCurrentTimetable(id: Int?) async throws

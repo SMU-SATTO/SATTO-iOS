@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-// MARK: - 불가능한 시간대 선택
 struct InvalidTimeSelectorView: View {
     @Binding var invalidTimes: Set<String>
     let preSelectedTimes: Set<String>

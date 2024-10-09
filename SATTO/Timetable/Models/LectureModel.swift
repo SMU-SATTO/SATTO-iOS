@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-//MARK: - LectureModel
 ///  LectureModel(major: "전공", "sbjDivcls: "HAEA0008-1", sbjNo: "HAEA0008", sbjName: "과목명", prof: "교수명", "time: "목4 목5 목6 ")
 struct LectureModel: Codable {
     let sbjDivcls, sbjNo, sbjName, time: String
