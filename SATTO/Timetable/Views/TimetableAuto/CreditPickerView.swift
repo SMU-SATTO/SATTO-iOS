@@ -9,16 +9,16 @@ import SwiftUI
 
 //MARK: - 학점 범위 선택
 struct CreditPickerView: View {
-    @ObservedObject var constraintsViewModel: ConstraintsViewModel
+    @Binding var credit: Int
+    @Binding var majorCount: Int
+    @Binding var eLearnCount: Int
     
     var body: some View {
         VStack {
-            SectionView(title: "학점", pickerRange: 6...22, selection: $constraintsViewModel.credit)
-            
-            SectionView(title: "전공 개수", pickerRange: 0...(constraintsViewModel.credit / 3), selection: $constraintsViewModel.majorNum)
+            SectionView(title: "학점", pickerRange: 6...22, selection: $credit)
+            SectionView(title: "전공 개수", pickerRange: 0...(credit / 3), selection: $majorCount)
                 .padding(.top, 20)
-            
-            SectionView(title: "E-러닝 개수", pickerRange: 0...2, selection: $constraintsViewModel.eLearnNum)
+            SectionView(title: "E-러닝 개수", pickerRange: 0...2, selection: $eLearnCount)
                 .padding(.top, 20)
         }
     }
@@ -70,5 +70,5 @@ struct CreditPickerView: View {
 }
 
 #Preview {
-    CreditPickerView(constraintsViewModel: ConstraintsViewModel(container: .preview))
+    CreditPickerView(credit: .constant(18), majorCount: .constant(3), eLearnCount: .constant(0))
 }

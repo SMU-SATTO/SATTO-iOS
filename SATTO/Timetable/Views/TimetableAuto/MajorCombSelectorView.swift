@@ -14,24 +14,11 @@ struct MajorCombSelectorView: View {
     var body: some View {
         ScrollView {
             VStack {
-                if viewModel.majorCombinations.count == 0 {
-                    VStack(spacing: 10) {
-                        Text("설정하신 조건으로는 시간표를 생성할 수 없었어요.")
-                        Text("입력된 조건 중 충돌하는 조건이 있었거나,")
-                        Text("과목을 배치할 수 있는 시간대가 부족한 것 같아요.")
-                        Text("조건을 일부 수정해 보시거나, 불가능한 시간대를 줄여주세요.")
-                        Text("도움이 필요하면 개발자에게 문의해 주세요!")
-                    }
-                    .font(.sb16)
-                    .foregroundStyle(Color.blackWhite200)
-                    .multilineTextAlignment(.center)
-                    .padding()
-                }
-                else {
+                if let majorComb = viewModel.majorCombinations {
                     HStack {
                         VStack(spacing: 5) {
                             HStack(spacing: 0) {
-                                Text("\(viewModel.majorCombinations.count)개의 전공 조합")
+                                Text("\(majorComb.count)개의 전공 조합")
                                     .font(.sb16)
                                     .foregroundStyle(Color.accentText)
                                 Text("이 만들어졌어요!")
@@ -63,11 +50,24 @@ struct MajorCombSelectorView: View {
                         Image(systemName: "arrow.down")
                     }
                     .font(.sb14)
+                    ForEach(majorComb.indices, id: \.self) { index in
+                        majorRectangle(combination: majorComb[index])
+                    }
+                    .padding(.horizontal, 20)
                 }
-                ForEach(viewModel.majorCombinations.indices, id: \.self) { index in
-                    majorRectangle(combination: viewModel.majorCombinations[index])
+                else {
+                    VStack(spacing: 10) {
+                        Text("설정하신 조건으로는 시간표를 생성할 수 없었어요.")
+                        Text("입력된 조건 중 충돌하는 조건이 있었거나,")
+                        Text("과목을 배치할 수 있는 시간대가 부족한 것 같아요.")
+                        Text("조건을 일부 수정해 보시거나, 불가능한 시간대를 줄여주세요.")
+                        Text("도움이 필요하면 개발자에게 문의해 주세요!")
+                    }
+                    .font(.sb16)
+                    .foregroundStyle(Color.blackWhite200)
+                    .multilineTextAlignment(.center)
+                    .padding()
                 }
-                .padding(.horizontal, 20)
             }
         }
         .task {

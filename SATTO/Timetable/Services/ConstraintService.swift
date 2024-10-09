@@ -52,11 +52,14 @@ struct ConstraintService: ConstraintServiceProtocol {
     }
 
     func getMajorComb() async throws {
-        let requiredLectStrings = appState.lectureSearch.selectedLectures.map { $0.sbjDivcls }
-        let adjRequiredLect = requiredLectStrings.isEmpty ? [""] : requiredLectStrings
-        let adjInvalidTime = convertSetToString(appState.constraint.selectedBlocks)
+        let credit = appState.constraint.constraints.credit
+        let requiredLectStrings = appState.constraint.constraints.requiredLectures.map { $0.sbjDivcls }
+        let requiredLectures = requiredLectStrings.isEmpty ? [""] : requiredLectStrings
+        let majorCount = appState.constraint.constraints.majorCount
+        let eLearnCount = appState.constraint.constraints.eLearnCount
+        let invalidTimes = convertSetToString(appState.constraint.constraints.invalidTimes)
         
-        let dto = try await constraintRepository.getMajorComb(GPA: appState.constraint.credit, requiredLect: adjRequiredLect, majorCount: appState.constraint.majorNum, cyberCount: appState.constraint.eLearnNum, impossibleTimeZone: adjInvalidTime)
+        let dto = try await constraintRepository.getMajorComb(GPA: credit, requiredLect: requiredLectures, majorCount: majorCount, cyberCount: eLearnCount, impossibleTimeZone: invalidTimes)
         
         guard let majorCombDtos = dto.result else { return }
         
@@ -69,11 +72,15 @@ struct ConstraintService: ConstraintServiceProtocol {
     }
     
     func getFinalTimetableList(isRaw: Bool) async throws {
-        let adjustedRequiredLect = appState.constraint.selectedLectures.isEmpty ? [""] : appState.constraint.selectedLectures.map { $0.sbjDivcls }
-        let adjustedMajorList = appState.constraint.selectedMajorCombs.map { $0.combination.map { $0.code } }
-        let adjInvalidTime = convertSetToString(appState.constraint.selectedBlocks)
+        let credit = appState.constraint.constraints.credit
+        let requiredLectures = appState.constraint.constraints.requiredLectures.isEmpty ? [""] : appState.constraint.constraints.requiredLectures.map { $0.sbjDivcls }
+        let majorCount = appState.constraint.constraints.majorCount
+        let eLearnCount = appState.constraint.constraints.eLearnCount
+        let invalidTimes = convertSetToString(appState.constraint.constraints.invalidTimes)
         
-        let dto = try await constraintRepository.getFinalTimetableList(isRaw: isRaw, GPA: appState.constraint.credit, requiredLect: adjustedRequiredLect, majorCount: appState.constraint.majorNum, cyberCount: appState.constraint.eLearnNum, impossibleTimeZone: adjInvalidTime, majorList: adjustedMajorList)
+        let adjustedMajorList = appState.constraint.selectedMajorCombs.map { $0.combination.map { $0.code } }
+        
+        let dto = try await constraintRepository.getFinalTimetableList(isRaw: isRaw, GPA: credit, requiredLect: requiredLectures, majorCount: majorCount, cyberCount: eLearnCount, impossibleTimeZone: invalidTimes, majorList: adjustedMajorList)
         
         guard let finalTimetableListsDto = dto.result else { return }
         

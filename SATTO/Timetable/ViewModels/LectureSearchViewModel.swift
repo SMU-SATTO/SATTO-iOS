@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-class LectureSearchViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
+class LectureSearchViewModel: BaseViewModel, ObservableObject {
     @Published private var _lectureFilter: LectureFilterModel = LectureFilterModel()
     var lectureFilter: LectureFilterModel {
         get { _lectureFilter }

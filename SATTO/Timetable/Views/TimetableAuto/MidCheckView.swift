@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct MidCheckView: View {
-    @ObservedObject var viewModel: ConstraintsViewModel
-    
+    let constraintModel: ConstraintModel
+
     var body: some View {
         ScrollView {
             HStack {
@@ -37,31 +37,31 @@ struct MidCheckView: View {
                     selectedOptionInfo(
                         header: "선택한 학점",
                         headerColor: Color.blackWhite200,
-                        content: "\(viewModel.credit)학점"
+                        content: "\(constraintModel.credit)학점"
                     )
                     selectedOptionInfo(
                         header: "이번 학기에 들을 전공 개수",
                         headerColor: Color.blackWhite200,
-                        content: "\(viewModel.majorNum)개"
+                        content: "\(constraintModel.majorCount)개"
                     )
                     selectedOptionInfo(
                         header: "이번 학기에 들을 이러닝 개수",
                         headerColor: Color.blackWhite200,
-                        content: "\(viewModel.eLearnNum)개"
+                        content: "\(constraintModel.eLearnCount)개"
                     )
                     selectedOptionInfo(
                         header: "필수로 들을 과목",
                         headerColor: Color.blackWhite200,
-                        content: viewModel.selectedLectures.isEmpty
+                        content: constraintModel.requiredLectures.isEmpty
                         ? "선택된 과목이 없어요"
-                        : viewModel.selectedLectures.map { $0.sbjName }.joined(separator: ", ")
+                        : constraintModel.requiredLectures.map { $0.sbjName }.joined(separator: ", ")
                     )
                     selectedOptionInfo(
                         header: "제외된 시간대",
                         headerColor: Color(red: 0.87, green: 0.34, blue: 0.34),
-                        content: viewModel.selectedBlocks.isEmpty
+                        content: constraintModel.invalidTimes.isEmpty
                         ? "선택된 불가능한 시간이 없어요"
-                        : viewModel.sortedSelectedBlocks
+                        : constraintModel.invalidTimes.map { $0 }.joined(separator: ", ")
                     )
                 }
                 .padding(.leading, 50)
@@ -142,5 +142,5 @@ struct MidCheckPopup: View {
 }
 
 #Preview {
-    MidCheckView(viewModel: ConstraintsViewModel(container: .preview))
+    MidCheckView(constraintModel: ConstraintModel())
 }

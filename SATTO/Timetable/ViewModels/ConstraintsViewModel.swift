@@ -8,97 +8,46 @@
 import Combine
 import Foundation
 
-class ConstraintsViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
-    @Published private var _credit: Int = 18        //GPA
-    var credit: Int {
-        get { _credit }
-        set { constraintService.set(\.credit, to: newValue) }
-    }
-    @Published private var _majorNum: Int = 3       //majorcount
-    var majorNum: Int {
-        get { _majorNum }
-        set { constraintService.set(\.majorNum, to: newValue) }
-    }
-    @Published private var _eLearnNum: Int = 0      //cybercount
-    var eLearnNum: Int {
-        get { _eLearnNum }
-        set { constraintService.set(\.eLearnNum, to: newValue) }
-    }
-    @Published private var _selectedLectures: [LectureModel] = [] //requiredLect
-    var selectedLectures: [LectureModel] {
-        get { _selectedLectures }
-        set { constraintService.set(\.selectedLectures, to: newValue) }
+class ConstraintsViewModel: BaseViewModel, ObservableObject {
+    @Published private var _constraints: ConstraintModel = ConstraintModel()
+    var constraints: ConstraintModel {
+        get { _constraints }
+        set {
+            constraintService.set(\.constraints, to: newValue)
+            updatePreSelectedTimes()
+        }
     }
     
-    ///`TimetableSelector`설정
-    @Published private var _selectedBlocks: Set<String> = []
-    var selectedBlocks: Set<String> {
-        get { _selectedBlocks }
-        set { constraintService.set(\.selectedBlocks, to: newValue) }
-    }
-    var sortedSelectedBlocks: String {
-        return constraintService.convertSetToString(_selectedBlocks)
-            .replacingOccurrences(of: " ", with: ", ")
-    }
-    @Published private var _preSelectedBlocks: Set<String> = []
-    var preSelectedBlocks: Set<String> {
-        get { _preSelectedBlocks }
-        set { constraintService.set(\.preSelectedBlocks, to: newValue) }
-    }
-    var tempDragBlocks: Set<String> = []
+    @Published private(set) var preSelectedTimes: Set<String> = []
     
     //request할 때 보낼 과목 조합 리스트
     @Published private var _selectedMajorCombs: [MajorComb] = []      //majorList
     var selectedMajorCombs: [MajorComb] {
         get { _selectedMajorCombs }
-        set {constraintService.set(\.selectedMajorCombs, to: newValue) }
+        set { constraintService.set(\.selectedMajorCombs, to: newValue) }
     }
     
     //서버에서 준 과목 조합 리스트
-    @Published private var _majorCombinations: [MajorComb]? = []
-    var majorCombinations: [MajorComb] {
-        get { _majorCombinations ?? [] }
-    }
-    
-    @Published private var _timetableList: [[LectureModel]]? = []
-    var timetableList: [[LectureModel]] {
-        get { _timetableList ?? []}
-    }
+    @Published private(set) var majorCombinations: [MajorComb]?
+    @Published private(set) var finalTimetableList: [[LectureModel]]?
     
     private var cancellables = Set<AnyCancellable>()
     
     override init (container: DIContainer) {
         super.init(container: container)
-        
-        constraintState.$credit
-            .assign(to: \._credit, on: self)
+
+        constraintState.$constraints
+            .assign(to: \._constraints, on: self)
             .store(in: &cancellables)
         
-        constraintState.$majorNum
-            .assign(to: \._majorNum, on: self)
-            .store(in: &cancellables)
-        
-        constraintState.$eLearnNum
-            .assign(to: \._eLearnNum, on: self)
-            .store(in: &cancellables)
+        updatePreSelectedTimes()
         
         appState.lectureSearch.$selectedLectures
-            .assign(to: \._selectedLectures, on: self)
-            .store(in: &cancellables)
-        
-        constraintState.$selectedBlocks
-            .assign(to: \._selectedBlocks, on: self)
-            .store(in: &cancellables)
-        
-        appState.lectureSearch.$selectedLectures
-            .map { [weak self] selectedLectures in
-                guard let self = self else { return Set<String>() }
-                let newPreSelectedBlocks = selectedLectures.flatMap { lecture in
-                    self.parseTimes(for: lecture)
+            .sink { [weak self] selectedLectures in
+                DispatchQueue.main.async {
+                    self?.constraints.requiredLectures = selectedLectures
                 }
-                return Set(newPreSelectedBlocks)
             }
-            .assign(to: \._preSelectedBlocks, on: self)
             .store(in: &cancellables)
         
         constraintState.$selectedMajorCombs
@@ -106,11 +55,11 @@ class ConstraintsViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
             .store(in: &cancellables)
         
         constraintState.$majorCombs
-            .assign(to: \._majorCombinations, on: self)
+            .assign(to: \.majorCombinations, on: self)
             .store(in: &cancellables)
         
         constraintState.$finalTimetableList
-            .assign(to: \._timetableList, on: self)
+            .assign(to: \.finalTimetableList, on: self)
             .store(in: &cancellables)
     }
     
@@ -123,21 +72,22 @@ class ConstraintsViewModel: BaseViewModel, TimeSelectorViewModelProtocol {
     }
     
     func resetAllProperties() {
-        credit = 18
-        majorNum = 3
-        eLearnNum = 0
-        selectedLectures = []
-        selectedBlocks = []
-        preSelectedBlocks = []
-        selectedMajorCombs = []
+        constraints = ConstraintModel()
     }
     
-    private func parseTimes(for Lecture: LectureModel) -> [String] {
-        return Lecture.time.components(separatedBy: " ")
+    private func updatePreSelectedTimes() {
+        let times = constraints.requiredLectures.flatMap { lecture in
+            lecture.time.components(separatedBy: " ")
+        }
+        preSelectedTimes = Set(times)
     }
     
     func toggleSelection(_ combination: MajorComb) {
-        constraintState.toggleSelection(combination)
+        if selectedMajorCombs.contains(where: { $0.combination == combination.combination }) {
+            selectedMajorCombs.removeAll(where: { $0.combination == combination.combination })
+        } else {
+            selectedMajorCombs.append(combination)
+        }
     }
 
     func isSelected(_ combination: MajorComb) -> Bool {

@@ -26,15 +26,17 @@ struct FinalTimetableSelectorView: View {
     @Binding var timetableIndex: Int
     
     var body: some View {
-        ScrollView {
-            LazyVStack {
-                if viewModel.timetableList.isEmpty {
+        LazyVStack {
+            if let finalTimetableList = viewModel.finalTimetableList {
+                if finalTimetableList.count > 0 {
+                    timetableTabView
+                    FinalTimetablePageIndicator(currIndex: $currIndex, totalIndex: finalTimetableList.count)
+                } else {
                     emptyTimetableView
                 }
-                else {
-                    timetableTabView
-                    FinalTimetablePageIndicator(currIndex: $currIndex, totalIndex: viewModel.timetableList.count)
-                }
+            } else {
+                Text("서버 오류!")
+                    .font(.sb14)
             }
         }
         .onAppear {
@@ -81,29 +83,33 @@ struct FinalTimetableSelectorView: View {
     }
     
     private var timetableTabView: some View {
-        LazyVStack {
-            Text("\(viewModel.timetableList.count)개의 시간표가 만들어졌어요!")
-                .font(.sb14)
-                .multilineTextAlignment(.center)
-            Text("좌우로 스크롤하고 시간표를 클릭해 \n 원하는 시간표를 등록해요.")
-                .font(.sb16)
-                .multilineTextAlignment(.center)
-            TabView(selection: $currIndex) {
-                ForEach(viewModel.timetableList.indices, id: \.self) { index in
-                    TimetableView(timetable: TimetableModel(id: -1, semester: "", name: "", lectures: viewModel.timetableList[index], isPublic: false, isRepresented: false))
-                        .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
-                        .onTapGesture {
-                            timetableIndex = index
-                            timetableSelectPopup = true
+        Group {
+            if let finalTimetableList = viewModel.finalTimetableList {
+                VStack {
+                    Text("\(finalTimetableList.count)개의 시간표가 만들어졌어요!")
+                        .font(.sb14)
+                        .multilineTextAlignment(.center)
+                    Text("좌우로 스크롤하고 시간표를 클릭해 \n 원하는 시간표를 등록해요.")
+                        .font(.sb16)
+                        .multilineTextAlignment(.center)
+                    TabView(selection: $currIndex) {
+                        ForEach(finalTimetableList.indices, id: \.self) { index in
+                            TimetableView(timetable: TimetableModel(id: -1, semester: "", name: "", lectures: finalTimetableList[index], isPublic: false, isRepresented: false))
+                                .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
+                                .onTapGesture {
+                                    timetableIndex = index
+                                    timetableSelectPopup = true
+                                }
                         }
+                    }
+                    .frame(height: 500)
+                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                    .onAppear {
+                        currIndex = 0
+                        UIScrollView.appearance().isScrollEnabled = true //드래그제스처로 탭뷰 넘기는거 여기 TabView에서만 허용
+                    }
                 }
-            }
-            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-            .onAppear {
-                currIndex = 0
-                UIScrollView.appearance().isScrollEnabled = true //드래그제스처로 탭뷰 넘기는거 여기 TabView에서만 허용
-            }
-            .frame(height: 500)
+            } else { EmptyView() }
         }
     }
     
@@ -111,7 +117,7 @@ struct FinalTimetableSelectorView: View {
         isProgressing = true
         Task {
             await viewModel.fetchFinalTimetableList(isRaw: true)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                 isProgressing = false
                 isRawChecked = true
             }
@@ -133,25 +139,27 @@ struct FinalSelectPopup: View {
     
     var body: some View {
         VStack {
-            RoundedRectangle(cornerRadius: 20)
-                .frame(width: 350, height: 600)
-                .foregroundStyle(Color.popupBackground)
-                .foregroundStyle(Color.red)
-                .overlay(
-                    VStack(spacing: 0) {
-                        TimetableView(timetable: TimetableModel(id: -1, semester: "", name: "", lectures: viewModel.timetableList[timetableIndex], isPublic: false, isRepresented: false))
-                            .padding()
-                        Text("이 시간표를 이번 학기 시간표로\n등록하시겠어요?")
-                            .font(.sb16)
-                            .foregroundStyle(Color.blackWhite200)
-                            .multilineTextAlignment(.center)
-                        acceptButton
-                        declineButton
+            if let finalTimetableList = viewModel.finalTimetableList {
+                RoundedRectangle(cornerRadius: 20)
+                    .frame(width: 350, height: 600)
+                    .foregroundStyle(Color.popupBackground)
+                    .foregroundStyle(Color.red)
+                    .overlay(
+                        VStack(spacing: 0) {
+                            TimetableView(timetable: TimetableModel(id: -1, semester: "", name: "", lectures: finalTimetableList[timetableIndex], isPublic: false, isRepresented: false))
+                                .padding()
+                            Text("이 시간표를 이번 학기 시간표로\n등록하시겠어요?")
+                                .font(.sb16)
+                                .foregroundStyle(Color.blackWhite200)
+                                .multilineTextAlignment(.center)
+                            acceptButton
+                            declineButton
+                        }
+                    )
+                    .alert("시간표 이름을 입력해주세요", isPresented: $showingAlert) {
+                        alertContent
                     }
-                )
-                .alert("시간표 이름을 입력해주세요", isPresented: $showingAlert) {
-                    alertContent
-                }
+            }
         }
         .popup(isPresented: $completionPopup) {
             TimetableSelectCompletionPopup()
@@ -222,6 +230,67 @@ struct FinalSelectPopup: View {
                     }
                 }
             }
+        }
+    }
+}
+
+struct FinishMakingTimetablePopup: View {
+    @Binding var isPresented: Bool
+    
+    let action: () -> Void
+    
+    var body: some View {
+        VStack {
+            RoundedRectangle(cornerRadius: 20)
+                .foregroundStyle(.popupBackground)
+                .frame(width: 300, height: 360)
+                .overlay(
+                    VStack(spacing: 30) {
+                        Image(systemName: "light.beacon.max")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 100, height: 100)
+                        Text("시간표 생성을 마치고\n등록된 시간표 목록을 보러가시겠어요?")
+                            .font(.sb16)
+                            .lineSpacing(5)
+                            .multilineTextAlignment(.center)
+                        VStack {
+                            Button(action: {
+                                action()
+                                isPresented = false
+                            }) {
+                                Text("시간표 목록 보러 가기")
+                                    .font(.sb14)
+                                    .foregroundStyle(.white)
+                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            }
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundStyle(Color.buttonBlue)
+                            )
+                            .frame(height: 40)
+                            Button(action: {
+                                isPresented = false
+                            }) {
+                                Text("시간표 등록 더하기")
+                                    .font(.sb14)
+                                    .foregroundStyle(Color.buttonBlue)
+                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            }
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundStyle(.clear)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .inset(by: 2)
+                                            .stroke(Color.buttonBlue, lineWidth: 1.5)
+                                    )
+                            )
+                            .frame(height: 40)
+                        }
+                        .padding(.horizontal, 15)
+                    }
+                )
         }
     }
 }

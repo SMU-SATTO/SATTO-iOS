@@ -86,13 +86,13 @@ struct TimetableAutoView: View {
     
     private var tabView: some View {
         TabView(selection: $selectedView) {
-            CreditPickerView(constraintsViewModel: constraintsViewModel)
+            CreditPickerView(credit: $constraintsViewModel.constraints.credit, majorCount: $constraintsViewModel.constraints.majorCount, eLearnCount: $constraintsViewModel.constraints.eLearnCount)
                 .tag(SelectedView.creditPicker)
-            EssentialLectureSelector(constraintsViewModel: constraintsViewModel, lectureSearchViewModel: lectureSearchViewModel)
+            EssentialLectureSelector(viewModel: lectureSearchViewModel)
                 .tag(SelectedView.essentialClasses)
-            InvalidTimeSelectorView(viewModel: constraintsViewModel)
+            InvalidTimeSelectorView(invalidTimes: $constraintsViewModel.constraints.invalidTimes, preSelectedTimes: constraintsViewModel.preSelectedTimes)
                 .tag(SelectedView.invalidTime)
-            MidCheckView(viewModel: constraintsViewModel)
+            MidCheckView(constraintModel: constraintsViewModel.constraints)
                 .tag(SelectedView.midCheck)
                 .STPopup(isPresented: $midCheckPopup) {
                     MidCheckPopup(isPresented: $midCheckPopup, action: { selectedView = .majorCombination })
@@ -143,7 +143,7 @@ struct TimetableAutoView: View {
                     midCheckPopup = true
                 })
             case .majorCombination:
-                if constraintsViewModel.majorCombinations.count > 0 {
+                if constraintsViewModel.majorCombinations != nil {
                     VStack(spacing: 0) {
                         GeometryReader { geometry in
                             Button(action: {
