@@ -24,6 +24,10 @@ struct SignUpView: View {
     @EnvironmentObject var navPathFinder: LoginNavigationPathFinder
     @EnvironmentObject var authViewModel: AuthViewModel
     
+    @FocusState private var isFocused: Bool
+    
+    @State private var isSignUpComplete = false
+    
     
     var body: some View {
         ZStack {
@@ -43,8 +47,10 @@ struct SignUpView: View {
                     
                     Text("비밀번호")
                     SecureField("비밀번호", text: $password)
+                        .focused($isFocused)
                         .modifier(MyTextFieldModifier())
                     SecureField("비밀번호 재입력", text: $confirmPassword)
+                        .focused($isFocused)
                         .modifier(MyTextFieldModifier())
                     Text("비밀번호는 숫자/영문자 혼합 6자 이상으로 작성해 주세요.")
                         .font(.caption)
@@ -56,11 +62,13 @@ struct SignUpView: View {
                     
                     Text("이름")
                     TextField("이름 입력", text: $name)
+                        .focused($isFocused)
                         .modifier(MyTextFieldModifier())
                         .padding(.bottom, 8)
                     
                     Text("닉네임")
                     TextField("닉네임 입력", text: $nickname)
+                        .focused($isFocused)
                         .modifier(MyTextFieldModifier())
                         .padding(.bottom, 8)
                     
@@ -122,7 +130,7 @@ struct SignUpView: View {
                         authViewModel.user.isPublic = isPublic
                         // 회원가입
                         authViewModel.signUp(user: authViewModel.user) {
-                            navPathFinder.popToRoot()
+                            isSignUpComplete.toggle()
                         }
                     }, label: {
                         Text("확인")
@@ -145,7 +153,22 @@ struct SignUpView: View {
                 }
             }
         }
+        .toolbar { // 키보드 툴바 설정
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer() // 우측 정렬을 위한 Spacer
+                Button("완료") { // 키보드 숨기기 버튼
+                    isFocused = false // 포커스 해제하여 키보드 숨기기
+                }
+                .foregroundColor(.blue)
+            }
+        }
+        .alert("회원가입이 완료되었습니다", isPresented: $isSignUpComplete) {
+            Button("OK", role: .cancel) {
+                navPathFinder.popToRoot()
+            }
+        }
     }
+    
     
     // 비밀번호 규칙 맞는지 확인
     func validatePasswords() {

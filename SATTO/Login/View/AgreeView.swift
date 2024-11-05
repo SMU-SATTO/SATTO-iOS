@@ -54,18 +54,18 @@ struct AgreeView: View {
             Button(action: {
                 navPathFinder.addPath(route: .EmailAuthView)
             }, label: {
-                RoundedRectangle(cornerRadius: 20)
-                    .frame(width: 320, height: 60)
-                    .foregroundStyle(isAllAgreed() ? .blue : .blackWhite400)
-                    .overlay(
-                        Text("다음으로")
-                            .font(.m20)
-                            .foregroundStyle(.white)
-                    )
-                
+                Text("다음")
+                    .modifier(MyButtonModifier(isDisabled: !isAllAgreed()))
             })
             .disabled(!isAllAgreed())
-            .padding(.bottom, 10)
+            .padding(.horizontal, 20)
+            
+        }
+        .navigationBarBackButtonHidden()
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                CustomBackButton()
+            }
         }
     }
     

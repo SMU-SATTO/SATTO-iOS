@@ -17,6 +17,8 @@ struct PasswordResetView: View {
     @State var failAlert = false
     @State private var alertMessage = ""
     @State var showAlert = false
+    
+    @FocusState private var isFocused: Bool
 
     var body: some View {
         ZStack {
@@ -43,6 +45,8 @@ struct PasswordResetView: View {
                 //                .padding(.horizontal, 40)
                 
                 TextField("학번만 입력하세요", text: $studentId)
+                    .focused($isFocused)
+                    .keyboardType(.numberPad)
                     .modifier(MyTextFieldModifier())
                 //                .disabled(authViewModel.isCheckedEmailDuplicate)
                 
@@ -64,6 +68,15 @@ struct PasswordResetView: View {
                 Spacer()
             }
             .padding(.horizontal, 20)
+        }
+        .toolbar { // 키보드 툴바 설정
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer() // 우측 정렬을 위한 Spacer
+                Button("완료") { // 키보드 숨기기 버튼
+                    isFocused = false // 포커스 해제하여 키보드 숨기기
+                }
+                .foregroundColor(.blue)
+            }
         }
         .alert("존재하지 않는 학번 입니다.", isPresented: $failAlert) {
             Button("OK", role: .cancel) {

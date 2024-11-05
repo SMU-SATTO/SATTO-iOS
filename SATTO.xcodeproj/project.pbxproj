@@ -11,6 +11,8 @@
 		3B0927182C3A78EE00777EEC /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0927172C3A78EE00777EEC /* WebView.swift */; };
 		3B1270DC2BB147DC00E38F86 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1270DB2BB147DC00E38F86 /* EventView.swift */; };
 		3B41FE572C858DD700228EBC /* PasswordResetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B41FE562C858DD700228EBC /* PasswordResetView.swift */; };
+		3B5648532CCF751B00FEA534 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5648522CCF751B00FEA534 /* Extension.swift */; };
+		3B5648592CCF7F1200FEA534 /* KeyboardToolbar in Frameworks */ = {isa = PBXBuildFile; productRef = 3B5648582CCF7F1200FEA534 /* KeyboardToolbar */; };
 		3B56A3432C09B7F40034B25B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56A3422C09B7F40034B25B /* LoginView.swift */; };
 		3B56A3492C09B83B0034B25B /* EmailAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56A3482C09B83B0034B25B /* EmailAuthView.swift */; };
 		3B56A3512C09B8500034B25B /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56A3502C09B8500034B25B /* SignUpView.swift */; };
@@ -130,6 +132,7 @@
 		3B1270DB2BB147DC00E38F86 /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		3B1270DD2BB147E300E38F86 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		3B41FE562C858DD700228EBC /* PasswordResetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordResetView.swift; sourceTree = "<group>"; };
+		3B5648522CCF751B00FEA534 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		3B56A3422C09B7F40034B25B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		3B56A3482C09B83B0034B25B /* EmailAuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailAuthView.swift; sourceTree = "<group>"; };
 		3B56A3502C09B8500034B25B /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
@@ -228,6 +231,7 @@
 				AAA9507C2BA5C498004E16C8 /* PopupView in Frameworks */,
 				AA9E802F2B498DB400D51447 /* Moya in Frameworks */,
 				AAA950742BA5C484004E16C8 /* JHTimeTable in Frameworks */,
+				3B5648592CCF7F1200FEA534 /* KeyboardToolbar in Frameworks */,
 				AA9E802D2B498DB400D51447 /* CombineMoya in Frameworks */,
 				AA9E80332B498DB400D51447 /* RxMoya in Frameworks */,
 				AA9E80312B498DB400D51447 /* ReactiveMoya in Frameworks */,
@@ -291,8 +295,8 @@
 			isa = PBXGroup;
 			children = (
 				3B56A3422C09B7F40034B25B /* LoginView.swift */,
-				3B56A3482C09B83B0034B25B /* EmailAuthView.swift */,
 				AAA5227A2C80C2780056C9B7 /* AgreeView.swift */,
+				3B56A3482C09B83B0034B25B /* EmailAuthView.swift */,
 				3B56A3502C09B8500034B25B /* SignUpView.swift */,
 				3B41FE562C858DD700228EBC /* PasswordResetView.swift */,
 			);
@@ -336,6 +340,7 @@
 				3BF1F4962C464C5700B32C66 /* CustomBackButton.swift */,
 				3BF1F4982C464C7400B32C66 /* CustomNavigationTitle.swift */,
 				3BF1F49C2C465EA900B32C66 /* ProfileImageCell.swift */,
+				3B5648522CCF751B00FEA534 /* Extension.swift */,
 			);
 			path = CustomComponents;
 			sourceTree = "<group>";
@@ -621,6 +626,7 @@
 				AAA9507B2BA5C498004E16C8 /* PopupView */,
 				3B56A3552C09B9F40034B25B /* KeychainSwift */,
 				3B82D8862C2264D6008E0138 /* SwiftKeychainWrapper */,
+				3B5648582CCF7F1200FEA534 /* KeyboardToolbar */,
 			);
 			productName = SATTO;
 			productReference = AACB4BCC2B40712D00169C52 /* SATTO.app */;
@@ -656,6 +662,7 @@
 				AAA9507A2BA5C498004E16C8 /* XCRemoteSwiftPackageReference "PopupView" */,
 				3B56A3542C09B9F40034B25B /* XCRemoteSwiftPackageReference "keychain-swift" */,
 				3B82D8852C2264D6008E0138 /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */,
+				3B5648572CCF7F1200FEA534 /* XCRemoteSwiftPackageReference "KeyboardToolbar" */,
 			);
 			productRefGroup = AACB4BCD2B40712D00169C52 /* Products */;
 			projectDirPath = "";
@@ -709,6 +716,7 @@
 				3B82D8C02C3A6D0F008E0138 /* HomeView.swift in Sources */,
 				AA1018A22BDE812A009E6804 /* TimetableCustom.swift in Sources */,
 				3BF1F4A52C538ACD00B32C66 /* MyPageView.swift in Sources */,
+				3B5648532CCF751B00FEA534 /* Extension.swift in Sources */,
 				AAFE958D2BF25BCC00B3342A /* TimeSelectorView.swift in Sources */,
 				3BF1F4A72C538AF900B32C66 /* TimeTableTutorial.swift in Sources */,
 				AAA9506A2BA5C39B004E16C8 /* EssentialClassesSelectorView.swift in Sources */,
@@ -982,6 +990,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3B5648572CCF7F1200FEA534 /* XCRemoteSwiftPackageReference "KeyboardToolbar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/cameronshemilt/KeyboardToolbar";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.3;
+			};
+		};
 		3B56A3542C09B9F40034B25B /* XCRemoteSwiftPackageReference "keychain-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/evgenyneu/keychain-swift.git";
@@ -1025,6 +1041,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3B5648582CCF7F1200FEA534 /* KeyboardToolbar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B5648572CCF7F1200FEA534 /* XCRemoteSwiftPackageReference "KeyboardToolbar" */;
+			productName = KeyboardToolbar;
+		};
 		3B56A3552C09B9F40034B25B /* KeychainSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3B56A3542C09B9F40034B25B /* XCRemoteSwiftPackageReference "keychain-swift" */;
