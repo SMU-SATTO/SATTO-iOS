@@ -1,5 +1,5 @@
 {
-  "originHash" : "0b1509cb099c30285facbd492c0a7a48e01541abe4f9ffb320e6eb4cfcc71034",
+  "originHash" : "8c7b1c163fd57e6eadf547649731808cf92610010575b1e23144b0ab379cb302",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -17,6 +17,15 @@
       "state" : {
         "revision" : "791ab732dfa35997d8a0db3ba1e7bbc7885f84bb",
         "version" : "3.0.0"
+      }
+    },
+    {
+      "identity" : "keyboardtoolbar",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/cameronshemilt/KeyboardToolbar",
+      "state" : {
+        "revision" : "a00bf2330b33e993b4ebb7fd6b6f0d2780188d83",
+        "version" : "1.1.3"
       }
     },
     {

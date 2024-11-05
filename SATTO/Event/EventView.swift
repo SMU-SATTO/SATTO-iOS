@@ -137,7 +137,7 @@ struct EventTopTabBar: View {
                     .padding(.trailing, 24)
                 
                 Text("당첨자 발표")
-                    .font(.system(size: 14))
+                    .font(.b14)
                     .foregroundColor(selectedPage == .announcementOfWinners ? .topTabSelected : .topTabNotSelected)
                     .onTapGesture {
                         withAnimation {

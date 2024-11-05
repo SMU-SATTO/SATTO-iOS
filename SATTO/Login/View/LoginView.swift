@@ -39,61 +39,80 @@ struct LoginView: View {
     
     @State var isDisabled = false
     
+    @FocusState private var isFocused: Bool
+
+    
     var body: some View {
         NavigationStack(path: $navPathFinder.path) {
             ZStack {
-                
                 Color.background
                     .ignoresSafeArea()
-                
-                VStack(spacing: 0) {
-
-                    Text("SATTO")
-                        .font(.largeTitle)
-                        .padding(.vertical, 70)
-                    
-                    TextField("학번만 입력", text: $studentId)
-                        .modifier(MyTextFieldModifier())
-                        .padding(.bottom, 8)
-                    
-                    SecureField("비밀번호 입력", text: $password)
-                        .modifier(MyTextFieldModifier())
-                        .padding(.bottom, 68)
-                    
-                    Button(action: {
-                        authViewModel.logIn(email: "\(studentId)@sangmyung.kr", password: password)
-                    }, label: {
-                        Text("로그인")
-                            .modifier(MyButtonModifier(isDisabled: disabledCondition()))
-                    })
-                    .disabled(disabledCondition())
-                    .padding(.bottom, 12)
-                    
-                    Button(action: {
-                        navPathFinder.path.append(.AgreeView)
-                    }, label: {
-                        Text("회원가입")
-                            .foregroundStyle(Color(red: 0.3, green: 0.32, blue: 0.34))
-                            .padding(.vertical, 16)
-                            .frame(maxWidth: .infinity)
-                            .cornerRadius(20)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .stroke(Color(red: 0.3, green: 0.32, blue: 0.34), lineWidth: 1)
-                            )
-                    })
-                    .padding(.bottom, 12)
-                    
-                    Button(action: {
-                        navPathFinder.addPath(route: .PasswordResetView)
-                    }, label: {
-                        Text("비밀번호 찾기")
-                    })
-                    
-                    Spacer()
-                    
+                  
+                ScrollView {
+                    VStack(spacing: 0) {
+                        
+                        Text("SATTO")
+                            .font(.largeTitle)
+                            .padding(.vertical, 70)
+                        
+                        TextField("학번만 입력", text: $studentId)
+                            .focused($isFocused)
+                            .modifier(MyTextFieldModifier())
+                            .padding(.bottom, 8)
+                            .keyboardType(.numberPad)
+                            
+                        
+                        SecureField("비밀번호 입력", text: $password)
+                            .focused($isFocused)
+                            .modifier(MyTextFieldModifier())
+                            .padding(.bottom, 68)
+                        
+                        Button(action: {
+                            authViewModel.logIn(email: "\(studentId)@sangmyung.kr", password: password)
+                        }, label: {
+                            Text("로그인")
+                                .modifier(MyButtonModifier(isDisabled: disabledCondition()))
+                        })
+                        .disabled(disabledCondition())
+                        .padding(.bottom, 12)
+                        
+                        HStack(spacing: 10) {
+                            Button(action: {
+                                navPathFinder.addPath(route: .PasswordResetView)
+                            }, label: {
+                                Text("비밀번호 찾기")
+                            })
+                            
+                            Rectangle()
+                                .frame(width: 1, height: 10)
+                            
+                            Button(action: {
+                                navPathFinder.path.append(.AgreeView)
+                            }, label: {
+                                Text("회원가입")
+                            })
+                        }
+                        
+                        Spacer()
+                        
+                    }
+                    .padding(.horizontal, 20)
                 }
-                .padding(.horizontal)
+                .toolbar { // 키보드 툴바 설정
+                    ToolbarItemGroup(placement: .keyboard) {
+                        Spacer() // 우측 정렬을 위한 Spacer
+                        Button("완료") { // 키보드 숨기기 버튼
+                            isFocused = false // 포커스 해제하여 키보드 숨기기
+                        }
+                        .foregroundColor(.blue)
+                    }
+                }
+//                .gesture(
+//                    DragGesture()
+//                        .onChanged { _ in
+//                            hideKeyboard()
+//                        }
+//                )
                 .alert("아이디 또는 비밀번호가 틀렸습니다.", isPresented: $authViewModel.LogInFailAlert) {
                     Button("OK", role: .cancel) { }
                 }
@@ -132,6 +151,7 @@ struct MyTextFieldModifier: ViewModifier {
             )
     }
 }
+
 
 struct MyButtonModifier: ViewModifier {
     
